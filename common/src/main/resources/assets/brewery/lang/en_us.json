@@ -1,7 +1,5 @@
 {
   "effect.brewery.drunk": "Drunk",
   "effect.brewery.blackout": "Blackout",
-  "brewery.sound.breath": "Breath",
-  "item.brewery.breathalyzer": "Breathalyzer",
-  "itemGroup.brewery.brewery": "Brewery"
+  "brewery.sound.breath": "Breath"
 }

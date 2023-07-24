@@ -33,7 +33,7 @@ public class FogRendererMixin {
         if (player instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.getAlcohol().isBlackout()) {
             MobEffectInstance effect = player.getEffect(BreweryEffects.BLACKOUT.get());
             if (effect != null && effect.getDuration() <= AlcoholManager.BEGIN_TIME) {
-                if (effect.getDuration() < 10) {
+                if (effect.endsWithin(9)) {
                     return  1.0F - (float)effect.getDuration() / 10.0F;
                 } else {
                     return 0.0F;

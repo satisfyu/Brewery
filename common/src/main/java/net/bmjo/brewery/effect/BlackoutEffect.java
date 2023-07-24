@@ -1,11 +1,13 @@
 package net.bmjo.brewery.effect;
 
 
-import net.bmjo.brewery.alcohol.AlcoholManager;
 import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.alcohol.AlcoholManager;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -13,6 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
 public class BlackoutEffect extends MobEffect {
     public BlackoutEffect() {
@@ -26,13 +30,13 @@ public class BlackoutEffect extends MobEffect {
         int duration = effect.getDuration();
         switch (duration) {
             case AlcoholManager.FALL_DOWN -> {
-                Level level = livingEntity.getLevel();
+                Level level = livingEntity.level();
                 BlockState blockState = livingEntity.getBlockStateOn();
                 SoundEvent soundEvent = blockState.getBlock().getSoundType(blockState).getFallSound();
                 livingEntity.playSound(soundEvent, 1.0f, 1.0f);
                 level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), soundEvent, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
-            case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.getLevel());
+            case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
         }
         super.applyEffectTick(livingEntity, amplifier);
     }
