@@ -30,13 +30,13 @@ public class BlackoutEffect extends MobEffect {
         int duration = effect.getDuration();
         switch (duration) {
             case AlcoholManager.FALL_DOWN -> {
-                Level level = livingEntity.level();
+                Level level = livingEntity.getLevel();
                 BlockState blockState = livingEntity.getBlockStateOn();
                 SoundEvent soundEvent = blockState.getBlock().getSoundType(blockState).getFallSound();
                 livingEntity.playSound(soundEvent, 1.0f, 1.0f);
                 level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), soundEvent, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
-            case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
+            case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.getLevel());
         }
         super.applyEffectTick(livingEntity, amplifier);
     }

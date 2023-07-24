@@ -4,12 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
+    "EffectIconMixin",
     "FogRendererMixin",
     "GameRendererMixin",
     "WindowMixin"
   ],
   "mixins": [
-    "AlcoholDataSaverMixin",
+    "AlcoholPlayerMixin",
     "PlayerMixin"
   ],
   "injectors": {
