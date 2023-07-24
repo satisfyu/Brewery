@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "brewery:item/breathalyzer_red"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 0, 60, 0 ],
+      "translation": [ -1, 2, 2 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 0, -120, 0 ],
+      "translation": [ -1, 2, 2 ],
+      "scale": [ 0.5, 0.5, 0.5 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, 15, -5 ],
+      "translation": [ 7, -5, -12 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, -165, 5 ],
+      "translation": [ 7, -5, -12 ]
+    }
+  }
+}

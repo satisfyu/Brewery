@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[45,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "brewery"
+version = "${version}"
+displayName = "Brewery"
+authors = "Me!"
+description = '''
+This is an example description! Tell everyone what your mod is about!
+'''
+#logoFile = ""
+
+[[dependencies.brewery]]
+modId = "forge"
+mandatory = true
+versionRange = "[45,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19.4,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "architectury"
+mandatory = true
+versionRange = "[8.1.79,)"
+ordering = "AFTER"
+side = "BOTH"

@@ -1,0 +1,8 @@
+{
+  "breath": {
+    "subtitle": "brewery.sound.breath",
+    "sounds": [
+      "brewery:breath"
+    ]
+  }
+}

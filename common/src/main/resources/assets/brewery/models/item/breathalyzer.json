@@ -1,0 +1,75 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "brewery:item/breathalyzer_grey"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 0, 0, 0 ],
+      "translation": [ 0, 3, 1 ],
+      "scale": [ 0.55, 0.55, 0.55 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ 0, 180, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.55, 0.55, 0.55 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, -90, 25 ],
+      "translation": [ 1.13, 3.2, 1.13 ],
+      "scale": [ 0.68, 0.68, 0.68 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 90, -25 ],
+      "translation": [ 1.13, 3.2, 1.13 ],
+      "scale": [ 0.68, 0.68, 0.68 ]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "brewery:drunkenness": 0.3
+      },
+      "model": "brewery:item/breathalyzer/breathalyzer_green"
+    },
+    {
+      "predicate": {
+        "brewery:drunkenness": 0.6
+      },
+      "model": "brewery:item/breathalyzer/breathalyzer_orange"
+    },
+    {
+      "predicate": {
+        "brewery:drunkenness": 0.9
+      },
+      "model": "brewery:item/breathalyzer/breathalyzer_red"
+    },
+    {
+      "predicate": {
+        "brewery:breathing": 1
+      },
+      "model": "brewery:item/breathalyzer/blowing_breathalyzer_grey"
+    },
+    {
+      "predicate": {
+        "brewery:breathing": 1,
+        "brewery:drunkenness": 0.3
+      },
+      "model": "brewery:item/breathalyzer/blowing_breathalyzer_green"
+    },
+    {
+      "predicate": {
+        "brewery:breathing": 1,
+        "brewery:drunkenness": 0.6
+      },
+      "model": "brewery:item/breathalyzer/blowing_breathalyzer_orange"
+    },
+    {
+      "predicate": {
+        "brewery:breathing": 1,
+        "brewery:drunkenness": 0.9
+      },
+      "model": "brewery:item/breathalyzer/blowing_breathalyzer_red"
+    }
+  ]
+}
