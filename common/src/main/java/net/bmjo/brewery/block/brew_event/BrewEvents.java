@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class BrewEvents {
     public static final List<Supplier<BrewEvent>> BREW_EVENTS = new ArrayList<>();
 

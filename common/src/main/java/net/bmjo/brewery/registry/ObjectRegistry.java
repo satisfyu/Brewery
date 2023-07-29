@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class ObjectRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Brewery.MOD_ID,  Registry.ITEM_REGISTRY);
     public static final Registrar<Item> ITEM_REGISTRAR = ITEMS.getRegistrar();
