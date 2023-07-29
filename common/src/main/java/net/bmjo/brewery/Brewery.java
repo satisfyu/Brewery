@@ -7,6 +7,7 @@ import net.bmjo.brewery.event.PlayerRespawnEvent;
 import net.bmjo.brewery.event.PlayerCloneEvent;
 import net.bmjo.brewery.event.PlayerJoinEvent;
 import net.bmjo.brewery.networking.BreweryNetworking;
+import net.bmjo.brewery.registry.BlockEntityRegister;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.sound.SoundRegistry;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +23,7 @@ public class Brewery {
         BreweryEffects.registerEffects();
         BreweryNetworking.registerC2SPackets();
         SoundRegistry.registerSounds();
+        BlockEntityRegister.registerBlockEntities();
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());

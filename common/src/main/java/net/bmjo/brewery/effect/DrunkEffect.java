@@ -23,7 +23,7 @@ public class DrunkEffect extends MobEffect {
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
             AlcoholLevel alcoholLevel = alcoholPlayer.getAlcohol();
-            if (alcoholLevel.isDrunk() && livingEntity.getRandom().nextFloat() < 0.25f) {
+            if (alcoholLevel.isDrunk() && livingEntity.getRandom().nextFloat() < 0.5f) {
                 alcoholLevel.gainImmunity();
             }
             alcoholLevel.sober();
