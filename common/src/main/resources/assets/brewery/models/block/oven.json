@@ -1,6 +1,51 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "brewery:block/oven"
-  }
+	"credit": "Made by Satisfy",
+	"textures": {
+		"0": "brewing_station_inside_1",
+		"1": "brewing_station_inside_2",
+		"8": "brewing_station_side_bottom_1",
+		"9": "brewing_station_side_bottom_2",
+		"11": "brewing_station_top_3",
+		"14": "brewing_station_bottom_1",
+		"15": "brewing_station_bottom_2",
+		"particle": "brewing_station_inside_1"
+	},
+	"elements": [
+		{
+			"name": "Bottom",
+			"from": [0, 0, 0],
+			"to": [14, 2, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
+			"faces": {
+				"north": {"uv": [2, 14, 14, 16], "texture": "#missing"},
+				"east": {"uv": [0, 0, 14, 2], "texture": "#8"},
+				"south": {"uv": [0, 0, 14, 2], "texture": "#9"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#missing"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#missing"},
+				"down": {"uv": [14, 0, 0, 14], "texture": "#15"}
+			}
+		},
+		{
+			"name": "Oven",
+			"from": [0, 2, 0],
+			"to": [15, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
+			"faces": {
+				"north": {"uv": [4, 0, 16, 12], "texture": "#1"},
+				"east": {"uv": [0, 0, 16, 14], "texture": "#0"},
+				"south": {"uv": [15, 0, 0, 14], "texture": "#0"},
+				"west": {"uv": [0, 0, 12, 12], "texture": "#0"},
+				"up": {"uv": [0, 0, 15, 16], "texture": "#11"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#14"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "basin_4_oven",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
 }
