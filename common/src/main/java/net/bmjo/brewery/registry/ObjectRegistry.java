@@ -10,6 +10,7 @@ import net.bmjo.brewery.block.SteamWhistle;
 import net.bmjo.brewery.block.Timer;
 import net.bmjo.brewery.block.WaterBasin;
 import net.bmjo.brewery.item.Breathalyzer;
+import net.bmjo.brewery.item.HopRope;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +35,7 @@ public class ObjectRegistry {
             new ItemStack(ObjectRegistry.BREATHALYZER.get()));
 
     public static final RegistrySupplier<Item> BREATHALYZER = registerI("breathalyzer", () -> new Breathalyzer(getSettings()));
+    public static final RegistrySupplier<Item> HOP_ROPE = registerI("hop_rope", () -> new HopRope(getSettings()));
     public static final RegistrySupplier<Block> WATER_BASIN = registerBI("water_basin", () -> new WaterBasin(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> STEAM_WHISTLE = registerBI("steam_whistle", () -> new SteamWhistle(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> OVEN = registerBI("oven", () -> new Oven(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));

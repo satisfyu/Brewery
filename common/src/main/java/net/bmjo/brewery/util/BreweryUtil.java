@@ -18,7 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BreweryUtil {
-    private static final String BLOCKPOS_KEY ="blockposes";
+    private static final String BLOCK_POS_KEY = "block_pos";
+    private static final String BLOCK_POSITIONS_KEY = "block_positions";
     public static int power(int base, int exponent) {
         int value = 1;
         for(int i = 0; i < exponent; i++) {
@@ -27,7 +28,23 @@ public class BreweryUtil {
         return value;
     }
 
-    public static void putBlockPos(CompoundTag compoundTag, Collection<BlockPos> blockPoses) {
+    public static void putBlockPos(CompoundTag compoundTag, BlockPos blockPos) {
+        if (blockPos == null) return;
+        int[] positions = new int[3];
+        positions[0] = blockPos.getX();
+        positions[1] = blockPos.getY();
+        positions[2] = blockPos.getZ();
+        compoundTag.putIntArray(BLOCK_POS_KEY, positions);
+    }
+
+    public static BlockPos readBlockPos(CompoundTag compoundTag) {
+        if (!compoundTag.contains(BLOCK_POS_KEY)) return null;
+        int[] positions = compoundTag.getIntArray(BLOCK_POS_KEY);
+        return new BlockPos(positions[0], positions[1], positions[2]);
+    }
+
+
+    public static void putBlockPositions(CompoundTag compoundTag, Collection<BlockPos> blockPoses) {
         if (blockPoses == null || blockPoses.size() == 0) return;
         int[] positions = new int[blockPoses.size() * 3];
         int pos = 0;
@@ -37,12 +54,12 @@ public class BreweryUtil {
             positions[pos * 3 + 2] = blockPos.getZ();
             pos++;
         }
-        compoundTag.putIntArray(BLOCKPOS_KEY, positions);
+        compoundTag.putIntArray(BLOCK_POSITIONS_KEY, positions);
     }
 
 
-    public static Set<BlockPos> readBlockPos(CompoundTag compoundTag) {
-        int[] positions = compoundTag.getIntArray(BLOCKPOS_KEY);
+    public static Set<BlockPos> readBlockPositions(CompoundTag compoundTag) {
+        int[] positions = compoundTag.getIntArray(BLOCK_POSITIONS_KEY);
         Set<BlockPos> blockSet = new HashSet<>();
         for (int pos = 0; pos < positions.length / 3; pos++) {
             blockSet.add(new BlockPos(positions[pos * 3], positions[pos * 3 + 1], positions[pos * 3 + 2]));

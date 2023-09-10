@@ -1,0 +1,33 @@
+package net.bmjo.brewery.registry;
+
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.Registrar;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.util.BreweryIdentifier;
+import net.minecraft.core.Registry;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+
+import java.util.function.Supplier;
+
+public class EntityRegister {
+    private static final Registrar<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Brewery.MOD_ID, Registry.ENTITY_TYPE_REGISTRY).getRegistrar();
+
+    public static final RegistrySupplier<EntityType<HopRopeKnotEntity>> HOP_ROPE_KNOT = create("hop_rope_knot",
+            () -> EntityType.Builder.of(HopRopeKnotEntity::new, MobCategory.MISC)
+                    .sized(6 / 16F, 0.5F)
+                    .clientTrackingRange(20)
+                    .canSpawnFarFromPlayer()
+                    .fireImmune().build(new BreweryIdentifier("hop_rope_knot").toString())
+    );
+
+    public static <T extends EntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
+        return ENTITY_TYPES.register(new BreweryIdentifier(path), type);
+    }
+
+    public static void register() {
+
+    }
+}

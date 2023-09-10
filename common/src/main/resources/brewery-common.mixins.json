@@ -11,7 +11,8 @@
   ],
   "mixins": [
     "AlcoholPlayerMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

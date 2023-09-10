@@ -68,7 +68,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
 
     @Nullable
     public ItemStack removeIngredient() {
-        ItemStack itemStack = this.ingredients.size() > 0 ? this.ingredients.get(0) : null;
+        ItemStack itemStack = !this.ingredients.isEmpty() ? this.ingredients.get(0) : null;
         if (itemStack != null) {
             this.ingredients.remove(itemStack);
         }
@@ -88,17 +88,37 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, BrewKettleEntity blockEntity) {
         if (!isActive()) return;
+        if (!hasRecipe()) {
+            finishEvent();
+            return;
+        }
         if (this.event != null) {
             if (!this.event.isFinish(this.components, level)) return;
-            this.event.finish(this.components, level);
-            this.event = null;
+            finishEvent();
+        }
+        if (brewTime >= MAX_BREW_TIME) {
+            this.brew();
+            this.brewTime = 0;
+            return;
         }
         if (brewTime % (5 * 20) == 0) {
             this.event = BrewEvents.BREW_EVENTS.get(RandomSource.create().nextInt(BrewEvents.BREW_EVENTS.size())).get();
             this.event.start(this.components, level);
         }
         this.brewTime++;
-        System.out.println(this.brewTime);
+    }
+
+    private boolean hasRecipe() {
+        return true;
+    }
+
+    private void brew() {
+
+    }
+
+    private void finishEvent() {
+        this.event.finish(this.components, this.level);
+        this.event = null;
     }
 
     @Nullable
@@ -121,7 +141,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
             this.ingredients.clear();
             this.components.forEach(pos -> {
                     if (level.getBlockState(pos).getBlock() instanceof BrewKettleBlock) {
-                        level.setBlock(pos, level.getBlockState(pos).setValue(BrewKettleBlock.COMPLETE, false), 3);
+                        level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(BrewKettleBlock.COMPLETE, false));
                     }
             });
             this.components = null;
@@ -131,7 +151,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        if (this.components != null) BreweryUtil.putBlockPos(compoundTag, this.components);
+        if (this.components != null) BreweryUtil.putBlockPositions(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
     }
 
@@ -139,7 +159,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
         this.ingredients = NonNullList.create();
-        this.components = BreweryUtil.readBlockPos(compoundTag);
+        this.components = BreweryUtil.readBlockPositions(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients);
     }
 }
