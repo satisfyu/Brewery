@@ -68,7 +68,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
 
     @Nullable
     public ItemStack removeIngredient() {
-        ItemStack itemStack = this.ingredients.size() > 0 ? this.ingredients.get(0) : null;
+        ItemStack itemStack = !this.ingredients.isEmpty() ? this.ingredients.get(0) : null;
         if (itemStack != null) {
             this.ingredients.remove(itemStack);
         }
@@ -148,7 +148,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        if (this.components != null) BreweryUtil.putBlockPos(compoundTag, this.components);
+        if (this.components != null) BreweryUtil.putBlockPositions(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
     }
 
@@ -156,7 +156,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
         this.ingredients = NonNullList.create();
-        this.components = BreweryUtil.readBlockPos(compoundTag);
+        this.components = BreweryUtil.readBlockPositions(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients);
     }
 }

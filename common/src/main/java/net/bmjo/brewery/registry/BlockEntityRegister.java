@@ -16,7 +16,6 @@ public class BlockEntityRegister {
 
     public static final RegistrySupplier<BlockEntityType<BrewKettleEntity>> BREW_KETTLE_BLOCK_ENTITY = create("brew_kettle", () -> BlockEntityType.Builder.of(BrewKettleEntity::new, ObjectRegistry.WATER_BASIN.get()).build(null));
 
-
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(new BreweryIdentifier(path), type);
     }
