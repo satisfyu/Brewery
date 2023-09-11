@@ -14,6 +14,8 @@ import net.bmjo.brewery.item.HopRope;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -42,6 +44,9 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> TIMER = registerBI("timer", () -> new Timer(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
 
+    public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(getCocktailSettings()), MobEffects.DAMAGE_BOOST);
+
+
     private static <T extends Item> RegistrySupplier<T> registerI(String path, Supplier<T> item) {
         final ResourceLocation id = new BreweryIdentifier(path);
         return ITEM_REGISTRAR.register(id, item);
@@ -66,6 +71,21 @@ public class ObjectRegistry {
         Item.Properties settings = new Item.Properties().tab(VINERY_TAB);
         consumer.accept(settings);
         return settings;
+    }
+
+    private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect) {
+        RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
+        registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(cocktailFoodComponent(effect)))));
+        return toReturn;
+    }
+
+
+    public static <T extends Block> RegistrySupplier<T> registerWithItem(String name, Supplier<T> block) {
+        return Util.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block);
+    }
+
+    public static <T extends Block> RegistrySupplier<T> registerWithoutItem(String path, Supplier<T> block) {
+        return Util.registerWithoutItem(BLOCKS, BLOCK_REGISTRAR, new BreweryIdentifier(path), block);
     }
 
     public static void register() {
