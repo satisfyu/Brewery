@@ -19,22 +19,11 @@ public record HopRopeModel(float[] vertices, float[] uvs) {
         return new Builder(initialCapacity);
     }
 
-    /**
-     * Writes the model data to {@code buffer} and applies lighting.
-     *
-     * @param buffer    The target buffer.
-     * @param poseStack The transformation stack
-     * @param bLight0   Block-light at the start.
-     * @param bLight1   Block-light at the end.
-     * @param sLight0   Sky-light at the start.
-     * @param sLight1   Sky-light at the end.
-     */
     public void render(VertexConsumer buffer, PoseStack poseStack, int bLight0, int bLight1, int sLight0, int sLight1) {
         Matrix4f modelMatrix = poseStack.last().pose();
         Matrix3f normalMatrix = poseStack.last().normal();
         int count = vertices.length / 3;
         for (int i = 0; i < count; i++) {
-            // divide by 2 because chain has 2 face sets
             float f = (i % (count / 2f)) / (count / 2f);
             int blockLight = (int) Mth.lerp(f, (float) bLight0, (float) bLight1);
             int skyLight = (int) Mth.lerp(f, (float) sLight0, (float) sLight1);
@@ -45,7 +34,6 @@ public record HopRopeModel(float[] vertices, float[] uvs) {
                     .uv(uvs[i * 2], uvs[i * 2 + 1])
                     .overlayCoords(OverlayTexture.NO_OVERLAY)
                     .uv2(light)
-                    // trial and error magic values that change the overall brightness of the chain
                     .normal(normalMatrix, 1, 0.35f, 0)
                     .endVertex();
         }

@@ -12,10 +12,10 @@ public class BreweryNetworking {
     public static final ResourceLocation DRUNK_EFFECT_S2C_ID = new BreweryIdentifier("drink_alcohol");
     public static final ResourceLocation ALCOHOL_SYNC_S2C_ID = new BreweryIdentifier("alcohol_sync");
     public static final ResourceLocation ALCOHOL_SYNC_REQUEST_C2S_ID = new BreweryIdentifier("alcohol_sync_request");
+    public static final ResourceLocation DEACTIVATE_KETTLE_S2C_ID = new BreweryIdentifier("deactivate_kettle");
     public static final ResourceLocation ATTACH_ROPE_S2C_ID = new BreweryIdentifier("attach_rope");
     public static final ResourceLocation DETACH_ROPE_S2C_ID = new BreweryIdentifier("detach_rope");
     public static final ResourceLocation SYNC_ROPE_S2C_ID = new BreweryIdentifier("sync_rope");
-    public static final ResourceLocation DEACTIVATE_KETTLE_S2C_ID = new BreweryIdentifier("deactivate_kettle");
 
     public static void registerC2SPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, ALCOHOL_SYNC_REQUEST_C2S_ID, new SyncRequestC2SPacket());

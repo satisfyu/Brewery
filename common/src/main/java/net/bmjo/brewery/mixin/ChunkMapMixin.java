@@ -55,8 +55,8 @@ public class ChunkMapMixin {
             Set<HopRopeConnection> connections = knot.getConnections();
             IntList ids = new IntArrayList(connections.size());
             for (HopRopeConnection connection : connections) {
-                if (connection.first() == knot) {
-                    ids.add(connection.second().getId());
+                if (connection.from() == knot) {
+                    ids.add(connection.to().getId());
                 }
             }
             if (!ids.isEmpty()) {

@@ -3,7 +3,7 @@ package net.bmjo.brewery.client.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import net.bmjo.brewery.client.HopRopeHelper;
+import net.bmjo.brewery.client.RopeHelper;
 import net.bmjo.brewery.client.render.model.HopRopeModel;
 import net.bmjo.brewery.util.UVRect;
 import net.minecraft.world.entity.Entity;
@@ -41,8 +41,6 @@ public class HopRopeRenderer {
     }
 
     private void buildFaceVertical(HopRopeModel.Builder builder, Vector3f v, float angle, UVRect uv) {
-        v.x = 0;
-        v.z = 0;
         float actualSegmentLength = 1f / 4; //Quality
         float chainWidth = (uv.x1() - uv.x0()) / 16 * CHAIN_SCALE;
 
@@ -50,9 +48,7 @@ public class HopRopeRenderer {
         normal.normalize(chainWidth);
 
         Vector3f vert00 = new Vector3f(-normal.x() / 2, 0, -normal.z() / 2), vert01 = new Vector3f(vert00);
-//        vert01.add(normal);
         Vector3f vert10 = new Vector3f(-normal.x() / 2, 0, -normal.z() / 2), vert11 = new Vector3f(vert10);
-//        vert11.add(normal);
 
         float uvv0 = 0, uvv1 = 0;
         boolean lastIter = false;
@@ -101,14 +97,14 @@ public class HopRopeRenderer {
 
         // All of this setup can probably go, but I can't figure out
         // how to integrate it into the loop :shrug:
-        point0.set(0, (float) HopRopeHelper.drip2(0, distance, v.y()), 0);
-        gradient = (float) HopRopeHelper.drip2prime(0, distance, v.y());
+        point0.set(0, (float) RopeHelper.drip2(0, distance, v.y()), 0);
+        gradient = (float) RopeHelper.drip2prime(0, distance, v.y());
         normal.set(-gradient, Math.abs(distanceXZ / distance), 0);
         normal.normalize();
 
         x = estimateDeltaX(desiredSegmentLength, gradient);
-        gradient = (float) HopRopeHelper.drip2prime(x * wrongDistanceFactor, distance, v.y());
-        y = (float) HopRopeHelper.drip2(x * wrongDistanceFactor, distance, v.y());
+        gradient = (float) RopeHelper.drip2prime(x * wrongDistanceFactor, distance, v.y());
+        y = (float) RopeHelper.drip2(x * wrongDistanceFactor, distance, v.y());
         point1.set(x, y, 0);
 
         rotAxis.set(point1.x() - point0.x(), point1.y() - point0.y(), point1.z() - point0.z());
@@ -164,8 +160,8 @@ public class HopRopeRenderer {
                 x = distanceXZ;
             }
 
-            gradient = (float) HopRopeHelper.drip2prime(x * wrongDistanceFactor, distance, v.y());
-            y = (float) HopRopeHelper.drip2(x * wrongDistanceFactor, distance, v.y());
+            gradient = (float) RopeHelper.drip2prime(x * wrongDistanceFactor, distance, v.y());
+            y = (float) RopeHelper.drip2(x * wrongDistanceFactor, distance, v.y());
             point1.set(x, y, 0);
 
             actualSegmentLength = point0.distance(point1);
@@ -174,18 +170,5 @@ public class HopRopeRenderer {
 
     private float estimateDeltaX(float s, float k) {
         return (float) (s / Math.sqrt(1 + k * k));
-    }
-
-    private void drawDebugVector(PoseStack matrices, Entity fromEntity, Entity toEntity, VertexConsumer buffer) {
-        if (toEntity == null) return;
-        Matrix4f modelMat = matrices.last().pose();
-        Vec3 vec = toEntity.position().subtract(fromEntity.position());
-        Vec3 normal = vec.normalize();
-        buffer.vertex(modelMat, 0, 0, 0)
-                .color(0, 255, 0, 255)
-                .normal((float) normal.x, (float) normal.y, (float) normal.z).endVertex();
-        buffer.vertex(modelMat, (float) vec.x, (float) vec.y, (float) vec.z)
-                .color(255, 0, 0, 255)
-                .normal((float) normal.x, (float) normal.y, (float) normal.z).endVertex();
     }
 }

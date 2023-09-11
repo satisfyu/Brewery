@@ -10,6 +10,7 @@ import net.bmjo.brewery.util.HopRopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -20,13 +21,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -35,92 +40,39 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class HopRopeKnotEntity extends Entity {
+public class HopRopeKnotEntity extends HangingEntity {
+    private static final int MAX_RANGE = 32;
     private final Set<HopRopeConnection> connections = new HashSet<>();
     private final ObjectList<Tag> incompleteConnections = new ObjectArrayList<>();
     private int obstructionCheckTimer = 0;
 
-    public HopRopeKnotEntity(EntityType<?> entityType, Level world) {
+    public HopRopeKnotEntity(EntityType<? extends  HopRopeKnotEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    public BlockPos getPos() {
-        return new BlockPos(this.position());
+    private HopRopeKnotEntity(EntityType<? extends HopRopeKnotEntity> entityType, Level level, BlockPos blockPos) {
+        this(entityType, level);
+        setPos((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
     }
 
-    public void addConnection(@NotNull HopRopeConnection connection) {
-        if (!connection.first().equals(connection.second())) {
-            this.connections.add(connection);
-        }
+    public static HopRopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
+        HopRopeKnotEntity hopRopeKnotEntity = new HopRopeKnotEntity(EntityRegister.HOP_ROPE_KNOT.get(), level, blockPos);
+        level.addFreshEntity(hopRopeKnotEntity);
+        return hopRopeKnotEntity;
     }
 
     public Set<HopRopeConnection> getConnections() {
         return this.connections;
     }
 
-    @Override
-    public void tick() {
-        if (getLevel().isClientSide()) {
-            this.connections.removeIf(HopRopeConnection::dead);
-            return;
-        }
-        checkOutOfWorld();
-
-        convertIncompleteLinks();
-        updateLinks();
-        removeDeadLinks();
-        super.tick();
-    }
-
-    private void updateLinks() {
-        double squaredMaxRange = getMaxRange() * getMaxRange();
-        for (HopRopeConnection connection : connections) {
-            if (connection.dead()) continue;
-
-            if (!isAlive()) {
-                connection.destroy();
-            } else if (connection.first() == this && connection.getSquaredDistance() > squaredMaxRange) {
-                connection.destroy();
-            }
-        }
-
-        if (obstructionCheckTimer++ == 100) {
-            obstructionCheckTimer = 0;
-            if (!canStayAttached()) {
-                destroyLinks();
-            }
+    public void addConnection(@NotNull HopRopeConnection connection) {
+        if (!connection.from().equals(connection.to())) {
+            this.connections.add(connection);
         }
     }
 
-    public void destroyLinks() {
-        for (HopRopeConnection connection : connections) {
-            connection.destroy();
-        }
-    }
-
-    private boolean canStayAttached() {
-        BlockState blockState = getLevel().getBlockState(getPos());
-        return canAttachTo(blockState);
-    }
-
-    public static boolean canAttachTo(BlockState blockState) {
-        return blockState != null && blockState.is(BlockTags.FENCES);
-    }
-
-    private void removeDeadLinks() {
-        for (HopRopeConnection connection : connections) {
-            if (connection.needsBeDestroyed()) connection.destroy();
-            if (connection.dead()) playSound(SoundEvents.LEASH_KNOT_BREAK, 1.0F, 1.0F);
-        }
-
-        connections.removeIf(HopRopeConnection::dead);
-        if (connections.isEmpty() && incompleteConnections.isEmpty()) {
-            remove(RemovalReason.DISCARDED);
-        }
-    }
-
-    private static int getMaxRange() {
-        return 32;
+    public boolean sameConnectionExist(@NotNull HopRopeConnection connection) {
+        return this.connections.contains(connection);
     }
 
     @Override
@@ -135,13 +87,13 @@ public class HopRopeKnotEntity extends Entity {
 
         boolean madeConnection = tryAttachHeldRope(player);
         if (madeConnection) {
-            playSound(SoundEvents.LEASH_KNOT_PLACE, 1.0F, 1.0F);
+            this.playPlacementSound();
             return InteractionResult.CONSUME;
         }
 
         boolean broke = false;
         for (HopRopeConnection connection : this.connections) {
-            if (connection.second() == player) {
+            if (connection.to() == player) {
                 broke = true;
                 connection.destroy();
             }
@@ -151,8 +103,7 @@ public class HopRopeKnotEntity extends Entity {
         }
 
         if (handStack.is(ObjectRegistry.HOP_ROPE.get())) {
-            // Interacted with a valid chain item, create a new link
-            playSound(SoundEvents.LEASH_KNOT_PLACE, 1.0F, 1.0F);
+            this.playPlacementSound();
             HopRopeConnection.create(this, player);
             if (!player.isCreative()) {
                 handStack.shrink(1);
@@ -160,17 +111,17 @@ public class HopRopeKnotEntity extends Entity {
 
             return InteractionResult.CONSUME;
         }
-        playSound(SoundEvents.LEASH_KNOT_PLACE, 1.0F, 1.0F);
+        this.playPlacementSound();
         return super.interact(player, interactionHand);
     }
 
-    public boolean tryAttachHeldRope(Player player) {
+    private boolean tryAttachHeldRope(Player player) {
         boolean hasMadeConnection = false;
-        List<HopRopeConnection> attachableLinks = getHeldRopesInRange(player, position());
-        for (HopRopeConnection connection : attachableLinks) {
-            if (connection.first() == this) continue;
+        List<HopRopeConnection> attachableRopes = getHeldRopesInRange(player, position());
+        for (HopRopeConnection connection : attachableRopes) {
+            if (connection.from() == this) continue;
 
-            HopRopeConnection newConnection = HopRopeConnection.create(connection.first(), this);
+            HopRopeConnection newConnection = HopRopeConnection.create(connection.from(), this);
 
             if (newConnection != null) {
                 connection.destroy();
@@ -181,20 +132,19 @@ public class HopRopeKnotEntity extends Entity {
         return hasMadeConnection;
     }
 
-    public static List<HopRopeConnection> getHeldRopesInRange(Player player, Vec3 target) {
-        AABB searchBox = AABB.ofSize(target, getMaxRange() * 2, getMaxRange() * 2, getMaxRange() * 2);
+    private static List<HopRopeConnection> getHeldRopesInRange(Player player, Vec3 target) { //TODO lass das auf item raufmachen maybe und auf dem spieler speichern weil kb zu suchen
+        AABB searchBox = AABB.ofSize(target, MAX_RANGE * 2, MAX_RANGE * 2, MAX_RANGE * 2);
         List<HopRopeKnotEntity> otherKnots = player.getLevel().getEntitiesOfClass(HopRopeKnotEntity.class, searchBox);
 
-        List<HopRopeConnection> attachableLinks = new ArrayList<>();
+        List<HopRopeConnection> attachableRopes = new ArrayList<>();
 
         for (HopRopeKnotEntity source : otherKnots) {
             for (HopRopeConnection connection : source.getConnections()) {
-                if (connection.second() != player) continue;
-                // Knot is connected to the player
-                attachableLinks.add(connection);
+                if (connection.to() != player) continue;
+                attachableRopes.add(connection);
             }
         }
-        return attachableLinks;
+        return attachableRopes;
     }
 
     @Nullable
@@ -209,18 +159,71 @@ public class HopRopeKnotEntity extends Entity {
         return null;
     }
 
-    public static HopRopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
-        HopRopeKnotEntity hopRopeKnotEntity = new HopRopeKnotEntity(EntityRegister.HOP_ROPE_KNOT.get(), level);
-        hopRopeKnotEntity.moveTo(blockPos.getX() + 0.5f, blockPos.getY() + 0.5f, blockPos.getZ() + 0.5f, 0.0F, 0.0F);
-        level.addFreshEntity(hopRopeKnotEntity);
-        return hopRopeKnotEntity;
+    @Override
+    public void tick() {
+        if (getLevel().isClientSide()) {
+            this.connections.removeIf(HopRopeConnection::dead);
+            return;
+        }
+        checkOutOfWorld();
+
+        convertIncompleteConnections();
+        updateConnections();
+        removeDeadConnections();
+        super.tick();
     }
 
-    public boolean sameConnectionExist(@NotNull HopRopeConnection connection) {
-        return this.connections.contains(connection);
+    private void convertIncompleteConnections() {
+        if (!incompleteConnections.isEmpty()) {
+            incompleteConnections.removeIf(this::deserializeChainTag);
+        }
     }
 
-    public static void placeHangingRopes(Level level, HopRopeConnection connection) {
+    private void updateConnections() {
+        double squaredMaxRange = MAX_RANGE * MAX_RANGE;
+        for (HopRopeConnection connection : connections) {
+            if (connection.dead()) continue;
+
+            if (!this.isAlive()) {
+                connection.destroy();
+            } else if (connection.from() == this && connection.getSquaredDistance() > squaredMaxRange) {
+                connection.destroy();
+            }
+        }
+
+        if (obstructionCheckTimer++ == 100) {
+            obstructionCheckTimer = 0;
+            if (!survives()) {
+                destroyConnections();
+            }
+        }
+    }
+
+    @Override
+    public boolean survives() {
+        BlockState blockState = getLevel().getBlockState(getPos());
+        return blockState.is(BlockTags.FENCES);
+    }
+
+    private void removeDeadConnections() {
+        for (HopRopeConnection connection : connections) {
+            if (connection.needsBeDestroyed()) connection.destroy();
+            if (connection.dead()) playSound(SoundEvents.LEASH_KNOT_BREAK, 1.0F, 1.0F);
+        }
+
+        connections.removeIf(HopRopeConnection::dead);
+        if (connections.isEmpty() && incompleteConnections.isEmpty()) {
+            remove(RemovalReason.DISCARDED);
+        }
+    }
+
+    private void destroyConnections() {
+        for (HopRopeConnection connection : connections) {
+            connection.destroy();
+        }
+    }
+
+    private static void placeHangingRopes(Level level, HopRopeConnection connection) {
         List<BlockPos> crossingBlocks = BreweryMath.bresenham(connection);
         for (BlockPos blockPos : crossingBlocks) {
             if (level.getBlockState(blockPos).isAir() && BreweryMath.isCollinear(blockPos, connection, 1.0)) {
@@ -229,15 +232,150 @@ public class HopRopeKnotEntity extends Entity {
         }
     }
 
+    @Override
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        ListTag connectionTag = new ListTag();
+
+        for (HopRopeConnection connection : connections) {
+            if (connection.dead()) continue;
+            if (connection.from() != this) continue;
+            Entity toEntity = connection.to();
+            CompoundTag compoundTag = new CompoundTag();
+            if (toEntity instanceof Player) {
+                UUID uuid = toEntity.getUUID();
+                compoundTag.putUUID("UUID", uuid);
+            } else if (toEntity instanceof HopRopeKnotEntity hopRopeKnotEntity) {
+                BlockPos fromPos = this.getPos();
+                BlockPos toPos = hopRopeKnotEntity.getPos();
+                BlockPos relPos = toPos.subtract(fromPos);
+                // Inverse rotation to store the position as 'facing' agnostic
+                Direction inverseFacing = Direction.fromYRot(Direction.SOUTH.toYRot() - getYRot());
+                relPos = getBlockPosAsFacingRelative(relPos, inverseFacing);
+                compoundTag.putInt("RelX", relPos.getX());
+                compoundTag.putInt("RelY", relPos.getY());
+                compoundTag.putInt("RelZ", relPos.getZ());
+            }
+            connectionTag.add(compoundTag);
+        }
+
+        connectionTag.addAll(incompleteConnections);
+
+        if (!connectionTag.isEmpty()) {
+            nbt.put("chains", connectionTag);
+        }
+    }
+
+    private BlockPos getBlockPosAsFacingRelative(BlockPos relPos, Direction facing) {
+        Rotation rotation = Rotation.values()[facing.get2DDataValue()];
+        return relPos.rotate(rotation);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        if (nbt.contains("chains")) {
+            incompleteConnections.addAll(nbt.getList("chains", Tag.TAG_COMPOUND));
+        }
+    }
+
+    private boolean deserializeChainTag(Tag element) {
+        if (element == null || getLevel().isClientSide()) {
+            return true;
+        }
+
+        if (element instanceof CompoundTag tag) {
+            if (tag.contains("UUID")) {
+                UUID uuid = tag.getUUID("UUID");
+                Entity toEntity = ((ServerLevel) getLevel()).getEntity(uuid);
+                if (toEntity != null) {
+                    HopRopeConnection.create(this, toEntity);
+                    return true;
+                }
+            } else if (tag.contains("RelX") || tag.contains("RelY") || tag.contains("RelZ")) {
+                BlockPos blockPos = new BlockPos(tag.getInt("RelX"), tag.getInt("RelY"), tag.getInt("RelZ"));
+                // Adjust position to be relative to our facing direction
+                blockPos = getBlockPosAsFacingRelative(blockPos, Direction.fromYRot(this.getYRot()));
+                HopRopeKnotEntity entity = HopRopeKnotEntity.getHopRopeKnotEntity(getLevel(), blockPos.offset(this.getPos()));
+                if (entity != null) {
+                    HopRopeConnection.create(this, entity);
+                    return true;
+                }
+            } else {
+                Brewery.LOGGER.warn("Chain knot NBT is missing UUID or relative position."); //TODO
+            }
+        }
+
+        return false;
+    }
+
     //OVERRIDE SHIT
     @Override
-    public Vec3 getLeashOffset() {
+    public void setPos(double x, double y, double z) {
+        super.setPos((double) Mth.floor(x) + 0.5D, (double) Mth.floor(y) + 0.5D, (double) Mth.floor(z) + 0.5D);
+    }
+
+    @Override
+    protected void setDirection(Direction direction) {
+        // AbstractDecorationEntity.facing should not be used
+    }
+
+    @Override
+    public int getWidth() {
+        return 9;
+    }
+
+    @Override
+    public int getHeight() {
+        return 9;
+    }
+
+    @Override
+    public void dropItem(@Nullable Entity entity) {
+
+    }
+
+    @Override
+    public void playPlacementSound() {
+        playSound(SoundEvents.LEASH_KNOT_PLACE, 1.0F, 1.0F);
+    }
+
+    @Override
+    protected void recalculateBoundingBox() {
+        setPosRaw(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+        double w = getType().getWidth() / 2.0;
+        double h = getType().getHeight();
+        setBoundingBox(new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w));
+    }
+
+    @Override
+    public float mirror(Mirror mirror) {
+        if (mirror != Mirror.NONE) {
+            // Mirror the X axis, I am not sure why
+            for (Tag element : incompleteConnections) {
+                if (element instanceof CompoundTag tag) {
+                    if (tag.contains("RelX")) {
+                        tag.putInt("RelX", -tag.getInt("RelX"));
+                    }
+                }
+            }
+        }
+
+        // Opposite of Entity.applyMirror, again I am not sure why, but it works
+        float yaw = Mth.wrapDegrees(this.getYRot());
+        return switch (mirror) {
+            case LEFT_RIGHT -> 180 - yaw;
+            case FRONT_BACK -> -yaw;
+            default -> yaw;
+        };
+    }
+
+    @Override
+    public @NotNull Vec3 getLeashOffset() {
         return new Vec3(0, 4.5 / 16, 0);
     }
 
     @Environment(EnvType.CLIENT)
     @Override
-    public Vec3 getRopeHoldPosition(float f) {
+    public @NotNull Vec3 getRopeHoldPosition(float f) {
         return getPosition(f).add(0, 4.5 / 16, 0);
     }
 
@@ -247,7 +385,7 @@ public class HopRopeKnotEntity extends Entity {
     }
 
     @Override
-    public SoundSource getSoundSource() {
+    public @NotNull SoundSource getSoundSource() {
         return SoundSource.BLOCKS;
     }
 
@@ -257,7 +395,7 @@ public class HopRopeKnotEntity extends Entity {
     }
 
     @Override
-    public Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
+    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
         discard();
         return super.getDismountLocationForPassenger(passenger);
     }
@@ -268,79 +406,7 @@ public class HopRopeKnotEntity extends Entity {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {
-        if (nbt.contains("chains")) {
-            incompleteConnections.addAll(nbt.getList("chains", Tag.TAG_COMPOUND));
-        }
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {
-        ListTag linksTag = new ListTag();
-
-        // Write complete links
-        for (HopRopeConnection connection : connections) {
-            if (connection.dead()) continue;
-            if (connection.first() != this) continue;
-            Entity second = connection.second();
-            CompoundTag compoundTag = new CompoundTag();
-            if (second instanceof Player) {
-                UUID uuid = second.getUUID();
-                compoundTag.putUUID("UUID", uuid);
-            } else if (second instanceof HopRopeKnotEntity hopRopeKnotEntity) {
-                BlockPos relPos = hopRopeKnotEntity.getPos();
-                compoundTag.putInt("RelX", relPos.getX());
-                compoundTag.putInt("RelY", relPos.getY());
-                compoundTag.putInt("RelZ", relPos.getZ());
-            }
-            linksTag.add(compoundTag);
-        }
-
-        linksTag.addAll(incompleteConnections);
-
-        if (!linksTag.isEmpty()) {
-            nbt.put("chains", linksTag);
-        }
-    }
-
-    private void convertIncompleteLinks() {
-        if (!incompleteConnections.isEmpty()) {
-            incompleteConnections.removeIf(this::deserializeChainTag);
-        }
-    }
-
-    private boolean deserializeChainTag(Tag element) {
-        if (element == null || getLevel().isClientSide()) {
-            return true;
-        }
-
-        assert element instanceof CompoundTag;
-        CompoundTag tag = (CompoundTag) element;
-
-        if (tag.contains("UUID")) {
-            UUID uuid = tag.getUUID("UUID");
-            Entity second = ((ServerLevel) getLevel()).getEntity(uuid);
-            if (second != null) {
-                HopRopeConnection.create(this, second);
-                return true;
-            }
-        } else if (tag.contains("RelX") || tag.contains("RelY") || tag.contains("RelZ")) {
-            BlockPos blockPos = new BlockPos(tag.getInt("RelX"), tag.getInt("RelY"), tag.getInt("RelZ"));
-            // Adjust position to be relative to our facing direction
-            HopRopeKnotEntity second = HopRopeKnotEntity.getHopRopeKnotEntity(getLevel(), blockPos);
-            System.out.println(second);
-            if (second != null) {
-                HopRopeConnection.create(this, second);
-                return true;
-            }
-        } else {
-            Brewery.LOGGER.warn("Chain knot NBT is missing UUID or relative position."); //TODO
-        }
-        return false;
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 }

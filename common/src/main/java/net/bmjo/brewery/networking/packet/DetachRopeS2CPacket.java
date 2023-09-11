@@ -22,7 +22,7 @@ public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
         if (from instanceof HopRopeKnotEntity knot) {
             if (to != null) {
                 for (HopRopeConnection connection : knot.getConnections()) {
-                    if (connection.second() == to) {
+                    if (connection.to() == to) {
                         connection.destroy();
                     }
                 }

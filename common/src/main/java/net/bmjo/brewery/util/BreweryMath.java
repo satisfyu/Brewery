@@ -10,12 +10,12 @@ public class BreweryMath {
         List<BlockPos> points = new ArrayList<>();
         boolean swapped = false;
 
-        BlockPos firstPoint = connection.first().getPos();
+        BlockPos firstPoint = connection.from().getPos();
         int x1 = firstPoint.getX();
         int y1 = firstPoint.getY();
         int z1 = firstPoint.getZ();
 
-        BlockPos secondPoint = new BlockPos(connection.second().position());
+        BlockPos secondPoint = new BlockPos(connection.to().position());
         int x2 = secondPoint.getX();
         int y2 = secondPoint.getY();
         int z2 = secondPoint.getZ();
@@ -71,8 +71,8 @@ public class BreweryMath {
     }
 
     public static boolean isCollinear(BlockPos blockpos, HopRopeConnection connection, double tolerance) {
-        BlockPos firstPoint = connection.first().getPos();
-        BlockPos secondPoint = new BlockPos(connection.second().position());
+        BlockPos firstPoint = connection.from().getPos();
+        BlockPos secondPoint = new BlockPos(connection.to().position());
 
         double dx = secondPoint.getX() - firstPoint.getX();
         double dy = secondPoint.getY() - firstPoint.getY();

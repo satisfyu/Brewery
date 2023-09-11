@@ -1,5 +1,6 @@
 package net.bmjo.brewery.registry;
 
+import de.cristelknight.doapi.Util;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
@@ -44,7 +45,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> TIMER = registerBI("timer", () -> new Timer(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
 
 
-    public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(getCocktailSettings()), MobEffects.DAMAGE_BOOST);
+    //public static final RegistrySupplier<Block> COCONUT_COCKTAIL = registerCocktail("coconut_cocktail", () -> new CocktailBlock(getCocktailSettings()), MobEffects.DAMAGE_BOOST);
 
 
     private static <T extends Item> RegistrySupplier<T> registerI(String path, Supplier<T> item) {
@@ -73,15 +74,17 @@ public class ObjectRegistry {
         return settings;
     }
 
+    /*
     private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect) {
         RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
         registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(cocktailFoodComponent(effect)))));
         return toReturn;
     }
+     */
 
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(String name, Supplier<T> block) {
-        return Util.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block);
+        return Util.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block, CreativeModeTab.TAB_BREWING);
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithoutItem(String path, Supplier<T> block) {

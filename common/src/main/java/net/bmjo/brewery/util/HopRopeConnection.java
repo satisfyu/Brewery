@@ -19,63 +19,19 @@ import java.util.Objects;
 import java.util.Set;
 
 public class HopRopeConnection {
-    private final HopRopeKnotEntity first;
-    private final Entity second;
 
-    private boolean alive = true;
-
-    private HopRopeConnection(HopRopeKnotEntity first, Entity second) {
-        this.first = first;
-        this.second = second;
-    }
-
-    @Nullable
-    public static HopRopeConnection create(@NotNull HopRopeKnotEntity first, @NotNull Entity second) {
-        HopRopeConnection connection = new HopRopeConnection(first, second);
-        if (first.sameConnectionExist(connection)) return null;
-
-        first.addConnection(connection);
-        if (second instanceof HopRopeKnotEntity secondaryKnot) {
-            secondaryKnot.addConnection(connection);
-            //connection.createCollision();
-        }
-        if (!first.getLevel().isClientSide()) {
-            connection.sendAttachChainPacket(first.getLevel());
-        }
-        return connection;
-    }
 
     public static final double VISIBLE_RANGE = 2048.0D; //TODO
+    private final HopRopeKnotEntity from;
+    private final Entity to;
+    private boolean alive = true;
 
-    private void sendAttachChainPacket(Level level) { //TODO weg
-        assert level instanceof ServerLevel;
-
-        Set<ServerPlayer> trackingPlayers = getTrackingPlayers(first.getLevel());
-        FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-
-        buf.writeInt(first.getId());
-        buf.writeInt(second.getId());
-
-        for (ServerPlayer player : trackingPlayers) {
-            NetworkManager.sendToPlayer(player, BreweryNetworking.ATTACH_ROPE_S2C_ID, buf);
-        }
+    public HopRopeKnotEntity from() {
+        return from;
     }
 
-    private Set<ServerPlayer> getTrackingPlayers(Level level) {
-        Set<ServerPlayer> trackingPlayers = new HashSet<>();
-        if (level instanceof ServerLevel serverLevel) {
-            trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(first.position().x(), first.position().y(), first.position().z()) <= VISIBLE_RANGE).toList());
-            trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(second.position().x(), second.position().y(), second.position().z()) <= VISIBLE_RANGE).toList());
-        }
-        return trackingPlayers;
-    }
-
-    public HopRopeKnotEntity first() {
-        return first;
-    }
-
-    public Entity second() {
-        return second;
+    public Entity to() {
+        return to;
     }
 
     public boolean dead() {
@@ -83,44 +39,78 @@ public class HopRopeConnection {
     }
 
     public double getSquaredDistance() {
-        return this.first.distanceToSqr(second);
+        return this.from.distanceToSqr(to);
+    }
+
+    private HopRopeConnection(HopRopeKnotEntity from, Entity to) {
+        this.from = from;
+        this.to = to;
+    }
+
+    @Nullable
+    public static HopRopeConnection create(@NotNull HopRopeKnotEntity fromKnot, @NotNull Entity to) {
+        HopRopeConnection connection = new HopRopeConnection(fromKnot, to);
+        if (fromKnot.sameConnectionExist(connection)) return null;
+
+        fromKnot.addConnection(connection);
+        if (to instanceof HopRopeKnotEntity toKnot) {
+            toKnot.addConnection(connection);
+            //connection.createCollision();
+        }
+        if (fromKnot.getLevel() instanceof ServerLevel serverLevel) {
+            Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, connection);
+
+            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
+            buf.writeInt(fromKnot.getId());
+            buf.writeInt(to.getId());
+
+            for (ServerPlayer player : trackingPlayers) {
+                NetworkManager.sendToPlayer(player, BreweryNetworking.ATTACH_ROPE_S2C_ID, buf);
+            }
+        }
+        return connection;
     }
 
     public boolean needsBeDestroyed() {
-        return first.isRemoved() || second.isRemoved();
+        return from.isRemoved() || to.isRemoved();
     }
 
     public void destroy() {
         if (!alive) return;
         this.alive = false;
-        if (first.getLevel().isClientSide()) return;
+        if (from.getLevel().isClientSide()) return;
         //destroyCollision();
-        if (!first.isRemoved() && !second.isRemoved()) sendDetachChainPacket(first.getLevel());
+        if (from.getLevel() instanceof ServerLevel serverLevel && !from.isRemoved() && !to.isRemoved()) {
+            Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
+
+            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
+            buf.writeInt(from.getId());
+            buf.writeInt(to.getId());
+
+            for (ServerPlayer player : trackingPlayers) {
+                NetworkManager.sendToPlayer(player, BreweryNetworking.DETACH_ROPE_S2C_ID, buf);
+            }
+        }
     }
 
-    private void sendDetachChainPacket(Level level) {
-        assert level instanceof ServerLevel;
-
-        List<ServerPlayer> trackingPlayers = ((ServerLevel) level).getChunkSource().chunkMap.getPlayers(new ChunkPos(new BlockPos(this.first().position())), false);
-        FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-
-        buf.writeInt(first.getId());
-        buf.writeInt(second.getId());
-
-        for (ServerPlayer player : trackingPlayers) {
-            NetworkManager.sendToPlayer(player, BreweryNetworking.DETACH_ROPE_S2C_ID, buf);
-        }
+    private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, HopRopeConnection connection) {
+        Set<ServerPlayer> trackingPlayers = new HashSet<>();
+        HopRopeKnotEntity from = connection.from();
+        Entity to = connection.to();
+        trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(from.position().x(), from.position().y(), from.position().z()) <= VISIBLE_RANGE).toList());
+        trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(to.position().x(), to.position().y(), to.position().z()) <= VISIBLE_RANGE).toList());
+        return trackingPlayers;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof HopRopeConnection that)) return false;
-        return Objects.equals(first, that.first) && Objects.equals(second, that.second) || Objects.equals(first, that.second) && Objects.equals(second, that.first);
+        return Objects.equals(from, that.from) && Objects.equals(to, that.to) || Objects.equals(from, that.to) && Objects.equals(to, that.from);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(first, second);
+        return Objects.hash(from, to);
     }
 }
