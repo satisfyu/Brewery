@@ -24,7 +24,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,25 +43,25 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class HopRopeKnotEntity extends HangingEntity {
+public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
     private static final int MAX_RANGE = 32;
+    private static final byte GRACE_PERIOD = 100;
     private final Set<HopRopeConnection> connections = new HashSet<>();
     private final ObjectList<Tag> incompleteConnections = new ObjectArrayList<>();
     private int obstructionCheckTimer = 0;
+    private byte graceTicks = GRACE_PERIOD;
 
     public HopRopeKnotEntity(EntityType<? extends  HopRopeKnotEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    private HopRopeKnotEntity(EntityType<? extends HopRopeKnotEntity> entityType, Level level, BlockPos blockPos) {
-        this(entityType, level);
+    private HopRopeKnotEntity(Level level, BlockPos blockPos) {
+        super(EntityRegister.HOP_ROPE_KNOT.get(), level, blockPos);
         setPos((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
     }
 
     public static HopRopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
-        HopRopeKnotEntity hopRopeKnotEntity = new HopRopeKnotEntity(EntityRegister.HOP_ROPE_KNOT.get(), level, blockPos);
-        level.addFreshEntity(hopRopeKnotEntity);
-        return hopRopeKnotEntity;
+        return new HopRopeKnotEntity(level, blockPos);
     }
 
     public Set<HopRopeConnection> getConnections() {
@@ -73,6 +76,10 @@ public class HopRopeKnotEntity extends HangingEntity {
 
     public boolean sameConnectionExist(@NotNull HopRopeConnection connection) {
         return this.connections.contains(connection);
+    }
+
+    public void setGraceTicks(byte graceTicks) {
+        this.graceTicks = graceTicks;
     }
 
     @Override
@@ -95,7 +102,8 @@ public class HopRopeKnotEntity extends HangingEntity {
         for (HopRopeConnection connection : this.connections) {
             if (connection.to() == player) {
                 broke = true;
-                connection.destroy();
+                System.out.println("player");
+                connection.destroy(true);
             }
         }
         if (broke) {
@@ -111,8 +119,14 @@ public class HopRopeKnotEntity extends HangingEntity {
 
             return InteractionResult.CONSUME;
         }
-        this.playPlacementSound();
-        return super.interact(player, interactionHand);
+
+        if (RopeEntity.canDestroyWith(handStack)) {
+            destroyConnections(!player.isCreative());
+            graceTicks = 0;
+            return InteractionResult.CONSUME;
+        }
+
+        return InteractionResult.PASS;
     }
 
     private boolean tryAttachHeldRope(Player player) {
@@ -124,7 +138,9 @@ public class HopRopeKnotEntity extends HangingEntity {
             HopRopeConnection newConnection = HopRopeConnection.create(connection.from(), this);
 
             if (newConnection != null) {
-                connection.destroy();
+                System.out.println("old");
+                connection.destroy(false);
+                connection.removeSilently = true;
                 hasMadeConnection = true;
                 placeHangingRopes(this.level, newConnection);
             }
@@ -167,16 +183,22 @@ public class HopRopeKnotEntity extends HangingEntity {
         }
         checkOutOfWorld();
 
-        convertIncompleteConnections();
+        boolean anyConverted = convertIncompleteConnections();
         updateConnections();
         removeDeadConnections();
-        super.tick();
+
+        if (graceTicks < 0 || (anyConverted && incompleteConnections.isEmpty())) {
+            graceTicks = 0;
+        } else if (graceTicks > 0) {
+            graceTicks--;
+        }
     }
 
-    private void convertIncompleteConnections() {
+    private boolean convertIncompleteConnections() {
         if (!incompleteConnections.isEmpty()) {
-            incompleteConnections.removeIf(this::deserializeChainTag);
+            return incompleteConnections.removeIf(this::deserializeChainTag);
         }
+        return false;
     }
 
     private void updateConnections() {
@@ -185,16 +207,18 @@ public class HopRopeKnotEntity extends HangingEntity {
             if (connection.dead()) continue;
 
             if (!this.isAlive()) {
-                connection.destroy();
+                System.out.println("dead");
+                connection.destroy(true);
             } else if (connection.from() == this && connection.getSquaredDistance() > squaredMaxRange) {
-                connection.destroy();
+                System.out.println("long");
+                connection.destroy(true);
             }
         }
 
         if (obstructionCheckTimer++ == 100) {
             obstructionCheckTimer = 0;
             if (!survives()) {
-                destroyConnections();
+                destroyConnections(true);
             }
         }
     }
@@ -206,20 +230,26 @@ public class HopRopeKnotEntity extends HangingEntity {
     }
 
     private void removeDeadConnections() {
+        boolean playBreakSound = false;
         for (HopRopeConnection connection : connections) {
-            if (connection.needsBeDestroyed()) connection.destroy();
-            if (connection.dead()) playSound(SoundEvents.LEASH_KNOT_BREAK, 1.0F, 1.0F);
+            if (connection.needsBeDestroyed()) {
+                System.out.println("need");
+                connection.destroy(true);
+            }
+            if (connection.dead() && !connection.removeSilently) playBreakSound = true;
         }
+        if (playBreakSound) dropItem(null);
 
         connections.removeIf(HopRopeConnection::dead);
-        if (connections.isEmpty() && incompleteConnections.isEmpty()) {
+        if (connections.isEmpty() && incompleteConnections.isEmpty() && graceTicks <= 0) {
             remove(RemovalReason.DISCARDED);
         }
     }
 
-    private void destroyConnections() {
+    public void destroyConnections(boolean mayDrop) {
         for (HopRopeConnection connection : connections) {
-            connection.destroy();
+            System.out.println("destroyConnections");
+            connection.destroy(mayDrop);
         }
     }
 
@@ -234,6 +264,7 @@ public class HopRopeKnotEntity extends HangingEntity {
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
         ListTag connectionTag = new ListTag();
 
         for (HopRopeConnection connection : connections) {
@@ -272,6 +303,7 @@ public class HopRopeKnotEntity extends HangingEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
         if (nbt.contains("chains")) {
             incompleteConnections.addAll(nbt.getList("chains", Tag.TAG_COMPOUND));
         }
@@ -304,6 +336,12 @@ public class HopRopeKnotEntity extends HangingEntity {
             }
         }
 
+        if (graceTicks <= 0) {
+            this.spawnAtLocation(ObjectRegistry.HOP_ROPE.get());
+            dropItem(null);
+            return true;
+        }
+
         return false;
     }
 
@@ -330,7 +368,7 @@ public class HopRopeKnotEntity extends HangingEntity {
 
     @Override
     public void dropItem(@Nullable Entity entity) {
-
+        playSound(SoundEvents.LEASH_KNOT_BREAK, 1.0F, 1.0F);
     }
 
     @Override
@@ -389,24 +427,9 @@ public class HopRopeKnotEntity extends HangingEntity {
         return SoundSource.BLOCKS;
     }
 
-    @Override
-    protected void defineSynchedData() {
-
-    }
-
-    @Override
-    public @NotNull Vec3 getDismountLocationForPassenger(LivingEntity passenger) {
-        discard();
-        return super.getDismountLocationForPassenger(passenger);
-    }
-
-    @Override
-    public void remove(RemovalReason reason) {
-        super.remove(reason);
-    }
 
     @Override
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+        return new ClientboundAddEntityPacket(this); //BreweryUtil.createEntitySpawnPacket(BreweryNetworking.SPAWN_KNOT_S2C_ID, this); //
     }
 }

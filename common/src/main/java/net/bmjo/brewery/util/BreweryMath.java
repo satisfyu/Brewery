@@ -1,6 +1,7 @@
 package net.bmjo.brewery.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,5 +88,12 @@ public class BreweryMath {
         double crossProductZ = vx * dy - vy * dx;
 
         return Math.abs(crossProductX) < tolerance && Math.abs(crossProductY) < tolerance && Math.abs(crossProductZ) < tolerance;
+    }
+
+    public static Vec3 middleOf(Vec3 a, Vec3 b) {
+        double x = (a.x() - b.x()) / 2d + b.x();
+        double y = (a.y() - b.y()) / 2d + b.y();
+        double z = (a.z() - b.z()) / 2d + b.z();
+        return new Vec3(x, y, z);
     }
 }

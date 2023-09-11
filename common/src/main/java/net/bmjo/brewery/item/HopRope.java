@@ -1,24 +1,16 @@
 package net.bmjo.brewery.item;
 
 import net.bmjo.brewery.entity.HopRopeKnotEntity;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class HopRope extends Item {
 
@@ -44,14 +36,17 @@ public class HopRope extends Item {
                 return InteractionResult.PASS;
             }
             //create new rope
-            HopRopeKnotEntity hopRopeKnotEntity = HopRopeKnotEntity.create(level, blockPos);
+            //HopRopeKnotEntity hopRopeKnotEntity = HopRopeKnotEntity.create(level, blockPos);
+            knot = HopRopeKnotEntity.create(level, blockPos);
+            knot.setTicksFrozen((byte) 0);
+            level.addFreshEntity(knot);
             //wait because Entity has to exist
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return hopRopeKnotEntity.interact(player, hand);
+            return knot.interact(player, hand);
         } else {
             return InteractionResult.PASS;
         }

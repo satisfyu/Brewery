@@ -10,6 +10,7 @@ import net.minecraft.world.entity.Entity;
 public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
     @Override
     public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
+        System.out.println("detach");
         int fromId = buf.readInt();
         int toId = buf.readInt();
         context.queue(() -> removeLinks(Minecraft.getInstance(), fromId, toId));
@@ -23,7 +24,7 @@ public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
             if (to != null) {
                 for (HopRopeConnection connection : knot.getConnections()) {
                     if (connection.to() == to) {
-                        connection.destroy();
+                        connection.destroy(true);
                     }
                 }
             }

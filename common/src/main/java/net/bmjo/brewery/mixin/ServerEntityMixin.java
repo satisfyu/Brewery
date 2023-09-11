@@ -7,9 +7,7 @@ import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.util.HopRopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Final;
@@ -42,12 +40,8 @@ public class ServerEntityMixin {
             if (!ids.isEmpty()) {
                 buf.writeInt(knot.getId());
                 buf.writeVarIntArray(ids.toIntArray());
-                consumer.accept(createPlayC2SPacket(BreweryNetworking.SYNC_ROPE_S2C_ID, buf));
+                consumer.accept(new ClientboundCustomPayloadPacket(BreweryNetworking.SYNC_ROPE_S2C_ID, buf));
             }
         }
-    }
-
-    private static Packet<ClientGamePacketListener> createPlayC2SPacket(ResourceLocation channel, FriendlyByteBuf buf) {
-        return new ClientboundCustomPayloadPacket(channel, buf);
     }
 }

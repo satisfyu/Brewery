@@ -148,7 +148,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        if (this.components != null) BreweryUtil.putBlockPositions(compoundTag, this.components);
+        if (this.components != null) BreweryUtil.putBlockPos(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
     }
 
@@ -156,7 +156,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
         this.ingredients = NonNullList.create();
-        this.components = BreweryUtil.readBlockPositions(compoundTag);
+        this.components = BreweryUtil.readBlockPos(compoundTag);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients);
     }
 }

@@ -2,7 +2,6 @@ package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import net.bmjo.brewery.client.RopeHelper;
 import net.bmjo.brewery.entity.HopRopeKnotEntity;
@@ -46,13 +45,13 @@ public class HopRopeKnotRenderer extends EntityRenderer<HopRopeKnotEntity> {
     }
 
     @Override
-    public void render(HopRopeKnotEntity hopRopeKnotEntity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
-        Set<HopRopeConnection> connections = hopRopeKnotEntity.getConnections();
+    public void render(HopRopeKnotEntity entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+        Set<HopRopeConnection> connections = entity.getConnections();
         for (HopRopeConnection connection : connections) {
-            if (connection.from() != hopRopeKnotEntity || connection.dead()) continue;
+            if (connection.from() != entity || connection.dead()) continue;
             this.renderChainLink(connection, g, poseStack, multiBufferSource);
         }
-        super.render(hopRopeKnotEntity, f, g, poseStack, multiBufferSource, i);
+        super.render(entity, f, g, poseStack, multiBufferSource, i);
     }
 
     private void renderChainLink(HopRopeConnection connection, float tickDelta, PoseStack poseStack, MultiBufferSource vertexConsumerProvider) {
