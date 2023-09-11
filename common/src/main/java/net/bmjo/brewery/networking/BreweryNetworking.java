@@ -2,10 +2,7 @@ package net.bmjo.brewery.networking;
 
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
-import net.bmjo.brewery.networking.packet.AlcoholSyncS2CPacket;
-import net.bmjo.brewery.networking.packet.DrinkAlcoholC2SPacket;
-import net.bmjo.brewery.networking.packet.DrunkEffectS2CPacket;
-import net.bmjo.brewery.networking.packet.SyncRequestC2SPacket;
+import net.bmjo.brewery.networking.packet.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +12,7 @@ public class BreweryNetworking {
     public static final ResourceLocation DRUNK_EFFECT_S2C_ID = new BreweryIdentifier("drink_alcohol");
     public static final ResourceLocation ALCOHOL_SYNC_S2C_ID = new BreweryIdentifier("alcohol_sync");
     public static final ResourceLocation ALCOHOL_SYNC_REQUEST_C2S_ID = new BreweryIdentifier("alcohol_sync_request");
+    public static final ResourceLocation DEACTIVATE_KETTLE_S2C_ID = new BreweryIdentifier("deactivate_kettle");
 
     public static void registerC2SPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, ALCOHOL_SYNC_REQUEST_C2S_ID, new SyncRequestC2SPacket());
@@ -24,6 +22,7 @@ public class BreweryNetworking {
     public static void registerS2CPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ALCOHOL_SYNC_S2C_ID, new AlcoholSyncS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DRUNK_EFFECT_S2C_ID, new DrunkEffectS2CPacket());
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, DEACTIVATE_KETTLE_S2C_ID, new DeactivateKettleS2CPacket());
     }
 
     public static FriendlyByteBuf createPacketBuf(){

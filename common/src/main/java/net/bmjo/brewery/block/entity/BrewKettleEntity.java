@@ -88,17 +88,34 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, BrewKettleEntity blockEntity) {
         if (!isActive()) return;
-        if (this.event != null) {
-            if (!this.event.isFinish(this.components, level)) return;
-            this.event.finish(this.components, level);
-            this.event = null;
+        if (!hasRecipe()) {
+            if (this.event != null) this.endEvent();
+            return;
         }
-        if (brewTime % (5 * 20) == 0) {
+        if (this.event != null) {
+            if (this.event.isFinish(this.components, level)) this.endEvent();
+        } else if (brewTime >= MAX_BREW_TIME) {
+            this.brew();
+            return;
+        } else if (brewTime % (5 * 20) == 0) {
             this.event = BrewEvents.BREW_EVENTS.get(RandomSource.create().nextInt(BrewEvents.BREW_EVENTS.size())).get();
             this.event.start(this.components, level);
         }
         this.brewTime++;
-        System.out.println(this.brewTime);
+    }
+
+    private boolean hasRecipe() {
+        return true;
+    }
+
+    private void brew() {
+
+    }
+
+    private void endEvent() {
+        if (this.event == null) return;
+        this.event.finish(this.components, level);
+        this.event = null;
     }
 
     @Nullable
