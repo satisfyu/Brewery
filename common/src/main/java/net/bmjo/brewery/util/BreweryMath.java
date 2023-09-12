@@ -1,5 +1,6 @@
 package net.bmjo.brewery.util;
 
+import net.bmjo.brewery.entity.HopRopeKnotEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
@@ -7,87 +8,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BreweryMath {
-    public static List<BlockPos> bresenham(HopRopeConnection connection) {
-        List<BlockPos> points = new ArrayList<>();
-        boolean swapped = false;
-
-        BlockPos firstPoint = connection.from().getPos();
-        int x1 = firstPoint.getX();
-        int y1 = firstPoint.getY();
-        int z1 = firstPoint.getZ();
-
-        BlockPos secondPoint = new BlockPos(connection.to().position());
-        int x2 = secondPoint.getX();
-        int y2 = secondPoint.getY();
-        int z2 = secondPoint.getZ();
-
-        if (Math.abs(x2 - x1) < Math.abs(y2 - y1)) {
-            int temp = x1;
-            x1 = y1;
-            y1 = temp;
-            temp = x2;
-            x2 = y2;
-            y2 = temp;
-            swapped = true;
+    public static List<BlockPos> lineIntersection(HopRopeConnection connection) {
+        if (connection.to() instanceof HopRopeKnotEntity toKnot) {
+            BlockPos start = connection.from().getPos();
+            BlockPos end = toKnot.getOnPos();
+            return lineIntersection(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
         }
-
-        if (x1 > x2) {
-            int temp = x1;
-            x1 = x2;
-            x2 = temp;
-            temp = y1;
-            y1 = y2;
-            y2 = temp;
-            temp = z1;
-            z1 = z2;
-            z2 = temp;
-            swapped = true;
-        }
-
-        int dx = x2 - x1;
-        int dy = Math.abs(y2 - y1);
-        int dz = Math.abs(z2 - z1);
-        int error1 = dx / 2;
-        int error2 = 0;
-        int ystep = (y1 < y2) ? 1 : -1;
-        int zstep = (z1 < z2) ? 1 : -1;
-        int y = y1;
-        int z = z1;
-
-        for (int x = x1; x <= x2; x++) {
-            points.add(swapped ? new BlockPos(y, x, z) : new BlockPos(x, y, z));
-            error2 += dy;
-            if (error2 >= dx) {
-                y += ystep;
-                error2 -= dx;
-            }
-            error1 += dz;
-            if (error1 >= dx) {
-                z += zstep;
-                error1 -= dx;
-            }
-        }
-
-        return points;
+        return new ArrayList<>();
     }
 
-    public static boolean isCollinear(BlockPos blockpos, HopRopeConnection connection, double tolerance) {
-        BlockPos firstPoint = connection.from().getPos();
-        BlockPos secondPoint = new BlockPos(connection.to().position());
+    private static List<BlockPos> lineIntersection(int startX, int startY, int startZ, int endX, int endY, int endZ) {
+        List<BlockPos> blockPositions = new ArrayList<>();
 
-        double dx = secondPoint.getX() - firstPoint.getX();
-        double dy = secondPoint.getY() - firstPoint.getY();
-        double dz = secondPoint.getZ() - firstPoint.getZ();
+        boolean switchX = false;
+        if (startX > endX) {
+            int temp = startX;
+            startX = endX;
+            endX = temp;
+            switchX = true;
+        }
 
-        double vx = blockpos.getX() - firstPoint.getX();
-        double vy = blockpos.getY() - firstPoint.getY();
-        double vz = blockpos.getZ() - firstPoint.getZ();
+        boolean switchY = false;
+        if (startY > endY) {
+            int temp = startY;
+            startY = endY;
+            endY = temp;
+            switchY = true;
+        }
 
-        double crossProductX = vy * dz - vz * dy;
-        double crossProductY = vz * dx - vx * dz;
-        double crossProductZ = vx * dy - vy * dx;
+        boolean switchZ = false;
+        if (startZ > endZ) {
+            int temp = startZ;
+            startZ = endZ;
+            endZ = temp;
+            switchZ = true;
+        }
 
-        return Math.abs(crossProductX) < tolerance && Math.abs(crossProductY) < tolerance && Math.abs(crossProductZ) < tolerance;
+        int dx = endX - startX;
+        int dy = endY - startY;
+        int dz = endZ - startZ;
+
+        // Calculate the greatest common divisor (GCD) of the direction components
+        int gcd = gcd(gcd(dx, dy), dz);
+
+        // Iterate over t values within the range
+        for (int t = 0; t <= gcd; t++) {
+            int x = switchX ? endX - (dx * t) / gcd : startX + (dx * t) / gcd;
+            int y = switchY ? endY - (dy * t) / gcd : startY + (dy * t) / gcd;
+            int z = switchZ ? endZ - (dz * t) / gcd : startZ + (dz * t) / gcd;
+
+            blockPositions.add(new BlockPos(x, y, z));
+        }
+        return blockPositions;
+    }
+
+    public static int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
     }
 
     public static Vec3 middleOf(Vec3 a, Vec3 b) {

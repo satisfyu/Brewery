@@ -10,7 +10,7 @@ import net.bmjo.brewery.util.IncompleteRopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
-public class BreweryNetworking { //TODO add incomplete connections
+public class BreweryNetworking {
     public static final ResourceLocation DRINK_ALCOHOL_C2S_ID = new BreweryIdentifier("drink_alcohol");
     public static final ResourceLocation DRUNK_EFFECT_S2C_ID = new BreweryIdentifier("drink_alcohol");
     public static final ResourceLocation ALCOHOL_SYNC_S2C_ID = new BreweryIdentifier("alcohol_sync");

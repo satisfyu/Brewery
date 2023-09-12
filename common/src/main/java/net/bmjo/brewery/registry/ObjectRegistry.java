@@ -88,7 +88,9 @@ public class ObjectRegistry {
     //TODO barrel logic
     public static final RegistrySupplier<Block> SMALL_BARREL = registerBI("small_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
+    //ROPE
     public static final RegistrySupplier<Item> HOP_ROPE = registerItem("hop_rope", () -> new HopRope(getSettings()));
+    public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
 
     //FOOD
     //TODO nutrition / saturation values, maybe ebenfalls die Effekte von Bier auf das Essen bringen wie in Candlelight?

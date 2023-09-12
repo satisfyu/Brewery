@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.registry.EntityRegister;
 import net.bmjo.brewery.registry.ObjectRegistry;
-import net.bmjo.brewery.util.BreweryMath;
 import net.bmjo.brewery.util.HopRopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -142,7 +140,6 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
                 connection.destroy(false);
                 connection.removeSilently = true;
                 hasMadeConnection = true;
-                placeHangingRopes(this.level, newConnection);
             }
         }
         return hasMadeConnection;
@@ -250,15 +247,6 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         for (HopRopeConnection connection : connections) {
             System.out.println("destroyConnections");
             connection.destroy(mayDrop);
-        }
-    }
-
-    private static void placeHangingRopes(Level level, HopRopeConnection connection) {
-        List<BlockPos> crossingBlocks = BreweryMath.bresenham(connection);
-        for (BlockPos blockPos : crossingBlocks) {
-            if (level.getBlockState(blockPos).isAir() && BreweryMath.isCollinear(blockPos, connection, 1.0)) {
-                level.setBlock(blockPos, Blocks.OAK_FENCE.defaultBlockState(), 3);
-            }
         }
     }
 

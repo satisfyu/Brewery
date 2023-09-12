@@ -4,12 +4,14 @@ import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.block.HangingRope;
 import net.bmjo.brewery.client.RopeHelper;
 import net.bmjo.brewery.entity.HopRopeKnotEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegister;
 import net.bmjo.brewery.registry.ObjectRegistry;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -67,10 +70,10 @@ public class HopRopeConnection {
         if (to instanceof HopRopeKnotEntity toKnot) {
             toKnot.addConnection(connection);
             connection.createCollision();
+            //createHangingRopes(fromKnot.level, connection);
         }
         if (fromKnot.getLevel() instanceof ServerLevel serverLevel) {
             connection.sendAttachRopePacket(serverLevel);
-
         }
         return connection;
     }
@@ -142,6 +145,15 @@ public class HopRopeConnection {
         } else {
             Brewery.LOGGER.warn("Tried to summon collision entity for a chain, failed to do so");
             return null;
+        }
+    }
+
+    private static void createHangingRopes(Level level, HopRopeConnection connection) {
+        List<BlockPos> crossingBlocks = BreweryMath.lineIntersection(connection);
+        for (BlockPos blockPos : crossingBlocks) {
+            if (level.getBlockState(blockPos).isAir()) {
+                level.setBlock(blockPos, ObjectRegistry.HANGING_ROPE.get().defaultBlockState().setValue(HangingRope.TOP, true), 3);
+            }
         }
     }
 

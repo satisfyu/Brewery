@@ -2,12 +2,9 @@ package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import net.bmjo.brewery.client.RopeHelper;
 import net.bmjo.brewery.client.render.model.HopRopeModel;
 import net.bmjo.brewery.util.UVRect;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -30,6 +27,7 @@ public class HopRopeRenderer {
         HopRopeModel.Builder builder = HopRopeModel.builder(initialCapacity);
 
         if (Double.isNaN(chainVec.x()) && Double.isNaN(chainVec.z())) {
+            //TODO GEHT HALT NICHT
             buildFaceVertical(builder, chainVec, 45, UVRect.DEFAULT_SIDE_A);
             buildFaceVertical(builder, chainVec, -45, UVRect.DEFAULT_SIDE_B);
         } else {

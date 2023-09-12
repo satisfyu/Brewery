@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -32,6 +33,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow
     private final Map<MobEffect, MobEffectInstance> activeEffects = Maps.newHashMap();
 
+    @Unique
     public boolean hasStatusEffect(MobEffect effect) {
         return activeEffects.containsKey(effect);
     }
