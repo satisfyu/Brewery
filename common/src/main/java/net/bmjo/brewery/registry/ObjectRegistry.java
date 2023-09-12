@@ -102,7 +102,13 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> GINGERBREAD = registerItem("gingerbread", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
 
-    private static <T extends Item> RegistrySupplier<T> registerI(String path, Supplier<T> item) {
+    public static void init() {
+        Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);
+        ITEMS.register();
+        BLOCKS.register();
+    }
+
+    private static <T extends Item> RegistrySupplier<T> registerItem(String path, Supplier<T> item) {
         final ResourceLocation id = new BreweryIdentifier(path);
         return ITEM_REGISTRAR.register(id, item);
     }
@@ -114,7 +120,7 @@ public class ObjectRegistry {
 
     private static <T extends Block> RegistrySupplier<T> registerBI(String path, Supplier<T> block) {
         RegistrySupplier<T> blockSupplier = registerB(path, block);
-        registerI(path, () -> new BlockItem(blockSupplier.get(), getSettings()));
+        registerItem(path, () -> new BlockItem(blockSupplier.get(), getSettings()));
         return blockSupplier;
     }
 
@@ -128,12 +134,21 @@ public class ObjectRegistry {
         return settings;
     }
 
-    private static BlockBehaviour.Properties getBushSettings() {
-        return BlockBehaviour.Properties.copy(Blocks.SWEET_BERRY_BUSH);
+    private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, MobEffect effect, int duration) {
+        return getFoodItemSettings(nutrition, saturationMod, effect, duration, false, false);
     }
 
     private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, MobEffect effect, int duration, boolean alwaysEat, boolean fast) {
         return getSettings().food(createFood(nutrition, saturationMod, effect, duration, alwaysEat, fast));
+    }
+
+    private static BlockBehaviour.Properties getBeverageSettings() {
+        return BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak();
+    }
+
+
+    private static BlockBehaviour.Properties getBushSettings() {
+        return BlockBehaviour.Properties.copy(Blocks.SWEET_BERRY_BUSH);
     }
 
     private static FoodProperties createFood(int nutrition, float saturationMod, MobEffect effect, int duration, boolean alwaysEat, boolean fast) {
@@ -144,16 +159,13 @@ public class ObjectRegistry {
         return food.build();
     }
 
-    private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect) {
-        private static BlockBehaviour.Properties getBeverageSettings() {
-            return BlockBehaviour.Properties.copy(Blocks.GLASS).noOcclusion().instabreak();
-        }
 
-        private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect, int duration) {
+    private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect, int duration) {
         RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
         registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(beverageFoodComponent(effect, duration)))));
         return toReturn;
     }
+
 
     private static FoodProperties beverageFoodComponent(MobEffect effect, int durationInTicks) {
         FoodProperties.Builder component = new FoodProperties.Builder().nutrition(2).saturationMod(1);
@@ -164,24 +176,14 @@ public class ObjectRegistry {
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(String name, Supplier<T> block) {
-        return registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block, CreativeModeTab.TAB_BREWING);
         return registerWithItem(name, block, Brewery.CREATIVE_TAB);
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(String name, Supplier<T> block, @Nullable CreativeModeTab tab) {
-        return registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block, tab);
+        return Util.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(name), block, tab);
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithoutItem(String path, Supplier<T> block) {
-        return registerWithoutItem(BLOCKS, BLOCK_REGISTRAR, new BreweryIdentifier(path), block);
-    }
-
-    public static <T extends Item> RegistrySupplier<T> registerItem(String path, Supplier<T> itemSupplier) {
-        return registerItem(ITEMS, ITEM_REGISTRAR, new BreweryIdentifier(path), itemSupplier);
-    }
-
-    public static void register() {
-        ITEMS.register();
-        BLOCKS.register();
+        return Util.registerWithoutItem(BLOCKS, BLOCK_REGISTRAR, new BreweryIdentifier(path), block);
     }
 }
