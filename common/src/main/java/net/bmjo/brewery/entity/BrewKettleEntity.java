@@ -1,10 +1,10 @@
-package net.bmjo.brewery.block.entity;
+package net.bmjo.brewery.entity;
 
 import net.bmjo.brewery.block.BrewKettleBlock;
-import net.bmjo.brewery.block.WaterBasin;
+import net.bmjo.brewery.block.WaterBasinBlock;
 import net.bmjo.brewery.block.brew_event.BrewEvent;
 import net.bmjo.brewery.block.brew_event.BrewEvents;
-import net.bmjo.brewery.registry.BlockEntityRegister;
+import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -34,7 +34,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     private Set<BlockPos> components;
 
     public BrewKettleEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntityRegister.BREW_KETTLE_BLOCK_ENTITY.get(), blockPos, blockState);
+        super(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
     public boolean isActive() {
@@ -120,7 +120,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
 
     @Nullable
     public BlockPos getController() {
-        return level != null && this.components != null ? this.components.stream().filter(pos -> level.getBlockState(pos).getBlock() instanceof WaterBasin).findFirst().orElse(null) : null;
+        return level != null && this.components != null ? this.components.stream().filter(pos -> level.getBlockState(pos).getBlock() instanceof WaterBasinBlock).findFirst().orElse(null) : null;
     }
 
     public boolean isPartOf(BlockPos blockPos) {

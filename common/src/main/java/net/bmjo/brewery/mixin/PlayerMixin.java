@@ -2,7 +2,7 @@ package net.bmjo.brewery.mixin;
 
 import net.bmjo.brewery.alcohol.AlcoholPlayer;
 import net.bmjo.brewery.alcohol.AlcoholManager;
-import net.bmjo.brewery.effect.BreweryEffects;
+import net.bmjo.brewery.registry.EffectRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -24,8 +24,8 @@ public abstract class PlayerMixin extends Entity {
     @Inject(method = "updatePlayerPose", at = @At(value = "HEAD"), cancellable = true)
     protected void drunkPose(CallbackInfo ci) {
         if (this instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.getAlcohol().isBlackout()) {
-            if (alcoholPlayer instanceof LivingEntity livingEntity && livingEntity.hasEffect(BreweryEffects.BLACKOUT.get())) {
-                MobEffectInstance effectInstance = livingEntity.getEffect(BreweryEffects.BLACKOUT.get());
+            if (alcoholPlayer instanceof LivingEntity livingEntity && livingEntity.hasEffect(EffectRegistry.BLACKOUT.get())) {
+                MobEffectInstance effectInstance = livingEntity.getEffect(EffectRegistry.BLACKOUT.get());
                 if (effectInstance.getDuration() <= AlcoholManager.FALL_DOWN) {
                     this.setPose(Pose.SWIMMING);
                     ci.cancel();

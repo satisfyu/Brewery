@@ -12,7 +12,9 @@
   "mixins": [
     "AlcoholPlayerMixin",
     "PlayerMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "LivingEntityMixin",
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

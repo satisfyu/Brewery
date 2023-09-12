@@ -1,16 +1,15 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"0": "brewing_station_inside_1",
-		"1": "brewing_station_inside_2",
-		"8": "brewing_station_side_bottom_1",
-		"9": "brewing_station_side_bottom_2",
-		"10": "brewing_station_top_1",
-		"13": "brewing_station_tachometer",
-		"14": "brewing_station_bottom_1",
-		"15": "brewing_station_bottom_2",
-		"16": "brewing_station_button",
-		"particle": "brewing_station_inside_1"
+		"0": "brewery:block/brewing_station_inside_1",
+		"1": "brewery:block/brewing_station_inside_2",
+		"9": "brewery:block/brewing_station_side_bottom_2",
+		"10": "brewery:block/brewing_station_top_1",
+		"13": "brewery:block/brewing_station_tachometer",
+		"14": "brewery:block/brewing_station_side_bottom_1",
+		"15": "brewery:block/brewing_station_bottom_2",
+		"16": "brewery:block/brewing_station_button",
+		"particle": "brewery:block/brewing_station_inside_1"
 	},
 	"elements": [
 		{
@@ -63,7 +62,6 @@
 			"faces": {
 				"north": {"uv": [0, 0, 1, 14], "texture": "#0"},
 				"east": {"uv": [0, 0, 16, 14], "texture": "#1"},
-				"south": {"uv": [0, 0, 2, 14], "texture": "#missing"},
 				"west": {"uv": [0, 0, 16, 14], "texture": "#0"},
 				"up": {"uv": [0, 0, 1, 16], "texture": "#10"},
 				"down": {"uv": [0, 0, 2, 16], "texture": "#14"}
@@ -87,7 +85,7 @@
 			"to": [14, 2, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 14, 2], "texture": "#8"},
+				"north": {"uv": [14, 0, 0, 2], "texture": "#9"},
 				"east": {"uv": [0, 0, 14, 2], "texture": "#9"},
 				"south": {"uv": [2, 14, 14, 16], "texture": "#14"},
 				"west": {"uv": [2, 14, 14, 16], "texture": "#14"},
@@ -110,6 +108,37 @@
 			}
 		}
 	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
 	"groups": [
 		{
 			"name": "basin_2_tachometer",

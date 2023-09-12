@@ -6,10 +6,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
-public class SteamWhistle extends BrewKettleBlock {
+public class SteamWhistleBlock extends BrewKettleBlock {
     public static final BooleanProperty WHISTLE;
 
-    public SteamWhistle(Properties properties) {
+    public SteamWhistleBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(WHISTLE, false));
     }

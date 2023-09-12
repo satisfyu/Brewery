@@ -4,7 +4,7 @@ import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.alcohol.AlcoholLevel;
 import net.bmjo.brewery.alcohol.AlcoholPlayer;
 import net.bmjo.brewery.alcohol.AlcoholManager;
-import net.bmjo.brewery.effect.BreweryEffects;
+import net.bmjo.brewery.registry.EffectRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -18,10 +18,10 @@ public class DrinkAlcoholC2SPacket implements NetworkManager.NetworkReceiver {
             AlcoholLevel alcoholLevel = alcoholPlayer.getAlcohol();
             alcoholLevel.drink();
 
-            serverPlayer.addEffect(new MobEffectInstance(BreweryEffects.DRUNK.get(), AlcoholManager.DRUNK_TIME, alcoholLevel.getDrunkenness() - 1, false, alcoholLevel.isDrunk()));
+            serverPlayer.addEffect(new MobEffectInstance(EffectRegistry.DRUNK.get(), AlcoholManager.DRUNK_TIME, alcoholLevel.getDrunkenness() - 1, false, alcoholLevel.isDrunk()));
             if (alcoholLevel.isBlackout()) {
-                if (!serverPlayer.hasEffect(BreweryEffects.BLACKOUT.get())) {
-                    serverPlayer.addEffect(new MobEffectInstance(BreweryEffects.BLACKOUT.get(), 15 * 20, 0, false, false));
+                if (!serverPlayer.hasEffect(EffectRegistry.BLACKOUT.get())) {
+                    serverPlayer.addEffect(new MobEffectInstance(EffectRegistry.BLACKOUT.get(), 15 * 20, 0, false, false));
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 13 * 20, 0, false, false));
                 }
             }

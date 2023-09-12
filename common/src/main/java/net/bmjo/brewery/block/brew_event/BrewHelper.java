@@ -1,9 +1,9 @@
 package net.bmjo.brewery.block.brew_event;
 
-import net.bmjo.brewery.block.Oven;
-import net.bmjo.brewery.block.SteamWhistle;
-import net.bmjo.brewery.block.Timer;
-import net.bmjo.brewery.block.WaterBasin;
+import net.bmjo.brewery.block.OvenBlock;
+import net.bmjo.brewery.block.SteamWhistleBlock;
+import net.bmjo.brewery.block.TimerBlock;
+import net.bmjo.brewery.block.WaterBasinBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,7 @@ public class BrewHelper {
     @Nullable
     public static BlockPos getBasin(Set<BlockPos> components, Level level) {
         for (BlockPos basinPos : components) {
-            if (level.getBlockState(basinPos).getBlock() instanceof WaterBasin) {
+            if (level.getBlockState(basinPos).getBlock() instanceof WaterBasinBlock) {
                 return basinPos;
             }
         }
@@ -24,7 +24,7 @@ public class BrewHelper {
     @Nullable
     public static BlockPos getOven(Set<BlockPos> components, Level level) {
         for (BlockPos ovenPos : components) {
-            if (level.getBlockState(ovenPos).getBlock() instanceof Oven) {
+            if (level.getBlockState(ovenPos).getBlock() instanceof OvenBlock) {
                 return ovenPos;
             }
         }
@@ -34,7 +34,7 @@ public class BrewHelper {
     @Nullable
     public static BlockPos getWhistle(Set<BlockPos> components, Level level) {
         for (BlockPos whistlePos : components) {
-            if (level.getBlockState(whistlePos).getBlock() instanceof SteamWhistle) {
+            if (level.getBlockState(whistlePos).getBlock() instanceof SteamWhistleBlock) {
                 return whistlePos;
             }
         }
@@ -44,7 +44,7 @@ public class BrewHelper {
     @Nullable
     public static BlockPos getTimer(Set<BlockPos> components, Level level) {
         for (BlockPos timerPos : components) {
-            if (level.getBlockState(timerPos).getBlock() instanceof Timer) {
+            if (level.getBlockState(timerPos).getBlock() instanceof TimerBlock) {
                 return timerPos;
             }
         }
