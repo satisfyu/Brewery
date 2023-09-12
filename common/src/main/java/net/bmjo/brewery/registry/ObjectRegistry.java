@@ -9,8 +9,8 @@ import net.bmjo.brewery.block.*;
 import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.item.Breathalyzer;
-import net.bmjo.brewery.item.HopRope;
 import net.bmjo.brewery.item.DrinkBlockItem;
+import net.bmjo.brewery.item.HopRope;
 import net.bmjo.brewery.item.SaturatedItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
@@ -30,8 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import static de.cristelknight.doapi.Util.*;
 
 @SuppressWarnings("unused")
 public class ObjectRegistry {
@@ -102,7 +100,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> GINGERBREAD = registerItem("gingerbread", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
 
-    public static void init() {
+    public static void register() {
         Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);
         ITEMS.register();
         BLOCKS.register();

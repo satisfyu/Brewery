@@ -1,7 +1,7 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.block.entity.BrewKettleEntity;
+import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
