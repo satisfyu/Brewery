@@ -6,6 +6,7 @@ import net.bmjo.brewery.entity.HopRopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.util.IncompleteRopeConnection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -62,10 +63,10 @@ public class RopeHelper {
         if (from instanceof HopRopeKnotEntity fromKnot) {
             for (int toId : toIds) {
                 Entity to = client.level.getEntity(toId);
-                if (to != null) {
-                    HopRopeConnection.create(fromKnot, to);
+                if (to == null) {
+                    BreweryNetworking.incompleteLinks.add(new IncompleteRopeConnection(fromKnot, toId));
                 } else {
-                    System.out.println("ID is wrong: " + toId);
+                    HopRopeConnection.create(fromKnot, to);
                 }
             }
         }

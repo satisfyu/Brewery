@@ -2,7 +2,9 @@ package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.util.IncompleteRopeConnection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +12,6 @@ import net.minecraft.world.entity.Entity;
 public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
     @Override
     public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
-        System.out.println("detach");
         int fromId = buf.readInt();
         int toId = buf.readInt();
         context.queue(() -> removeLinks(Minecraft.getInstance(), fromId, toId));
@@ -21,7 +22,12 @@ public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
         Entity from = client.level.getEntity(fromId);
         Entity to = client.level.getEntity(toId);
         if (from instanceof HopRopeKnotEntity knot) {
-            if (to != null) {
+            if (to == null) {
+                for (IncompleteRopeConnection link : BreweryNetworking.incompleteLinks) {
+                    if (link.from == from && link.toId == toId)
+                        link.destroy();
+                }
+            } else {
                 for (HopRopeConnection connection : knot.getConnections()) {
                     if (connection.to() == to) {
                         connection.destroy(true);

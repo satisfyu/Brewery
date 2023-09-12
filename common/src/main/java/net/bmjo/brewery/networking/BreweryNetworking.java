@@ -2,8 +2,11 @@ package net.bmjo.brewery.networking;
 
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.networking.packet.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.bmjo.brewery.util.IncompleteRopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -18,6 +21,8 @@ public class BreweryNetworking { //TODO add incomplete connections
     public static final ResourceLocation SYNC_ROPE_S2C_ID = new BreweryIdentifier("sync_rope");
     public static final ResourceLocation SPAWN_KNOT_S2C_ID = new BreweryIdentifier("spawn_knot");
     public static final ResourceLocation SPAWN_COLLISION_S2C_ID = new BreweryIdentifier("spawn_collision");
+
+    public static final ObjectList<IncompleteRopeConnection> incompleteLinks = new ObjectArrayList<>(256);
 
     public static void registerC2SPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, ALCOHOL_SYNC_REQUEST_C2S_ID, new SyncRequestC2SPacket());
@@ -38,6 +43,10 @@ public class BreweryNetworking { //TODO add incomplete connections
 
     public static FriendlyByteBuf createPacketBuf(){
         return new FriendlyByteBuf(Unpooled.buffer());
+    }
+
+    public static void tick() {//TODO woanders vl doch so wie da
+        incompleteLinks.removeIf(IncompleteRopeConnection::tryCompleteOrRemove);
     }
 
 }

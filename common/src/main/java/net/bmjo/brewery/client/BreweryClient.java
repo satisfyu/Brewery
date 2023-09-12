@@ -1,5 +1,6 @@
 package net.bmjo.brewery.client;
 
+import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.bmjo.brewery.client.render.HopRopeKnotRenderer;
@@ -23,6 +24,8 @@ public class BreweryClient {
         BreweryNetworking.registerS2CPackets();
         ItemPredicate.register();
         registerRenderer();
+
+        ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> BreweryNetworking.tick());
     }
 
     private static void registerRenderer() {
