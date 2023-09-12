@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.block.entity.BrewKettleEntity;
+import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.block.property.BlockStateRegistry;
 import net.bmjo.brewery.block.property.Liquid;
 import net.minecraft.core.BlockPos;
@@ -23,10 +23,10 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class WaterBasin extends BrewKettleBlock implements EntityBlock {
+public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
     public static final EnumProperty<Liquid> LIQUID;
 
-    public WaterBasin(Properties properties) {
+    public WaterBasinBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY));
     }

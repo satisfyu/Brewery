@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class Timer extends BrewKettleBlock {
+public class TimerBlock extends BrewKettleBlock {
     public static final BooleanProperty TIME;
 
-    public Timer(Properties properties) {
+    public TimerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(TIME, false));
     }

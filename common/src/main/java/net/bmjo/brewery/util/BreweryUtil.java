@@ -9,7 +9,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class BreweryUtil {
@@ -63,6 +67,19 @@ public class BreweryUtil {
         double y = byteBuf.readDouble();
         double z = byteBuf.readDouble();
         return new Vec3(x, y, z);
+    }
+
+    public static Collection<ServerPlayer> tracking(ServerLevel world, BlockPos pos) {
+        Objects.requireNonNull(pos, "BlockPos cannot be null");
+
+        return tracking(world, new ChunkPos(pos));
+    }
+
+    public static Collection<ServerPlayer> tracking(ServerLevel world, ChunkPos pos) {
+        Objects.requireNonNull(world, "The world cannot be null");
+        Objects.requireNonNull(pos, "The chunk pos cannot be null");
+
+        return world.getChunkSource().chunkMap.getPlayers(pos, false);
     }
 
     public static int getLightLevel(Level world, BlockPos pos) {

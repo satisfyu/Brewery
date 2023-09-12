@@ -17,9 +17,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class Oven extends BrewKettleBlock {
+public class OvenBlock extends BrewKettleBlock {
     public static final EnumProperty<Heat> HEAT;
-    public Oven(Properties properties) {
+    public OvenBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(HEAT, Heat.OFF));
     }

@@ -1,8 +1,8 @@
 package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bmjo.brewery.block.WaterBasin;
-import net.bmjo.brewery.block.entity.BrewKettleEntity;
+import net.bmjo.brewery.block.WaterBasinBlock;
+import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,7 +25,7 @@ public class WaterBasinRenderer implements BlockEntityRenderer<BrewKettleEntity>
             return;
         }
         BlockState selfState = blockEntity.getBlockState();
-        if (selfState.getBlock() instanceof WaterBasin) {
+        if (selfState.getBlock() instanceof WaterBasinBlock) {
             List<ItemStack> ingredients = blockEntity.getIngredients();
             poseStack.pushPose();
             for (ItemStack itemStack : ingredients) {

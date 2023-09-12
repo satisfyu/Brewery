@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.block.entity.BrewKettleEntity;
+import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.block.property.BlockStateRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.core.BlockPos;
@@ -65,19 +65,19 @@ public class BrewKettleBlock extends Block {
         final boolean[] components = {false, false, false, false};
         Stream<BlockState> blockStates = blockPos.stream().map(level::getBlockState);
         return blockStates.allMatch(blockState -> {
-            if (!components[0] && blockState.getBlock() instanceof WaterBasin && !blockState.getValue(COMPLETE)) {
+            if (!components[0] && blockState.getBlock() instanceof WaterBasinBlock && !blockState.getValue(COMPLETE)) {
                 components[0] = true;
                 return true;
             }
-            if (!components[1] && blockState.getBlock() instanceof SteamWhistle && !blockState.getValue(COMPLETE)) {
+            if (!components[1] && blockState.getBlock() instanceof SteamWhistleBlock && !blockState.getValue(COMPLETE)) {
                 components[1] = true;
                 return true;
             }
-            if (!components[2] && blockState.getBlock() instanceof Oven && !blockState.getValue(COMPLETE)) {
+            if (!components[2] && blockState.getBlock() instanceof OvenBlock && !blockState.getValue(COMPLETE)) {
                 components[2] = true;
                 return true;
             }
-            if (!components[3] && blockState.getBlock() instanceof Timer && !blockState.getValue(COMPLETE)) {
+            if (!components[3] && blockState.getBlock() instanceof TimerBlock && !blockState.getValue(COMPLETE)) {
                 components[3] = true;
                 return true;
             }
@@ -87,7 +87,7 @@ public class BrewKettleBlock extends Block {
 
     @Nullable
     private BlockPos getControllerPos(Set<BlockPos> blockPos, Level level) {
-        return blockPos.stream().filter(pos -> level.getBlockState(pos).getBlock() instanceof WaterBasin).findFirst().orElse(null);
+        return blockPos.stream().filter(pos -> level.getBlockState(pos).getBlock() instanceof WaterBasinBlock).findFirst().orElse(null);
     }
 
     @Nullable
