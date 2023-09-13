@@ -29,8 +29,8 @@ public abstract class LivingEntityMixin extends Entity {
         super(type, world);
     }
 
-    @Final
     @Shadow
+    @Final
     private final Map<MobEffect, MobEffectInstance> activeEffects = Maps.newHashMap();
 
     @Unique

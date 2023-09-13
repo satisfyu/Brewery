@@ -55,6 +55,7 @@ public class HopRopeKnotRenderer extends EntityRenderer<HopRopeKnotEntity> {
     }
 
     private void renderChainLink(HopRopeConnection connection, float tickDelta, PoseStack poseStack, MultiBufferSource vertexConsumerProvider) {
+        MyRopeRender.rendermy(connection, poseStack);
         HopRopeKnotEntity fromKnot = connection.from();
         Entity toEntity = connection.to();
         poseStack.pushPose();
@@ -87,8 +88,7 @@ public class HopRopeKnotRenderer extends EntityRenderer<HopRopeKnotEntity> {
         Quaternionf quaternionf = new Quaternionf(0, 0, 0, 1).rotateXYZ(0, angleY, 0);
         poseStack.mulPose(new Quaternion(quaternionf.x(), quaternionf.y(), quaternionf.z(), quaternionf.w()));
 
-        hopRopeRenderer.renderRope(buffer, poseStack, chainVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
-
+        //hopRopeRenderer.renderRope(buffer, poseStack, chainVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
         poseStack.popPose();
     }
 

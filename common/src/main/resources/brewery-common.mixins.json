@@ -7,14 +7,14 @@
     "EffectIconMixin",
     "FogRendererMixin",
     "GameRendererMixin",
+    "LevelRendererMixin",
     "WindowMixin"
   ],
   "mixins": [
     "AlcoholPlayerMixin",
-    "PlayerMixin",
-    "ServerEntityMixin",
     "LivingEntityMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
