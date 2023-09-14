@@ -19,8 +19,6 @@ public class BreweryNetworking {
     public static final ResourceLocation ATTACH_ROPE_S2C_ID = new BreweryIdentifier("attach_rope");
     public static final ResourceLocation DETACH_ROPE_S2C_ID = new BreweryIdentifier("detach_rope");
     public static final ResourceLocation SYNC_ROPE_S2C_ID = new BreweryIdentifier("sync_rope");
-    public static final ResourceLocation SPAWN_KNOT_S2C_ID = new BreweryIdentifier("spawn_knot");
-    public static final ResourceLocation SPAWN_COLLISION_S2C_ID = new BreweryIdentifier("spawn_collision");
 
     public static final ObjectList<IncompleteRopeConnection> incompleteLinks = new ObjectArrayList<>(256);
 

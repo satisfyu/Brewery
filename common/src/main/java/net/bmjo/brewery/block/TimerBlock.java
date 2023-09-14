@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 public class TimerBlock extends BrewKettleBlock {
     public static final BooleanProperty TIME;
@@ -21,7 +22,7 @@ public class TimerBlock extends BrewKettleBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!blockState.getValue(COMPLETE)) return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
         if (blockState.getValue(TIME)) {
             level.setBlock(blockPos, blockState.setValue(TIME, false), 3);

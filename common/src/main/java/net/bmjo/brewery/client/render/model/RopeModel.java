@@ -8,7 +8,6 @@ import net.bmjo.brewery.Brewery;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +46,6 @@ public record RopeModel(float[] vertices, float[] uvs) {
         public Builder(int initialCapacity) {
             vertices = new ArrayList<>(initialCapacity * 3);
             uvs = new ArrayList<>(initialCapacity * 2);
-        }
-
-        public Builder vertex(Vector3f v) {
-            vertices.add(v.x());
-            vertices.add(v.y());
-            vertices.add(v.z());
-            return this;
         }
 
         public Builder vertex(float x, float y, float z) {
