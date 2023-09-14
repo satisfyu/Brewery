@@ -2,18 +2,11 @@ package net.bmjo.brewery.client;
 
 import com.mojang.math.Vector3f;
 import net.bmjo.brewery.Brewery;
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
-import net.bmjo.brewery.util.BreweryUtil;
-import net.bmjo.brewery.util.HopRopeConnection;
-import net.bmjo.brewery.util.IncompleteRopeConnection;
+import net.bmjo.brewery.util.rope.IncompleteRopeConnection;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
@@ -22,17 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class RopeHelper {
-
-    public static Packet<ClientGamePacketListener> createEntitySpawnPacket(ResourceLocation id, Entity entity) {
-        if (entity.getLevel().isClientSide()) throw new IllegalStateException("Called on the logical client!");
-        FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-        buf.writeId(Registry.ENTITY_TYPE, entity.getType());
-        buf.writeVarInt(entity.getId());
-        buf.writeUUID(entity.getUUID());
-        BreweryUtil.writeVec3(buf, entity.position());
-        return new ClientboundCustomPayloadPacket(id, buf);
-    }
-
     @Nullable
     public static Entity createEntity(Minecraft client, EntityType<?> type, UUID uuid, int id, Vec3 pos) {
         if (client.level == null) {
@@ -60,13 +42,13 @@ public class RopeHelper {
     public static void createLinks(Minecraft client, int fromId, int[] toIds) {
         if (client.level == null) return;
         Entity from = client.level.getEntity(fromId);
-        if (from instanceof HopRopeKnotEntity fromKnot) {
+        if (from instanceof RopeKnotEntity fromKnot) {
             for (int toId : toIds) {
                 Entity to = client.level.getEntity(toId);
                 if (to == null) {
                     BreweryNetworking.incompleteLinks.add(new IncompleteRopeConnection(fromKnot, toId));
                 } else {
-                    HopRopeConnection.create(fromKnot, to);
+                    RopeConnection.create(fromKnot, to);
                 }
             }
         }
@@ -87,12 +69,6 @@ public class RopeHelper {
         double p1 = a * asinh((h / (2D * a)) * (1D / Math.sinh(d / (2D * a))));
         double p2 = -a * Math.cosh((2D * p1 - d) / (2D * a));
         return p2 + a * Math.cosh((((2D * x) + (2D * p1)) - d) / (2D * a));
-    }
-
-    public static double drip2prime(double x, double d, double h) {
-        double a = HANGING_AMOUNT;
-        double p1 = a * asinh((h / (2D * a)) * (1D / Math.sinh(d / (2D * a))));
-        return Math.sinh((2 * x + 2 * p1 - d) / (2 * a));
     }
 
     private static double asinh(double x) {

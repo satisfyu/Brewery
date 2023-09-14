@@ -1,4 +1,4 @@
-package net.bmjo.brewery.util;
+package net.bmjo.brewery.block.property;
 
 import net.minecraft.util.StringRepresentable;
 

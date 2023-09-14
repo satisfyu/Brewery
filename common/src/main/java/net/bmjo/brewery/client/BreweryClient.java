@@ -9,16 +9,19 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import dev.architectury.event.events.client.ClientGuiEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import net.bmjo.brewery.client.render.HopRopeKnotRenderer;
 import net.bmjo.brewery.client.render.RopeCollisionEntityRenderer;
+import net.bmjo.brewery.client.render.RopeKnotRenderer;
 import net.bmjo.brewery.client.render.WaterBasinRenderer;
+import net.bmjo.brewery.client.render.model.RopeKnotEntityModel;
 import net.bmjo.brewery.event.KeyInputHandler;
 import net.bmjo.brewery.item.ItemPredicate;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.BlockEntityRegistry;
-import net.bmjo.brewery.registry.EntityRegister;
+import net.bmjo.brewery.registry.EntityRegistry;
+import net.bmjo.brewery.registry.ModelRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -64,9 +67,11 @@ public class BreweryClient {
 
     private static void registerRenderer() {
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
-        EntityRendererRegistry.register(EntityRegister.HOP_ROPE_KNOT, HopRopeKnotRenderer::new);
-        EntityRendererRegistry.register(EntityRegister.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.HOP_ROPE_KNOT, RopeKnotRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
+
+        EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
     }
 
     public static LocalPlayer getPlayer() {

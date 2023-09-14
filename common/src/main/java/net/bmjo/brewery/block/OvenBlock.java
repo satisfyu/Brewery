@@ -1,7 +1,7 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.block.property.BlockStateRegistry;
 import net.bmjo.brewery.block.property.Heat;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

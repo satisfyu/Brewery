@@ -1,6 +1,7 @@
 package net.bmjo.brewery.util;
 
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 
@@ -8,8 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BreweryMath {
-    public static List<BlockPos> lineIntersection(HopRopeConnection connection) {
-        if (connection.to() instanceof HopRopeKnotEntity toKnot) {
+
+    public static int power(int base, int exponent) {
+        int value = 1;
+        for (int i = 0; i < exponent; i++) {
+            value *= base;
+        }
+        return value;
+    }
+
+    public static List<BlockPos> lineIntersection(RopeConnection connection) {
+        if (connection.to() instanceof RopeKnotEntity toKnot) {
             BlockPos start = connection.from().getPos();
             BlockPos end = toKnot.getOnPos();
             return lineIntersection(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());

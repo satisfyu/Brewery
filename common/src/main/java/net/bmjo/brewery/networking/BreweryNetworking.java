@@ -6,7 +6,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.networking.packet.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
-import net.bmjo.brewery.util.IncompleteRopeConnection;
+import net.bmjo.brewery.util.rope.IncompleteRopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
@@ -36,8 +36,6 @@ public class BreweryNetworking {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ATTACH_ROPE_S2C_ID, new AttachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DETACH_ROPE_S2C_ID, new DetachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, SYNC_ROPE_S2C_ID, new SyncRopeS2CPacket());
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, SPAWN_KNOT_S2C_ID, new SpawnKnotS2CPacket());
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, SPAWN_COLLISION_S2C_ID, new SpawnCollisionS2CPacket());
     }
 
 

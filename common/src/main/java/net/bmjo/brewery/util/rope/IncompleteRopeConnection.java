@@ -1,19 +1,19 @@
-package net.bmjo.brewery.util;
+package net.bmjo.brewery.util.rope;
 
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
 
 @Environment(EnvType.CLIENT)
 public class IncompleteRopeConnection {
-    public final HopRopeKnotEntity from;
+    public final RopeKnotEntity from;
 
     public final int toId;
 
     private boolean alive = true;
 
-    public IncompleteRopeConnection(HopRopeKnotEntity from, int toId) {
+    public IncompleteRopeConnection(RopeKnotEntity from, int toId) {
         this.from = from;
         this.toId = toId;
     }
@@ -22,7 +22,7 @@ public class IncompleteRopeConnection {
         if (isDead()) return true;
         Entity secondary = from.getLevel().getEntity(toId);
         if (secondary == null) return false;
-        HopRopeConnection.create(from, secondary);
+        RopeConnection.create(from, secondary);
         return true;
     }
 

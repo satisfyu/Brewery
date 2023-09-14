@@ -3,7 +3,7 @@ package net.bmjo.brewery.entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public interface RopeEntity {
+public interface IRopeEntity {
     static boolean canDestroyWith(ItemStack item) {
         return item.is(Items.SHEARS);
     }

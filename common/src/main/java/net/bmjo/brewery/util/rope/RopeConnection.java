@@ -1,4 +1,4 @@
-package net.bmjo.brewery.util;
+package net.bmjo.brewery.util.rope;
 
 import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -6,11 +6,12 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.HangingRope;
 import net.bmjo.brewery.client.RopeHelper;
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
-import net.bmjo.brewery.registry.EntityRegister;
+import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -31,16 +32,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class HopRopeConnection {
+public class RopeConnection {
     public static final double VISIBLE_RANGE = 2048.0D; //TODO
     private static final float COLLIDER_SPACING = 1.5f;
-    private final HopRopeKnotEntity from;
+    private final RopeKnotEntity from;
     private final Entity to;
     private boolean alive = true;
     private final IntList collisionStorage = new IntArrayList(16);
     public boolean removeSilently = false;
 
-    public HopRopeKnotEntity from() {
+    public RopeKnotEntity from() {
         return from;
     }
 
@@ -56,18 +57,18 @@ public class HopRopeConnection {
         return this.from.distanceToSqr(to);
     }
 
-    private HopRopeConnection(HopRopeKnotEntity from, Entity to) {
+    private RopeConnection(RopeKnotEntity from, Entity to) {
         this.from = from;
         this.to = to;
     }
 
     @Nullable
-    public static HopRopeConnection create(@NotNull HopRopeKnotEntity fromKnot, @NotNull Entity to) {
-        HopRopeConnection connection = new HopRopeConnection(fromKnot, to);
+    public static RopeConnection create(@NotNull RopeKnotEntity fromKnot, @NotNull Entity to) {
+        RopeConnection connection = new RopeConnection(fromKnot, to);
         if (fromKnot.sameConnectionExist(connection)) return null;
 
         fromKnot.addConnection(connection);
-        if (to instanceof HopRopeKnotEntity toKnot) {
+        if (to instanceof RopeKnotEntity toKnot) {
             toKnot.addConnection(connection);
             connection.createCollision();
             //createHangingRopes(fromKnot.level, connection);
@@ -90,16 +91,16 @@ public class HopRopeConnection {
         }
     }
 
-    private void createCollision() {
+    private void createCollision() { //TODO
         if (!collisionStorage.isEmpty()) return;
         if (from.getLevel().isClientSide()) return;
 
         double distance = from.distanceTo(to);
         // step = spacing * √(width^2 + width^2) / distance
-        double step = COLLIDER_SPACING * Math.sqrt(Math.pow(EntityRegister.ROPE_COLLISION.get().getWidth(), 2) * 2) / distance;
+        double step = COLLIDER_SPACING * Math.sqrt(Math.pow(EntityRegistry.ROPE_COLLISION.get().getWidth(), 2) * 2) / distance;
         double v = step;
         // reserve space for the center collider
-        double centerHoldout = EntityRegister.ROPE_COLLISION.get().getWidth() / distance;
+        double centerHoldout = EntityRegistry.ROPE_COLLISION.get().getWidth() / distance;
 
         while (v < 0.5 - centerHoldout) {
             Entity collider1 = spawnCollision(false, from, to, v);
@@ -115,7 +116,7 @@ public class HopRopeConnection {
     }
 
     @Nullable
-    private Entity spawnCollision(boolean reverse, Entity start, Entity end, double v) {
+    private Entity spawnCollision(boolean reverse, Entity start, Entity end, double v) { //TODO
         assert from.getLevel() instanceof ServerLevel;
         Vec3 startPos = start.position().add(start.getLeashOffset());
         Vec3 endPos = end.position().add(end.getLeashOffset());
@@ -137,7 +138,7 @@ public class HopRopeConnection {
         double y = startPos.y() + RopeHelper.drip2((v * distance), distance, endPos.y() - startPos.y());
         double z = Mth.lerp(v, startPos.z(), endPos.z());
 
-        y -= EntityRegister.ROPE_COLLISION.get().getHeight() + 2 / 16f;
+        y -= EntityRegistry.ROPE_COLLISION.get().getHeight() + 2 / 16f;
 
         RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), x, y, z, this);
         if (from.getLevel().addFreshEntity(collisionEntity)) {
@@ -148,7 +149,7 @@ public class HopRopeConnection {
         }
     }
 
-    private static void createHangingRopes(Level level, HopRopeConnection connection) {
+    private static void createHangingRopes(Level level, RopeConnection connection) {
         List<BlockPos> crossingBlocks = BreweryMath.lineIntersection(connection);
         for (BlockPos blockPos : crossingBlocks) {
             if (level.getBlockState(blockPos).isAir()) {
@@ -215,9 +216,9 @@ public class HopRopeConnection {
         collisionStorage.clear();
     }
 
-    private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, HopRopeConnection connection) {
+    private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, RopeConnection connection) {
         Set<ServerPlayer> trackingPlayers = new HashSet<>();
-        HopRopeKnotEntity from = connection.from();
+        RopeKnotEntity from = connection.from();
         Entity to = connection.to();
         trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(from.position().x(), from.position().y(), from.position().z()) <= VISIBLE_RANGE).toList());
         trackingPlayers.addAll(serverLevel.players().stream().filter((player) -> player.distanceToSqr(to.position().x(), to.position().y(), to.position().z()) <= VISIBLE_RANGE).toList());
@@ -227,7 +228,7 @@ public class HopRopeConnection {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof HopRopeConnection that)) return false;
+        if (!(o instanceof RopeConnection that)) return false;
         return Objects.equals(from, that.from) && Objects.equals(to, that.to) || Objects.equals(from, that.to) && Objects.equals(to, that.from);
     }
 

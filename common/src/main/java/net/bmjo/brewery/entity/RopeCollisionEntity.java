@@ -1,7 +1,7 @@
 package net.bmjo.brewery.entity;
 
-import net.bmjo.brewery.registry.EntityRegister;
-import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.registry.EntityRegistry;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -19,21 +19,21 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RopeCollisionEntity extends Entity implements RopeEntity {
+public class RopeCollisionEntity extends Entity implements IRopeEntity {
     @Nullable
-    private HopRopeConnection connection;
+    private RopeConnection connection;
 
     public RopeCollisionEntity(EntityType<? extends RopeCollisionEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    private RopeCollisionEntity(Level level, double x, double y, double z, @NotNull HopRopeConnection connection) {
-        this(EntityRegister.ROPE_COLLISION.get(), level);
+    private RopeCollisionEntity(Level level, double x, double y, double z, @NotNull RopeConnection connection) {
+        this(EntityRegistry.ROPE_COLLISION.get(), level);
         this.connection = connection;
         this.setPos(x, y, z);
     }
 
-    public static RopeCollisionEntity create(Level level, double x, double y, double z, HopRopeConnection connection) {
+    public static RopeCollisionEntity create(Level level, double x, double y, double z, RopeConnection connection) {
         return new RopeCollisionEntity(level, x, y, z, connection);
     }
 
@@ -79,8 +79,8 @@ public class RopeCollisionEntity extends Entity implements RopeEntity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand interactionHand) {
-        if (RopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
+    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
+        if (IRopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
             destroyConnections(!player.isCreative());
             return InteractionResult.SUCCESS;
         }

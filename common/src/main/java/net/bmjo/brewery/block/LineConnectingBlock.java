@@ -1,7 +1,7 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.util.BreweryBlockProperties;
-import net.bmjo.brewery.util.LineConnectingType;
+import net.bmjo.brewery.block.property.LineConnectingType;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LineConnectingBlock extends Block {
@@ -87,18 +88,18 @@ public class LineConnectingBlock extends Block {
 
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rotation) {
+    public @NotNull BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirror) {
+    public @NotNull BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     static {
         FACING = BlockStateProperties.HORIZONTAL_FACING;
-        TYPE = BreweryBlockProperties.LINE_CONNECTING_TYPE;
+        TYPE = BlockStateRegistry.LINE_CONNECTING_TYPE;
     }
 
 }

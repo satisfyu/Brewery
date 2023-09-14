@@ -3,9 +3,9 @@ package net.bmjo.brewery.mixin;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
-import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ChunkMap;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Mixin(ChunkMap.class)
-public class ChunkMapMixin {
+public class ChunkMapMixin { //TODO MAYBE
     @Unique
     private ServerPlayer brewery$serverPlayer;
     @Unique
@@ -44,17 +44,17 @@ public class ChunkMapMixin {
 
     @Redirect(method = "playerLoadedChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;chunkPosition()Lnet/minecraft/world/level/ChunkPos;"))
     private ChunkPos sendAttachChainPackets(Entity entity) {
-        List<HopRopeKnotEntity> knots = Lists.newArrayList();
+        List<RopeKnotEntity> knots = Lists.newArrayList();
         if (entity.chunkPosition().equals(brewery$levelChunk.getPos())) {
-            if (entity instanceof HopRopeKnotEntity knot && !knot.getConnections().isEmpty()) {
+            if (entity instanceof RopeKnotEntity knot && !knot.getConnections().isEmpty()) {
                 knots.add(knot);
             }
         }
-        for (HopRopeKnotEntity knot : knots) {
+        for (RopeKnotEntity knot : knots) {
             FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            Set<HopRopeConnection> connections = knot.getConnections();
+            Set<RopeConnection> connections = knot.getConnections();
             IntList ids = new IntArrayList(connections.size());
-            for (HopRopeConnection connection : connections) {
+            for (RopeConnection connection : connections) {
                 if (connection.from() == knot) {
                     ids.add(connection.to().getId());
                 }

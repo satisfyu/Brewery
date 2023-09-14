@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public record HopRopeModel(float[] vertices, float[] uvs) {
+public record RopeModel(float[] vertices, float[] uvs) {
 
     public static Builder builder(int initialCapacity) {
         return new Builder(initialCapacity);
@@ -30,7 +30,7 @@ public record HopRopeModel(float[] vertices, float[] uvs) {
             int light = LightTexture.pack(blockLight, skyLight);
             buffer
                     .vertex(modelMatrix, vertices[i * 3], vertices[i * 3 + 1], vertices[i * 3 + 2])
-                    .color(255, 255, 255, 255)
+                    .color(-1)
                     .uv(uvs[i * 2], uvs[i * 2 + 1])
                     .overlayCoords(OverlayTexture.NO_OVERLAY)
                     .uv2(light)
@@ -56,6 +56,13 @@ public record HopRopeModel(float[] vertices, float[] uvs) {
             return this;
         }
 
+        public Builder vertex(float x, float y, float z) {
+            vertices.add(x);
+            vertices.add(y);
+            vertices.add(z);
+            return this;
+        }
+
         public Builder uv(float u, float v) {
             uvs.add(u);
             uvs.add(v);
@@ -66,11 +73,11 @@ public record HopRopeModel(float[] vertices, float[] uvs) {
             size++;
         }
 
-        public HopRopeModel build() {
+        public RopeModel build() {
             if (vertices.size() != size * 3) Brewery.LOGGER.error("Wrong count of vertices"); //TODO
             if (uvs.size() != size * 2) Brewery.LOGGER.error("Wrong count of uvs");
 
-            return new HopRopeModel(toFloatArray(vertices), toFloatArray(uvs));
+            return new RopeModel(toFloatArray(vertices), toFloatArray(uvs));
         }
 
         private float[] toFloatArray(List<Float> floats) {

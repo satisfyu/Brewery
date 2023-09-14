@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.block.property.BlockStateRegistry;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

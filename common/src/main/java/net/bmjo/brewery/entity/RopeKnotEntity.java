@@ -3,9 +3,9 @@ package net.bmjo.brewery.entity;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.Brewery;
-import net.bmjo.brewery.registry.EntityRegister;
+import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
-import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
@@ -41,38 +41,38 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
+public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     private static final int MAX_RANGE = 32;
     private static final byte GRACE_PERIOD = 100;
-    private final Set<HopRopeConnection> connections = new HashSet<>();
+    private final Set<RopeConnection> connections = new HashSet<>();
     private final ObjectList<Tag> incompleteConnections = new ObjectArrayList<>();
     private int obstructionCheckTimer = 0;
     private byte graceTicks = GRACE_PERIOD;
 
-    public HopRopeKnotEntity(EntityType<? extends  HopRopeKnotEntity> entityType, Level world) {
+    public RopeKnotEntity(EntityType<? extends RopeKnotEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    private HopRopeKnotEntity(Level level, BlockPos blockPos) {
-        super(EntityRegister.HOP_ROPE_KNOT.get(), level, blockPos);
+    private RopeKnotEntity(Level level, BlockPos blockPos) {
+        super(EntityRegistry.HOP_ROPE_KNOT.get(), level, blockPos);
         setPos((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
     }
 
-    public static HopRopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
-        return new HopRopeKnotEntity(level, blockPos);
+    public static RopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
+        return new RopeKnotEntity(level, blockPos);
     }
 
-    public Set<HopRopeConnection> getConnections() {
+    public Set<RopeConnection> getConnections() {
         return this.connections;
     }
 
-    public void addConnection(@NotNull HopRopeConnection connection) {
+    public void addConnection(@NotNull RopeConnection connection) {
         if (!connection.from().equals(connection.to())) {
             this.connections.add(connection);
         }
     }
 
-    public boolean sameConnectionExist(@NotNull HopRopeConnection connection) {
+    public boolean sameConnectionExist(@NotNull RopeConnection connection) {
         return this.connections.contains(connection);
     }
 
@@ -97,7 +97,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         }
 
         boolean broke = false;
-        for (HopRopeConnection connection : this.connections) {
+        for (RopeConnection connection : this.connections) {
             if (connection.to() == player) {
                 broke = true;
                 System.out.println("player");
@@ -110,7 +110,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
 
         if (handStack.is(ObjectRegistry.HOP_ROPE.get())) {
             this.playPlacementSound();
-            HopRopeConnection.create(this, player);
+            RopeConnection.create(this, player);
             if (!player.isCreative()) {
                 handStack.shrink(1);
             }
@@ -118,7 +118,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
             return InteractionResult.CONSUME;
         }
 
-        if (RopeEntity.canDestroyWith(handStack)) {
+        if (IRopeEntity.canDestroyWith(handStack)) {
             destroyConnections(!player.isCreative());
             graceTicks = 0;
             return InteractionResult.CONSUME;
@@ -129,11 +129,11 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
 
     private boolean tryAttachHeldRope(Player player) {
         boolean hasMadeConnection = false;
-        List<HopRopeConnection> attachableRopes = getHeldRopesInRange(player, position());
-        for (HopRopeConnection connection : attachableRopes) {
+        List<RopeConnection> attachableRopes = getHeldRopesInRange(player, position());
+        for (RopeConnection connection : attachableRopes) {
             if (connection.from() == this) continue;
 
-            HopRopeConnection newConnection = HopRopeConnection.create(connection.from(), this);
+            RopeConnection newConnection = RopeConnection.create(connection.from(), this);
 
             if (newConnection != null) {
                 System.out.println("old");
@@ -145,14 +145,14 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         return hasMadeConnection;
     }
 
-    private static List<HopRopeConnection> getHeldRopesInRange(Player player, Vec3 target) { //TODO lass das auf item raufmachen maybe und auf dem spieler speichern weil kb zu suchen
+    private static List<RopeConnection> getHeldRopesInRange(Player player, Vec3 target) {
         AABB searchBox = AABB.ofSize(target, MAX_RANGE * 2, MAX_RANGE * 2, MAX_RANGE * 2);
-        List<HopRopeKnotEntity> otherKnots = player.getLevel().getEntitiesOfClass(HopRopeKnotEntity.class, searchBox);
+        List<RopeKnotEntity> otherKnots = player.getLevel().getEntitiesOfClass(RopeKnotEntity.class, searchBox);
 
-        List<HopRopeConnection> attachableRopes = new ArrayList<>();
+        List<RopeConnection> attachableRopes = new ArrayList<>();
 
-        for (HopRopeKnotEntity source : otherKnots) {
-            for (HopRopeConnection connection : source.getConnections()) {
+        for (RopeKnotEntity source : otherKnots) {
+            for (RopeConnection connection : source.getConnections()) {
                 if (connection.to() != player) continue;
                 attachableRopes.add(connection);
             }
@@ -161,10 +161,10 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
     }
 
     @Nullable
-    public static HopRopeKnotEntity getHopRopeKnotEntity(Level level, BlockPos pos) {
-        List<HopRopeKnotEntity> results = level.getEntitiesOfClass(HopRopeKnotEntity.class, AABB.ofSize(Vec3.atLowerCornerOf(pos), 2, 2, 2));
+    public static RopeKnotEntity getHopRopeKnotEntity(Level level, BlockPos pos) {
+        List<RopeKnotEntity> results = level.getEntitiesOfClass(RopeKnotEntity.class, AABB.ofSize(Vec3.atLowerCornerOf(pos), 2, 2, 2));
 
-        for (HopRopeKnotEntity current : results) {
+        for (RopeKnotEntity current : results) {
             if (new BlockPos(current.position()).equals(pos)) {
                 return current;
             }
@@ -175,7 +175,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
     @Override
     public void tick() {
         if (getLevel().isClientSide()) {
-            this.connections.removeIf(HopRopeConnection::dead);
+            this.connections.removeIf(RopeConnection::dead);
             return;
         }
         checkOutOfWorld();
@@ -200,7 +200,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
 
     private void updateConnections() {
         double squaredMaxRange = MAX_RANGE * MAX_RANGE;
-        for (HopRopeConnection connection : connections) {
+        for (RopeConnection connection : connections) {
             if (connection.dead()) continue;
 
             if (!this.isAlive()) {
@@ -228,7 +228,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
 
     private void removeDeadConnections() {
         boolean playBreakSound = false;
-        for (HopRopeConnection connection : connections) {
+        for (RopeConnection connection : connections) {
             if (connection.needsBeDestroyed()) {
                 System.out.println("need");
                 connection.destroy(true);
@@ -237,14 +237,14 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         }
         if (playBreakSound) dropItem(null);
 
-        connections.removeIf(HopRopeConnection::dead);
+        connections.removeIf(RopeConnection::dead);
         if (connections.isEmpty() && incompleteConnections.isEmpty() && graceTicks <= 0) {
             remove(RemovalReason.DISCARDED);
         }
     }
 
     public void destroyConnections(boolean mayDrop) {
-        for (HopRopeConnection connection : connections) {
+        for (RopeConnection connection : connections) {
             System.out.println("destroyConnections");
             connection.destroy(mayDrop);
         }
@@ -255,7 +255,7 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         super.addAdditionalSaveData(nbt);
         ListTag connectionTag = new ListTag();
 
-        for (HopRopeConnection connection : connections) {
+        for (RopeConnection connection : connections) {
             if (connection.dead()) continue;
             if (connection.from() != this) continue;
             Entity toEntity = connection.to();
@@ -263,9 +263,9 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
             if (toEntity instanceof Player) {
                 UUID uuid = toEntity.getUUID();
                 compoundTag.putUUID("UUID", uuid);
-            } else if (toEntity instanceof HopRopeKnotEntity hopRopeKnotEntity) {
+            } else if (toEntity instanceof RopeKnotEntity ropeKnotEntity) {
                 BlockPos fromPos = this.getPos();
-                BlockPos toPos = hopRopeKnotEntity.getPos();
+                BlockPos toPos = ropeKnotEntity.getPos();
                 BlockPos relPos = toPos.subtract(fromPos);
                 // Inverse rotation to store the position as 'facing' agnostic
                 Direction inverseFacing = Direction.fromYRot(Direction.SOUTH.toYRot() - getYRot());
@@ -307,16 +307,16 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
                 UUID uuid = tag.getUUID("UUID");
                 Entity toEntity = ((ServerLevel) getLevel()).getEntity(uuid);
                 if (toEntity != null) {
-                    HopRopeConnection.create(this, toEntity);
+                    RopeConnection.create(this, toEntity);
                     return true;
                 }
             } else if (tag.contains("RelX") || tag.contains("RelY") || tag.contains("RelZ")) {
                 BlockPos blockPos = new BlockPos(tag.getInt("RelX"), tag.getInt("RelY"), tag.getInt("RelZ"));
                 // Adjust position to be relative to our facing direction
                 blockPos = getBlockPosAsFacingRelative(blockPos, Direction.fromYRot(this.getYRot()));
-                HopRopeKnotEntity entity = HopRopeKnotEntity.getHopRopeKnotEntity(getLevel(), blockPos.offset(this.getPos()));
+                RopeKnotEntity entity = RopeKnotEntity.getHopRopeKnotEntity(getLevel(), blockPos.offset(this.getPos()));
                 if (entity != null) {
-                    HopRopeConnection.create(this, entity);
+                    RopeConnection.create(this, entity);
                     return true;
                 }
             } else {
@@ -331,6 +331,10 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
         }
 
         return false;
+    }
+
+    public boolean shouldRenderRope() {
+        return true;
     }
 
     //OVERRIDE SHIT
@@ -396,13 +400,13 @@ public class HopRopeKnotEntity extends HangingEntity implements RopeEntity {
 
     @Override
     public @NotNull Vec3 getLeashOffset() {
-        return new Vec3(0, 4.5 / 16, 0);
+        return new Vec3(0, 4.5 / 16.0, 0);
     }
 
     @Environment(EnvType.CLIENT)
     @Override
     public @NotNull Vec3 getRopeHoldPosition(float f) {
-        return getPosition(f).add(0, 4.5 / 16, 0);
+        return getPosition(f).add(0, 4.5 / 16.0, 0);
     }
 
     @Override

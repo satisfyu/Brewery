@@ -1,7 +1,7 @@
 package net.bmjo.brewery.block;
 
 import de.cristelknight.doapi.common.util.ChairUtil;
-import net.bmjo.brewery.util.LineConnectingType;
+import net.bmjo.brewery.block.property.LineConnectingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;

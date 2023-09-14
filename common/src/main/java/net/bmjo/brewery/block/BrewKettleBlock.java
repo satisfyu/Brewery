@@ -1,8 +1,8 @@
 package net.bmjo.brewery.block;
 
 import net.bmjo.brewery.entity.BrewKettleEntity;
-import net.bmjo.brewery.block.property.BlockStateRegistry;
-import net.bmjo.brewery.util.BreweryUtil;
+import net.bmjo.brewery.registry.BlockStateRegistry;
+import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -48,8 +48,8 @@ public class BrewKettleBlock extends Block {
 
     private void checkComplete(Level level, BlockPos centerPos) {
         for (int exponent = 0; exponent < 4; exponent++) {
-            int xOffset = BreweryUtil.power(-1, (exponent + 1) / 2);
-            int yOffset = BreweryUtil.power(-1, exponent % 2);
+            int xOffset = BreweryMath.power(-1, (exponent + 1) / 2);
+            int yOffset = BreweryMath.power(-1, exponent % 2);
             Set<BlockPos> blockPos = Sets.newHashSet(centerPos, centerPos.offset(xOffset, 0 , 0), centerPos.offset(0, 0 , yOffset), centerPos.offset(xOffset, 0 , yOffset));
             if (hasComponents(level, blockPos)) {
                 BlockPos controllerPos = getControllerPos(blockPos, level);

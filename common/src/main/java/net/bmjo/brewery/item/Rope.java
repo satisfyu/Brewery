@@ -1,6 +1,6 @@
 package net.bmjo.brewery.item;
 
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class HopRope extends Item {
+public class Rope extends Item {
 
-    public HopRope(Properties properties) {
+    public Rope(Properties properties) {
         super(properties);
     }
 
@@ -28,7 +28,7 @@ public class HopRope extends Item {
             if (level.isClientSide) return InteractionResult.SUCCESS;
             InteractionHand hand = useOnContext.getHand();
             //try to get rope
-            HopRopeKnotEntity knot = HopRopeKnotEntity.getHopRopeKnotEntity(level, blockPos);
+            RopeKnotEntity knot = RopeKnotEntity.getHopRopeKnotEntity(level, blockPos);
             if (knot != null) {
                 if (knot.interact(player, hand) == InteractionResult.CONSUME) {
                     return InteractionResult.CONSUME;
@@ -36,8 +36,8 @@ public class HopRope extends Item {
                 return InteractionResult.PASS;
             }
             //create new rope
-            //HopRopeKnotEntity hopRopeKnotEntity = HopRopeKnotEntity.create(level, blockPos);
-            knot = HopRopeKnotEntity.create(level, blockPos);
+            //RopeKnotEntity hopRopeKnotEntity = RopeKnotEntity.create(level, blockPos);
+            knot = RopeKnotEntity.create(level, blockPos);
             knot.setTicksFrozen((byte) 0);
             level.addFreshEntity(knot);
             //wait because Entity has to exist
