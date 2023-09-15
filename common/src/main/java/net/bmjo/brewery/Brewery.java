@@ -13,6 +13,7 @@ import net.bmjo.brewery.registry.EffectRegistry;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.sound.SoundRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
@@ -35,5 +36,10 @@ public class Brewery {
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
+    }
+
+    public static ResourceLocation MOD_ID(String path)
+    {
+        return new ResourceLocation(Brewery.MOD_ID, path);
     }
 }

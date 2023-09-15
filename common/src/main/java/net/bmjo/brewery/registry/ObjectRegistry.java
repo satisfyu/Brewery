@@ -1,5 +1,7 @@
 package net.bmjo.brewery.registry;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import de.cristelknight.doapi.Util;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
@@ -13,6 +15,7 @@ import net.bmjo.brewery.item.Breathalyzer;
 import net.bmjo.brewery.item.DrinkBlockItem;
 import net.bmjo.brewery.item.Rope;
 import net.bmjo.brewery.item.SaturatedItem;
+import net.bmjo.brewery.util.BreweryBlockItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -106,7 +111,14 @@ public class ObjectRegistry {
         Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);
         ITEMS.register();
         BLOCKS.register();
+        createTapestries();
     }
+
+    public static final Map<DyeColor, Supplier<Block>> DYE_TO_STANDARD = Maps.newHashMap();
+    public static final List<Supplier<Block>> STANDARD_BLOCKS = Lists.newArrayList();
+    public static final List<Supplier<Block>> STANDARD_WALL_BLOCKS = Lists.newArrayList();
+    public static final List<Supplier<Block>> STANDARD_FLOOR_BLOCKS = Lists.newArrayList();
+    public static Supplier<Block> BEER_STANDARD;
 
     private static <T extends Item> RegistrySupplier<T> registerItem(String path, Supplier<T> item) {
         final ResourceLocation id = new BreweryIdentifier(path);
@@ -122,6 +134,23 @@ public class ObjectRegistry {
         RegistrySupplier<T> blockSupplier = registerB(path, block);
         registerItem(path, () -> new BlockItem(blockSupplier.get(), getSettings()));
         return blockSupplier;
+    }
+
+    private static void createTapestries()
+    {
+            BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), ()->new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
+        Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), ()->new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
+
+            ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(),  new Item.Properties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
+            STANDARD_BLOCKS.add(BEER_STANDARD);
+            STANDARD_BLOCKS.add(adjWall);
+    }
+
+
+
+    public static BlockBehaviour.Properties properties(Material material, float hardness)
+    {
+        return BlockBehaviour.Properties.of(material).strength(hardness, hardness);
     }
 
     private static Item.Properties getSettings() {

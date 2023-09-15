@@ -14,6 +14,7 @@ import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.bmjo.brewery.client.render.RopeCollisionEntityRenderer;
 import net.bmjo.brewery.client.render.RopeKnotRenderer;
+import net.bmjo.brewery.client.render.StandardRenderer;
 import net.bmjo.brewery.client.render.WaterBasinRenderer;
 import net.bmjo.brewery.client.render.model.RopeKnotEntityModel;
 import net.bmjo.brewery.event.KeyInputHandler;
@@ -37,6 +38,7 @@ public class BreweryClient {
         BreweryNetworking.registerS2CPackets();
         ItemPredicate.register();
         registerRenderer();
+        registerModelLayers();
 
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> BreweryNetworking.tick());
 
@@ -65,13 +67,19 @@ public class BreweryClient {
         });
     }
 
+
     private static void registerRenderer() {
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.HOP_ROPE_KNOT, RopeKnotRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
-
+        BlockEntityRendererRegistry.register(BlockEntityRegistry.STANDARD.get(), StandardRenderer::new);
         EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
+    }
+
+    public static void registerModelLayers()
+    {
+            EntityModelLayerRegistry.register(StandardRenderer.LAYER_LOCATION, StandardRenderer::createBodyLayer);
     }
 
     public static LocalPlayer getPlayer() {

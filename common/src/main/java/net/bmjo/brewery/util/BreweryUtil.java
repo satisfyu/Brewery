@@ -7,7 +7,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -48,6 +50,8 @@ public class BreweryUtil {
             Minecraft.getInstance().getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.GUI, getLightLevel(level, blockEntity.getBlockPos()), OverlayTexture.NO_OVERLAY, poseStack, multiBufferSource, 1);
         }
     }
+
+    public static <T> void registerObject(Registry<T> registry, ResourceLocation id, T object) {}
 
     public static void putBlockPos(CompoundTag compoundTag, Collection<BlockPos> blockPoses) {
         if (blockPoses == null || blockPoses.isEmpty()) return;
