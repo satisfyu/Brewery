@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block.multiblockparts;
 
-import net.bmjo.brewery.block.property.BlockStateRegistry;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;

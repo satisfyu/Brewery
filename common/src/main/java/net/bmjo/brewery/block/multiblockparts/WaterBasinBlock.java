@@ -1,8 +1,8 @@
 package net.bmjo.brewery.block.multiblockparts;
 
-import net.bmjo.brewery.entity.BrewKettleEntity;
-import net.bmjo.brewery.block.property.BlockStateRegistry;
 import net.bmjo.brewery.block.property.Liquid;
+import net.bmjo.brewery.entity.BrewKettleEntity;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
@@ -32,7 +33,7 @@ public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!blockState.getValue(COMPLETE)) return InteractionResult.PASS;
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.getBlockEntity(blockPos) instanceof BrewKettleEntity brewKettleEntity) {

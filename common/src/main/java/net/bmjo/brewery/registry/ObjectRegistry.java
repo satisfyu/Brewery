@@ -11,7 +11,7 @@ import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.Breathalyzer;
 import net.bmjo.brewery.item.DrinkBlockItem;
-import net.bmjo.brewery.item.HopRope;
+import net.bmjo.brewery.item.Rope;
 import net.bmjo.brewery.item.SaturatedItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
@@ -89,7 +89,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> SMALL_BARREL = registerBI("small_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
     //ROPE
-    public static final RegistrySupplier<Item> HOP_ROPE = registerItem("hop_rope", () -> new HopRope(getSettings()));
+    public static final RegistrySupplier<Item> HOP_ROPE = registerItem("hop_rope", () -> new Rope(getSettings()));
     public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
 
     //FOOD

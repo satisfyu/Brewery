@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block;
 
-import net.bmjo.brewery.util.LineConnectingType;
+import net.bmjo.brewery.block.property.LineConnectingType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 
 public class TableBlock extends LineConnectingBlock implements SimpleWaterloggedBlock {
@@ -31,7 +32,7 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         LineConnectingType type = state.getValue(TYPE);
 
@@ -66,7 +67,7 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
     }
 
     @Override
-    public FluidState getFluidState(BlockState state) {
+    public @NotNull FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 

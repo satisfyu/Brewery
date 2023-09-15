@@ -1,6 +1,7 @@
-package net.bmjo.brewery.util;
+package net.bmjo.brewery.block.property;
 
 import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 
 public enum LineConnectingType implements StringRepresentable {
     NONE("none"),
@@ -15,7 +16,7 @@ public enum LineConnectingType implements StringRepresentable {
     }
 
     @Override
-    public String getSerializedName() {
+    public @NotNull String getSerializedName() {
         return this.name;
     }
 }

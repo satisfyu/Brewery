@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block.brew_event;
 
-import net.bmjo.brewery.block.property.BlockStateRegistry;
+import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,9 +24,7 @@ public class TimerEvent implements BrewEvent {
         BlockPos timerPos = BrewHelper.getTimer(components, level);
         if (timerPos != null) {
             BlockState timerState = level.getBlockState(timerPos);
-            if (timerState.getValue(BlockStateRegistry.TIME)) {
-                return false;
-            }
+            return !timerState.getValue(BlockStateRegistry.TIME);
         }
         return true;
     }

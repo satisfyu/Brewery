@@ -2,9 +2,9 @@ package net.bmjo.brewery.mixin;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.bmjo.brewery.entity.HopRopeKnotEntity;
+import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
-import net.bmjo.brewery.util.HopRopeConnection;
+import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
@@ -28,11 +28,11 @@ public class ServerEntityMixin {
 
     @Inject(method = "sendPairingData", at = @At("TAIL"))
     private void sendPackages(Consumer<Packet<?>> consumer, CallbackInfo ci) {
-        if (this.entity instanceof HopRopeKnotEntity knot) {
+        if (this.entity instanceof RopeKnotEntity knot) {
             FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            Set<HopRopeConnection> connections = knot.getConnections();
+            Set<RopeConnection> connections = knot.getConnections();
             IntList ids = new IntArrayList(connections.size());
-            for (HopRopeConnection connection : connections) {
+            for (RopeConnection connection : connections) {
                 if (connection.from() == knot) {
                     ids.add(connection.to().getId());
                 }
