@@ -1,7 +1,7 @@
 package net.bmjo.brewery.entity;
 
-import net.bmjo.brewery.block.BrewKettleBlock;
-import net.bmjo.brewery.block.WaterBasinBlock;
+import net.bmjo.brewery.block.multiblockparts.BrewKettleBlock;
+import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.block.brew_event.BrewEvent;
 import net.bmjo.brewery.block.brew_event.BrewEvents;
 import net.bmjo.brewery.registry.BlockEntityRegistry;

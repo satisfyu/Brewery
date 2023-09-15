@@ -1,7 +1,7 @@
 package net.bmjo.brewery.mixin;
 
 import com.mojang.blaze3d.platform.Window;
-import net.bmjo.brewery.alcohol.MotionBlur;
+import net.bmjo.brewery.effect.alcohol.MotionBlur;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

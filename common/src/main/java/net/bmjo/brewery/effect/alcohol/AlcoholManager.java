@@ -1,4 +1,4 @@
-package net.bmjo.brewery.alcohol;
+package net.bmjo.brewery.effect.alcohol;
 
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.networking.BreweryNetworking;

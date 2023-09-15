@@ -1,5 +1,9 @@
-package net.bmjo.brewery.block;
+package net.bmjo.brewery.block.multiblockparts;
 
+import net.bmjo.brewery.block.multiblockparts.OvenBlock;
+import net.bmjo.brewery.block.multiblockparts.SteamWhistleBlock;
+import net.bmjo.brewery.block.multiblockparts.TimerBlock;
+import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.block.property.BlockStateRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
@@ -19,7 +23,7 @@ import java.util.stream.Stream;
 public class BrewKettleBlock extends Block {
     public static final BooleanProperty COMPLETE;
 
-    protected BrewKettleBlock(Properties properties) {
+    public BrewKettleBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(COMPLETE, false));
     }

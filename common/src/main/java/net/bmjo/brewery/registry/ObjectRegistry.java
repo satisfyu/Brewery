@@ -8,6 +8,7 @@ import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.*;
 import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
+import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.Breathalyzer;
 import net.bmjo.brewery.item.DrinkBlockItem;
 import net.bmjo.brewery.item.HopRope;
@@ -20,9 +21,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -55,10 +54,11 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> DRIED_BARLEY = registerBI("dried_barley", () -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> DRIED_CORN = registerBI("dried_corn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     //BREWING STATION
-    public static final RegistrySupplier<Block> WATER_BASIN = registerBI("water_basin", () -> new WaterBasinBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> STEAM_WHISTLE = registerBI("steam_whistle", () -> new SteamWhistleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> OVEN = registerBI("oven", () -> new OvenBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> TIMER = registerBI("timer", () -> new TimerBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> WATER_BASIN = registerWithoutItem("water_basin", () -> new WaterBasinBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> STEAM_WHISTLE = registerWithoutItem("steam_whistle", () -> new SteamWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> OVEN = registerWithoutItem("oven", () -> new OvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> TIMER = registerWithoutItem("timer", () -> new TimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> BREWINGSTATION = registerBI("brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     //NETHERITE BREWING STATION
     //TODO
     //SILO
@@ -165,7 +165,6 @@ public class ObjectRegistry {
         registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(beverageFoodComponent(effect, duration)))));
         return toReturn;
     }
-
 
     private static FoodProperties beverageFoodComponent(MobEffect effect, int durationInTicks) {
         FoodProperties.Builder component = new FoodProperties.Builder().nutrition(2).saturationMod(1);

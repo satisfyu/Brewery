@@ -1,12 +1,11 @@
 package net.bmjo.brewery.item;
 
-import net.bmjo.brewery.alcohol.AlcoholLevel;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholLevel;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
 import net.bmjo.brewery.sound.SoundRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;

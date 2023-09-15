@@ -1,9 +1,9 @@
 package net.bmjo.brewery.block.brew_event;
 
-import net.bmjo.brewery.block.OvenBlock;
-import net.bmjo.brewery.block.SteamWhistleBlock;
-import net.bmjo.brewery.block.TimerBlock;
-import net.bmjo.brewery.block.WaterBasinBlock;
+import net.bmjo.brewery.block.multiblockparts.OvenBlock;
+import net.bmjo.brewery.block.multiblockparts.SteamWhistleBlock;
+import net.bmjo.brewery.block.multiblockparts.TimerBlock;
+import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;

@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block;
+package net.bmjo.brewery.block.multiblockparts;
 
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.block.property.BlockStateRegistry;

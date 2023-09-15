@@ -1,8 +1,8 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.alcohol.AlcoholManager;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholManager;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 

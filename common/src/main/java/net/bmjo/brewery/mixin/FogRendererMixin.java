@@ -2,8 +2,8 @@ package net.bmjo.brewery.mixin;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
-import net.bmjo.brewery.alcohol.AlcoholManager;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholManager;
 import net.bmjo.brewery.client.BreweryClient;
 import net.bmjo.brewery.registry.EffectRegistry;
 import net.fabricmc.api.EnvType;

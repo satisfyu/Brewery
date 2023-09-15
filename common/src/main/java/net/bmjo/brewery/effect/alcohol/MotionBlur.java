@@ -1,4 +1,4 @@
-package net.bmjo.brewery.alcohol;
+package net.bmjo.brewery.effect.alcohol;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.PostChain;

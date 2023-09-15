@@ -1,4 +1,4 @@
-package net.bmjo.brewery.alcohol;
+package net.bmjo.brewery.effect.alcohol;
 
 public interface AlcoholPlayer {
     AlcoholLevel getAlcohol();

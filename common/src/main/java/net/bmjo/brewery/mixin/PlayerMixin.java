@@ -1,7 +1,7 @@
 package net.bmjo.brewery.mixin;
 
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
-import net.bmjo.brewery.alcohol.AlcoholManager;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholManager;
 import net.bmjo.brewery.registry.EffectRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
