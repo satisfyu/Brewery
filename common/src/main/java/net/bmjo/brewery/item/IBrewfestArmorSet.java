@@ -3,7 +3,6 @@ package net.bmjo.brewery.item;
 import com.google.common.collect.ImmutableMap;
 import net.bmjo.brewery.registry.EffectRegistry;
 import net.bmjo.brewery.registry.MaterialRegistry;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
@@ -15,9 +14,12 @@ import java.util.Objects;
 
 public interface IBrewfestArmorSet {
 
+    MobEffectInstance hardDrinkingEffect = new MobEffectInstance(EffectRegistry.HARDDRINKING.get(), 14 * 20, 1);
+
     Map<ArmorMaterial, MobEffectInstance> MATERIAL_TO_EFFECT_MAP =
             (new ImmutableMap.Builder<ArmorMaterial, MobEffectInstance>())
-                    .put(MaterialRegistry.BREWFEST_ARMOR, new MobEffectInstance((MobEffect) EffectRegistry.HARDDRINKING, 14 * 20, 1)).build();
+                    .put(MaterialRegistry.BREWFEST_ARMOR, hardDrinkingEffect)
+                    .build();
 
     default boolean hasBrewfestSet(Player player) {
         return hasBrewfestBoots(player) && hasBrewfestLeggings(player) && hasBrewfestBreastplate(player) && hasBrewfestHelmet(player);
@@ -25,10 +27,11 @@ public interface IBrewfestArmorSet {
 
     default void checkForSet(Player player) {
         if (hasBrewfestSet(player)) {
-            addStatusEffectForMaterial(player, new MobEffectInstance((MobEffect) EffectRegistry.HARDDRINKING, 14 * 20, 2));
+            addStatusEffectForMaterial(player, new MobEffectInstance(EffectRegistry.HARDDRINKING.get(), 14 * 20, 2));
         }
         hasBrewfest(player);
     }
+
 
     default void hasBrewfest(Player player) {
         for (Map.Entry<ArmorMaterial, MobEffectInstance> entry : MATERIAL_TO_EFFECT_MAP.entrySet()) {
@@ -99,7 +102,7 @@ public interface IBrewfestArmorSet {
     }
 
     private static boolean isBrewfestBreastplate(ArmorItem armorItem) {
-        return armorItem.getMaterial() == MaterialRegistry.BREWFEST_ARMOR;
+        return armorItem.getMaterial() == MaterialRegistry.BREWFEST_ARMOR || armorItem.getMaterial() == MaterialRegistry.BREWFEST_DRESS;
     }
 
     static boolean hasBrewfestHelmet(Player player) {

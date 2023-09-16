@@ -90,4 +90,45 @@ public class MaterialRegistry {
             return ArmorMaterials.LEATHER.getKnockbackResistance();
         }
     };
+
+    public static final ArmorMaterial BREWFEST_DRESS = new ArmorMaterial() {
+        @Override
+        public int getDurabilityForSlot(EquipmentSlot slot) {
+            return ArmorMaterials.LEATHER.getDurabilityForSlot(slot);
+        }
+
+        @Override
+        public int getDefenseForSlot(EquipmentSlot slot) {
+            return ArmorMaterials.CHAIN.getDefenseForSlot(slot);
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return ArmorMaterials.IRON.getEnchantmentValue();
+        }
+
+        @Override
+        public SoundEvent getEquipSound() {
+            return ArmorMaterials.TURTLE.getEquipSound();
+        }
+
+        public Ingredient getRepairIngredient() {
+            return WOOL_REPAIR_INGREDIENT;
+        }
+
+        @Override
+        public String getName() {
+            return "brewfest_dress";
+        }
+
+        @Override
+        public float getToughness() {
+            return ArmorMaterials.LEATHER.getToughness();
+        }
+
+        @Override
+        public float getKnockbackResistance() {
+            return ArmorMaterials.LEATHER.getKnockbackResistance();
+        }
+    };
 }
