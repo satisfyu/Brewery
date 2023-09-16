@@ -20,7 +20,9 @@ import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ModelRegistry;
+import net.bmjo.brewery.util.BreweryClientUtil;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.bmjo.brewery.registry.*;
 import net.bmjo.brewery.util.rope.RopeHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -37,6 +39,9 @@ public class BreweryClient {
         ItemPredicate.register();
         registerRenderer();
         registerModelLayers();
+
+        BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_DRESS.get(), 0x800000);
+        BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_REGALIA.get(), 0xADD8E6);
 
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
 
@@ -67,14 +72,13 @@ public class BreweryClient {
 
 
     private static void registerRenderer() {
-        BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
+        EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
         EntityRendererRegistry.register(EntityRegistry.HOP_ROPE_KNOT, RopeKnotRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.STANDARD.get(), StandardRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BEER_KEG_FLOWER_POT_BLOCK_ENTITY.get(), BeerKegBlockEntityRenderer::new);
-
-        EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
     }
 
     public static void registerModelLayers() {

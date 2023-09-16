@@ -1,8 +1,8 @@
 package net.bmjo.brewery.registry;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import de.cristelknight.doapi.Util;
+import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -12,14 +12,13 @@ import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.*;
-import net.bmjo.brewery.util.BreweryBlockItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -98,19 +96,29 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> PORK_KNUCKLE = registerItem("pork_knuckle", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> POTATO_SALAD = registerItem("potato_salad", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
+    //TODO conditional recipes -> candlelight
     public static final RegistrySupplier<Item> DUMPLINGS = registerItem("dumplings", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
+    public static final RegistrySupplier<Item> MASHED_POTATOES = registerItem("mashed_potatoes", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> FRIED_CHICKEN = registerItem("fried_chicken", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
+    //TODO conditional recipes -> bakery
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> GINGERBREAD = registerItem("gingerbread", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
+    //BREWFEST ARMOR
+    //TODO HAT 3D MODEL, färbbar
+    public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new ArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.HEAD, getSettings().rarity(Rarity.EPIC)));
+    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new DyeableBrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, 0x800000, getSettings().rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new DyeableBrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, 0xADD8E6, getSettings().rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new ArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new ArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
+
 
     public static void register() {
         Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);
         ITEMS.register();
         BLOCKS.register();
-        createTapestries();
+        createStandards();
     }
 
-    public static final Map<DyeColor, Supplier<Block>> DYE_TO_STANDARD = Maps.newHashMap();
     public static final List<Supplier<Block>> STANDARD_BLOCKS = Lists.newArrayList();
     public static final List<Supplier<Block>> STANDARD_WALL_BLOCKS = Lists.newArrayList();
     public static final List<Supplier<Block>> STANDARD_FLOOR_BLOCKS = Lists.newArrayList();
@@ -132,26 +140,30 @@ public class ObjectRegistry {
         return blockSupplier;
     }
 
-    private static void createTapestries()
-    {
+    private static void createStandards() {
 
-        BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), ()->new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
-        Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), ()->new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
+        BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), () -> new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
+        Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), () -> new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
 
-        ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(), new Item.Properties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
-            STANDARD_BLOCKS.add(BEER_STANDARD);
-            STANDARD_BLOCKS.add(adjWall);
+        ITEMS.register(Brewery.MOD_ID("beer_standard"), () -> new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(), new Item.Properties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
+        STANDARD_BLOCKS.add(BEER_STANDARD);
+        STANDARD_BLOCKS.add(adjWall);
     }
 
+    public static void commonInit() {
+        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_KEG.get(), SMALL_BARREL.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get());
+        FuelRegistry.register(100, CORN.get(), BARLEY.get(), HOPS.get());
+        FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
+        FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());
+    }
 
-
-    public static BlockBehaviour.Properties properties(Material material, float hardness)
-    {
+    public static BlockBehaviour.Properties properties(Material material, float hardness) {
         return BlockBehaviour.Properties.of(material).strength(hardness, hardness);
     }
 
     private static Item.Properties getSettings() {
-        return getSettings(settings -> {});
+        return getSettings(settings -> {
+        });
     }
 
     private static Item.Properties getSettings(Consumer<Item.Properties> consumer) {

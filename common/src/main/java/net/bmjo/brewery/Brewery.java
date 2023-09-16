@@ -31,6 +31,7 @@ public class Brewery {
         EffectRegistry.registerEffects();
         BreweryNetworking.registerC2SPackets();
         SoundRegistry.registerSounds();
+        CompostablesRegistry.init();
         EntityRegistry.register();
         BlockEntityRegistry.registerBlockEntities();
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
