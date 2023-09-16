@@ -8,8 +8,6 @@ import net.bmjo.brewery.client.render.model.RopeModel;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Objects;
-
 public class RopeRender {
     private static final float SCALE = 1.0F;
     private static final float QUALITY = 4.0F;
@@ -42,7 +40,7 @@ public class RopeRender {
         crossVec.mul(((uv.x1() - uv.x0()) / 16.0F) * SCALE); //width
         crossVec.mul(0.5F); //to each side
 
-        float uvStart, uvEnd = 0, y;
+        float uvStart, uvEnd = 0;
         double segmentLength = Math.min(length, 1.0F / QUALITY), actuallySegmentLength;
         Vector3f currentPos = Vector3f.ZERO.copy(), lastPos = new Vector3f();
         Vector3f segmentVector = new Vector3f(ropeNormal.multiply(segmentLength, segmentLength, segmentLength)), segmentPos = Vector3f.ZERO.copy();
@@ -71,9 +69,5 @@ public class RopeRender {
 
             if (lastIter) break;
         }
-    }
-
-    private static int hashVector(Vec3 vec) {
-        return Objects.hash(Double.doubleToLongBits(vec.x), Double.doubleToLongBits(vec.y), Double.doubleToLongBits(vec.z));
     }
 }

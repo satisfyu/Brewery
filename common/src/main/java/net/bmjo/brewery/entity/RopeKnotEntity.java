@@ -76,10 +76,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return this.connections.contains(connection);
     }
 
-    public void setGraceTicks(byte graceTicks) {
-        this.graceTicks = graceTicks;
-    }
-
     @Override
     public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
         ItemStack handStack = player.getItemInHand(interactionHand);
