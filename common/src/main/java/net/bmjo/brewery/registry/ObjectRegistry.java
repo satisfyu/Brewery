@@ -11,12 +11,10 @@ import net.bmjo.brewery.block.*;
 import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
-import net.bmjo.brewery.item.Breathalyzer;
-import net.bmjo.brewery.item.DrinkBlockItem;
-import net.bmjo.brewery.item.Rope;
-import net.bmjo.brewery.item.SaturatedItem;
+import net.bmjo.brewery.item.*;
 import net.bmjo.brewery.util.BreweryBlockItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -138,10 +136,11 @@ public class ObjectRegistry {
 
     private static void createTapestries()
     {
-            BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), ()->new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
+
+        BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), ()->new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
         Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), ()->new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
 
-            ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(),  new Item.Properties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
+        ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(), new ItemProperties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
             STANDARD_BLOCKS.add(BEER_STANDARD);
             STANDARD_BLOCKS.add(adjWall);
     }
