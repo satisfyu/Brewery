@@ -76,10 +76,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return this.connections.contains(connection);
     }
 
-    public void setGraceTicks(byte graceTicks) {
-        this.graceTicks = graceTicks;
-    }
-
     @Override
     public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
         ItemStack handStack = player.getItemInHand(interactionHand);
@@ -100,7 +96,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         for (RopeConnection connection : this.connections) {
             if (connection.to() == player) {
                 broke = true;
-                System.out.println("player");
                 connection.destroy(true);
             }
         }
@@ -136,7 +131,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             RopeConnection newConnection = RopeConnection.create(connection.from(), this);
 
             if (newConnection != null) {
-                System.out.println("old");
                 connection.destroy(false);
                 connection.removeSilently = true;
                 hasMadeConnection = true;
@@ -204,10 +198,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             if (connection.dead()) continue;
 
             if (!this.isAlive()) {
-                System.out.println("dead");
                 connection.destroy(true);
             } else if (connection.from() == this && connection.getSquaredDistance() > squaredMaxRange) {
-                System.out.println("long");
                 connection.destroy(true);
             }
         }
@@ -230,7 +222,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         boolean playBreakSound = false;
         for (RopeConnection connection : connections) {
             if (connection.needsBeDestroyed()) {
-                System.out.println("need");
                 connection.destroy(true);
             }
             if (connection.dead() && !connection.removeSilently) playBreakSound = true;
@@ -245,7 +236,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     public void destroyConnections(boolean mayDrop) {
         for (RopeConnection connection : connections) {
-            System.out.println("destroyConnections");
             connection.destroy(mayDrop);
         }
     }
@@ -320,7 +310,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
                     return true;
                 }
             } else {
-                Brewery.LOGGER.warn("Chain knot NBT is missing UUID or relative position."); //TODO
+                Brewery.LOGGER.warn("Chain knot NBT is missing UUID or relative position.");
             }
         }
 
