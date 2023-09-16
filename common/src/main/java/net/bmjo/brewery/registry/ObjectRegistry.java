@@ -72,11 +72,9 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> BAR_COUNTER = registerBI("bar_counter", () -> new TableBlock(BlockBehaviour.Properties.of(Material.WOOD).requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.WOOD).noOcclusion()));
     public static final RegistrySupplier<Block> PATTERNED_WOOL = registerBI("patterned_wool", () -> new Block(BlockBehaviour.Properties.copy(Blocks.BLACK_WOOL)));
     public static final RegistrySupplier<Block> PATTERNED_CARPET = registerBI("patterned_carpet", () -> new CarpetBlock(BlockBehaviour.Properties.copy(Blocks.BLACK_CARPET)));
-    //TODO BANNER - oder einfach Banner pattern?
-    //public static final RegistrySupplier<Block> BANNER = registerBI("banner", () -> new BannerBlock(BlockBehaviour.Properties.of(Material).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
 
     //BEER & WHISKEY
-    //TODO Effekte, Models, Beer Keg -> Flower Pot, Effect Duration
+    //TODO Models
     public static final RegistrySupplier<Block> BEER_WHEAT = registerBeverage("beer_wheat", () -> new BeverageBlock(getBeverageSettings()), MobEffects.DAMAGE_BOOST, 30 * 20);
     public static final RegistrySupplier<Block> BEER_HOPS = registerBeverage("beer_hops", () -> new BeverageBlock(getBeverageSettings()), MobEffects.LUCK, 30 * 20);
     public static final RegistrySupplier<Block> BEER_BARLEY = registerBeverage("beer_barley", () -> new BeverageBlock(getBeverageSettings()), MobEffects.DIG_SPEED, 30 * 20);
@@ -96,7 +94,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
 
     //FOOD
-    //TODO nutrition / saturation values, maybe ebenfalls die Effekte von Bier auf das Essen bringen wie in Candlelight?
+    //TODO nutrition / saturation values
     public static final RegistrySupplier<Item> PORK_KNUCKLE = registerItem("pork_knuckle", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Item> POTATO_SALAD = registerItem("potato_salad", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
@@ -140,7 +138,7 @@ public class ObjectRegistry {
         BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), ()->new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
         Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), ()->new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
 
-        ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(), new ItemProperties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
+        ITEMS.register(Brewery.MOD_ID("beer_standard"), ()->new StandingAndWallBlockItem(BEER_STANDARD.get(), adjWall.get(), new Item.Properties().tab(Brewery.CREATIVE_TAB).stacksTo(16).rarity(Rarity.EPIC)));
             STANDARD_BLOCKS.add(BEER_STANDARD);
             STANDARD_BLOCKS.add(adjWall);
     }

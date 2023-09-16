@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,7 +36,11 @@ public class BeerKegFlowerPotBlock extends Block implements EntityBlock {
 
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
-        //TODO
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.3125, 0, 0.3125, 0.6875, 0.5, 0.375), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.3125, 0, 0.625, 0.6875, 0.5, 0.6875), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.625, 0, 0.375, 0.6875, 0.5, 0.625), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.3125, 0, 0.375, 0.375, 0.5, 0.625), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.375, 0, 0.375, 0.625, 0.0625, 0.625), BooleanOp.OR);
         return shape;
     };
 

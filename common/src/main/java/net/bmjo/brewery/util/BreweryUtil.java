@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -36,6 +37,10 @@ public class BreweryUtil {
         Objects.requireNonNull(pos, "The chunk pos cannot be null");
 
         return world.getChunkSource().chunkMap.getPlayers(pos, false);
+    }
+
+    public static boolean isSolid(LevelReader levelReader, BlockPos blockPos){
+        return levelReader.getBlockState(blockPos.below()).getMaterial().isSolid();
     }
 
     public static int getLightLevel(Level world, BlockPos pos) {

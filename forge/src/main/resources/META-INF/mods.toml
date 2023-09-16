@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[45,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "ARR"
 
 [[mods]]
 modId = "brewery"
 version = "${version}"
 displayName = "Brewery"
-authors = "Me!"
+authors = "BaumeisterJO, satisfy"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+O'zapft is! Welcome to Brewery. Establish your own brewery and craft beer and whiskey.
 '''
 #logoFile = ""
 

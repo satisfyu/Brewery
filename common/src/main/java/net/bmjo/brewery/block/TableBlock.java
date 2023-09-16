@@ -75,10 +75,10 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
         WATERLOGGED = BlockStateProperties.WATERLOGGED;
         TOP_SHAPE = Block.box(0.0, 13.0, 0.0, 16.0, 16.0, 16.0);
         LEG_SHAPES = new VoxelShape[]{
-                Block.box(1.0, 0.0, 1.0, 4.0, 13.0, 4.0), //north
-                Block.box(12.0, 0.0, 1.0, 15.0, 13.0, 4.0), //east
-                Block.box(12.0, 0.0, 12.0, 15.0, 13.0, 15.0), //south
-                Block.box(1.0, 0.0, 12.0, 4.0, 13.0, 15.0) //west
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0)
         };
     }
 

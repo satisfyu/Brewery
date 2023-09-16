@@ -21,5 +21,6 @@ public class SaturatedItem extends Item {
         tooltip.add(Component.translatable("item.brewery.stuffed.duration." + this.getDescriptionId()).withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.translatable("item.brewery.stuffed_1").withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.brewery.stuffed_2").withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.brewery.moddependency." + this.getDescriptionId()).withStyle(ChatFormatting.AQUA));
     }
 }

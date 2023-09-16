@@ -1,0 +1,68 @@
+{
+  "variants": {
+
+    "facing=north,type=none": {
+      "model": "brewery:block/bench_single"
+    },
+    "facing=east,type=none": {
+      "model": "brewery:block/bench_single",
+      "y": 90
+    },
+    "facing=south,type=none": {
+      "model": "brewery:block/bench_single",
+      "y": 180
+    },
+    "facing=west,type=none": {
+      "model": "brewery:block/bench_single",
+      "y": 270
+    },
+
+    "facing=north,type=middle": {
+      "model": "brewery:block/bench_middle"
+    },
+    "facing=east,type=middle": {
+      "model": "brewery:block/bench_middle",
+      "y": 90
+    },
+    "facing=south,type=middle": {
+      "model": "brewery:block/bench_middle",
+      "y": 180
+    },
+    "facing=west,type=middle": {
+      "model": "brewery:block/bench_middle",
+      "y": 270
+    },
+
+    "facing=north,type=left": {
+      "model": "brewery:block/bench_extended"
+    },
+    "facing=east,type=left": {
+      "model": "brewery:block/bench_extended",
+      "y": 90
+    },
+    "facing=south,type=left": {
+      "model": "brewery:block/bench_extended",
+      "y": 180
+    },
+    "facing=west,type=left": {
+      "model": "brewery:block/bench_extended",
+      "y": 270
+    },
+
+    "facing=north,type=right": {
+      "model": "brewery:block/bench_extended",
+      "y": 180
+    },
+    "facing=east,type=right": {
+      "model": "brewery:block/bench_extended",
+      "y": 270
+    },
+    "facing=south,type=right": {
+      "model": "brewery:block/bench_extended"
+    },
+    "facing=west,type=right": {
+      "model": "brewery:block/bench_extended",
+      "y": 90
+    }
+  }
+}

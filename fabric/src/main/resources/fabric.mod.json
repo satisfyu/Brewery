@@ -3,20 +3,20 @@
   "id": "brewery",
   "version": "${version}",
   "name": "Brewery",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "O'zapft is! Welcome to Brewery. Establish your own brewery and craft beer and whiskey.",
   "authors": [
-    "Me!"
+    "BaumeisterJO, satisfy"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/satisfyu/Brewery"
   },
-  "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "license": "ARR",
+  "icon": "assets/brewery/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.bmjo.brewery.fabric.ExampleModFabric"
+      "net.bmjo.brewery.fabric.BreweryFabric"
     ],
     "client": [
       "net.bmjo.brewery.fabric.client.BreweryClientFabric"
