@@ -13,7 +13,7 @@ import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
 import net.bmjo.brewery.client.render.*;
-import net.bmjo.brewery.client.render.model.RopeKnotEntityModel;
+import net.bmjo.brewery.client.model.RopeKnotEntityModel;
 import net.bmjo.brewery.event.KeyInputHandler;
 import net.bmjo.brewery.item.ItemPredicate;
 import net.bmjo.brewery.networking.BreweryNetworking;
@@ -70,6 +70,11 @@ public class BreweryClient {
         });
     }
 
+    public static void preInitClient(){
+        registerEntityModelLayers();
+    }
+
+
 
     private static void registerRenderer() {
         EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
@@ -87,5 +92,9 @@ public class BreweryClient {
 
     public static LocalPlayer getPlayer() {
         return Minecraft.getInstance().player;
+    }
+
+    public static void registerEntityModelLayers(){
+        CustomArmorRegistry.registerCustomArmorLayers();
     }
 }

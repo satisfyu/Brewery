@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class Rope extends Item {
+public class RopeItem extends Item {
 
-    public Rope(Properties properties) {
+    public RopeItem(Properties properties) {
         super(properties);
     }
 

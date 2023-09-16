@@ -1,4 +1,4 @@
-package net.bmjo.brewery.client.render.model;
+package net.bmjo.brewery.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

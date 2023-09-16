@@ -7,5 +7,7 @@ public class BreweryClientFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BreweryClient.onInitializeClient();
+        BreweryClient.preInitClient();
+
     }
 }
