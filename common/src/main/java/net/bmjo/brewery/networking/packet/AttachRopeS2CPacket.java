@@ -1,7 +1,7 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.client.RopeHelper;
+import net.bmjo.brewery.util.rope.RopeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 

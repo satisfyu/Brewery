@@ -23,6 +23,7 @@ import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ModelRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.bmjo.brewery.util.rope.RopeHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -38,7 +39,7 @@ public class BreweryClient {
         ItemPredicate.register();
         registerRenderer();
 
-        ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> BreweryNetworking.tick());
+        ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
 
         ClientGuiEvent.RENDER_HUD.register((poseStack, f) -> {
             poseStack.pushPose();

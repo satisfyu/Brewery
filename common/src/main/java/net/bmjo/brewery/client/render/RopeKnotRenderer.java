@@ -67,7 +67,8 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
     private void renderRopeConnection(RopeConnection connection, float tickDelta, PoseStack poseStack, MultiBufferSource vertexConsumerProvider) {
         RopeKnotEntity fromKnot = connection.from();
         Entity toEntity = connection.to();
-        Vec3 fromPos = fromKnot.position().add(fromKnot.getLeashOffset()); //TODO right position for rope
+        Vec3 leashOffset = fromKnot.getLeashOffset();
+        Vec3 fromPos = fromKnot.position().add(leashOffset);
         Vec3 toPos = toEntity.getRopeHoldPosition(tickDelta);
         Vec3 ropeVec = toPos.subtract(fromPos);
 
@@ -81,7 +82,10 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
         int skylightLevelOfStart = fromKnot.getLevel().getBrightness(LightLayer.SKY, blockPosOfStart);
         int skylightLevelOfEnd = toEntity.getLevel().getBrightness(LightLayer.SKY, blockPosOfEnd);
 
+        poseStack.pushPose();
+        poseStack.translate(leashOffset.x, leashOffset.y, leashOffset.z);
         hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
+        poseStack.popPose();
     }
 
     public static BlockPos ofFloored(final Vec3 vec) {

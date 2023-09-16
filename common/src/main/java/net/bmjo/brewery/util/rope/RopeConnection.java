@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.HangingRope;
-import net.bmjo.brewery.client.RopeHelper;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
@@ -33,12 +32,11 @@ import java.util.Objects;
 import java.util.Set;
 
 public class RopeConnection {
-    public static final double VISIBLE_RANGE = 2048.0D; //TODO
-    private static final float COLLIDER_SPACING = 1.5f;
+    public static final double VISIBLE_RANGE = 2048.0D;
     private final RopeKnotEntity from;
     private final Entity to;
     private boolean alive = true;
-    private final IntList collisionStorage = new IntArrayList(16);
+    private final IntList collisions = new IntArrayList(32);
     public boolean removeSilently = false;
 
     public RopeKnotEntity from() {
@@ -91,60 +89,41 @@ public class RopeConnection {
         }
     }
 
-    private void createCollision() { //TODO
-        if (!collisionStorage.isEmpty()) return;
+    private void createCollision() {
+        if (!collisions.isEmpty()) return;
         if (from.getLevel().isClientSide()) return;
 
-        double distance = from.distanceTo(to);
-        // step = spacing * √(width^2 + width^2) / distance
-        double step = COLLIDER_SPACING * Math.sqrt(Math.pow(EntityRegistry.ROPE_COLLISION.get().getWidth(), 2) * 2) / distance;
-        double v = step;
-        // reserve space for the center collider
-        double centerHoldout = EntityRegistry.ROPE_COLLISION.get().getWidth() / distance;
+        float distance = from.distanceTo(to);
+        float step = (EntityRegistry.ROPE_COLLISION.get().getWidth() * 2.5F) / distance;
+        float centerHoldout = EntityRegistry.ROPE_COLLISION.get().getWidth() / distance;
 
-        while (v < 0.5 - centerHoldout) {
-            Entity collider1 = spawnCollision(false, from, to, v);
-            if (collider1 != null) collisionStorage.add(collider1.getId());
-            Entity collider2 = spawnCollision(true, from, to, v);
-            if (collider2 != null) collisionStorage.add(collider2.getId());
-
-            v += step;
+        for (float v = step; v < 0.5F - centerHoldout; v += step) {
+            Entity fromCollider = spawnCollision(from, to, v);
+            if (fromCollider != null) collisions.add(fromCollider.getId());
+            Entity toCollider = spawnCollision(to, from, v);
+            if (toCollider != null) collisions.add(toCollider.getId());
         }
 
-        Entity centerCollider = spawnCollision(false, from, to, 0.5);
-        if (centerCollider != null) collisionStorage.add(centerCollider.getId());
+        Entity centerCollider = spawnCollision(from, to, 0.5);
+        if (centerCollider != null) collisions.add(centerCollider.getId());
     }
 
     @Nullable
-    private Entity spawnCollision(boolean reverse, Entity start, Entity end, double v) { //TODO
+    private Entity spawnCollision(Entity start, Entity end, double v) {
         assert from.getLevel() instanceof ServerLevel;
         Vec3 startPos = start.position().add(start.getLeashOffset());
         Vec3 endPos = end.position().add(end.getLeashOffset());
 
-        Vec3 tmp = endPos;
-        if (reverse) {
-            endPos = startPos;
-            startPos = tmp;
-        }
-
-
-        Vec3 offset = RopeHelper.getChainOffset(startPos, endPos);
-        startPos = startPos.add(offset.x(), 0, offset.z());
-        endPos = endPos.add(-offset.x(), 0, -offset.z());
-
-        double distance = startPos.distanceTo(endPos);
-
         double x = Mth.lerp(v, startPos.x(), endPos.x());
-        double y = startPos.y() + RopeHelper.drip2((v * distance), distance, endPos.y() - startPos.y());
+        double y = Mth.lerp(v, startPos.y(), endPos.y());
         double z = Mth.lerp(v, startPos.z(), endPos.z());
-
-        y -= EntityRegistry.ROPE_COLLISION.get().getHeight() + 2 / 16f;
+        y -= EntityRegistry.ROPE_COLLISION.get().getHeight() / 2;
 
         RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), x, y, z, this);
         if (from.getLevel().addFreshEntity(collisionEntity)) {
             return collisionEntity;
         } else {
-            Brewery.LOGGER.warn("Tried to summon collision entity for a chain, failed to do so");
+            Brewery.LOGGER.warn("FAILED to summon collision entity for a rope.");
             return null;
         }
     }
@@ -163,7 +142,6 @@ public class RopeConnection {
     }
 
     public void destroy(boolean mayDrop) {
-        System.out.println("destroy");
         if (!alive) return;
         this.alive = false;
 
@@ -205,7 +183,7 @@ public class RopeConnection {
     }
 
     private void destroyCollision() {
-        for (Integer entityId : collisionStorage) {
+        for (Integer entityId : collisions) {
             Entity e = from.getLevel().getEntity(entityId);
             if (e instanceof RopeCollisionEntity) {
                 e.remove(Entity.RemovalReason.DISCARDED);
@@ -213,7 +191,7 @@ public class RopeConnection {
                 Brewery.LOGGER.warn("Collision storage contained reference to {} (#{}) which is not a collision entity.", e, entityId);
             }
         }
-        collisionStorage.clear();
+        collisions.clear();
     }
 
     private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, RopeConnection connection) {

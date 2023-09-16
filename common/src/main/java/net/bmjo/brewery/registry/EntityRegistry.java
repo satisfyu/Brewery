@@ -27,7 +27,7 @@ public class EntityRegistry {
 
     public static final RegistrySupplier<EntityType<RopeCollisionEntity>> ROPE_COLLISION = create("rope_collision",
             () -> EntityType.Builder.of(RopeCollisionEntity::new, MobCategory.MISC)
-                    .sized(4 / 16f, 6 / 16f)
+                    .sized(4 / 16f, 4 / 16f)
                     .clientTrackingRange(10)
                     .noSave()
                     .noSummon()

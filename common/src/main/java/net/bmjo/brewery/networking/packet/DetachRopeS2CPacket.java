@@ -2,9 +2,9 @@ package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.entity.RopeKnotEntity;
-import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.util.rope.IncompleteRopeConnection;
 import net.bmjo.brewery.util.rope.RopeConnection;
+import net.bmjo.brewery.util.rope.RopeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +23,7 @@ public class DetachRopeS2CPacket implements NetworkManager.NetworkReceiver {
         Entity to = client.level.getEntity(toId);
         if (from instanceof RopeKnotEntity knot) {
             if (to == null) {
-                for (IncompleteRopeConnection link : BreweryNetworking.incompleteLinks) {
+                for (IncompleteRopeConnection link : RopeHelper.incompleteRopes) {
                     if (link.from == from && link.toId == toId)
                         link.destroy();
                 }
