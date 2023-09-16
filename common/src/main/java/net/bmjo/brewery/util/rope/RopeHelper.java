@@ -13,11 +13,11 @@ public class RopeHelper {
         incompleteRopes.removeIf(IncompleteRopeConnection::tryCompleteOrRemove);
     }
 
-    public static void createLink(Minecraft client, int fromId, int toIds) {
-        createLinks(client, fromId, new int[]{toIds});
+    public static void createConnection(Minecraft client, int fromId, int toIds) {
+        createConnections(client, fromId, new int[]{toIds});
     }
 
-    public static void createLinks(Minecraft client, int fromId, int[] toIds) {
+    public static void createConnections(Minecraft client, int fromId, int[] toIds) {
         if (client.level == null) return;
         Entity from = client.level.getEntity(fromId);
         if (from instanceof RopeKnotEntity fromKnot) {

@@ -11,10 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class RopeKnotEntityModel<T extends Entity> extends HierarchicalModel<T> { //TODO
-    private final ModelPart chainKnot;
+    private final ModelPart ropeKnot;
 
     public RopeKnotEntityModel(ModelPart root) {
-        this.chainKnot = root.getChild("knot");
+        this.ropeKnot = root.getChild("knot");
     }
 
     public static LayerDefinition getTexturedModelData() {
@@ -31,7 +31,7 @@ public class RopeKnotEntityModel<T extends Entity> extends HierarchicalModel<T> 
 
     @Override
     public @NotNull ModelPart root() {
-        return chainKnot;
+        return ropeKnot;
     }
 
     @Override

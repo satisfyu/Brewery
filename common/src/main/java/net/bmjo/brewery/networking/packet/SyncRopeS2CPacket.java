@@ -10,6 +10,6 @@ public class SyncRopeS2CPacket implements NetworkManager.NetworkReceiver {
     public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
         int fromId = buf.readInt();
         int[] toIds = buf.readVarIntArray();
-        context.queue(() -> RopeHelper.createLinks(Minecraft.getInstance(), fromId, toIds));
+        context.queue(() -> RopeHelper.createConnections(Minecraft.getInstance(), fromId, toIds));
     }
 }

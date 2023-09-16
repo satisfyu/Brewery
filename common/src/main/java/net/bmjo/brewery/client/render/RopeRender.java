@@ -4,31 +4,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.bmjo.brewery.client.render.model.RopeModel;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Objects;
+
 public class RopeRender {
     private static final float SCALE = 1.0F;
     private static final float QUALITY = 4.0F;
-    private static final double HANG_AMOUNT = 1.0F;
     private static final int MAX_SEGMENTS = 2048;
     private static final Vec3 POSITIVE_Y = new Vec3(0.0F, 1.0F, 0.0F);
     private static final Vec3 NEGATIVE_Y = new Vec3(0.0F, -1.0F, 0.0F);
-    private final Object2ObjectOpenHashMap<Integer, RopeModel> models = new Object2ObjectOpenHashMap<>(256);
 
     public void render(final VertexConsumer vertexConsumer, final PoseStack poseStack, final Vec3 ropeVec, final int blockLight0, final int blockLight1, final int skyLight0, final int skyLight1) {
-        /*
-        int ropeHash = ropeVec.hashCode();
-        RopeModel model;
-        if (models.containsKey(ropeHash)) {
-            model = models.get(ropeHash);
-        } else {
-            model = buildModel(ropeVec);
-            models.put(ropeHash, model);
-        }
-         */
         RopeModel model = buildModel(ropeVec);
         model.render(vertexConsumer, poseStack, blockLight0, blockLight1, skyLight0, skyLight1);
     }
@@ -64,9 +53,6 @@ public class RopeRender {
             segmentPos.add(segmentVector); // add step on top
             currentPos.load(segmentPos); // set currentPos to top
 
-            //y = (float) calculateCatenaryY(segmentPos.x(), segmentPos.z(), length, ropeVec.y); // get hanging y
-            //currentPos.add(0, y, 0); // add y to currentPos
-
             actuallySegmentLength = new Vec3(currentPos).distanceTo(new Vec3(lastPos));
 
             if (new Vec3(currentPos).length() > length) {
@@ -87,8 +73,7 @@ public class RopeRender {
         }
     }
 
-    private double calculateCatenaryY(float x, float z, float d, double h) { //TODO
-        return 0;
-        //return (float) (a * Math.cosh((x - b / a) + c);
+    private static int hashVector(Vec3 vec) {
+        return Objects.hash(Double.doubleToLongBits(vec.x), Double.doubleToLongBits(vec.y), Double.doubleToLongBits(vec.z));
     }
 }
