@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brewery:block/whiskey_jojannik",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brewery:block/whiskey_jojannik"
+    },
+    "facing=south": {
+      "model": "brewery:block/whiskey_jojannik",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/whiskey_jojannik",
+      "y": 270
+    }
+  }
+}

@@ -1,6 +1,5 @@
 {
   "variants": {
-
     "facing=north,type=none": {
       "model": "brewery:block/bench_single"
     },
@@ -16,7 +15,6 @@
       "model": "brewery:block/bench_single",
       "y": 270
     },
-
     "facing=north,type=middle": {
       "model": "brewery:block/bench_middle"
     },
@@ -32,7 +30,6 @@
       "model": "brewery:block/bench_middle",
       "y": 270
     },
-
     "facing=north,type=left": {
       "model": "brewery:block/bench_extended"
     },
@@ -48,7 +45,6 @@
       "model": "brewery:block/bench_extended",
       "y": 270
     },
-
     "facing=north,type=right": {
       "model": "brewery:block/bench_extended",
       "y": 180
