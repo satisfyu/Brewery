@@ -14,6 +14,7 @@ import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,7 +28,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -143,7 +146,6 @@ public class ObjectRegistry {
     }
 
     private static void createStandards() {
-
         BEER_STANDARD = BLOCKS.register(Brewery.MOD_ID("beer_standard"), () -> new BeerStandardBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD)));
         Supplier<Block> adjWall = BLOCKS.register(Brewery.MOD_ID("beer_wall_standard"), () -> new BeerStandardWallBlock(properties(Material.WOOD, 1F).noCollission().sound(SoundType.WOOD).dropsLike(BEER_STANDARD.get())));
 
@@ -157,6 +159,13 @@ public class ObjectRegistry {
         FuelRegistry.register(100, CORN.get(), BARLEY.get(), HOPS.get());
         FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
         FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());
+    }
+
+    public static final Map<Supplier<Item>, RegistrySupplier<Item>> SEEDCONVERSION = new HashMap<>();
+
+    static {
+        SEEDCONVERSION.put(() -> Items.WHEAT_SEEDS, ObjectRegistry.CORN_SEEDS);
+        SEEDCONVERSION.put(() -> Items.BEETROOT_SEEDS, ObjectRegistry.BARLEY_SEEDS);
     }
 
     public static BlockBehaviour.Properties properties(Material material, float hardness) {

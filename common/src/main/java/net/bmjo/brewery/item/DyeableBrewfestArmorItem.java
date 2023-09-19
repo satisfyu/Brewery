@@ -48,7 +48,7 @@ public class DyeableBrewfestArmorItem extends DyeableArmorItem implements IBrewf
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
-        tooltip.add(Component.translatable("tooltip.beachparty.dyeable").withStyle(ChatFormatting.WHITE, ChatFormatting.ITALIC));
+        tooltip.add(Component.translatable("tooltip.brewery.dyeable").withStyle(ChatFormatting.WHITE, ChatFormatting.ITALIC));
         if (world != null && world.isClientSide()) {
             BreweryClientUtil.appendTooltip(tooltip);
         }
