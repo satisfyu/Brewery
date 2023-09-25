@@ -10,10 +10,7 @@ import net.bmjo.brewery.entity.StandardBlockEntity;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -47,11 +44,24 @@ public class StandardRenderer implements BlockEntityRenderer<StandardBlockEntity
         MeshDefinition meshDefinition = new MeshDefinition();
         PartDefinition partDefinition = meshDefinition.getRoot();
         partDefinition.addOrReplaceChild(FLAG, CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-10.0f, 0.0f, -2.0f, 20.0f, 35.0f, 1.0f)
-                        .texOffs(0, 36).addBox(-10.0F, 35.0F, -2.0F, 4.0F, 5.0F, 1.0F)
-                        .texOffs(10, 36).addBox(-2.0F, 35.0F,-2.0F, 4.0F, 5.0F, 1.0F)
-                        .texOffs(20, 36).addBox(6.0F, 35.0F, -2.0F, 4.0F, 5.0F, 1.0F)
-                , PartPose.ZERO);
+                .texOffs(0, 0).addBox(-10.0F, 0.0F, -1.0F, 20.0F, 33.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 46).mirror().addBox(3.0F, 34.0F, -1.0F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 49).mirror().addBox(4.0F, 35.0F, -1.0F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 52).mirror().addBox(5.0F, 36.0F, -1.0F, 5.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 55).mirror().addBox(6.0F, 37.0F, -1.0F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 58).addBox(7.0F, 38.0F, -1.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 61).mirror().addBox(8.0F, 39.0F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(20, 49).addBox(9.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(17, 46).mirror().addBox(2.0F, 33.0F, -1.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
+                .texOffs(0, 46).addBox(-10.0F, 34.0F, -1.0F, 7.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 49).addBox(-10.0F, 35.0F, -1.0F, 6.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 52).addBox(-10.0F, 36.0F, -1.0F, 5.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 55).addBox(-10.0F, 37.0F, -1.0F, 4.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 58).addBox(-10.0F, 38.0F, -1.0F, 3.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 61).addBox(-10.0F, 39.0F, -1.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(20, 49).addBox(-10.0F, 40.0F, -1.0F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(17, 46).addBox(-10.0F, 33.0F, -1.0F, 8.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)),PartPose.ZERO);
+
         partDefinition.addOrReplaceChild(POLE, CubeListBuilder.create().texOffs(44, 0).addBox(-1.0f, -30.0f, -1.0f, 2.0f, 42.0f, 2.0f), PartPose.ZERO);
         partDefinition.addOrReplaceChild(BAR, CubeListBuilder.create().texOffs(0, 42).addBox(-10.0f, -32.0f, -1.0f, 20.0f, 2.0f, 2.0f), PartPose.ZERO);
         return LayerDefinition.create(meshDefinition, 64, 64);

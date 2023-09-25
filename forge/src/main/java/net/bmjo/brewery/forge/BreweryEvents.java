@@ -59,7 +59,7 @@ public class BreweryEvents {
                 }
                 level4.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_TROUSERS.get(), 4, 1, 10));
                 level4.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_BOOTS.get(), 5, 1, 10));
-
+                level4.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_SHOES.get(), 5, 1, 10));
                 List<VillagerTrades.ItemListing> level5 = trades.get(5);
                 if (level5 == null) {
                     level5 = new ArrayList<>();
@@ -68,6 +68,8 @@ public class BreweryEvents {
                 level5.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_HAT.get(), 10, 1, 10));
                 level5.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_REGALIA.get(), 10, 1, 10));
                 level5.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_DRESS.get(), 10, 1, 10));
+                level5.add(new BreweryVillagerUtil.SellItemFactory(ObjectRegistry.BREWFEST_BLOUSE.get(), 10, 1, 10));
+
             }
         }
     }
