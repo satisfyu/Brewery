@@ -1,3 +1,6 @@
 {
-  "parent": "brewery:block/beer_standard_item"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "brewery:item/beer_standard"
+  }
 }

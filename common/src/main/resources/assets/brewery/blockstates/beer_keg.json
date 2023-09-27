@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "brewery:block/beer_keg"
+      "model": "brewery:block/beer_mug"
     }
   }
 }

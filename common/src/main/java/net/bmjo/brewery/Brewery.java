@@ -23,7 +23,7 @@ public class Brewery {
     public static final String MOD_ID = "brewery";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-    public static final CreativeModeTab CREATIVE_TAB = CreativeTabRegistry.create(new BreweryIdentifier("creative_tab"), () -> new ItemStack(ObjectRegistry.BEER_KEG.get()));
+    public static final CreativeModeTab CREATIVE_TAB = CreativeTabRegistry.create(new BreweryIdentifier("creative_tab"), () -> new ItemStack(ObjectRegistry.BEER_MUG.get()));
 
     public static void init() {
         LOGGER.debug("Initiate " + MOD_ID);

@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

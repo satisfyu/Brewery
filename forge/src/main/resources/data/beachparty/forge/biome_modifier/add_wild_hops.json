@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#brewery:taiga",
+  "features": "brewery:wild_hops",
+  "step": "vegetal_decoration"
+}

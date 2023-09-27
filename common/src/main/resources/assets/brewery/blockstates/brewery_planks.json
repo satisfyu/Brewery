@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": [ { "model": "brewery:block/brewery_planks", "weight":1 }
+ ]   }
+}

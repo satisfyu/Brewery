@@ -1,7 +1,7 @@
 package net.bmjo.brewery.item;
 
 import dev.architectury.registry.item.ItemPropertiesRegistry;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
 
 public class ItemPredicate {

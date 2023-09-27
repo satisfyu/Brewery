@@ -20,7 +20,7 @@ public class BreweryForgeVillagers {
     public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, Brewery.MOD_ID);
 
     public static final RegistryObject<PoiType> BREWER_POI = POI_TYPES.register("brewer_poi", () ->
-            new PoiType(ImmutableSet.copyOf(ObjectRegistry.BAR_BLOCK.get().getStateDefinition().getPossibleStates()), 1, 1));
+            new PoiType(ImmutableSet.copyOf(ObjectRegistry.BAR_COUNTER.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     public static final RegistryObject<VillagerProfession> BREWER = VILLAGER_PROFESSIONS.register("brewer", () ->
             new VillagerProfession("brewer", x -> x.get() == BREWER_POI.get(), x -> x.get() == BREWER_POI.get(), ImmutableSet.of(), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_FARMER));

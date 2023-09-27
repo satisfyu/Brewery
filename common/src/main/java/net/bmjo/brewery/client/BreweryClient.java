@@ -12,6 +12,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.bmjo.brewery.client.render.*;
 import net.bmjo.brewery.client.model.RopeKnotEntityModel;
 import net.bmjo.brewery.event.KeyInputHandler;
@@ -29,6 +30,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 
 @Environment(EnvType.CLIENT)
 public class BreweryClient {
@@ -39,6 +41,12 @@ public class BreweryClient {
         ItemPredicate.register();
         registerRenderer();
         registerModelLayers();
+
+        RenderTypeRegistry.register(RenderType.cutout(),
+                ObjectRegistry.BREWERY_WINDOW.get(), ObjectRegistry.BREWERY_DOOR.get(), ObjectRegistry.BREWERY_TRAPDOOR.get(),
+                ObjectRegistry.WILD_HOPS.get()
+
+        );
 
         BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_DRESS.get(), 0x800000);
         BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_REGALIA.get(), 0xADD8E6);
@@ -83,7 +91,7 @@ public class BreweryClient {
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.STANDARD.get(), StandardRenderer::new);
-        BlockEntityRendererRegistry.register(BlockEntityRegistry.BEER_KEG_FLOWER_POT_BLOCK_ENTITY.get(), BeerKegBlockEntityRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntityRegistry.BEER_MUG_FLOWER_POT_BLOCK_ENTITY.get(), BeerKegBlockEntityRenderer::new);
     }
 
     public static void registerModelLayers() {

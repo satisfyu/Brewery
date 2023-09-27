@@ -15,7 +15,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 public class BreweryFabricVillagers {
 
     private static final BreweryIdentifier BREWER_POI_IDENTIFIER = new BreweryIdentifier("brewer_poi");
-    public static final PoiType BREWER_POI = PointOfInterestHelper.register(BREWER_POI_IDENTIFIER, 1, 12, ObjectRegistry.BAR_BLOCK.get());
+    public static final PoiType BREWER_POI = PointOfInterestHelper.register(BREWER_POI_IDENTIFIER, 1, 12, ObjectRegistry.BAR_COUNTER.get());
     public static final VillagerProfession BREWER = Registry.register(Registry.VILLAGER_PROFESSION, new ResourceLocation("brewery", "brewer"), VillagerProfessionBuilder.create().id(new ResourceLocation("brewery", "brewer")).workstation(ResourceKey.create(Registry.POINT_OF_INTEREST_TYPE_REGISTRY, BREWER_POI_IDENTIFIER)).build());
 
     public static void init() {

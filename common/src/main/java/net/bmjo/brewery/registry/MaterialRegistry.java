@@ -36,7 +36,7 @@ public class MaterialRegistry {
 
         @Override
         public String getName() {
-            return "brewfest_armor";
+            return "brewfest";
         }
 
         @Override
@@ -118,7 +118,7 @@ public class MaterialRegistry {
 
         @Override
         public String getName() {
-            return "brewfest_dress";
+            return "dirndl";
         }
 
         @Override

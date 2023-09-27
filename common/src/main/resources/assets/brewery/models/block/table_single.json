@@ -3,7 +3,6 @@
 	"render_type": "minecraft:cutout",
 	"textures": {
 		"2": "brewery:block/table_side_02",
-		"3": "brewery:block/table_side_01",
 		"4": "brewery:block/table_bottom",
 		"5": "brewery:block/table_wool_back",
 		"6": "brewery:block/table_top",
@@ -16,9 +15,9 @@
 			"to": [16, 16, 16],
 			"faces": {
 				"north": {"uv": [0, 8, 16, 11], "texture": "#2"},
-				"east": {"uv": [0, 0, 16, 3], "texture": "#3"},
+				"east": {"uv": [0, 13, 16, 16], "texture": "#7"},
 				"south": {"uv": [0, 1, 16, 4], "texture": "#2"},
-				"west": {"uv": [0, 0, 16, 3], "texture": "#3"},
+				"west": {"uv": [0, 13, 16, 16], "texture": "#7"},
 				"up": {"uv": [16, 0, 0, 16], "rotation": 180, "texture": "#6"},
 				"down": {"uv": [0, 0, 16, 16], "rotation": 270, "texture": "#4"}
 			}
