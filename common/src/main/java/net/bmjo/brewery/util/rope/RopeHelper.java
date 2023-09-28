@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class RopeHelper {
     public static final ObjectList<IncompleteRopeConnection> incompleteRopes = new ObjectArrayList<>(256);
@@ -30,5 +31,16 @@ public class RopeHelper {
                 }
             }
         }
+    }
+
+    public static double  getYHanging(double d, Vec3 ropeVec) {
+        if (ropeVec.x == 0 && ropeVec.z == 0) {
+            return 0;
+        }
+        double dXZ = Math.sqrt(ropeVec.x * ropeVec.x + ropeVec.z * ropeVec.z);
+        double a, p;
+        a = 1 - 1 / (0.1D * dXZ + 1);
+        p = Math.PI / dXZ;
+        return -a * Math.sin(p * d);
     }
 }

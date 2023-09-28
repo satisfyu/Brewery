@@ -13,6 +13,10 @@ import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.*;
+import net.bmjo.brewery.item.Breathalyzer;
+import net.bmjo.brewery.item.DrinkBlockItem;
+import net.bmjo.brewery.item.RopeItem;
+import net.bmjo.brewery.item.SaturatedItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -101,6 +105,10 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WHISKEY_LILITUSINGLEMALT = registerBeverage("whiskey_lilitusinglemalt", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.CUDDLYWARM.get(), 30 * 20);
     public static final RegistrySupplier<Block> WHISKEY_JOJANNIK = registerBeverage("whiskey_jojannik", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.DOUBLEJUMP.get(), 30 * 20);
     public static final RegistrySupplier<Block> WHISKEY_CRISTELWALKER = registerBeverage("whiskey_cristelwalker", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.SLIDING.get(), 30 * 20);
+    //MISC
+    public static final RegistrySupplier<Block> BEER_KEG = registerBI("beer_keg", () -> new BeerKegFlowerPotBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
+    //TODO barrel logic
+    public static final RegistrySupplier<Block> SMALL_BARREL = registerBI("small_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
 
     //FOOD
     //TODO nutrition / saturation values

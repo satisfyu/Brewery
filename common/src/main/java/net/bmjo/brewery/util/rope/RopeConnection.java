@@ -1,19 +1,18 @@
 package net.bmjo.brewery.util.rope;
 
 import dev.architectury.networking.NetworkManager;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
 import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.entity.HangingRopeEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryMath;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,17 +23,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class RopeConnection {
     public static final double VISIBLE_RANGE = 2048.0D;
     private final RopeKnotEntity from;
     private final Entity to;
     private boolean alive = true;
-    private final IntList collisions = new IntArrayList(32);
     public boolean removeSilently = false;
+    private final List<Integer> collisions = new ArrayList<>();
 
     public RopeKnotEntity from() {
         return from;
@@ -51,6 +48,11 @@ public class RopeConnection {
     public double getSquaredDistance() {
         return this.from.distanceToSqr(to);
     }
+    public Vec3 getConnectionVec(float tickDelta) {
+        Vec3 fromPos = from.position().add(from.getLeashOffset());
+        Vec3 toPos = to.getRopeHoldPosition(tickDelta);
+        return toPos.subtract(fromPos);
+    }
 
     private RopeConnection(RopeKnotEntity from, Entity to) {
         this.from = from;
@@ -66,7 +68,7 @@ public class RopeConnection {
         if (to instanceof RopeKnotEntity toKnot) {
             toKnot.addConnection(connection);
             connection.createCollision();
-            createHangingRopes(fromKnot.level, connection);
+            connection.createHangingRopes();
         }
         if (fromKnot.getLevel() instanceof ServerLevel serverLevel) {
             connection.sendAttachRopePacket(serverLevel);
@@ -94,29 +96,31 @@ public class RopeConnection {
         float step = (EntityRegistry.ROPE_COLLISION.get().getWidth() * 2.5F) / distance;
         float centerHoldout = EntityRegistry.ROPE_COLLISION.get().getWidth() / distance;
 
-        for (float v = step; v < 0.5F - centerHoldout; v += step) {
-            Entity fromCollider = spawnCollision(from, to, v);
+        Vec3 startPos = from.position().add(from.getLeashOffset());
+        Vec3 endPos = to.position().add(to.getLeashOffset());
+
+        for (double v = step; v < 0.5F - centerHoldout; v += step) {
+            Entity fromCollider = spawnCollision(startPos, endPos, v);
             if (fromCollider != null) collisions.add(fromCollider.getId());
-            Entity toCollider = spawnCollision(to, from, v);
+            Entity toCollider = spawnCollision(endPos, startPos, v);
             if (toCollider != null) collisions.add(toCollider.getId());
         }
 
-        Entity centerCollider = spawnCollision(from, to, 0.5);
+        Entity centerCollider = spawnCollision(startPos, endPos, 0.5);
         if (centerCollider != null) collisions.add(centerCollider.getId());
     }
 
     @Nullable
-    private Entity spawnCollision(Entity start, Entity end, double v) {
+    private Entity spawnCollision(Vec3 startPos, Vec3 endPos, double v) {
         assert from.getLevel() instanceof ServerLevel;
-        Vec3 startPos = start.position().add(start.getLeashOffset());
-        Vec3 endPos = end.position().add(end.getLeashOffset());
+        Vec3 ropeVec = endPos.subtract(startPos);
+        Vec3 currentVec = ropeVec.scale(v);
+        Vec3 currentPos = startPos.add(currentVec);
 
-        double x = Mth.lerp(v, startPos.x(), endPos.x());
-        double y = Mth.lerp(v, startPos.y(), endPos.y());
-        double z = Mth.lerp(v, startPos.z(), endPos.z());
+        double y = RopeHelper.getYHanging(currentVec.length(), endPos.subtract(startPos));
         y -= EntityRegistry.ROPE_COLLISION.get().getHeight() / 2;
 
-        RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), x, y, z, this);
+        RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), currentPos.x(), currentPos.y() + y, currentPos.z(), this);
         if (from.getLevel().addFreshEntity(collisionEntity)) {
             return collisionEntity;
         } else {
@@ -125,8 +129,25 @@ public class RopeConnection {
         }
     }
 
-    private static void createHangingRopes(Level level, RopeConnection connection) {
-        //TODO
+    private void createHangingRopes() {
+        if (from.getLevel().isClientSide()) return;
+
+        Vec3 startPos = from.position().add(from.getLeashOffset());
+        Vec3 endPos = to.position().add(to.getLeashOffset());
+        Vec3 ropeVec = endPos.subtract(startPos);
+
+        Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
+        for (BlockPos blockPos : blockPositions) {
+            BlockPos currentPos = blockPos.subtract(from.getPos());
+            Vec3 currentVec = new Vec3(currentPos.getX(), currentPos.getY(), currentPos.getZ());
+            double y = RopeHelper.getYHanging(currentVec.length(), ropeVec);
+            y -= EntityRegistry.HANGING_ROPE.get().getHeight();
+
+            HangingRopeEntity hangingRopeEntity = HangingRopeEntity.create(from.getLevel(), blockPos.getX(), startPos.add(currentVec).y + y, blockPos.getZ(), this);
+            hangingRopeEntity.setTicksFrozen((byte) 0);
+            boolean added = from.getLevel().addFreshEntity(hangingRopeEntity);
+            if (!added) Brewery.LOGGER.warn("FAILED to summon hanging rope entity.");
+        }
     }
 
     public boolean needsBeDestroyed() {
@@ -157,6 +178,7 @@ public class RopeConnection {
         }
 
         destroyCollision();
+        destroyHangingRopes();
         if (from.getLevel() instanceof ServerLevel serverLevel && !from.isRemoved() && !to.isRemoved()) {
             sendDetachChainPacket(serverLevel);
         }
@@ -184,6 +206,18 @@ public class RopeConnection {
             }
         }
         collisions.clear();
+    }
+
+    private void destroyHangingRopes() {
+        Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
+        for (BlockPos bLockPos : blockPositions) {
+            HangingRopeEntity hangingRopeEntity = HangingRopeEntity.getHangingRopeEntity(from.getLevel(), bLockPos);
+            if (hangingRopeEntity != null) {
+                hangingRopeEntity.remove(Entity.RemovalReason.DISCARDED);
+            } else {
+                Brewery.LOGGER.warn("HangingRopeEntity at {} is null.", bLockPos);
+            }
+        }
     }
 
     private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, RopeConnection connection) {

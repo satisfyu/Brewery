@@ -31,11 +31,13 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +57,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     private RopeKnotEntity(Level level, BlockPos blockPos) {
         super(EntityRegistry.HOP_ROPE_KNOT.get(), level, blockPos);
-        setPos((double) blockPos.getX() + 0.5D, (double) blockPos.getY() + 0.5D, (double) blockPos.getZ() + 0.5D);
+        setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
 
     public static RopeKnotEntity create(@NotNull Level level, @NotNull BlockPos blockPos) {
@@ -72,12 +74,12 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         }
     }
 
-    public boolean sameConnectionExist(@NotNull RopeConnection connection) {
+    public boolean sameConnectionExist(@NotNull RopeConnection connection) {//TODO
         return this.connections.contains(connection);
     }
 
     @Override
-    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) { //TODO DAMAGE
         ItemStack handStack = player.getItemInHand(interactionHand);
         if (this.getLevel().isClientSide()) {
             if (handStack.is(ObjectRegistry.HOP_ROPE.get())) {
@@ -215,7 +217,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     @Override
     public boolean survives() {
         BlockState blockState = getLevel().getBlockState(getPos());
-        return blockState.is(BlockTags.FENCES);
+        return blockState.is(BlockTags.FENCES) || blockState.is(Blocks.TRIPWIRE_HOOK);
     }
 
     private void removeDeadConnections() {
@@ -327,6 +329,13 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return true;
     }
 
+    private double getYOffset() { //TODO
+        BlockState blockState = this.level.getBlockState(this.blockPosition());
+        VoxelShape shape = blockState.getShape(this.level, this.blockPosition());
+        double y = shape.max(Direction.Axis.Y);
+        return y - EntityRegistry.HOP_ROPE_KNOT.get().getHeight();
+    }
+
     //OVERRIDE SHIT
     @Override
     public void setPos(double x, double y, double z) {
@@ -360,7 +369,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     @Override
     protected void recalculateBoundingBox() {
-        setPosRaw(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+        setPosRaw(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D); //TODO right height
         double w = getType().getWidth() / 2.0;
         double h = getType().getHeight();
         setBoundingBox(new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w));

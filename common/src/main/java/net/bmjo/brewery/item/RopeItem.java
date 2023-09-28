@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +25,7 @@ public class RopeItem extends Item {
         Level level = useOnContext.getLevel();
         BlockPos blockPos = useOnContext.getClickedPos();
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.is(BlockTags.FENCES) && player != null) {
+        if (player != null && (blockState.is(BlockTags.FENCES) || blockState.is(Blocks.TRIPWIRE_HOOK))) {
             if (level.isClientSide) return InteractionResult.SUCCESS;
             InteractionHand hand = useOnContext.getHand();
             //try to get rope

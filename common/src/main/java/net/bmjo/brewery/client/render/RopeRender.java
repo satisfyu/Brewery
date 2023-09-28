@@ -4,11 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import net.bmjo.brewery.util.rope.RopeHelper;
 import net.bmjo.brewery.client.model.RopeModel;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
-public class RopeRender {
+public class RopeRender { //TODO wenn gerade dann nur ein vertex //TODO keys
     private static final float SCALE = 1.0F;
     private static final float QUALITY = 4.0F;
     private static final int MAX_SEGMENTS = 2048;
@@ -49,15 +50,17 @@ public class RopeRender {
         for (int segment = 0; segment < MAX_SEGMENTS; segment++) {
             lastPos.load(currentPos); //current to last
             segmentPos.add(segmentVector); // add step on top
+
+
+            if (new Vec3(segmentPos).length() > length) {
+                lastIter = true;
+                segmentPos.set((float) ropeVec.x, (float) ropeVec.y, (float) ropeVec.z);
+            }
+
             currentPos.load(segmentPos); // set currentPos to top
+            currentPos.add(0.0F, (float) RopeHelper.getYHanging(new Vec3(segmentPos).length(), ropeVec), 0.0F);
 
             actuallySegmentLength = new Vec3(currentPos).distanceTo(new Vec3(lastPos));
-
-            if (new Vec3(currentPos).length() > length) {
-                lastIter = true;
-                currentPos.set((float) ropeVec.x, (float) ropeVec.y, (float) ropeVec.z);
-                actuallySegmentLength = new Vec3(currentPos).distanceTo(new Vec3(lastPos));
-            }
 
             uvStart = uvEnd;
             uvEnd += (float) (actuallySegmentLength / SCALE);

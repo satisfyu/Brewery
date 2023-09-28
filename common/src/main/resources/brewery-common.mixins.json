@@ -7,7 +7,6 @@
     "EffectIconMixin",
     "FogRendererMixin",
     "GameRendererMixin",
-    "LevelRendererMixin",
     "WindowMixin"
   ],
   "mixins": [

@@ -1,6 +1,7 @@
 package net.bmjo.brewery.mixin;
 
 import com.google.common.collect.Lists;
+import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.bmjo.brewery.entity.RopeKnotEntity;
@@ -62,7 +63,7 @@ public class ChunkMapMixin { //TODO MAYBE
             if (!ids.isEmpty()) {
                 buf.writeInt(knot.getId());
                 buf.writeIntIdList(ids);
-                //NetworkManager.sendToPlayer(brewery$serverPlayer, BreweryNetworking.SYNC_ROPE_S2C_ID, buf);
+                NetworkManager.sendToPlayer(brewery$serverPlayer, BreweryNetworking.SYNC_ROPE_S2C_ID, buf);
             }
         }
         return entity.chunkPosition();
