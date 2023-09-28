@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "brewery:block/corn_stage0"
+    },
+    "age=1": {
+      "model": "brewery:block/corn_stage1"
+    },
+    "age=2": {
+      "model": "brewery:block/corn_stage2"
+    },
+    "age=3": {
+      "model": "brewery:block/corn_stage3"
+    },
+    "age=4": {
+      "model": "brewery:block/corn_stage4"
+    }
+  }
+}

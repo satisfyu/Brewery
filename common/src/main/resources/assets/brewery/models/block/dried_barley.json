@@ -1,0 +1,24 @@
+{
+	"credit": "Made by Satisfy",
+	"textures": {
+		"0": "brewery:block/bag_bottom",
+		"1": "brewery:block/bag_dried_barley_top",
+		"2": "brewery:block/bag_side_handle",
+		"3": "brewery:block/bag_side",
+		"particle": "brewery:block/bag_bottom"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		}
+	]
+}

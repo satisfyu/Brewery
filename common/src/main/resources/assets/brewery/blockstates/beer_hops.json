@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "stack=1,facing=north": {
+      "model": "brewery:block/beer_hops_stack1",
+      "y": 0
+    },
+    "stack=1,facing=south": {
+      "model": "brewery:block/beer_hops_stack1",
+      "y": 180
+    },
+    "stack=1,facing=west": {
+      "model": "brewery:block/beer_hops_stack1",
+      "y": 270
+    },
+    "stack=1,facing=east": {
+      "model": "brewery:block/beer_hops_stack1",
+      "y": 90
+    },
+    "stack=2,facing=north": {
+      "model": "brewery:block/beer_hops_stack2",
+      "y": 0
+    },
+    "stack=2,facing=south": {
+      "model": "brewery:block/beer_hops_stack2",
+      "y": 180
+    },
+    "stack=2,facing=west": {
+      "model": "brewery:block/beer_hops_stack2",
+      "y": 270
+    },
+    "stack=2,facing=east": {
+      "model": "brewery:block/beer_hops_stack2",
+      "y": 90
+    }
+  }
+}

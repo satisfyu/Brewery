@@ -1,11 +1,11 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "Made by Satisfy",
 	"ambientocclusion": false,
 	"render_type": "minecraft:cutout",
 	"texture_size": [32, 16],
 	"textures": {
-		"particle": "brewery:block/crops/hops/wild_hops_bottom",
-		"cross": "brewery:block/crops/hops/wild_hops_bottom"
+		"particle": "brewery:block/wild_hops_bottom",
+		"cross": "brewery:block/wild_hops_bottom"
 	},
 	"elements": [
 		{

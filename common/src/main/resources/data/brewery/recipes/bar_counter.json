@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "brewery:brewery_planks"
+    }
+  },
+  "pattern": [
+    "###",
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "item": "brewery:bar_counter"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wool",
+  "key": {
+    "#": {
+      "item": "minecraft:glass_pane"
+    },
+    "B": {
+      "item": "minecraft:brewery_planks"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "B#B",
+    "BBB"
+  ],
+  "result": {
+    "count": 32,
+    "item": "brewery:brewery_window"
+  }
+}

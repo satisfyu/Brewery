@@ -1,6 +1,6 @@
 {
   "itemGroup.brewery.creative_tab": "Brewery",
-  "effect.brewery.drunk": "Drunk",
+  "effect.brewery.drunk": "Intoxication",
   "effect.brewery.blackout": "Blackout",
   "effect.brewery.teleport": "Teleport",
   "effect.brewery.gravedigger": "Gravedigger",
@@ -8,6 +8,7 @@
   "effect.brewery.cuddlywarm": "Cuddlywarm",
   "effect.brewery.doublejump": "Doublejump",
   "effect.brewery.sliding": "Sliding",
+  "entity.minecraft.villager.brewer": "Brewmaster",
   "brewery.sound.breath": "Breath",
   "item.brewery.breathalyzer": "Breathalyzer",
   "item.brewery.hops": "Hops",
@@ -104,6 +105,8 @@
   "tooltip.brewfest.brewfestleggings": "[Brewfest Pants]",
   "tooltip.brewfest.brewfestboots": "[Brewfest Boots]",
   "tooltip.brewfest.brewfest_seteffect": "Set Bonus:",
-  "tooltip.brewfest.brewfest_effect": "You look wonderful! You are fortified and immune to the intoxication effect"
+  "tooltip.brewfest.brewfest_effect": "You look wonderful! You are fortified and immune to the intoxication effect",
+  "tooltip.brewery.workstation": "Workstation for Villagers",
+  "tooltip.brewery.crafting": "Crafting Ingredient"
 
 }

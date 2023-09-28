@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "wool",
+  "key": {
+    "#": {
+      "item": "minecraft:white_wool"
+    },
+    "B": {
+      "item": "minecraft:blue_wool"
+    }
+  },
+  "pattern": [
+    "#B",
+    "B#"
+
+  ],
+  "result": {
+    "count": 4,
+    "item": "brewery:patterned_wool"
+  }
+}

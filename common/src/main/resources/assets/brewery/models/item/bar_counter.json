@@ -1,3 +1,3 @@
 {
-  "parent": "brewery:block/bar_counter"
+  "parent": "brewery:block/bar_counter_single"
 }

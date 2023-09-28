@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brewery:block/dried_corn",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brewery:block/dried_corn"
+    },
+    "facing=south": {
+      "model": "brewery:block/dried_corn",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/dried_corn",
+      "y": 270
+    }
+  }
+}

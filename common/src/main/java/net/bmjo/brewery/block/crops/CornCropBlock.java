@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block.crops;
 
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class CornCropBlock extends CropBlock {
-    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 5);
+    public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 4);
 
     public CornCropBlock(Properties properties) {
         super(properties);
@@ -24,7 +24,7 @@ public class CornCropBlock extends CropBlock {
 
     @Override
     public int getMaxAge() {
-        return 5;
+        return 4;
     }
 
     @Override

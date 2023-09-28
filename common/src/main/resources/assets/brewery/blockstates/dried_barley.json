@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brewery:block/dried_barley",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brewery:block/dried_barley"
+    },
+    "facing=south": {
+      "model": "brewery:block/dried_barley",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/dried_barley",
+      "y": 270
+    }
+  }
+}

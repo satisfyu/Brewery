@@ -17,6 +17,7 @@ import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -53,9 +54,9 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> CORN_CROP = registerWithoutItem("corn_crop", () -> new CornCropBlock(getBushSettings()));
     public static final RegistrySupplier<Item> CORN_SEEDS = registerItem("corn_seeds", () -> new BlockItem(CORN_CROP.get(), getSettings()));
     public static final RegistrySupplier<Item> CORN = registerItem("corn", () -> new Item(getSettings().food(Foods.APPLE)));
-    public static final RegistrySupplier<Block> DRIED_WHEAT = registerBI("dried_wheat", () -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
-    public static final RegistrySupplier<Block> DRIED_BARLEY = registerBI("dried_barley", () -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
-    public static final RegistrySupplier<Block> DRIED_CORN = registerBI("dried_corn", () -> new Block(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
+    public static final RegistrySupplier<Block> DRIED_WHEAT = registerBI("dried_wheat", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
+    public static final RegistrySupplier<Block> DRIED_BARLEY = registerBI("dried_barley", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
+    public static final RegistrySupplier<Block> DRIED_CORN = registerBI("dried_corn", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
 
     public static final RegistrySupplier<Block> BENCH = registerBI("bench", () -> new BenchBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> TABLE = registerBI("table", () -> new TableBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
@@ -123,7 +124,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
     public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
-    //TODO BAR COUNTER POI TAG
 
     public static void register() {
         Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);
