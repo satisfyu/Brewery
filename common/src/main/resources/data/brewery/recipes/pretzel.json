@@ -1,17 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "group": "carpet",
   "key": {
     "#": {
-      "item": "brewery:brewery_planks"
+      "tag": "brewery:wheat"
     }
   },
   "pattern": [
-    "###",
     "## ",
-    "## "
+    "###",
+    " ##"
   ],
   "result": {
-    "count": 1,
-    "item": "brewery:bar_counter"
+    "count": 6,
+    "item": "brewery:pretzel"
   }
 }

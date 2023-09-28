@@ -2,17 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "minecraft:iron_nugget"
+      "tag": "minecraft:planks"
     },
     "B": {
-      "item": "minecraft:redstone"
+      "tag": "minecraft:logs"
     }
   },
   "pattern": [
+    "B#",
     "#B"
   ],
   "result": {
-    "count": 1,
-    "item": "brewery:breathalyzer"
+    "count": 12,
+    "item": "brewery:brewery_planks"
   }
 }

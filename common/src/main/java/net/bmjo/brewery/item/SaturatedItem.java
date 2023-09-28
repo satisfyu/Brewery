@@ -23,6 +23,7 @@ public class SaturatedItem extends Item {
         tooltip.add(Component.translatable("tooltip.brewery.stuffed_1").withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("tooltip.brewery.stuffed_2").withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.empty());
-        tooltip.add(Component.translatable("tooltip.brewery.moddependency." + this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tooltip.brewery.moddependency." + this.getDescriptionId()).withStyle(ChatFormatting.GOLD, ChatFormatting.STRIKETHROUGH));
+        //TODO -> 1.20.1, conditional recipes sind nicht mit doAPI 1.1.0 verfügbar
     }
 }

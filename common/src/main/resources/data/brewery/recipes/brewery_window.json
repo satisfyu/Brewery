@@ -6,7 +6,7 @@
       "item": "minecraft:glass_pane"
     },
     "B": {
-      "item": "minecraft:brewery_planks"
+      "item": "brewery:brewery_planks"
     }
   },
   "pattern": [

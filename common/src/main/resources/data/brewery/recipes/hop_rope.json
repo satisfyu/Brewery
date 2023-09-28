@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "brewery:barley"
+    },
+    "#": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "#B#"
+  ],
+  "result": {
+    "count": 2,
+    "item": "brewery:hop_rope"
+  }
+}

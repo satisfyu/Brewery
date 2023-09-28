@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:beetroot"
+    },
+    "U": {
+      "item": "minecraft:baked_potato"
+    }
+  },
+  "pattern": [
+    "BU"
+  ],
+  "result": {
+    "count": 4,
+    "item": "brewery:potato_salad"
+  }
+}

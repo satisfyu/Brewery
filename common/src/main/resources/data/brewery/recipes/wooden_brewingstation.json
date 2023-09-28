@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:furnace"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "U": {
+      "item": "minecraft:iron_ingot"
+    },
+    "A": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "  U",
+    "BCC",
+    "AAA"
+  ],
+  "result": {
+    "count": 1,
+    "item": "brewery:wooden_brewingstation"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "brewery:corn_seeds",
+    "brewery:barley_seeds",
+    "brewery:hops_seeds"
+  ]
+}

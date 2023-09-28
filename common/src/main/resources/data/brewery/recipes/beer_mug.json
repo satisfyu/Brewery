@@ -1,19 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "wooden_door",
   "key": {
     "#": {
       "item": "brewery:brewery_planks"
     }
   },
   "pattern": [
-    "##",
-    "##",
-    "##"
+    "## ",
+    "###",
+    "## "
   ],
   "result": {
-    "count": 3,
-    "item": "brewery:brewery_door"
-  },
-  "show_notification": true
+    "count": 8,
+    "item": "brewery:beer_mug"
+  }
 }

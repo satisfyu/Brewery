@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:copper_ingot"
+  },
+  "base": {
+    "item": "brewery:wooden_brewingstation"
+  },
+  "result": {
+    "item": "brewery:copper_brewingstation"
+  }
+}
