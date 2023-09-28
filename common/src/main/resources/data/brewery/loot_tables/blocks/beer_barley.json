@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "brewery:beer_barley",
+                  "properties": {
+                    "stack": 1
+                  }
+                }
+              ],
+              "count": 1.0,
+              "add": false
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "brewery:beer_barley",
+                  "properties": {
+                    "stack": 2
+                  }
+                }
+              ],
+              "count": 2.0,
+              "add": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

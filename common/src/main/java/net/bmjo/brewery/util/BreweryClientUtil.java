@@ -33,7 +33,8 @@ public class BreweryClientUtil {
         boolean breastplate = IBrewfestArmorSet.hasBrewfestBreastplate(player);
         boolean leggings = IBrewfestArmorSet.hasBrewfestLeggings(player);
         boolean boots = IBrewfestArmorSet.hasBrewfestBoots(player);
-
+        tooltip.add(Component.empty());
+        tooltip.add(Component.translatable("tooltip.brewfest.brewfestdrop").withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.brewfest.brewfest_set").withStyle(ChatFormatting.DARK_GREEN));
         tooltip.add(helmet ? Component.translatable("tooltip.brewfest.brewfesthelmet").withStyle(ChatFormatting.GREEN) : Component.translatable("tooltip.brewfest.brewfesthelmet").withStyle(ChatFormatting.GRAY));

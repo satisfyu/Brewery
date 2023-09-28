@@ -18,7 +18,7 @@ public class IngredientItem extends Item {
     }
 
     public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
-        tooltip.add(Component.translatable("item.brewery.ingredientitem.tooltip." + this.getDescriptionId()).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.brewery.ingredient").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
 }

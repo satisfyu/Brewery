@@ -106,7 +106,12 @@
   "tooltip.brewfest.brewfestboots": "[Brewfest Boots]",
   "tooltip.brewfest.brewfest_seteffect": "Set Bonus:",
   "tooltip.brewfest.brewfest_effect": "You look wonderful! You are fortified and immune to the intoxication effect",
+  "tooltip.brewfest.brewfestdrop": "Sold by Brewmaster Villagers",
   "tooltip.brewery.workstation": "Workstation for Villagers",
-  "tooltip.brewery.crafting": "Crafting Ingredient"
+  "tooltip.brewery.crafting": "Crafting Ingredient",
+  "tooltip.brewery.rope_1": "Can be attached to Fence Posts and Tripwire Hooks",
+  "tooltip.brewery.rope_2": "Stabilization for hops",
+  "tooltip.brewery.ingredient": "Crafting Ingredient"
+
 
 }
