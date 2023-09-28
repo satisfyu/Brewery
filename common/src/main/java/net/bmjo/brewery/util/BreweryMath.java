@@ -3,10 +3,13 @@ package net.bmjo.brewery.util;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BreweryMath {
 
@@ -18,17 +21,28 @@ public class BreweryMath {
         return value;
     }
 
-    public static List<BlockPos> lineIntersection(RopeConnection connection) {
-        if (connection.to() instanceof RopeKnotEntity toKnot) {
-            BlockPos start = connection.from().getPos();
-            BlockPos end = toKnot.getOnPos();
-            return lineIntersection(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
-        }
-        return new ArrayList<>();
+    public static BlockPos ofFloored(final Vec3 vec) {
+        return ofFloored(vec.x(), vec.y(), vec.z());
     }
 
-    private static List<BlockPos> lineIntersection(int startX, int startY, int startZ, int endX, int endY, int endZ) {
-        List<BlockPos> blockPositions = new ArrayList<>();
+    public static BlockPos ofFloored(final double x, final double y, final double z) {
+        return new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
+    }
+
+    public static Set<BlockPos> lineIntersection(RopeConnection connection) {
+        if (connection.to() instanceof RopeKnotEntity toKnot) {
+            BlockPos start = connection.from().getPos();
+            BlockPos end = toKnot.getPos();
+            return lineIntersection(start.getX(), start.getY(), start.getZ(), end.getX(), end.getY(), end.getZ());
+        }
+        return new HashSet<>();
+    }
+
+    private static Set<BlockPos> lineIntersection(int startX, int startY, int startZ, int endX, int endY, int endZ) {
+        Set<BlockPos> blockPositions = new HashSet<>();
+        if (endX - startX == 0 && endZ - startZ == 0) {
+            return blockPositions;
+        }
 
         boolean switchX = false;
         if (startX > endX) {
@@ -59,10 +73,11 @@ public class BreweryMath {
         int dz = endZ - startZ;
 
         // Calculate the greatest common divisor (GCD) of the direction components
-        int gcd = gcd(gcd(dx, dy), dz);
+        //int gcd = gcd(gcd(dx, dy), dz);
+        int gcd = gcd(dx, dz);
 
         // Iterate over t values within the range
-        for (int t = 0; t <= gcd; t++) {
+        for (int t = 1; t < gcd; t++) {
             int x = switchX ? endX - (dx * t) / gcd : startX + (dx * t) / gcd;
             int y = switchY ? endY - (dy * t) / gcd : startY + (dy * t) / gcd;
             int z = switchZ ? endZ - (dz * t) / gcd : startZ + (dz * t) / gcd;

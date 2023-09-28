@@ -6,6 +6,7 @@ import net.bmjo.brewery.client.render.model.RopeKnotEntityModel;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.registry.ModelRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
+import net.bmjo.brewery.util.BreweryMath;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -29,7 +30,7 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
 
     public RopeKnotRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new RopeKnotEntityModel<>(context.bakeLayer(ModelRegistry.CHAIN_KNOT));
+        this.model = new RopeKnotEntityModel<>(context.bakeLayer(ModelRegistry.ROPE_KNOT));
     }
 
     @Override
@@ -67,33 +68,23 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
     private void renderRopeConnection(RopeConnection connection, float tickDelta, PoseStack poseStack, MultiBufferSource vertexConsumerProvider) {
         RopeKnotEntity fromKnot = connection.from();
         Entity toEntity = connection.to();
-        Vec3 leashOffset = fromKnot.getLeashOffset();
-        Vec3 fromPos = fromKnot.position().add(leashOffset);
-        Vec3 toPos = toEntity.getRopeHoldPosition(tickDelta);
-        Vec3 ropeVec = toPos.subtract(fromPos);
+        Vec3 ropeVec = connection.getConnectionVec(tickDelta);
 
         RenderType entityCutout = RenderType.entityCutoutNoCull(new BreweryIdentifier("textures/rope/rope.png"));
         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(entityCutout);
 
-        BlockPos blockPosOfStart = ofFloored(fromKnot.getEyePosition(tickDelta));
-        BlockPos blockPosOfEnd = ofFloored(toEntity.getEyePosition(tickDelta));
+        BlockPos blockPosOfStart = BreweryMath.ofFloored(fromKnot.getEyePosition(tickDelta));
+        BlockPos blockPosOfEnd = BreweryMath.ofFloored(toEntity.getEyePosition(tickDelta));
         int blockLightLevelOfStart = fromKnot.getLevel().getBrightness(LightLayer.BLOCK, blockPosOfStart);
         int blockLightLevelOfEnd = toEntity.getLevel().getBrightness(LightLayer.BLOCK, blockPosOfEnd);
         int skylightLevelOfStart = fromKnot.getLevel().getBrightness(LightLayer.SKY, blockPosOfStart);
         int skylightLevelOfEnd = toEntity.getLevel().getBrightness(LightLayer.SKY, blockPosOfEnd);
 
         poseStack.pushPose();
+        Vec3 leashOffset = fromKnot.getLeashOffset();
         poseStack.translate(leashOffset.x, leashOffset.y, leashOffset.z);
         hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
         poseStack.popPose();
-    }
-
-    public static BlockPos ofFloored(final Vec3 vec) {
-        return ofFloored(vec.x(), vec.y(), vec.z());
-    }
-
-    public static BlockPos ofFloored(final double x, final double y, final double z) {
-        return new BlockPos(Mth.floor(x), Mth.floor(y), Mth.floor(z));
     }
 
     @Override

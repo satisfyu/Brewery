@@ -4,6 +4,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.entity.HangingRopeEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.util.BreweryIdentifier;
@@ -33,6 +34,16 @@ public class EntityRegistry {
                     .noSummon()
                     .fireImmune()
                     .build(new BreweryIdentifier("rope_collision").toString())
+    );
+
+    public static final RegistrySupplier<EntityType<HangingRopeEntity>> HANGING_ROPE = create("hanging_rope",
+            () -> EntityType.Builder.of(HangingRopeEntity::new, MobCategory.MISC)
+                    .sized(4 / 16f, 4 / 16f)
+                    .clientTrackingRange(10)
+                    .noSave()
+                    .noSummon()
+                    .fireImmune()
+                    .build(new BreweryIdentifier("hanging_rope").toString())
     );
 
     public static <T extends EntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
