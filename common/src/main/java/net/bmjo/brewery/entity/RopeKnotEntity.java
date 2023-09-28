@@ -329,7 +329,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return true;
     }
 
-    private double getYOffset() {
+    private double getYOffset() { //TODO
         BlockState blockState = this.level.getBlockState(this.blockPosition());
         VoxelShape shape = blockState.getShape(this.level, this.blockPosition());
         double y = shape.max(Direction.Axis.Y);

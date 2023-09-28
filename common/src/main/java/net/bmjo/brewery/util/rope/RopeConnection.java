@@ -10,7 +10,6 @@ import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -181,7 +180,7 @@ public class RopeConnection {
         }
 
         destroyCollision();
-        //destroyHangingRopes();
+        destroyHangingRopes();
         if (from.getLevel() instanceof ServerLevel serverLevel && !from.isRemoved() && !to.isRemoved()) {
             sendDetachChainPacket(serverLevel);
         }
