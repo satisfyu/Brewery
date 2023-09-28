@@ -7,6 +7,7 @@ import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.entity.HangingRopeEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
@@ -26,8 +27,7 @@ public class EntityRegistry {
                     .build(new BreweryIdentifier("hop_rope_knot").toString())
     );
 
-    public static final RegistrySupplier<EntityType<RopeCollisionEntity>> ROPE_COLLISION = create("rope_collision",
-            () -> EntityType.Builder.of(RopeCollisionEntity::new, MobCategory.MISC)
+    public static final RegistrySupplier<EntityType<RopeCollisionEntity>> ROPE_COLLISION = create("rope_collision", () -> EntityType.Builder.of(RopeCollisionEntity::new, MobCategory.MISC)
                     .sized(4 / 16f, 4 / 16f)
                     .clientTrackingRange(10)
                     .noSave()

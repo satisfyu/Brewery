@@ -6,8 +6,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public class PlacedFeatures {
-
-    //TODO FABRIC & FORGE
     public static final ResourceKey<PlacedFeature> WILD_HOPS_KEY = registerKey("wild_hops");
 
 

@@ -1,8 +1,12 @@
 package net.bmjo.brewery.block;
 
 import net.bmjo.brewery.block.property.LineConnectingType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -19,6 +23,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 
 public class TableBlock extends LineConnectingBlock implements SimpleWaterloggedBlock {
@@ -75,11 +81,15 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
         WATERLOGGED = BlockStateProperties.WATERLOGGED;
         TOP_SHAPE = Block.box(0.0, 13.0, 0.0, 16.0, 16.0, 16.0);
         LEG_SHAPES = new VoxelShape[]{
-                Block.box(1.0, 0.0, 1.0, 4.0, 13.0, 4.0), //north
-                Block.box(12.0, 0.0, 1.0, 15.0, 13.0, 4.0), //east
-                Block.box(12.0, 0.0, 12.0, 15.0, 13.0, 15.0), //south
-                Block.box(1.0, 0.0, 12.0, 4.0, 13.0, 15.0) //west
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0),
+                Block.box(7.0, 0.0, 7.0, 9.0, 13.0, 9.0)
         };
     }
 
+    @Override
+    public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
+        tooltip.add(Component.translatable("tooltip.brewery.expandable").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+    }
 }

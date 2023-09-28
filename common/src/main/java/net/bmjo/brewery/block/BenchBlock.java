@@ -2,11 +2,15 @@ package net.bmjo.brewery.block;
 
 import de.cristelknight.doapi.common.util.ChairUtil;
 import net.bmjo.brewery.block.property.LineConnectingType;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +21,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class BenchBlock extends LineConnectingBlock {
 
@@ -82,5 +88,10 @@ public class BenchBlock extends LineConnectingBlock {
                 Block.box(1.0, 0.0, 7.0, 15.0, 4.0, 15.0),//right X
                 Block.box(1.0, 0.0, 1.0, 15.0, 4.0, 9.0), //right Z
         };
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
+        tooltip.add(Component.translatable("tooltip.brewery.expandable").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
     }
 }

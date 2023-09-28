@@ -13,6 +13,7 @@
     "AlcoholPlayerMixin",
     "LivingEntityMixin",
     "PlayerMixin",
+    "StoneCutterMixin",
     "ServerEntityMixin"
   ],
   "injectors": {

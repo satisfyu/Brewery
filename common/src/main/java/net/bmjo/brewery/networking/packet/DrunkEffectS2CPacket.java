@@ -2,7 +2,7 @@ package net.bmjo.brewery.networking.packet;
 
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.alcohol.MotionBlur;
+import net.bmjo.brewery.effect.alcohol.MotionBlur;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "brewery:block/beer_mug"
+    }
+  }
+}

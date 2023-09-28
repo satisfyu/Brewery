@@ -1,9 +1,9 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.alcohol.AlcoholLevel;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
-import net.bmjo.brewery.alcohol.MotionBlur;
+import net.bmjo.brewery.effect.alcohol.AlcoholLevel;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.MotionBlur;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 

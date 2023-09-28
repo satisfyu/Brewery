@@ -5,7 +5,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.networking.NetworkManager;
 import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import net.bmjo.brewery.client.BreweryClient;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

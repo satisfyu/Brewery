@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brewery:block/gingerbread",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brewery:block/gingerbread"
+    },
+    "facing=south": {
+      "model": "brewery:block/gingerbread",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/gingerbread",
+      "y": 270
+    }
+  }
+}

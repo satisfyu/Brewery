@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "textures": {
+    "pane": "brewery:block/window_main",
+    "edge": "brewery:block/window_pane_top"
+  }
+}

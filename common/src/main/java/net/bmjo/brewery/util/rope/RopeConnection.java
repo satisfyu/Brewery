@@ -7,7 +7,7 @@ import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

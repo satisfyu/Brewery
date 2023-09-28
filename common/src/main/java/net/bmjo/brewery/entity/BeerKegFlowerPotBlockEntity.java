@@ -19,7 +19,7 @@ public class BeerKegFlowerPotBlockEntity extends BlockEntity {
     public static final String FLOWER_KEY ="flower";
 
     public BeerKegFlowerPotBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.BEER_KEG_FLOWER_POT_BLOCK_ENTITY.get(), pos, state);
+        super(BlockEntityRegistry.BEER_MUG_FLOWER_POT_BLOCK_ENTITY.get(), pos, state);
     }
 
     public Item getFlower() {

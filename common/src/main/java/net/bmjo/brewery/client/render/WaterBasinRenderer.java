@@ -1,7 +1,7 @@
 package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bmjo.brewery.block.WaterBasinBlock;
+import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;

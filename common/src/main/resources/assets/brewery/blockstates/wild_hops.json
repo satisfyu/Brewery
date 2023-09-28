@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "brewery:block/wild_hops_bottom"
+    },
+    "half=upper": {
+      "model": "brewery:block/wild_hops_top"
+    }
+  }
+}

@@ -6,6 +6,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.bmjo.brewery.client.render.model.RopeModel;
 import net.bmjo.brewery.util.rope.RopeHelper;
+import net.bmjo.brewery.client.model.RopeModel;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,8 +26,10 @@ public class RopeRender { //TODO wenn gerade dann nur ein vertex
         float desiredSegmentLength = 1F / 4;
         int initialCapacity = (int) (2F * ropeVec.lengthSqr() / desiredSegmentLength);
         RopeModel.Builder builder = RopeModel.builder(initialCapacity);
+
         createModel(builder, ropeVec, 45, UVCord.DEFAULT_ROPE_H);
         createModel(builder, ropeVec, -45, UVCord.DEFAULT_ROPE_V);
+
         return builder.build();
     }
 

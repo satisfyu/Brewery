@@ -1,8 +1,8 @@
 package net.bmjo.brewery.effect;
 
 
-import net.bmjo.brewery.alcohol.AlcoholManager;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholManager;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
 import net.bmjo.brewery.registry.EffectRegistry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;

@@ -28,6 +28,7 @@ public class EffectRegistry {
     public static final RegistrySupplier<MobEffect> SLIDING;
     public static final RegistrySupplier<MobEffect> GRAVEDIGGER;
     public static final RegistrySupplier<MobEffect> DOUBLEJUMP;
+    public static final RegistrySupplier<MobEffect> HARDDRINKING;
 
 
     private static RegistrySupplier<MobEffect> registerEffect(String name, Supplier<MobEffect> effect){
@@ -44,6 +45,7 @@ public class EffectRegistry {
 
     static {
         DRUNK = registerEffect("drunk", DrunkEffect::new);
+        HARDDRINKING = registerEffect("harddrinking", HarddrinkingEffect::new);
         BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setFactorDataFactory(() -> new MobEffectInstance.FactorData(22)));
         TELEPORT = registerEffect("teleport", TeleportEffect::new);
         SATURATED = registerEffect("saturated", SaturatedEffect::new);

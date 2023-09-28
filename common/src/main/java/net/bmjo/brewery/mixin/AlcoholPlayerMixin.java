@@ -1,8 +1,8 @@
 package net.bmjo.brewery.mixin;
 
-import net.bmjo.brewery.alcohol.AlcoholLevel;
-import net.bmjo.brewery.alcohol.AlcoholManager;
-import net.bmjo.brewery.alcohol.AlcoholPlayer;
+import net.bmjo.brewery.effect.alcohol.AlcoholLevel;
+import net.bmjo.brewery.effect.alcohol.AlcoholManager;
+import net.bmjo.brewery.effect.alcohol.AlcoholPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
