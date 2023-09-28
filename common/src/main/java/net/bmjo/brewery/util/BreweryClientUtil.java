@@ -26,9 +26,6 @@ public class BreweryClientUtil {
     }
 
     public static void appendTooltip(List<Component> tooltip) {
-        tooltip.add(Component.translatable(  "tooltip.brewfest.brewfestline1").withStyle(ChatFormatting.DARK_PURPLE));
-        tooltip.add(Component.translatable(  "tooltip.brewfest.brewfestline2").withStyle(ChatFormatting.BLUE));
-
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
 
@@ -37,13 +34,13 @@ public class BreweryClientUtil {
         boolean leggings = IBrewfestArmorSet.hasBrewfestLeggings(player);
         boolean boots = IBrewfestArmorSet.hasBrewfestBoots(player);
 
-        tooltip.add(Component.nullToEmpty(""));
+        tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.brewfest.brewfest_set").withStyle(ChatFormatting.DARK_GREEN));
         tooltip.add(helmet ? Component.translatable("tooltip.brewfest.brewfesthelmet").withStyle(ChatFormatting.GREEN) : Component.translatable("tooltip.brewfest.brewfesthelmet").withStyle(ChatFormatting.GRAY));
         tooltip.add(breastplate ? Component.translatable("tooltip.brewfest.brewfestbreastplate").withStyle(ChatFormatting.GREEN) : Component.translatable("tooltip.brewfest.brewfestbreastplate").withStyle(ChatFormatting.GRAY));
         tooltip.add(leggings ? Component.translatable("tooltip.brewfest.brewfestleggings").withStyle(ChatFormatting.GREEN) : Component.translatable("tooltip.brewfest.brewfestleggings").withStyle(ChatFormatting.GRAY));
         tooltip.add(boots ? Component.translatable("tooltip.brewfest.brewfestboots").withStyle(ChatFormatting.GREEN) : Component.translatable("tooltip.brewfest.brewfestboots").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.nullToEmpty(""));
+        tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.brewfest.brewfest_seteffect").withStyle(ChatFormatting.GRAY));
         tooltip.add(helmet && breastplate && leggings && boots ? Component.translatable("tooltip.brewfest.brewfest_effect").withStyle(ChatFormatting.DARK_GREEN) : Component.translatable("tooltip.brewfest.brewfest_effect").withStyle(ChatFormatting.GRAY));
     }

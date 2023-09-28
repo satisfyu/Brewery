@@ -1,5 +1,6 @@
 package net.bmjo.brewery.block;
 
+import de.cristelknight.doapi.common.block.FacingBlock;
 import net.bmjo.brewery.entity.BeerKegFlowerPotBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 
-public class BeerKegFlowerPotBlock extends Block implements EntityBlock {
+public class BeerKegFlowerPotBlock extends FacingBlock implements EntityBlock {
     private static final VoxelShape SHAPE;
 
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
@@ -120,6 +121,7 @@ public class BeerKegFlowerPotBlock extends Block implements EntityBlock {
     @Override
     public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
         tooltip.add(Component.translatable("tooltip.brewery.canbeplaced").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.brewery.flowerpot").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 
     }

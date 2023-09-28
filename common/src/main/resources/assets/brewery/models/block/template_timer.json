@@ -1,15 +1,14 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"0": "brewery:block/brewing_station_inside_1",
-		"1": "brewery:block/brewing_station_inside_2",
-		"9": "brewery:block/brewing_station_side_bottom_2",
-		"10": "brewery:block/brewing_station_top_1",
-		"13": "brewery:block/brewing_station_tachometer",
-		"14": "brewery:block/brewing_station_side_bottom_1",
-		"15": "brewery:block/brewing_station_bottom_2",
-		"16": "brewery:block/brewing_station_button",
-		"particle": "brewery:block/brewing_station_inside_1"
+		"0": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1",
+		"1": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_2",
+		"10": "brewery:block/brewing_station/wood/wooden_brewing_station_top_1",
+		"13": "brewery:block/brewing_station/wood/wooden_brewing_station_tachometer",
+		"14": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_1",
+		"15": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_2",
+		"16": "brewery:block/brewing_station/wood/wooden_brewing_station_button",
+		"particle": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1"
 	},
 	"elements": [
 		{
@@ -85,8 +84,8 @@
 			"to": [14, 2, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
 			"faces": {
-				"north": {"uv": [14, 0, 0, 2], "texture": "#9"},
-				"east": {"uv": [0, 0, 14, 2], "texture": "#9"},
+				"north": {"uv": [14, 0, 0, 2], "texture": "#15"},
+				"east": {"uv": [0, 0, 14, 2], "texture": "#15"},
 				"south": {"uv": [2, 14, 14, 16], "texture": "#14"},
 				"west": {"uv": [2, 14, 14, 16], "texture": "#14"},
 				"up": {"uv": [14, 2, 2, 14], "texture": "#15"},
@@ -99,12 +98,12 @@
 			"to": [14, 16, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
 			"faces": {
-				"north": {"uv": [2, 14, 14, 16], "texture": "#missing"},
-				"east": {"uv": [2, 14, 14, 16], "texture": "#missing"},
-				"south": {"uv": [2, 14, 14, 16], "texture": "#missing"},
+				"north": {"uv": [2, 14, 14, 16], "texture": "#0"},
+				"east": {"uv": [2, 14, 14, 16], "texture": "#0"},
+				"south": {"uv": [2, 14, 14, 16], "texture": "#0"},
 				"west": {"uv": [1, 15, 13, 14], "texture": "#10"},
 				"up": {"uv": [1, 2, 15, 16], "texture": "#10"},
-				"down": {"uv": [2, 2, 14, 14], "texture": "#missing"}
+				"down": {"uv": [1, 2, 15, 16], "texture": "#10"}
 			}
 		}
 	],

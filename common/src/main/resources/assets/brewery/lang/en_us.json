@@ -88,5 +88,22 @@
   "tooltip.brewery.moddependency.item.brewery.pretzel": "Requires Bakery",
   "tooltip.brewery.stuffed.duration.item.brewery.pretzel": "Stuffed (3:30)",
   "tooltip.brewery.moddependency.item.brewery.gingerbread": "Requires Bakery",
-  "tooltip.brewery.stuffed.duration.item.brewery.gingerbread": "Stuffed (3:30)"
+  "tooltip.brewery.stuffed.duration.item.brewery.gingerbread": "Stuffed (3:30)",
+  "tooltip.brewery.effectblock.brewery.whiskey_cristelwalker": "Slippery! Increases running speed",
+  "tooltip.brewery.effectblock.brewery.whiskey_jojannik": "Allows for a double jump",
+  "tooltip.brewery.effectblock.brewery.whiskey_lilitusinglemalt": "You feel warmed - as if you could melt snow",
+  "tooltip.brewery.effectblock.brewery.whiskey_mojanglabel": "Teleports yourselves back to your bed or respawn point",
+  "tooltip.brewery.effectblock.brewery.whiskey_maggoallan": "Teleports yourselves back to your last death point",
+  "tooltip.brewery.effectblock.brewery.beer_wheat": "Increases attack damage",
+  "tooltip.brewery.effectblock.brewery.beer_barley": "Increases attack speed",
+  "tooltip.brewery.effectblock.brewery.beer_hops": "Increases luck",
+  "tooltip.brewery.effectblock.brewery.beer_chorus": "Teleports you forward at random intervals",
+  "tooltip.brewfest.brewfest_set": "Brewfest Garb",
+  "tooltip.brewfest.brewfesthelmet": "[Brewfest Hat]",
+  "tooltip.brewfest.brewfestbreastplate": "[Brewfest Garment]",
+  "tooltip.brewfest.brewfestleggings": "[Brewfest Pants]",
+  "tooltip.brewfest.brewfestboots": "[Brewfest Boots]",
+  "tooltip.brewfest.brewfest_seteffect": "Set Bonus:",
+  "tooltip.brewfest.brewfest_effect": "You look wonderful! You are fortified and immune to the intoxication effect"
+
 }

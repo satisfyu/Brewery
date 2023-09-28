@@ -117,13 +117,13 @@ public class ObjectRegistry {
     //BREWFEST ARMOR
     //TODO HAT 3D MODEL, alle Models
     public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(getSettings().rarity(Rarity.EPIC)));
-    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new DyeableBrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, 0xADD8E6, getSettings().rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
     public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
-    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new DyeableBrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, 0x800000, getSettings().rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new DyeableBrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, 0xADD8E6, getSettings().rarity(Rarity.COMMON)));
-    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
-
+    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
+    //TODO BAR COUNTER POI TAG
 
     public static void register() {
         Brewery.LOGGER.debug("Registering Mod Block and Items for " + Brewery.MOD_ID);

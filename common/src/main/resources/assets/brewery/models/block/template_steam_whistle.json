@@ -1,18 +1,18 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"0": "brewery:block/brewing_station_inside_1",
-		"1": "brewery:block/brewing_station_inside_2",
-		"8": "brewery:block/brewing_station_side_bottom_1",
-		"9": "brewery:block/brewing_station_side_bottom_2",
-		"12": "brewery:block/brewing_station_top_4",
-		"14": "brewery:block/brewing_station_bottom_1",
-		"15": "brewery:block/brewing_station_bottom_2",
-		"17": "brewery:block/brewing_station_whistle_tube",
-		"18": "brewery:block/brewing_station_whistle_mouth",
-		"19": "brewery:block/brewing_station_whistle_top",
-		"20": "brewery:block/brewing_station_whistle_bottom",
-		"particle": "brewery:block/brewing_station_inside_1"
+		"0": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1",
+		"1": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_2",
+		"8": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_1",
+		"9": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_2",
+		"12": "brewery:block/brewing_station/wood/wooden_brewing_station_top_4",
+		"14": "brewery:block/brewing_station/wood/wooden_brewing_station_bottom_1",
+		"15": "brewery:block/brewing_station/wood/wooden_brewing_station_bottom_2",
+		"17": "brewery:block/brewing_station/wood/wooden_brewing_station_whistle_tube",
+		"18": "brewery:block/brewing_station/wood/wooden_brewing_station_whistle_mouth",
+		"19": "brewery:block/brewing_station/wood/wooden_brewing_station_whistle_top",
+		"20": "brewery:block/brewing_station/wood/wooden_brewing_station_whistle_bottom",
+		"particle": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1"
 	},
 	"elements": [
 		{
@@ -62,10 +62,10 @@
 			"faces": {
 				"north": {"uv": [2, 14, 14, 16], "texture": "#14"},
 				"east": {"uv": [2, 14, 14, 16], "texture": "#14"},
-				"south": {"uv": [2, 14, 14, 16], "texture": "#missing"},
-				"west": {"uv": [2, 14, 14, 16], "texture": "#missing"},
+				"south": {"uv": [2, 14, 14, 16], "texture": "#17"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#17"},
 				"up": {"uv": [2, 2, 16, 16], "texture": "#12"},
-				"down": {"uv": [2, 2, 14, 14], "texture": "#missing"}
+				"down": {"uv": [16, 2, 2, 16], "rotation": 180, "texture": "#12"}
 			}
 		},
 		{
@@ -79,7 +79,7 @@
 				"south": {"uv": [0, 0, 4, 16], "texture": "#17"},
 				"west": {"uv": [0, 0, 4, 16], "texture": "#17"},
 				"up": {"uv": [4, 0, 8, 4], "texture": "#17"},
-				"down": {"uv": [2, 2, 14, 14], "texture": "#missing"}
+				"down": {"uv": [2, 2, 14, 14], "texture": "#17"}
 			}
 		},
 		{
@@ -88,7 +88,7 @@
 			"to": [9, 25, 14],
 			"faces": {
 				"north": {"uv": [10, 0, 16, 1], "texture": "#20"},
-				"east": {"uv": [0, 0, 6, 1], "texture": "#missing"},
+				"east": {"uv": [0, 0, 6, 1], "texture": "#17"},
 				"south": {"uv": [10, 0, 16, 1], "texture": "#20"},
 				"west": {"uv": [10, 0, 16, 1], "texture": "#20"},
 				"up": {"uv": [10, 7, 16, 13], "texture": "#20"},
@@ -126,10 +126,10 @@
 			"from": [3.5, 25.5, 8.5],
 			"to": [8.5, 29.5, 13.5],
 			"faces": {
-				"north": {"uv": [0, 3, 4, 6], "texture": "#18"},
+				"north": {"uv": [0, 0, 4, 3], "texture": "#18"},
 				"east": {"uv": [0, 0, 4, 3], "texture": "#18"},
 				"south": {"uv": [0, 0, 4, 3], "texture": "#18"},
-				"west": {"uv": [0, 0, 4, 3], "texture": "#18"},
+				"west": {"uv": [0, 3, 4, 6], "texture": "#18"},
 				"up": {"uv": [0, 6, 4, 10], "texture": "#18"},
 				"down": {"uv": [0, 6, 4, 10], "texture": "#18"}
 			}

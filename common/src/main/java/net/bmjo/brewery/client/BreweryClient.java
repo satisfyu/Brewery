@@ -44,12 +44,9 @@ public class BreweryClient {
 
         RenderTypeRegistry.register(RenderType.cutout(),
                 ObjectRegistry.BREWERY_WINDOW.get(), ObjectRegistry.BREWERY_DOOR.get(), ObjectRegistry.BREWERY_TRAPDOOR.get(),
-                ObjectRegistry.WILD_HOPS.get()
+                ObjectRegistry.WILD_HOPS.get(), ObjectRegistry.BEER_MUG.get()
 
         );
-
-        BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_DRESS.get(), 0x800000);
-        BreweryClientUtil.registerColorArmor(ObjectRegistry.BREWFEST_REGALIA.get(), 0xADD8E6);
 
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
 

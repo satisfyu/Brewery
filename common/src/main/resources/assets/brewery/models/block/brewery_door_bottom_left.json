@@ -3,7 +3,7 @@
 	"ambientocclusion": false,
 	"textures": {
 		"1": "brewery:block/brewery_trapdoor",
-		"particle": "brewery:block/breweryy_door_bottom",
+		"particle": "brewery:block/brewery_door_bottom",
 		"bottom": "brewery:block/brewery_door_bottom"
 	},
 	"elements": [

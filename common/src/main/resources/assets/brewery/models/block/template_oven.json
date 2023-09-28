@@ -1,0 +1,80 @@
+{
+	"credit": "Made by Satisfy",
+	"textures": {
+		"0": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1",
+		"1": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_2",
+		"7": "brewery:block/brewing_station/wood/wooden_brewing_station_side_4",
+		"8": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_1",
+		"9": "brewery:block/brewing_station/wood/wooden_brewing_station_side_bottom_2",
+		"11": "brewery:block/brewing_station/wood/wooden_brewing_station_top_3",
+		"14": "brewery:block/brewing_station/wood/wooden_brewing_station_bottom_1",
+		"15": "brewery:block/brewing_station/wood/wooden_brewing_station_bottom_2",
+		"particle": "brewery:block/brewing_station/wood/wooden_brewing_station_inside_1"
+	},
+	"elements": [
+		{
+			"name": "Bottom",
+			"from": [0, 0, 0],
+			"to": [14, 2, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
+			"faces": {
+				"east": {"uv": [0, 0, 14, 2], "texture": "#8"},
+				"south": {"uv": [0, 0, 14, 2], "texture": "#9"},
+				"down": {"uv": [14, 0, 0, 14], "texture": "#15"}
+			}
+		},
+		{
+			"name": "Oven",
+			"from": [0, 2, 0],
+			"to": [15, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
+			"faces": {
+				"north": {"uv": [4, 0, 16, 12], "texture": "#1"},
+				"east": {"uv": [0, 0, 16, 14], "texture": "#0"},
+				"south": {"uv": [15, 0, 0, 14], "texture": "#7"},
+				"west": {"uv": [15, 0, 0, 14], "texture": "#0"},
+				"up": {"uv": [0, 0, 15, 16], "texture": "#11"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#14"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 225, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 225, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "basin_4_oven",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

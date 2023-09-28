@@ -77,7 +77,7 @@ public class MaterialRegistry {
 
         @Override
         public String getName() {
-            return "brewfest_leather";
+            return "brewfest";
         }
 
         @Override
