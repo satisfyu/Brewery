@@ -71,8 +71,12 @@ public class BreweryMath {
         int dz = endZ - startZ;
 
         // Calculate the greatest common divisor (GCD) of the direction components
-        //int gcd = gcd(gcd(dx, dy), dz);
-        int gcd = gcd(dx, dz);
+        int gcd = gcd(gcd(dx, dy), dz); //TODO every height
+        //int gcd = gcd(dx, dz);
+
+        if (gcd == 0) {
+            return blockPositions;
+        }
 
         // Iterate over t values within the range
         for (int t = 1; t < gcd; t++) {

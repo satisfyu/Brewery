@@ -141,7 +141,7 @@ public class RopeConnection {
             BlockPos currentPos = blockPos.subtract(from.getPos());
             Vec3 currentVec = new Vec3(currentPos.getX(), currentPos.getY(), currentPos.getZ());
             double y = RopeHelper.getYHanging(currentVec.length(), ropeVec);
-            y -= EntityRegistry.ROPE_COLLISION.get().getHeight();
+            y -= EntityRegistry.HANGING_ROPE.get().getHeight();
 
             HangingRopeEntity hangingRopeEntity = HangingRopeEntity.create(from.getLevel(), blockPos.getX(), startPos.add(currentVec).y + y, blockPos.getZ(), this);
             hangingRopeEntity.setTicksFrozen((byte) 0);
