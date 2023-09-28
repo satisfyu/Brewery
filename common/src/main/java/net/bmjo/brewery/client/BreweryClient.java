@@ -4,29 +4,19 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
-import net.bmjo.brewery.client.render.HangingRopeRenderer;
-import net.bmjo.brewery.client.render.RopeCollisionEntityRenderer;
-import net.bmjo.brewery.client.render.RopeKnotRenderer;
-import net.bmjo.brewery.client.render.WaterBasinRenderer;
-import net.bmjo.brewery.client.render.model.RopeKnotEntityModel;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
-import net.bmjo.brewery.client.render.*;
 import net.bmjo.brewery.client.model.RopeKnotEntityModel;
+import net.bmjo.brewery.client.render.*;
 import net.bmjo.brewery.event.KeyInputHandler;
 import net.bmjo.brewery.item.ItemPredicate;
 import net.bmjo.brewery.networking.BreweryNetworking;
-import net.bmjo.brewery.registry.BlockEntityRegistry;
-import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.ModelRegistry;
-import net.bmjo.brewery.util.BreweryClientUtil;
-import net.bmjo.brewery.util.BreweryIdentifier;
 import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.util.BreweryClientUtil;
 import net.bmjo.brewery.util.rope.RopeHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 
 @Environment(EnvType.CLIENT)
@@ -58,7 +48,7 @@ public class BreweryClient {
 
 
     private static void registerRenderer() {
-        EntityModelLayerRegistry.register(ModelRegistry.CHAIN_KNOT, RopeKnotEntityModel::getTexturedModelData);
+        EntityModelLayerRegistry.register(ModelRegistry.ROPE_KNOT, RopeKnotEntityModel::getTexturedModelData);
         EntityRendererRegistry.register(EntityRegistry.HOP_ROPE_KNOT, RopeKnotRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.HANGING_ROPE, HangingRopeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
@@ -66,7 +56,6 @@ public class BreweryClient {
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.STANDARD.get(), StandardRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BEER_MUG_FLOWER_POT_BLOCK_ENTITY.get(), BeerKegBlockEntityRenderer::new);
-        EntityModelLayerRegistry.register(ModelRegistry.ROPE_KNOT, RopeKnotEntityModel::getTexturedModelData);
     }
 
 

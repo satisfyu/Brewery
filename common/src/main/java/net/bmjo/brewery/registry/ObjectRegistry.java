@@ -108,10 +108,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> BEER_KEG = registerBI("beer_keg", () -> new BeerKegFlowerPotBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
     //TODO barrel logic
     public static final RegistrySupplier<Block> SMALL_BARREL = registerBI("small_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
-    public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
-    //ROPE
-    public static final RegistrySupplier<Item> HOP_ROPE = registerItem("hop_rope", () -> new RopeItem(getSettings()));
-    public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
 
     //FOOD
     //TODO nutrition / saturation values

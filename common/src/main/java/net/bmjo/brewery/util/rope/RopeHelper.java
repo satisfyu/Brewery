@@ -33,14 +33,14 @@ public class RopeHelper {
         }
     }
 
-    public static double getYHanging(double d, Vec3 ropeVec) {
+    public static double  getYHanging(double d, Vec3 ropeVec) {
         if (ropeVec.x == 0 && ropeVec.z == 0) {
             return 0;
         }
         double dXZ = Math.sqrt(ropeVec.x * ropeVec.x + ropeVec.z * ropeVec.z);
-        double a, p, s = 0.0D;
+        double a, p;
         a = 1 - 1 / (0.1D * dXZ + 1);
         p = Math.PI / dXZ;
-        return -a * Math.sin(p * d + s);
+        return -a * Math.sin(p * d);
     }
 }

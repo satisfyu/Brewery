@@ -7,13 +7,12 @@ import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -89,7 +88,7 @@ public class RopeConnection {
         }
     }
 
-    private void createCollision() { //TODO
+    private void createCollision() {
         if (!collisions.isEmpty()) return;
         if (from.getLevel().isClientSide()) return;
 
@@ -100,7 +99,7 @@ public class RopeConnection {
         Vec3 startPos = from.position().add(from.getLeashOffset());
         Vec3 endPos = to.position().add(to.getLeashOffset());
 
-        for (float v = step; v < 0.5F - centerHoldout; v += step) {
+        for (double v = step; v < 0.5F - centerHoldout; v += step) {
             Entity fromCollider = spawnCollision(startPos, endPos, v);
             if (fromCollider != null) collisions.add(fromCollider.getId());
             Entity toCollider = spawnCollision(endPos, startPos, v);
@@ -114,15 +113,14 @@ public class RopeConnection {
     @Nullable
     private Entity spawnCollision(Vec3 startPos, Vec3 endPos, double v) {
         assert from.getLevel() instanceof ServerLevel;
+        Vec3 ropeVec = endPos.subtract(startPos);
+        Vec3 currentVec = ropeVec.scale(v);
+        Vec3 currentPos = startPos.add(currentVec);
 
-        double x = Mth.lerp(v, startPos.x(), endPos.x());
-        double y = Mth.lerp(v, startPos.y(), endPos.y());
-        double z = Mth.lerp(v, startPos.z(), endPos.z());
-        y += RopeHelper.getYHanging(new Vec3(x, y, z).length(), endPos.subtract(startPos));
+        double y = RopeHelper.getYHanging(currentVec.length(), endPos.subtract(startPos));
         y -= EntityRegistry.ROPE_COLLISION.get().getHeight() / 2;
 
-
-        RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), x, y, z, this);
+        RopeCollisionEntity collisionEntity = RopeCollisionEntity.create(from.getLevel(), currentPos.x(), currentPos.y() + y, currentPos.z(), this);
         if (from.getLevel().addFreshEntity(collisionEntity)) {
             return collisionEntity;
         } else {

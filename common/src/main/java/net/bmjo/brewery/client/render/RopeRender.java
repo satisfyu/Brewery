@@ -4,13 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import net.bmjo.brewery.client.render.model.RopeModel;
 import net.bmjo.brewery.util.rope.RopeHelper;
 import net.bmjo.brewery.client.model.RopeModel;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
-public class RopeRender { //TODO wenn gerade dann nur ein vertex
+public class RopeRender { //TODO wenn gerade dann nur ein vertex //TODO keys
     private static final float SCALE = 1.0F;
     private static final float QUALITY = 4.0F;
     private static final int MAX_SEGMENTS = 2048;
