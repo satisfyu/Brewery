@@ -80,7 +80,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> STEAM_WHISTLE = registerWithoutItem("steam_whistle", () -> new SteamWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> OVEN = registerWithoutItem("oven", () -> new OvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> TIMER = registerWithoutItem("timer", () -> new TimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> COPPER_BREWINGSTATION = registerBI("copper_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> NETHERITE_BREWINGSTATION = registerBI("netherite_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)));
     //TODO SILO -> Multiblock & logic
@@ -118,6 +118,7 @@ public class ObjectRegistry {
     //TODO conditional recipes -> bakery
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Block> GINGERBREAD = registerBI("gingerbread", () -> new GingerBreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission()));
+    public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new Item(getSettings()));
     public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(getSettings().rarity(Rarity.EPIC)));
     public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));

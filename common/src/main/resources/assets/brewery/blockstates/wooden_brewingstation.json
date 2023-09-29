@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "location=center": {
+      "model": "brewery:block/dried_wheat"
+    },
+    "location=top_left": {
+      "model": "brewery:block/dried_barley"
+    },
+    "location=top_right": {
+      "model": "brewery:block/dried_wheat"
+    },
+    "location=left": {
+      "model": "brewery:block/dried_barley"
+    }
+  }
+}

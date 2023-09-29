@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -98,5 +99,24 @@ public class BreweryUtil {
             blockSet.add(new BlockPos(positions[pos * 3], positions[pos * 3 + 1], positions[pos * 3 + 2]));
         }
         return blockSet;
+    }
+
+    public enum LocationState implements StringRepresentable {
+        TOP_LEFT("top_left"), TOP("top"), TOP_RIGHT("top_right"), LEFT("left"), CENTER("center"), RIGHT("right"), BOTTOM_LEFT("bottom_left"), BOTTOM("bottom"), BOTTOM_RIGHT("bottom_right");
+
+        private final String name;
+
+        LocationState(String name) {
+            this.name = name;
+        }
+
+        public String toString() {
+            return this.name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
     }
 }
