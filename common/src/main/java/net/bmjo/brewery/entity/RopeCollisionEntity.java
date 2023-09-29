@@ -9,8 +9,10 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -38,14 +40,46 @@ public class RopeCollisionEntity extends Entity implements IRopeEntity {
     }
 
     @Override
-    public boolean isPickable() {
-        return !isRemoved();
+    public void tick() {
+        if (getLevel().isClientSide()) return;
+        if (connection != null && connection.needsBeDestroyed()) connection.destroy(true);
+
+        if (connection == null || connection.dead()) {
+            remove(Entity.RemovalReason.DISCARDED);
+        }
     }
 
     @Override
-    public boolean isPushable() {
+    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
+        if (IRopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
+            destroyConnections(!player.isCreative());
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean skipAttackInteraction(Entity entity) {
+        if (entity instanceof Player player) {
+            hurt(DamageSource.playerAttack(player), 0.0F);
+        } else {
+            playSound(SoundEvents.WOOL_HIT, 0.5F, 1.0F);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hurt(DamageSource damageSource, float f) {
+        InteractionResult result = IRopeEntity.onDamageFrom(this, damageSource);
+
+        if (result.consumesAction()) {
+            destroyConnections(result == InteractionResult.SUCCESS);
+            return true;
+        }
         return false;
     }
+
+    //Override Stuff
 
     @Environment(EnvType.CLIENT)
     @Override
@@ -69,22 +103,13 @@ public class RopeCollisionEntity extends Entity implements IRopeEntity {
     }
 
     @Override
-    public void tick() {
-        if (getLevel().isClientSide()) return;
-        if (connection != null && connection.needsBeDestroyed()) connection.destroy(true);
-
-        if (connection == null || connection.dead()) {
-            remove(Entity.RemovalReason.DISCARDED);
-        }
+    public boolean isPickable() {
+        return !isRemoved();
     }
 
     @Override
-    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
-        if (IRopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
-            destroyConnections(!player.isCreative());
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
+    public boolean isPushable() {
+        return false;
     }
 
     @Override

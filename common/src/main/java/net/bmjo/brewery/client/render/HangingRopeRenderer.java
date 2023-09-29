@@ -58,7 +58,7 @@ public class HangingRopeRenderer extends EntityRenderer<HangingRopeEntity> {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(entityCutout);
         poseStack.pushPose();
         poseStack.translate(0, EntityRegistry.HANGING_ROPE.get().getHeight(), 0);
-        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
+        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, entity.getId(), blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
         poseStack.popPose();
     }
 

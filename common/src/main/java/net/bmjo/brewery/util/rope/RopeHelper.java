@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 public class RopeHelper {
+    public static final int HANGING_AMOUNT = 1;
     public static final ObjectList<IncompleteRopeConnection> incompleteRopes = new ObjectArrayList<>(256);
 
     public static void tick() {
@@ -33,13 +34,11 @@ public class RopeHelper {
         }
     }
 
-    public static double  getYHanging(double d, Vec3 ropeVec) {
-        if (ropeVec.x == 0 && ropeVec.z == 0) {
-            return 0;
-        }
+    public static double getYHanging(double d, Vec3 ropeVec) {
+        if (ropeVec.x == 0 && ropeVec.z == 0) return 0;
         double dXZ = Math.sqrt(ropeVec.x * ropeVec.x + ropeVec.z * ropeVec.z);
         double a, p;
-        a = 1 - 1 / (0.1D * dXZ + 1);
+        a = 1 - 1 / ((HANGING_AMOUNT / 10.0D) * dXZ + 1.0D);
         p = Math.PI / dXZ;
         return -a * Math.sin(p * d);
     }

@@ -55,9 +55,16 @@ public class BrewingStationBlock extends Block {
                     mainState = defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP_RIGHT);
                     break;
             }
+
+
             level.setBlock(mainPos, mainState, 3);
+            level.setBlock(mainPos.north(), defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP), 3);
+            level.setBlock(mainPos.south(), defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.BOTTOM), 3);
+            level.setBlock(mainPos.east(), defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.RIGHT), 3);
+            level.setBlock(mainPos.west(), defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.LEFT), 3);
         }
     }
+
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         super.playerWillDestroy(level, pos, state, player);

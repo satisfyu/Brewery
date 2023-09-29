@@ -4,20 +4,32 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import net.bmjo.brewery.util.rope.RopeHelper;
 import net.bmjo.brewery.client.model.RopeModel;
+import net.bmjo.brewery.util.rope.RopeHelper;
 import net.bmjo.brewery.util.rope.UVCord;
 import net.minecraft.world.phys.Vec3;
 
-public class RopeRender { //TODO wenn gerade dann nur ein vertex //TODO keys
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class RopeRender {
     private static final float SCALE = 1.0F;
     private static final float QUALITY = 4.0F;
     private static final int MAX_SEGMENTS = 2048;
     private static final Vec3 POSITIVE_Y = new Vec3(0.0F, 1.0F, 0.0F);
     private static final Vec3 NEGATIVE_Y = new Vec3(0.0F, -1.0F, 0.0F);
+    private final Map<Integer, RopeModel> models = new HashMap<>(256);
 
-    public void render(final VertexConsumer vertexConsumer, final PoseStack poseStack, final Vec3 ropeVec, final int blockLight0, final int blockLight1, final int skyLight0, final int skyLight1) {
-        RopeModel model = buildModel(ropeVec);
+    public void render(final VertexConsumer vertexConsumer, final PoseStack poseStack, final Vec3 ropeVec, final int entityId, final int blockLight0, final int blockLight1, final int skyLight0, final int skyLight1) {
+        int hash = getVectorHash(ropeVec, entityId);
+        RopeModel model;
+        if (models.containsKey(hash)) {
+            model = models.get(hash);
+        } else {
+            model = buildModel(ropeVec);
+            models.put(hash, model);
+        }
         model.render(vertexConsumer, poseStack, blockLight0, blockLight1, skyLight0, skyLight1);
     }
 
@@ -46,19 +58,19 @@ public class RopeRender { //TODO wenn gerade dann nur ein vertex //TODO keys
         Vector3f currentPos = Vector3f.ZERO.copy(), lastPos = new Vector3f();
         Vector3f segmentVector = new Vector3f(ropeNormal.multiply(segmentLength, segmentLength, segmentLength)), segmentPos = Vector3f.ZERO.copy();
 
-        boolean lastIter = false;
+        boolean lastIter = false, straight = (ropeVec.x == 0 && ropeVec.z == 0) || RopeHelper.HANGING_AMOUNT == 0;
         for (int segment = 0; segment < MAX_SEGMENTS; segment++) {
             lastPos.load(currentPos); //current to last
             segmentPos.add(segmentVector); // add step on top
 
-
-            if (new Vec3(segmentPos).length() > length) {
+            if (straight || new Vec3(segmentPos).length() > length) {
                 lastIter = true;
                 segmentPos.set((float) ropeVec.x, (float) ropeVec.y, (float) ropeVec.z);
             }
 
             currentPos.load(segmentPos); // set currentPos to top
-            currentPos.add(0.0F, (float) RopeHelper.getYHanging(new Vec3(segmentPos).length(), ropeVec), 0.0F);
+            if (!straight)
+                currentPos.add(0.0F, (float) RopeHelper.getYHanging(new Vec3(segmentPos).length(), ropeVec), 0.0F); //add hanging
 
             actuallySegmentLength = new Vec3(currentPos).distanceTo(new Vec3(lastPos));
 
@@ -72,5 +84,9 @@ public class RopeRender { //TODO wenn gerade dann nur ein vertex //TODO keys
 
             if (lastIter) break;
         }
+    }
+
+    private int getVectorHash(Vec3 ropeVec, int id) {
+        return Objects.hash(id, ropeVec.x, ropeVec.y, ropeVec.z);
     }
 }

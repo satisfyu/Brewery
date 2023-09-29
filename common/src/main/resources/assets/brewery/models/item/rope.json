@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "brewery:item/hop_rope"
+    "layer0": "brewery:item/rope"
   }
 }

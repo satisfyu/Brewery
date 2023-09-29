@@ -11,7 +11,6 @@ import net.bmjo.brewery.event.KeyInputHandler;
 import net.bmjo.brewery.item.ItemPredicate;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.*;
-import net.bmjo.brewery.util.BreweryClientUtil;
 import net.bmjo.brewery.util.rope.RopeHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -47,8 +46,8 @@ public class BreweryClient {
 
 
     private static void registerRenderer() {
-        EntityModelLayerRegistry.register(ModelRegistry.ROPE_KNOT, RopeKnotEntityModel::getTexturedModelData);
-        EntityRendererRegistry.register(EntityRegistry.HOP_ROPE_KNOT, RopeKnotRenderer::new);
+        EntityModelLayerRegistry.register(ModelRegistry.ROPE_KNOT, RopeKnotEntityModel::createBodyLayer);
+        EntityRendererRegistry.register(EntityRegistry.ROPE_KNOT, RopeKnotRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.HANGING_ROPE, HangingRopeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), WaterBasinRenderer::new);

@@ -1,5 +1,8 @@
 {
   "itemGroup.brewery.creative_tab": "Brewery",
+  "disclaimer.brewery.drugs": "Dont do drugs!",
+  "disclaimer.brewery.drive": "Dont drink and drive!",
+  "disclaimer.brewery.alcohol": "Alcohol is a dangerous drug.",
   "effect.brewery.drunk": "Intoxication",
   "effect.brewery.blackout": "Blackout",
   "effect.brewery.teleport": "Teleport",
@@ -14,7 +17,7 @@
   "item.brewery.hops": "Hops",
   "item.brewery.barley": "Barley",
   "item.brewery.corn": "Corn",
-  "item.brewery.hop_rope": "Rope",
+  "item.brewery.rope": "Rope",
   "item.brewery.pretzel": "Pretzel",
   "item.brewery.pork_knuckle": "Pork Knuckle",
   "item.brewery.fried_chicken": "Fried Chicken",

@@ -2,7 +2,6 @@ package net.bmjo.brewery.registry;
 
 import com.google.common.collect.Lists;
 import de.cristelknight.doapi.Util;
-import de.cristelknight.doapi.common.block.FacingBlock;
 import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
@@ -13,15 +12,9 @@ import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.*;
-import net.bmjo.brewery.item.Breathalyzer;
-import net.bmjo.brewery.item.DrinkBlockItem;
-import net.bmjo.brewery.item.RopeItem;
-import net.bmjo.brewery.item.SaturatedItem;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -88,7 +81,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     //TODO barrel as multiblock
     public static final RegistrySupplier<Block> BIG_BARREL = registerBI("big_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
-    public static final RegistrySupplier<Item> HOP_ROPE = registerItem("hop_rope", () -> new RopeItem(getSettings()));
+    public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeItem(getSettings()));
     public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
     public static final RegistrySupplier<Block> BEER_MUG = registerBI("beer_mug", () -> new BeerKegFlowerPotBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 

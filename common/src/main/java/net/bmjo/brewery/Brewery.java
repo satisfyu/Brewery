@@ -1,17 +1,12 @@
 package net.bmjo.brewery;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
+import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
-import net.bmjo.brewery.event.CommonEvents;
-import net.bmjo.brewery.event.PlayerCloneEvent;
-import net.bmjo.brewery.event.PlayerJoinEvent;
-import net.bmjo.brewery.event.PlayerRespawnEvent;
+import net.bmjo.brewery.event.*;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.*;
-import net.bmjo.brewery.registry.BlockEntityRegistry;
-import net.bmjo.brewery.registry.EffectRegistry;
-import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.sound.SoundRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.resources.ResourceLocation;
@@ -36,9 +31,15 @@ public class Brewery {
         CompostablesRegistry.init();
         EntityRegistry.register();
         BlockEntityRegistry.registerBlockEntities();
+        registerEvents();
+
+    }
+
+    private static void registerEvents() {
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
+        InteractionEvent.RIGHT_CLICK_BLOCK.register(new BlockClickEvent());
     }
 
     public static ResourceLocation MOD_ID(String path)
