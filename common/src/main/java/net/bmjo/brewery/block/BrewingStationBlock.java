@@ -37,24 +37,25 @@ public class BrewingStationBlock extends Block {
             BlockState mainState = state;
             Direction facing = placer.getDirection();
 
-            switch (facing) {
-                case NORTH:
+            mainState = switch (facing) {
+                case NORTH -> {
                     mainPos = pos.south();
-                    mainState = defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP_LEFT);
-                    break;
-                case SOUTH:
+                    yield defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP_LEFT);
+                }
+                case SOUTH -> {
                     mainPos = pos.north();
-                    mainState = defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.BOTTOM_RIGHT);
-                    break;
-                case EAST:
+                    yield defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.BOTTOM_RIGHT);
+                }
+                case EAST -> {
                     mainPos = pos.west();
-                    mainState = defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.BOTTOM_LEFT);
-                    break;
-                case WEST:
+                    yield defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.BOTTOM_LEFT);
+                }
+                case WEST -> {
                     mainPos = pos.east();
-                    mainState = defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP_RIGHT);
-                    break;
-            }
+                    yield defaultBlockState().setValue(LOCATION, BreweryUtil.LocationState.TOP_RIGHT);
+                }
+                default -> mainState;
+            };
 
 
             level.setBlock(mainPos, mainState, 3);
@@ -100,16 +101,12 @@ public class BrewingStationBlock extends Block {
 
     public BlockPos getMainPos(BlockState state, BlockPos from) {
         BreweryUtil.LocationState location = state.getValue(LOCATION);
-        switch (location) {
-            case TOP_LEFT:
-                return from.south().east();
-            case TOP:
-                return from.south();
-            case BOTTOM:
-                return from.east();
-            default:
-                return from;
-        }
+        return switch (location) {
+            case TOP_LEFT -> from.south().east();
+            case TOP -> from.south();
+            case BOTTOM -> from.east();
+            default -> from;
+        };
     }
 
 }

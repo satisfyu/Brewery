@@ -20,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -87,7 +88,7 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RopeKnotEntity entity) {
-        return null;
+    public @NotNull ResourceLocation getTextureLocation(RopeKnotEntity entity) {
+        return new ResourceLocation("");
     }
 }
