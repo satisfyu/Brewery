@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "brewery:pork_knuckle"
+    ]
+  },
+  "criteria": {
+    "has_cooked_porkchop": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cooked_porkchop"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "brewery:pork_knuckle"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cooked_porkchop",
+      "has_the_recipe"
+    ]
+  ]
+}

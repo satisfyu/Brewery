@@ -3,6 +3,7 @@ package net.bmjo.brewery;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
+import net.bmjo.brewery.event.CommonEvents;
 import net.bmjo.brewery.event.PlayerCloneEvent;
 import net.bmjo.brewery.event.PlayerJoinEvent;
 import net.bmjo.brewery.event.PlayerRespawnEvent;
@@ -29,6 +30,7 @@ public class Brewery {
         LOGGER.debug("Initiate " + MOD_ID);
         ObjectRegistry.register();
         EffectRegistry.registerEffects();
+        CommonEvents.init();
         BreweryNetworking.registerC2SPackets();
         SoundRegistry.registerSounds();
         CompostablesRegistry.init();

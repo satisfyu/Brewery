@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "brewery:copper_brewingstation",
+    "brewery:silo_copper",
+    "brewery:netherite_brewingstation"
+  ]
+}

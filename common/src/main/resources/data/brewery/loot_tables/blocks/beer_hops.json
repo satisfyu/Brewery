@@ -15,7 +15,7 @@
                   "condition": "minecraft:block_state_property",
                   "block": "brewery:beer_hops",
                   "properties": {
-                    "stack": "2"
+                    "stack": 2
                   }
                 }
               ],

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "brewery:dried_wheat",
+    "brewery:dried_corn",
+    "brewery:dried_barley"
+  ]
+}

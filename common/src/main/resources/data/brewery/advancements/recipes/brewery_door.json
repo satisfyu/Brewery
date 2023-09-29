@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "brewery:brewery_door"
+    ]
+  },
+  "criteria": {
+    "has_brewery_planks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:brewery_planks"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "brewery:brewery_door"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brewery_planks",
+      "has_the_recipe"
+    ]
+  ]
+}

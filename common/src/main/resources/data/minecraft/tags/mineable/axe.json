@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "brewery:bench",
+    "brewery:table",
+    "brewery:bar_counter",
+    "brewery:brewery_planks",
+    "brewery:brewery_window",
+    "brewery:brewery_door",
+    "brewery:brewery_trapdoor",
+    "brewery:big_barrel",
+    "brewery:wooden_brewingstation",
+    "brewery:silo_wood",
+    "brewery:beer_standard"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "brewery:patterned_carpet"
+    ]
+  },
+  "criteria": {
+    "has_patterned_wool": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:patterned_wool"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "brewery:patterned_carpet"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_patterned_wool",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "brewery:fried_chicken"
+    ]
+  },
+  "criteria": {
+    "has_cooked_chicken": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cooked_chicken"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "brewery:fried_chicken"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cooked_chicken",
+      "has_the_recipe"
+    ]
+  ]
+}
