@@ -2,15 +2,21 @@ package net.bmjo.brewery.entity;
 
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.util.rope.RopeConnection;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -24,6 +30,8 @@ public class HangingRopeEntity extends Entity implements IRopeEntity {
     private static final int MAX_LENGTH = 8;
     @Nullable
     private RopeConnection connection;
+    @Environment(EnvType.CLIENT)
+    private int length, checkTimer = 0;
 
     public HangingRopeEntity(EntityType<? extends HangingRopeEntity> entityType, Level level) {
         super(entityType, level);
@@ -51,18 +59,20 @@ public class HangingRopeEntity extends Entity implements IRopeEntity {
         return null;
     }
 
-    public Vec3 getRopeVec() { //TODO Update not every time
-        BlockPos blockPos = this.blockPosition();
-        int length = 0;
-        while (this.level.getBlockState(blockPos.below(length + 1)).isAir() && length < MAX_LENGTH) {
-            length++;
-        }
+    @Environment(EnvType.CLIENT)
+    public Vec3 getRopeVec() {
         return new Vec3(0, -length, 0);
     }
 
     @Override
     public void tick() {
-        if (getLevel().isClientSide()) return;
+        if (getLevel().isClientSide()) {
+            if (checkTimer++ == 50) {
+                checkTimer = 0;
+                checkLength();
+            }
+            return;
+        }
         if (connection != null && connection.needsBeDestroyed()) connection.destroy(true);
 
         if (connection == null || connection.dead()) {
@@ -70,18 +80,67 @@ public class HangingRopeEntity extends Entity implements IRopeEntity {
         }
     }
 
+    @Environment(EnvType.CLIENT)
+    private void checkLength() {
+        BlockPos blockPos = this.blockPosition();
+        int length = 0;
+        while (this.level.getBlockState(blockPos.below(length + 1)).isAir() && length < MAX_LENGTH) {
+            length++;
+        }
+        this.length = length;
+    }
+
     @Override
-    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) { //TODO make removable
         if (IRopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
-            destroyConnections(!player.isCreative()); //TODO nicht ganzes Seil
+            destroyConnections(!player.isCreative());
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
 
     @Override
+    public boolean skipAttackInteraction(Entity entity) {
+        if (entity instanceof Player player) {
+            hurt(DamageSource.playerAttack(player), 0.0F);
+        } else {
+            playSound(SoundEvents.WOOL_HIT, 0.5F, 1.0F);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hurt(DamageSource damageSource, float f) {
+        InteractionResult result = IRopeEntity.onDamageFrom(this, damageSource);
+
+        if (result.consumesAction()) {
+            destroyConnections(result == InteractionResult.SUCCESS);
+            return true;
+        }
+        return false;
+    }
+
+    //Override Stuff
+
+    @Override
     public void setPos(double x, double y, double z) {
         super.setPos((double) Mth.floor(x) + 0.5D, y, (double) Mth.floor(z) + 0.5D);
+    }
+
+    @Override
+    public @NotNull Vec3 getLeashOffset() {
+        return new Vec3(0, EntityRegistry.HANGING_ROPE.get().getHeight(), 0);
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Override
+    public @NotNull Vec3 getRopeHoldPosition(float f) {
+        return getPosition(f).add(getLeashOffset());
+    }
+
+    @Override
+    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return EntityRegistry.HANGING_ROPE.get().getHeight() / 2;
     }
 
     @Override

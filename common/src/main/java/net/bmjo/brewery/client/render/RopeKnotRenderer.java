@@ -20,10 +20,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
 public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
+
+    private static final ResourceLocation KNOT_TEXTURE = new BreweryIdentifier("textures/rope/rope_knot.png");
     private final RopeRender hopRopeRenderer = new RopeRender();
     private final RopeKnotEntityModel<RopeKnotEntity> model;
 
@@ -45,13 +48,11 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
 
     @Override
     public void render(RopeKnotEntity entity, float f, float tickDelta, PoseStack poseStack, MultiBufferSource multiBufferSource, int light) {
-        if (entity.shouldRenderRope()) {
+        if (entity.shouldRenderKnot()) {
             poseStack.pushPose();
-            Vec3 leashOffset = entity.getRopeHoldPosition(tickDelta).subtract(entity.getPosition(tickDelta));
-            poseStack.translate(leashOffset.x, leashOffset.y + 6.5 / 16f, leashOffset.z);
-            // The model is 6 px wide, but it should be rendered at 5px
-            poseStack.scale(5 / 6f, 1, 5 / 6f);
-            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(new BreweryIdentifier("textures/rope/rope_knot.png")));
+            poseStack.scale(-1.0F, -1.0F, 1.0F);
+            this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
+            VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(KNOT_TEXTURE));
             this.model.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
             poseStack.popPose();
         }
@@ -82,12 +83,12 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
         poseStack.pushPose();
         Vec3 leashOffset = fromKnot.getLeashOffset();
         poseStack.translate(leashOffset.x, leashOffset.y, leashOffset.z);
-        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
+        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, fromKnot.getId(), blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
         poseStack.popPose();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RopeKnotEntity entity) {
-        return null;
+    public @NotNull ResourceLocation getTextureLocation(RopeKnotEntity entity) {
+        return new ResourceLocation("");
     }
 }

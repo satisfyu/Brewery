@@ -166,7 +166,7 @@ public class RopeConnection {
         if (!level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) drop = false;
 
         if (drop) {
-            ItemStack stack = new ItemStack(ObjectRegistry.HOP_ROPE.get());
+            ItemStack stack = new ItemStack(ObjectRegistry.ROPE.get());
             if (to instanceof Player player) {
                 player.addItem(stack);
             } else {

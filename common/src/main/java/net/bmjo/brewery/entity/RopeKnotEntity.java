@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,6 +23,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -37,7 +38,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +48,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     private static final byte GRACE_PERIOD = 100;
     private final Set<RopeConnection> connections = new HashSet<>();
     private final ObjectList<Tag> incompleteConnections = new ObjectArrayList<>();
-    private int obstructionCheckTimer = 0;
+    private int checkTimer = 0;
     private byte graceTicks = GRACE_PERIOD;
 
     public RopeKnotEntity(EntityType<? extends RopeKnotEntity> entityType, Level world) {
@@ -56,7 +56,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     }
 
     private RopeKnotEntity(Level level, BlockPos blockPos) {
-        super(EntityRegistry.HOP_ROPE_KNOT.get(), level, blockPos);
+        super(EntityRegistry.ROPE_KNOT.get(), level, blockPos);
         setPos(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
 
@@ -74,15 +74,24 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         }
     }
 
-    public boolean sameConnectionExist(@NotNull RopeConnection connection) {//TODO
-        return this.connections.contains(connection);
+    public boolean sameConnectionExist(@NotNull RopeConnection connection) {
+        for (RopeConnection ropeConnection : connections) {
+            if (connection.equals(ropeConnection)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean canAttachTo(BlockState blockState) {
+        return blockState != null && (blockState.is(BlockTags.FENCES) || blockState.is(Blocks.TRIPWIRE_HOOK));
     }
 
     @Override
-    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) { //TODO DAMAGE
+    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
         ItemStack handStack = player.getItemInHand(interactionHand);
         if (this.getLevel().isClientSide()) {
-            if (handStack.is(ObjectRegistry.HOP_ROPE.get())) {
+            if (handStack.is(ObjectRegistry.ROPE.get())) {
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;
@@ -105,7 +114,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             return InteractionResult.CONSUME;
         }
 
-        if (handStack.is(ObjectRegistry.HOP_ROPE.get())) {
+        if (handStack.is(ObjectRegistry.ROPE.get())) {
             this.playPlacementSound();
             RopeConnection.create(this, player);
             if (!player.isCreative()) {
@@ -141,7 +150,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return hasMadeConnection;
     }
 
-    private static List<RopeConnection> getHeldRopesInRange(Player player, Vec3 target) {
+    public static List<RopeConnection> getHeldRopesInRange(Player player, Vec3 target) {
         AABB searchBox = AABB.ofSize(target, MAX_RANGE * 2, MAX_RANGE * 2, MAX_RANGE * 2);
         List<RopeKnotEntity> otherKnots = player.getLevel().getEntitiesOfClass(RopeKnotEntity.class, searchBox);
 
@@ -166,6 +175,27 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean skipAttackInteraction(Entity entity) {
+        if (entity instanceof Player player) {
+            hurt(DamageSource.playerAttack(player), 0.0F);
+        } else {
+            playSound(SoundEvents.WOOL_HIT, 0.5F, 1.0F);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hurt(DamageSource damageSource, float f) {
+        InteractionResult result = IRopeEntity.onDamageFrom(this, damageSource);
+
+        if (result.consumesAction()) {
+            destroyConnections(result == InteractionResult.SUCCESS);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -206,8 +236,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             }
         }
 
-        if (obstructionCheckTimer++ == 100) {
-            obstructionCheckTimer = 0;
+        if (checkTimer++ == 100) {
+            checkTimer = 0;
             if (!survives()) {
                 destroyConnections(true);
             }
@@ -217,7 +247,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     @Override
     public boolean survives() {
         BlockState blockState = getLevel().getBlockState(getPos());
-        return blockState.is(BlockTags.FENCES) || blockState.is(Blocks.TRIPWIRE_HOOK);
+        return canAttachTo(blockState);
     }
 
     private void removeDeadConnections() {
@@ -317,29 +347,26 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         }
 
         if (graceTicks <= 0) {
-            this.spawnAtLocation(ObjectRegistry.HOP_ROPE.get());
+            this.spawnAtLocation(ObjectRegistry.ROPE.get());
             dropItem(null);
             return true;
         }
-
         return false;
     }
 
-    public boolean shouldRenderRope() {
-        return true;
+    public boolean shouldRenderKnot() {
+        return !getLevel().getBlockState(pos).isAir();
     }
 
-    private double getYOffset() { //TODO
-        BlockState blockState = this.level.getBlockState(this.blockPosition());
-        VoxelShape shape = blockState.getShape(this.level, this.blockPosition());
-        double y = shape.max(Direction.Axis.Y);
-        return y - EntityRegistry.HOP_ROPE_KNOT.get().getHeight();
+    private double getYOffset(double x, double y, double z) {
+        BlockState blockState = this.getLevel().getBlockState(new BlockPos(x, y, z));
+        return blockState.is(Blocks.TRIPWIRE_HOOK) ? 6 / 16.0F : 10 / 16.0F;
     }
 
     //OVERRIDE SHIT
     @Override
     public void setPos(double x, double y, double z) {
-        super.setPos((double) Mth.floor(x) + 0.5D, (double) Mth.floor(y) + 0.5D, (double) Mth.floor(z) + 0.5D);
+        super.setPos((double) Mth.floor(x) + 0.5D, (double) Mth.floor(y) + getYOffset(x, y, z), (double) Mth.floor(z) + 0.5D);
     }
 
     @Override
@@ -369,7 +396,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     @Override
     protected void recalculateBoundingBox() {
-        setPosRaw(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D); //TODO right height
+        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+        setPosRaw(x + 0.5D, y + getYOffset(x, y, z), z + 0.5D);
         double w = getType().getWidth() / 2.0;
         double h = getType().getHeight();
         setBoundingBox(new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w));
@@ -378,7 +406,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     @Override
     public float mirror(Mirror mirror) {
         if (mirror != Mirror.NONE) {
-            // Mirror the X axis, I am not sure why
             for (Tag element : incompleteConnections) {
                 if (element instanceof CompoundTag tag) {
                     if (tag.contains("RelX")) {
@@ -388,7 +415,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
             }
         }
 
-        // Opposite of Entity.applyMirror, again I am not sure why, but it works
         float yaw = Mth.wrapDegrees(this.getYRot());
         return switch (mirror) {
             case LEFT_RIGHT -> 180 - yaw;
@@ -399,18 +425,18 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     @Override
     public @NotNull Vec3 getLeashOffset() {
-        return new Vec3(0, 4.5 / 16.0, 0);
+        return new Vec3(0, EntityRegistry.ROPE_KNOT.get().getHeight() / 2, 0);
     }
 
     @Environment(EnvType.CLIENT)
     @Override
     public @NotNull Vec3 getRopeHoldPosition(float f) {
-        return getPosition(f).add(0, 4.5 / 16.0, 0);
+        return getPosition(f).add(getLeashOffset());
     }
 
     @Override
     protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return 4.5f / 16f;
+        return EntityRegistry.ROPE_KNOT.get().getHeight() / 2;
     }
 
     @Override
@@ -421,6 +447,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
 
     @Override
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this); //BreweryUtil.createEntitySpawnPacket(BreweryNetworking.SPAWN_KNOT_S2C_ID, this); //
+        return new ClientboundAddEntityPacket(this);
     }
 }

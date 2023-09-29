@@ -1,6 +1,5 @@
 package net.bmjo.brewery.effect;
 
-import net.bmjo.brewery.effect.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.InstantenousMobEffect;
@@ -27,6 +26,7 @@ public class SlidingEffect extends InstantenousMobEffect {
                     serverPlayer.connection.teleport(pos.x, pos.y, pos.z, Mth.wrapDegrees(serverPlayer.getYRot()), Mth.wrapDegrees(serverPlayer.getXRot()));
                 }
                 //TODO funktioniert das nicht weils falsch gemacht ist oder overrided der slide effekt den movement speed?
+                //  was probierst du hier???
                 float newSpeed = (float) (serverPlayer.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).getBaseValue() * 1.4);
                 serverPlayer.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
             } else {

@@ -4,17 +4,19 @@
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
+    "DisclaimerMixin",
     "EffectIconMixin",
     "FogRendererMixin",
     "GameRendererMixin",
+    "PickMixin",
     "WindowMixin"
   ],
   "mixins": [
     "AlcoholPlayerMixin",
     "LivingEntityMixin",
     "PlayerMixin",
-    "StoneCutterMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "StoneCutterMixin"
   ],
   "injectors": {
     "defaultRequire": 1

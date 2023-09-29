@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 @Environment(EnvType.CLIENT)
 public class HangingRopeRenderer extends EntityRenderer<HangingRopeEntity> {
@@ -58,12 +59,12 @@ public class HangingRopeRenderer extends EntityRenderer<HangingRopeEntity> {
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(entityCutout);
         poseStack.pushPose();
         poseStack.translate(0, EntityRegistry.HANGING_ROPE.get().getHeight(), 0);
-        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
+        hopRopeRenderer.render(vertexConsumer, poseStack, ropeVec, entity.getId(), blockLightLevelOfStart, blockLightLevelOfEnd, skylightLevelOfStart, skylightLevelOfEnd);
         poseStack.popPose();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(HangingRopeEntity entity) {
-        return null;
+    public @NotNull ResourceLocation getTextureLocation(HangingRopeEntity entity) {
+        return new ResourceLocation("");
     }
 }
