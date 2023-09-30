@@ -9,7 +9,8 @@
     "FogRendererMixin",
     "GameRendererMixin",
     "PickMixin",
-    "WindowMixin"
+    "WindowMixin",
+    "OrderedTextToolTipAccessor"
   ],
   "mixins": [
     "AlcoholPlayerMixin",

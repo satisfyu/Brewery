@@ -1,9 +1,10 @@
 {
   "required": true,
-  "package": "net.brewery.mixin.fabric",
+  "package": "net.bmjo.brewery.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
+    "LongToolTipsMixin"
   ],
   "mixins": [
   ],
