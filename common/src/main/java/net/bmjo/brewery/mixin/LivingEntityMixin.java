@@ -2,6 +2,7 @@ package net.bmjo.brewery.mixin;
 
 import com.google.common.collect.Maps;
 import net.bmjo.brewery.registry.EffectRegistry;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -41,6 +42,34 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow @Nullable
     public abstract MobEffectInstance getEffect(MobEffect mobEffect);
 
+    @Shadow
+    public abstract boolean removeAllEffects();
+
+    @Shadow
+    public abstract boolean addEffect(MobEffectInstance mobEffectInstance);
+
+    @Shadow
+    public void setHealth(float v) {}
+
+    @Shadow
+    public abstract boolean hasEffect(MobEffect mobEffect);
+
+    @Shadow public abstract boolean removeEffect(MobEffect mobEffect);
+
+    @Inject(method = "checkTotemDeathProtection", at = @At("HEAD"), cancellable = true)
+    public void inject1(DamageSource damageSource, CallbackInfoReturnable<Boolean> callback) {
+        if (this.hasEffect(EffectRegistry.SURVIVALIST.get())) {
+            this.setHealth(1.0F);
+            this.removeEffect(EffectRegistry.SURVIVALIST.get());
+            this.removeAllEffects();
+            this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+            this.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+            this.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+            this.level.broadcastEntityEvent(this, (byte) 35);
+            callback.setReturnValue(true);
+        }
+    }
+
     @ModifyVariable(method = "travel", at = @At("LOAD"), name = "f2", ordinal = 0, index = 8)
     public float inject2(float value) {
         if (this.hasStatusEffect(EffectRegistry.SLIDING.get()) && this.isOnGround()) {
@@ -51,23 +80,5 @@ public abstract class LivingEntityMixin extends Entity {
             }
         }
         return value;
-    }
-
-    @Redirect(method = "calculateFallDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getEffect(Lnet/minecraft/world/effect/MobEffect;)Lnet/minecraft/world/effect/MobEffectInstance;"))
-    public MobEffectInstance improvedJumpBoostFall(LivingEntity livingEntity, MobEffect effect) {
-        if (livingEntity.hasEffect(EffectRegistry.DOUBLEJUMP.get())) {
-            return livingEntity.getEffect(EffectRegistry.DOUBLEJUMP.get());
-        }
-        return livingEntity.getEffect(MobEffects.JUMP);
-    }
-
-    @Inject(method = "getJumpBoostPower", at = @At(value = "HEAD"), cancellable = true)
-    private void improvedJumpBoost(CallbackInfoReturnable<Double> cir) {
-        if (this.hasStatusEffect(EffectRegistry.DOUBLEJUMP.get())) {
-            MobEffectInstance doubleJumpEffect = this.activeEffects.get(EffectRegistry.DOUBLEJUMP.get());
-            if (doubleJumpEffect != null) {
-                cir.setReturnValue((double)(0.1F * (float)(doubleJumpEffect.getAmplifier() + 1)));
-            }
-        }
     }
 }

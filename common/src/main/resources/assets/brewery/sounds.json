@@ -4,5 +4,29 @@
     "sounds": [
       "brewery:breath"
     ]
+  },
+  "beer_elemental_ambient": {
+    "subtitle": "brewery.sound.beer_elemental_ambient",
+    "sounds": [
+      "brewery:beer_elemental_ambient1",
+      "brewery:beer_elemental_ambient2",
+      "brewery:beer_elemental_ambient3"
+    ]
+  },
+  "beer_elemental_hurt": {
+    "subtitle": "brewery.sound.beer_elemental_hurt",
+    "sounds": [
+      "brewery:beer_elemental_hurt1",
+      "brewery:beer_elemental_hurt2",
+      "brewery:beer_elemental_hurt3"
+    ]
+  },
+  "beer_elemental_death": {
+    "subtitle": "brewery.sound.beer_elemental_death",
+    "sounds": [
+      "brewery:beer_elemental_death1",
+      "brewery:beer_elemental_death2",
+      "brewery:beer_elemental_death3"
+    ]
   }
 }

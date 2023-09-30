@@ -6,7 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.monster.Stray;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ public class CuddlyWarmEffect extends InstantenousMobEffect {
         if (!livingEntity.getLevel().isClientSide()) {
             ServerLevel serverLevel = (ServerLevel) livingEntity.getLevel();
             livingEntity.setTicksFrozen(0);
-            if (livingEntity instanceof SnowGolem && serverLevel.getServer().getTickCount() % 20 == 0) {
+            if (livingEntity instanceof Stray && serverLevel.getServer().getTickCount() % 20 == 0) {
                 livingEntity.hurt(DamageSource.MAGIC, amplifier + 1);
             }
 

@@ -1,12 +1,9 @@
 package net.bmjo.brewery.effect;
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.InstantenousMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.BedBlock;
-import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class SlidingEffect extends InstantenousMobEffect {
     public SlidingEffect() {
@@ -14,35 +11,16 @@ public class SlidingEffect extends InstantenousMobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (!livingEntity.getLevel().isClientSide()) {
-            if (livingEntity instanceof ServerPlayer serverPlayer && !livingEntity.isSpectator()) {
-                Vec3 pos;
-                if (serverPlayer.getRespawnPosition() != null && (serverPlayer.getLevel().getBlockState(serverPlayer.getRespawnPosition()).getBlock() instanceof BedBlock)) {
-                    pos = Vec3.atBottomCenterOf(serverPlayer.getRespawnPosition());
-                    serverPlayer.connection.teleport(pos.x, pos.y, pos.z, Mth.wrapDegrees(serverPlayer.getYRot()), Mth.wrapDegrees(serverPlayer.getXRot()));
-                } else {
-                    pos = Vec3.atBottomCenterOf(serverPlayer.getLevel().getSharedSpawnPos());
-                    serverPlayer.connection.teleport(pos.x, pos.y, pos.z, Mth.wrapDegrees(serverPlayer.getYRot()), Mth.wrapDegrees(serverPlayer.getXRot()));
-                }
-                //TODO funktioniert das nicht weils falsch gemacht ist oder overrided der slide effekt den movement speed?
-                //  was probierst du hier???
-                float newSpeed = (float) (serverPlayer.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).getBaseValue() * 1.4);
-                serverPlayer.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
-            } else {
-                Vec3 pos = Vec3.atBottomCenterOf(livingEntity.getLevel().getSharedSpawnPos());
-                livingEntity.teleportTo(pos.x, pos.y, pos.z);
-            }
-        }
+    public void applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
     }
 
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        return duration == 1;
+        return duration > 1;
     }
 
     @Override
     public boolean isInstantenous() {
-        return true;
+        return false;
     }
 }

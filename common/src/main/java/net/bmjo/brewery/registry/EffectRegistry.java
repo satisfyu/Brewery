@@ -27,7 +27,7 @@ public class EffectRegistry {
     public static final RegistrySupplier<MobEffect> HEARTHSTONE;
     public static final RegistrySupplier<MobEffect> SLIDING;
     public static final RegistrySupplier<MobEffect> GRAVEDIGGER;
-    public static final RegistrySupplier<MobEffect> DOUBLEJUMP;
+    public static final RegistrySupplier<MobEffect> SURVIVALIST;
     public static final RegistrySupplier<MobEffect> HARDDRINKING;
 
 
@@ -53,7 +53,7 @@ public class EffectRegistry {
         HEARTHSTONE = registerEffect("hearthstone", HearthstoneEffect::new);
         SLIDING = registerEffect("sliding", SlidingEffect::new);
         GRAVEDIGGER = registerEffect("gravedigger", GravediggerEffect::new);
-        DOUBLEJUMP = registerEffect("doublejump", () -> new DoubleJumpEffect(MobEffectCategory.BENEFICIAL, 0x90F891));
+        SURVIVALIST = registerEffect("survivalist", () -> new SurvivalistEffect(MobEffectCategory.BENEFICIAL, 0x90F891));
 
     }
 }

@@ -96,7 +96,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WHISKEY_MAGGOALLAN = registerBeverage("whiskey_maggoallan", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.GRAVEDIGGER.get(), 2 * 20);
     public static final RegistrySupplier<Block> WHISKEY_MOJANGLABEL = registerBeverage("whiskey_mojanglabel", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.HEARTHSTONE.get(), 2 * 20);
     public static final RegistrySupplier<Block> WHISKEY_LILITUSINGLEMALT = registerBeverage("whiskey_lilitusinglemalt", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.CUDDLYWARM.get(), 30 * 20);
-    public static final RegistrySupplier<Block> WHISKEY_JOJANNIK = registerBeverage("whiskey_jojannik", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.DOUBLEJUMP.get(), 30 * 20);
+    public static final RegistrySupplier<Block> WHISKEY_JOJANNIK = registerBeverage("whiskey_jojannik", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.SURVIVALIST.get(), 30 * 20);
     public static final RegistrySupplier<Block> WHISKEY_CRISTELWALKER = registerBeverage("whiskey_cristelwalker", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.SLIDING.get(), 30 * 20);
 
     //FOOD
