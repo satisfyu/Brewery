@@ -1,28 +1,28 @@
 package net.bmjo.brewery.item;
 
+import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.registry.TagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.bmjo.brewery.registry.*;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CornSeedItem extends BlockItem {
-    public CornSeedItem(Block block, Properties properties) {
+public class SeedConversionItem extends BlockItem {
+    public SeedConversionItem(Block block, Properties properties) {
         super(block, properties);
     }
 
     public static void handleStoneCutter(Level level, BlockPos pos, Entity entity) {
         if (entity instanceof ItemEntity item) {
             ItemStack stack = item.getItem();
-            if (!stack.is(Items.WHEAT_SEEDS)) return;
+            if (!stack.is(TagRegistry.SEED_CONVERSION)) return;
 
             Supplier<Item> supplier = ObjectRegistry.SEEDCONVERSION.entrySet()
                     .stream()

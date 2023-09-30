@@ -1,6 +1,6 @@
 package net.bmjo.brewery.mixin;
 
-import net.bmjo.brewery.item.CornSeedItem;
+import net.bmjo.brewery.item.SeedConversionItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -19,6 +19,6 @@ public abstract class StoneCutterMixin extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         super.stepOn(level, pos, state, entity);
-        CornSeedItem.handleStoneCutter(level, pos, entity);
+        SeedConversionItem.handleStoneCutter(level, pos, entity);
     }
 }
