@@ -108,6 +108,7 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
             if (player.getLevel() instanceof ServerLevel serverLevel) {
                 sendChangePacket(serverLevel);
             }
+            player.playSound(this.active ? SoundEvents.LEASH_KNOT_PLACE : SoundEvents.LEASH_KNOT_BREAK, 0.5F, 1.0F);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
