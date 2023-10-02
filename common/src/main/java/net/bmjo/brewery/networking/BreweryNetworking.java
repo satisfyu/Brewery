@@ -16,6 +16,7 @@ public class BreweryNetworking {
     public static final ResourceLocation ATTACH_ROPE_S2C_ID = new BreweryIdentifier("attach_rope");
     public static final ResourceLocation DETACH_ROPE_S2C_ID = new BreweryIdentifier("detach_rope");
     public static final ResourceLocation SYNC_ROPE_S2C_ID = new BreweryIdentifier("sync_rope");
+    public static final ResourceLocation CHANGE_HANGING_ROPE_S2C_ID = new BreweryIdentifier("change_hanging_rope");
 
     public static void registerC2SPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.C2S, ALCOHOL_SYNC_REQUEST_C2S_ID, new SyncRequestC2SPacket());
@@ -29,6 +30,7 @@ public class BreweryNetworking {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ATTACH_ROPE_S2C_ID, new AttachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DETACH_ROPE_S2C_ID, new DetachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, SYNC_ROPE_S2C_ID, new SyncRopeS2CPacket());
+        NetworkManager.registerReceiver(NetworkManager.Side.S2C, CHANGE_HANGING_ROPE_S2C_ID, new ChangeHangingRopeS2CPacket());
     }
 
 

@@ -81,6 +81,7 @@ public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
         return new BrewKettleEntity(blockPos, blockState);
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
