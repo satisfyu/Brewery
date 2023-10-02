@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0,up=false": {
+      "model": "brewery:block/hops_stage0"
+    },
+    "age=1,up=false": {
+      "model": "brewery:block/hops_stage1"
+    },
+    "age=2,up=false": {
+      "model": "brewery:block/hops_stage2"
+    },
+    "age=3,up=false": {
+      "model": "brewery:block/hops_stage3"
+    },
+    "age=0,up=true": {
+      "model": "brewery:block/hops_stage0"
+    },
+    "age=1,up=true": {
+      "model": "brewery:block/hops_stage1"
+    },
+    "age=2,up=true": {
+      "model": "brewery:block/hops_stage2"
+    },
+    "age=3,up=true": {
+      "model": "brewery:block/hops_stage3"
+    }
+  }
+}
