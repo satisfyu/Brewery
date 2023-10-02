@@ -7,6 +7,7 @@ import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.entity.HangingRopeEntity;
 import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
@@ -43,6 +44,15 @@ public class EntityRegistry {
                     .noSummon()
                     .fireImmune()
                     .build(new BreweryIdentifier("hanging_rope").toString())
+    );
+
+    public static final RegistrySupplier<EntityType<BeerElementalEntity>> BEER_ELEMENTAL = create("beer_elemental",
+            () -> EntityType.Builder.of(BeerElementalEntity::new, MobCategory.MONSTER)
+                    .sized(1F, 1F)
+                    .clientTrackingRange(80)
+                    .updateInterval(3)
+                    .fireImmune()
+                    .build(new BreweryIdentifier("beer_elemental").toString())
     );
 
     public static <T extends EntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {

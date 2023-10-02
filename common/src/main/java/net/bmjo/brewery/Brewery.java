@@ -4,6 +4,8 @@ import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
+import dev.architectury.registry.level.entity.EntityAttributeRegistry;
+import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
 import net.bmjo.brewery.event.*;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.*;
@@ -32,7 +34,10 @@ public class Brewery {
         EntityRegistry.register();
         BlockEntityRegistry.registerBlockEntities();
         registerEvents();
+    }
 
+    public static void commonSetup(){
+        EntityAttributeRegistry.register(EntityRegistry.BEER_ELEMENTAL, BeerElementalEntity::createAttributes);
     }
 
     private static void registerEvents() {

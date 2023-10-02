@@ -38,7 +38,10 @@ public class BeerStandardBlock extends AbstractStandardBlock {
     @Override
     public void appendHoverText(ItemStack itemStack, BlockGetter world, List<Component> tooltip, TooltipFlag tooltipContext) {
         tooltip.add(Component.translatable("tooltip.brewery.thankyou_1").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.brewery.thankyou_2").withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.empty());
+        tooltip.add(Component.translatable("tooltip.brewery.thankyou_2").withStyle(ChatFormatting.DARK_PURPLE));
+        tooltip.add(Component.translatable("tooltip.brewery.thankyou_4").withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.empty());
         tooltip.add(Component.translatable("tooltip.brewery.thankyou_3").withStyle(ChatFormatting.GOLD));
 
     }

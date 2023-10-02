@@ -3,7 +3,7 @@ package net.bmjo.brewery.event;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import net.bmjo.brewery.entity.RopeKnotEntity;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;

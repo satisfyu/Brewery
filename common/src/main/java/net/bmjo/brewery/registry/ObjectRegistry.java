@@ -2,6 +2,7 @@ package net.bmjo.brewery.registry;
 
 import com.google.common.collect.Lists;
 import de.cristelknight.doapi.Util;
+import dev.architectury.core.item.ArchitecturySpawnEggItem;
 import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
@@ -111,7 +112,7 @@ public class ObjectRegistry {
     //TODO conditional recipes -> bakery
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 1.2f, EffectRegistry.SATURATED.get(), 6000)));
     public static final RegistrySupplier<Block> GINGERBREAD = registerBI("gingerbread", () -> new GingerBreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission()));
-    public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new Item(getSettings()));
+    public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.BEER_ELEMENTAL, -1, -1, getSettings()));
     public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(getSettings().rarity(Rarity.EPIC)));
     public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));

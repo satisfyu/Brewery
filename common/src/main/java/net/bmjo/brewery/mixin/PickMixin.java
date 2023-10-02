@@ -1,7 +1,7 @@
 package net.bmjo.brewery.mixin;
 
 import net.bmjo.brewery.entity.IRopeEntity;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.registry.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;

@@ -13,7 +13,6 @@ import net.minecraft.world.entity.monster.Blaze;
 import static net.bmjo.brewery.Brewery.MOD_ID;
 
 public class BeerElementalModel<T extends Blaze> extends EntityModel<T> {
-    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation BEER_ELEMENTAL_MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(MOD_ID, "beer_elemental"), "main");
     private final ModelPart upperBodyParts0;
     private final ModelPart upperBodyParts1;

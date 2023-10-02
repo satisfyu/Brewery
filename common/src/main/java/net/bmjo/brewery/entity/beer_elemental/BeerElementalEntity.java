@@ -25,6 +25,11 @@ public class BeerElementalEntity extends Blaze {
         return SoundEvents.GLASS_BREAK;
     }
 
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+    }
+
     public void aiStep() {
         if (!this.onGround && this.getDeltaMovement().y < 0.0) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0, 0.6, 1.0));
