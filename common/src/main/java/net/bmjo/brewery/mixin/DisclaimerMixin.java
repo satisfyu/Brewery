@@ -2,6 +2,7 @@ package net.bmjo.brewery.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bmjo.brewery.Brewery;
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
@@ -22,7 +23,7 @@ public abstract class DisclaimerMixin extends Screen {
     @Unique
     private static final Component[] DISCLAIMERS;
     @Unique
-    private final Component disclaimer = DISCLAIMERS[RandomSource.create().nextInt(0, DISCLAIMERS.length)];
+    private final Component disclaimer = Component.translatable("disclaimer.brewery.disclaimer", DISCLAIMERS[RandomSource.create().nextInt(0, DISCLAIMERS.length)]).withStyle(ChatFormatting.YELLOW);
     @Unique
     private boolean added = false;
 

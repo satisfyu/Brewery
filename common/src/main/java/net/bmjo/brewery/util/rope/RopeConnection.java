@@ -32,6 +32,8 @@ public class RopeConnection {
     private boolean alive = true;
     public boolean removeSilently = false;
     private final List<Integer> collisions = new ArrayList<>();
+    private final List<Integer> hangingRopes = new ArrayList<>();
+    private int activeRopes;
 
     public RopeKnotEntity from() {
         return from;
@@ -45,6 +47,14 @@ public class RopeConnection {
         return !alive;
     }
 
+    public int activeHangingRopes() {
+        return this.activeRopes;
+    }
+
+    public Level getLevel() {
+        return from.getLevel();
+    }
+
     public double getSquaredDistance() {
         return this.from.distanceToSqr(to);
     }
@@ -54,14 +64,33 @@ public class RopeConnection {
         return toPos.subtract(fromPos);
     }
 
-    private RopeConnection(RopeKnotEntity from, Entity to) {
+    public void setActive(boolean active, int id) {
+        int index = this.hangingRopes.indexOf(id);
+        if (index >= 0) {
+            if (active) {
+                this.activeRopes &= ~(1 << index);
+            } else {
+                this.activeRopes |= (1 << index);
+            }
+        } else {
+            Brewery.LOGGER.debug("Cant change hanging entity, storage doesnt contain reference to Entity {} .", id);
+        }
+    }
+
+    private RopeConnection(RopeKnotEntity from, Entity to, int activeRopes) {
         this.from = from;
         this.to = to;
+        this.activeRopes = activeRopes;
     }
 
     @Nullable
     public static RopeConnection create(@NotNull RopeKnotEntity fromKnot, @NotNull Entity to) {
-        RopeConnection connection = new RopeConnection(fromKnot, to);
+        return create(fromKnot, to, 0);
+    }
+
+    @Nullable
+    public static RopeConnection create(@NotNull RopeKnotEntity fromKnot, @NotNull Entity to, int activeRopes) {
+        RopeConnection connection = new RopeConnection(fromKnot, to, activeRopes);
         if (fromKnot.sameConnectionExist(connection)) return null;
 
         fromKnot.addConnection(connection);
@@ -79,11 +108,10 @@ public class RopeConnection {
     private void sendAttachRopePacket(ServerLevel serverLevel) {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
-        FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-        buf.writeInt(from.getId());
-        buf.writeInt(to.getId());
-
         for (ServerPlayer player : trackingPlayers) {
+            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
+            buf.writeInt(from.getId());
+            buf.writeInt(to.getId());
             NetworkManager.sendToPlayer(player, BreweryNetworking.ATTACH_ROPE_S2C_ID, buf);
         }
     }
@@ -136,6 +164,7 @@ public class RopeConnection {
         Vec3 endPos = to.position().add(to.getLeashOffset());
         Vec3 ropeVec = endPos.subtract(startPos);
 
+        int i = 0;
         Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
         for (BlockPos blockPos : blockPositions) {
             BlockPos currentPos = blockPos.subtract(from.getPos());
@@ -143,10 +172,16 @@ public class RopeConnection {
             double y = RopeHelper.getYHanging(currentVec.length(), ropeVec);
             y -= EntityRegistry.HANGING_ROPE.get().getHeight();
 
-            HangingRopeEntity hangingRopeEntity = HangingRopeEntity.create(from.getLevel(), blockPos.getX(), startPos.add(currentVec).y + y, blockPos.getZ(), this);
+            boolean active = (this.activeRopes & (1 << i)) == 0;
+            HangingRopeEntity hangingRopeEntity = HangingRopeEntity.create(from.getLevel(), blockPos.getX(), startPos.add(currentVec).y + y, blockPos.getZ(), this, active);
             hangingRopeEntity.setTicksFrozen((byte) 0);
             boolean added = from.getLevel().addFreshEntity(hangingRopeEntity);
-            if (!added) Brewery.LOGGER.warn("FAILED to summon hanging rope entity.");
+            if (added) {
+                this.hangingRopes.add(hangingRopeEntity.getId());
+            } else {
+                Brewery.LOGGER.warn("FAILED to summon hanging rope entity.");
+            }
+            i++;
         }
     }
 
@@ -187,17 +222,16 @@ public class RopeConnection {
     private void sendDetachChainPacket(ServerLevel serverLevel) {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
-        FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-        buf.writeInt(from.getId());
-        buf.writeInt(to.getId());
-
         for (ServerPlayer player : trackingPlayers) {
+            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
+            buf.writeInt(from.getId());
+            buf.writeInt(to.getId());
             NetworkManager.sendToPlayer(player, BreweryNetworking.DETACH_ROPE_S2C_ID, buf);
         }
     }
 
     private void destroyCollision() {
-        for (Integer entityId : collisions) {
+        for (Integer entityId : this.collisions) {
             Entity e = from.getLevel().getEntity(entityId);
             if (e instanceof RopeCollisionEntity) {
                 e.remove(Entity.RemovalReason.DISCARDED);
@@ -209,15 +243,15 @@ public class RopeConnection {
     }
 
     private void destroyHangingRopes() {
-        Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
-        for (BlockPos bLockPos : blockPositions) {
-            HangingRopeEntity hangingRopeEntity = HangingRopeEntity.getHangingRopeEntity(from.getLevel(), bLockPos);
-            if (hangingRopeEntity != null) {
-                hangingRopeEntity.remove(Entity.RemovalReason.DISCARDED);
+        for (Integer entityId : this.hangingRopes) {
+            Entity entity = from.getLevel().getEntity(entityId);
+            if (entity instanceof HangingRopeEntity) {
+                entity.remove(Entity.RemovalReason.DISCARDED);
             } else {
-                Brewery.LOGGER.warn("HangingRopeEntity at {} is null.", bLockPos);
+                Brewery.LOGGER.warn("Hanging storage contained reference to {} (#{}) which is not a hanging rope entity.", entity, entityId);
             }
         }
+        collisions.clear();
     }
 
     private static Set<ServerPlayer> getTrackingPlayers(ServerLevel serverLevel, RopeConnection connection) {

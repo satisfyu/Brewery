@@ -295,6 +295,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
                 compoundTag.putInt("RelX", relPos.getX());
                 compoundTag.putInt("RelY", relPos.getY());
                 compoundTag.putInt("RelZ", relPos.getZ());
+
+                compoundTag.putInt("Active", connection.activeHangingRopes());
             }
             connectionTag.add(compoundTag);
         }
@@ -302,7 +304,7 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         connectionTag.addAll(incompleteConnections);
 
         if (!connectionTag.isEmpty()) {
-            nbt.put("chains", connectionTag);
+            nbt.put("ropes", connectionTag);
         }
     }
 
@@ -314,8 +316,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        if (nbt.contains("chains")) {
-            incompleteConnections.addAll(nbt.getList("chains", Tag.TAG_COMPOUND));
+        if (nbt.contains("ropes")) {
+            incompleteConnections.addAll(nbt.getList("ropes", Tag.TAG_COMPOUND));
         }
     }
 
@@ -338,7 +340,8 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
                 blockPos = getBlockPosAsFacingRelative(blockPos, Direction.fromYRot(this.getYRot()));
                 RopeKnotEntity entity = RopeKnotEntity.getHopRopeKnotEntity(getLevel(), blockPos.offset(this.getPos()));
                 if (entity != null) {
-                    RopeConnection.create(this, entity);
+                    int activeRopes = tag.contains("Active") ? tag.getInt("Active") : 0;
+                    RopeConnection.create(this, entity, activeRopes);
                     return true;
                 }
             } else {

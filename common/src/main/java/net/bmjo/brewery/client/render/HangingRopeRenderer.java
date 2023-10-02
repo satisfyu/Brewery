@@ -44,6 +44,7 @@ public class HangingRopeRenderer extends EntityRenderer<HangingRopeEntity> {
     @Override
     public void render(HangingRopeEntity entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
         super.render(entity, f, g, poseStack, multiBufferSource, i);
+        if (!entity.active()) return;
         RenderType entityCutout = RenderType.entityCutoutNoCull(new BreweryIdentifier("textures/rope/rope.png"));
 
         Vec3 ropeVec = entity.getRopeVec();

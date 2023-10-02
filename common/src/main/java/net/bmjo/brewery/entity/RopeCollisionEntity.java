@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -47,15 +46,6 @@ public class RopeCollisionEntity extends Entity implements IRopeEntity {
         if (connection == null || connection.dead()) {
             remove(Entity.RemovalReason.DISCARDED);
         }
-    }
-
-    @Override
-    public @NotNull InteractionResult interact(Player player, InteractionHand interactionHand) {
-        if (IRopeEntity.canDestroyWith(player.getItemInHand(interactionHand))) {
-            destroyConnections(!player.isCreative());
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
     }
 
     @Override

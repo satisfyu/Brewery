@@ -45,6 +45,7 @@ public class Brewery {
         PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
         InteractionEvent.RIGHT_CLICK_BLOCK.register(new BlockClickEvent());
+        InteractionEvent.INTERACT_ENTITY.register(new EntityInteractionEvent());
     }
 
     public static ResourceLocation MOD_ID(String path)
