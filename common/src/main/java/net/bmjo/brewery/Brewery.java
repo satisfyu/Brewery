@@ -1,6 +1,5 @@
 package net.bmjo.brewery;
 
-import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
@@ -41,7 +40,6 @@ public class Brewery {
     }
 
     private static void registerEvents() {
-        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         PlayerEvent.PLAYER_RESPAWN.register(new PlayerRespawnEvent());
         PlayerEvent.PLAYER_CLONE.register(new PlayerCloneEvent());
         InteractionEvent.RIGHT_CLICK_BLOCK.register(new BlockClickEvent());

@@ -7,7 +7,7 @@ import net.bmjo.brewery.entity.RopeCollisionEntity;
 import net.bmjo.brewery.entity.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
-import net.bmjo.brewery.registry.*;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -249,6 +249,12 @@ public class RopeConnection {
                 entity.remove(Entity.RemovalReason.DISCARDED);
             } else {
                 Brewery.LOGGER.warn("Hanging storage contained reference to {} (#{}) which is not a hanging rope entity.", entity, entityId);
+            }
+        }
+        if (from.getLevel() instanceof ServerLevel serverLevel) {
+            Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
+            for (BlockPos blockPos : blockPositions) {
+                HangingRopeEntity.notifyHops(blockPos, serverLevel);
             }
         }
         collisions.clear();

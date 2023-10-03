@@ -1,5 +1,6 @@
 package net.bmjo.brewery.client;
 
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
@@ -10,6 +11,7 @@ import net.bmjo.brewery.client.render.*;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalModel;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalRenderer;
 import net.bmjo.brewery.event.KeyInputHandler;
+import net.bmjo.brewery.event.PlayerJoinEvent;
 import net.bmjo.brewery.item.ItemPredicate;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.*;
@@ -38,6 +40,7 @@ public class BreweryClient {
 
         );
 
+        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
     }
 

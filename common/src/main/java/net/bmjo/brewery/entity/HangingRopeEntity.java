@@ -2,6 +2,7 @@ package net.bmjo.brewery.entity;
 
 import dev.architectury.extensions.network.EntitySpawnExtension;
 import dev.architectury.networking.NetworkManager;
+import net.bmjo.brewery.block.crops.HopsCropBlock;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpawnExtension {
-    private static final int MAX_LENGTH = 8;
+    public static final int MAX_LENGTH = 8;
     @Nullable
     private RopeConnection connection;
     private boolean active;
@@ -92,7 +94,7 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     private void checkLength() {
         BlockPos blockPos = this.blockPosition();
         int length = 0;
-        while (this.level.getBlockState(blockPos.below(length + 1)).isAir() && length < MAX_LENGTH) {
+        while (!this.level.getBlockState(blockPos.below(length + 1)).getMaterial().isSolid() && length < MAX_LENGTH) {
             length++;
         }
         this.length = length;
@@ -107,11 +109,25 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
             if (connection != null && !player.getLevel().isClientSide) connection.setActive(this.active, this.getId());
             if (player.getLevel() instanceof ServerLevel serverLevel) {
                 sendChangePacket(serverLevel);
+                if (!this.active) {
+                    notifyHops(this.blockPosition(), serverLevel);
+                }
             }
             player.playSound(this.active ? SoundEvents.LEASH_KNOT_PLACE : SoundEvents.LEASH_KNOT_BREAK, 0.5F, 1.0F);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    public static void notifyHops(BlockPos blockPos, ServerLevel serverLevel) {
+        for (int below = 0; below < HangingRopeEntity.MAX_LENGTH; below++) {
+            BlockPos belowPos = blockPos.below(below);
+            BlockState blockState = serverLevel.getBlockState(belowPos);
+            if (blockState.is(HopsCropBlock.getHeadBlock())) {
+                serverLevel.scheduleTick(belowPos, blockState.getBlock(), 1);
+                return;
+            }
+        }
     }
 
     private void sendChangePacket(ServerLevel serverLevel) {

@@ -11,14 +11,13 @@ import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.*;
 import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
-import net.bmjo.brewery.block.crops.HopsCropBlock;
+import net.bmjo.brewery.block.crops.HopsCropBodyBlock;
+import net.bmjo.brewery.block.crops.HopsCropHeadBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
 import net.bmjo.brewery.item.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -28,7 +27,6 @@ import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,24 +44,8 @@ public class ObjectRegistry {
     public static final Registrar<Block> BLOCK_REGISTRAR = BLOCKS.getRegistrar();
 
     public static final RegistrySupplier<Block> WILD_HOPS = registerWithoutItem("wild_hops", () -> new TallFlowerBlock(BlockBehaviour.Properties.copy(Blocks.ROSE_BUSH)));
-    public static final RegistrySupplier<Block> HOPS_CROP = registerWithoutItem("hops_crop", () -> new HopsCropBlock(getBushSettings()));
-    public static final RegistrySupplier<Block> HOPS_CROP_HEAD = registerWithoutItem("hops_crop_head", () -> new GrowingPlantHeadBlock() {
-        @Override
-        protected int getBlocksToGrowWhenBonemealed(RandomSource randomSource) {
-            return 0;
-        }
-
-        @Override
-        protected boolean canGrowInto(BlockState blockState) {
-            return false;
-        }
-
-        @Override
-        protected Block getBodyBlock() {
-            return null;
-        }});
-    public static final RegistrySupplier<Block> HOPS_CROP_BODY = registerWithoutItem("hops_crop_body", () -> new Block(getBushSettings()));
-
+    public static final RegistrySupplier<Block> HOPS_CROP = registerWithoutItem("hops_crop", () -> new HopsCropHeadBlock(getBushSettings().randomTicks()));
+    public static final RegistrySupplier<Block> HOPS_CROP_BODY = registerWithoutItem("hops_crop_body", () -> new HopsCropBodyBlock(getBushSettings().randomTicks()));
     public static final RegistrySupplier<Item> HOPS_SEEDS = registerItem("hops_seeds", () -> new BlockItem(HOPS_CROP.get(), getSettings()));
     public static final RegistrySupplier<Item> HOPS = registerItem("hops", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
     public static final RegistrySupplier<Block> BARLEY_CROP = registerWithoutItem("barley_crop", () -> new BarleyCropBlock(getBushSettings()));
