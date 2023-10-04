@@ -6,18 +6,19 @@
   "client": [
     "DisclaimerMixin",
     "EffectIconMixin",
+    "ExperimentalSkipMixin",
     "FogRendererMixin",
     "GameRendererMixin",
-    "PickMixin",
+    "OrderedTextToolTipAccessor",
     "WindowMixin",
-    "OrderedTextToolTipAccessor"
+    "rope.PickMixin"
   ],
   "mixins": [
     "AlcoholPlayerMixin",
     "LivingEntityMixin",
     "PlayerMixin",
-    "ServerEntityMixin",
-    "StoneCutterMixin"
+    "StoneCutterMixin",
+    "rope.ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
