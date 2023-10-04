@@ -2,6 +2,7 @@ package net.bmjo.brewery.block.brew_event;
 
 import net.bmjo.brewery.block.property.Heat;
 import net.bmjo.brewery.registry.BlockStateRegistry;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,7 +13,7 @@ public class OvenEvent implements BrewEvent {
     @Override
     public void start(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return;
-        BlockPos ovenPos = BrewHelper.getOven(components, level);
+        BlockPos ovenPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), components, level);
         if (ovenPos != null) {
             BlockState ovenState = level.getBlockState(ovenPos);
             level.setBlock(ovenPos, ovenState.setValue(BlockStateRegistry.HEAT, Heat.WEAK), 3);
@@ -22,7 +23,7 @@ public class OvenEvent implements BrewEvent {
     @Override
     public boolean isFinish(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return true;
-        BlockPos ovenPos = BrewHelper.getOven(components, level);
+        BlockPos ovenPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), components, level);
         if (ovenPos != null) {
             BlockState ovenState = level.getBlockState(ovenPos);
             return ovenState.getValue(BlockStateRegistry.HEAT) != Heat.WEAK;

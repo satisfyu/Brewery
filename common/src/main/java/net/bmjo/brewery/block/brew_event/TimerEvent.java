@@ -1,6 +1,7 @@
 package net.bmjo.brewery.block.brew_event;
 
 import net.bmjo.brewery.registry.BlockStateRegistry;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,7 +12,7 @@ public class TimerEvent implements BrewEvent {
     @Override
     public void start(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return;
-        BlockPos timerPos = BrewHelper.getTimer(components, level);
+        BlockPos timerPos = BrewHelper.getBlock(ObjectRegistry.BREW_TIMER.get(), components, level);
         if (timerPos != null) {
             BlockState timerState = level.getBlockState(timerPos);
             level.setBlock(timerPos, timerState.setValue(BlockStateRegistry.TIME, true), 3);
@@ -21,7 +22,7 @@ public class TimerEvent implements BrewEvent {
     @Override
     public boolean isFinish(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return true;
-        BlockPos timerPos = BrewHelper.getTimer(components, level);
+        BlockPos timerPos = BrewHelper.getBlock(ObjectRegistry.BREW_TIMER.get(), components, level);
         if (timerPos != null) {
             BlockState timerState = level.getBlockState(timerPos);
             return !timerState.getValue(BlockStateRegistry.TIME);

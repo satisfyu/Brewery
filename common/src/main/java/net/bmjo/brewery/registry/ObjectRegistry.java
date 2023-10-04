@@ -73,16 +73,15 @@ public class ObjectRegistry {
     //TODO
     //BREWING STATION
     //TODO Multiblock
-    public static final RegistrySupplier<Block> WATER_BASIN = registerBI("water_basin", () -> new WaterBasinBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> STEAM_WHISTLE = registerBI("steam_whistle", () -> new SteamWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> OVEN = registerBI("oven", () -> new OvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> TIMER = registerBI("timer", () -> new TimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> COPPER_BREWINGSTATION = registerBI("copper_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> NETHERITE_BREWINGSTATION = registerBI("netherite_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)));
+    public static final RegistrySupplier<Block> BREW_WHISTLE = registerB("steam_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> BREW_OVEN = registerB("oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> BREW_TIMER = registerB("timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     //TODO SILO -> Multiblock & logic
-    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     //TODO barrel as multiblock
     public static final RegistrySupplier<Block> BIG_BARREL = registerBI("big_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeItem(getSettings()));
