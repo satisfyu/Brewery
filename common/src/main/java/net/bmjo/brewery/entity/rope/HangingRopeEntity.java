@@ -1,4 +1,4 @@
-package net.bmjo.brewery.entity;
+package net.bmjo.brewery.entity.rope;
 
 import dev.architectury.extensions.network.EntitySpawnExtension;
 import dev.architectury.networking.NetworkManager;
@@ -27,6 +27,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -110,7 +111,7 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
             if (player.getLevel() instanceof ServerLevel serverLevel) {
                 sendChangePacket(serverLevel);
                 if (!this.active) {
-                    notifyHops(this.blockPosition(), serverLevel);
+                    notifyBlock(this.blockPosition(), serverLevel, HopsCropBlock.getHeadBlock());
                 }
             }
             player.playSound(this.active ? SoundEvents.LEASH_KNOT_PLACE : SoundEvents.LEASH_KNOT_BREAK, 0.5F, 1.0F);
@@ -119,11 +120,11 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
         return InteractionResult.PASS;
     }
 
-    public static void notifyHops(BlockPos blockPos, ServerLevel serverLevel) {
+    public static void notifyBlock(BlockPos blockPos, ServerLevel serverLevel, Block block) {
         for (int below = 0; below < HangingRopeEntity.MAX_LENGTH; below++) {
             BlockPos belowPos = blockPos.below(below);
             BlockState blockState = serverLevel.getBlockState(belowPos);
-            if (blockState.is(HopsCropBlock.getHeadBlock())) {
+            if (blockState.is(block)) {
                 serverLevel.scheduleTick(belowPos, blockState.getBlock(), 1);
                 return;
             }

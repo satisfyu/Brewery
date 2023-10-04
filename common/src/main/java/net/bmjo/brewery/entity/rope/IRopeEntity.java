@@ -1,4 +1,4 @@
-package net.bmjo.brewery.entity;
+package net.bmjo.brewery.entity.rope;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;

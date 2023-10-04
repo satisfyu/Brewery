@@ -1,4 +1,4 @@
-package net.bmjo.brewery.entity;
+package net.bmjo.brewery.entity.rope;
 
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.util.rope.RopeConnection;

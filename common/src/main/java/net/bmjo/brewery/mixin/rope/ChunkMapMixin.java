@@ -1,10 +1,10 @@
-package net.bmjo.brewery.mixin;
+package net.bmjo.brewery.mixin.rope;
 
 import com.google.common.collect.Lists;
 import dev.architectury.networking.NetworkManager;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.network.FriendlyByteBuf;
