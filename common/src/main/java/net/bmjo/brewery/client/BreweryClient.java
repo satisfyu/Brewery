@@ -36,7 +36,8 @@ public class BreweryClient {
                 ObjectRegistry.BREWERY_WINDOW.get(), ObjectRegistry.BREWERY_DOOR.get(), ObjectRegistry.BREWERY_TRAPDOOR.get(),
                 ObjectRegistry.WILD_HOPS.get(), ObjectRegistry.BEER_MUG.get(), ObjectRegistry.BEER_WHEAT.get(),
                 ObjectRegistry.BEER_HOPS.get(), ObjectRegistry.BEER_BARLEY.get(), ObjectRegistry.BEER_CHORUS.get(),
-                ObjectRegistry.BARLEY_CROP.get(), ObjectRegistry.CORN_CROP.get()
+                ObjectRegistry.BARLEY_CROP.get(), ObjectRegistry.CORN_CROP.get(), ObjectRegistry.HOPS_CROP_BODY.get(),
+                ObjectRegistry.HOPS_CROP.get()
 
         );
 

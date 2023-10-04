@@ -145,6 +145,11 @@ public abstract class HopsCropBlock extends Block {
     }
 
     @Override
+    public boolean propagatesSkylightDown(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        return blockState.getFluidState().isEmpty();
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(AGE);
     }

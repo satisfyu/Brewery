@@ -1,65 +1,31 @@
 {
 	"credit": "Made by Satisfy",
 	"ambientocclusion": false,
+	"texture_size": [16, 32],
 	"textures": {
-		"1": "brewery:block/corn_stage_2_top",
-		"4": "brewery:block/corn_stage_2_bottom",
-		"particle": "brewery:block/corn_stage_2_top"
+		"0": "brewery:block/corn_stage2",
+		"particle": "brewery:block/corn_stage2"
 	},
 	"elements": [
 		{
-			"from": [0.8, 0, 8],
-			"to": [15.2, 16, 8],
+			"from": [0.8, -1, 8],
+			"to": [15.2, 31, 8],
 			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#4"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#4"}
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"}
 			}
 		},
 		{
-			"from": [8, 0, 0.8],
-			"to": [8, 16, 15.2],
+			"from": [8, -1, 0.8],
+			"to": [8, 31, 15.2],
 			"shade": false,
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#4"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#4"}
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#0"}
 			}
-		},
-		{
-			"from": [8, 16, 0.8],
-			"to": [8, 32, 15.2],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"west": {"uv": [0, 0, 16, 16], "texture": "#1"}
-			}
-		},
-		{
-			"from": [0.8, 16, 8],
-			"to": [15.2, 32, 8],
-			"shade": false,
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#1"}
-			}
-		}
-	],
-	"groups": [
-		{
-			"name": "bottom",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [0, 1]
-		},
-		{
-			"name": "top",
-			"origin": [8, 8, 8],
-			"color": 0,
-			"children": [2, 3]
 		}
 	]
 }

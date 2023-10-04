@@ -29,6 +29,8 @@ public class HopsCropHeadBlock extends HopsCropBlock implements BonemealableBloc
         }
     }
 
+
+
     @Override
     public boolean isRandomlyTicking(BlockState blockState) {
         return true;

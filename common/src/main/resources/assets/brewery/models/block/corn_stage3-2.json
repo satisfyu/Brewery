@@ -3,8 +3,8 @@
 	"ambientocclusion": false,
 	"texture_size": [16, 32],
 	"textures": {
-		"0": "brewery:block/corn_stage1-1",
-		"particle": "brewery:block/corn_stage1-1"
+		"0": "brewery:block/corn_stage3-2",
+		"particle": "brewery:block/corn_stage3-2"
 	},
 	"elements": [
 		{
