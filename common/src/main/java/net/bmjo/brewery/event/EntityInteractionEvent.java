@@ -2,7 +2,7 @@ package net.bmjo.brewery.event;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.InteractionEvent;
-import net.bmjo.brewery.entity.HangingRopeEntity;
+import net.bmjo.brewery.entity.rope.HangingRopeEntity;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

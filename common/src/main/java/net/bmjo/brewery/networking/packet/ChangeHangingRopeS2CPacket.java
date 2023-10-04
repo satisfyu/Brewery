@@ -2,7 +2,7 @@ package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.Brewery;
-import net.bmjo.brewery.entity.HangingRopeEntity;
+import net.bmjo.brewery.entity.rope.HangingRopeEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 

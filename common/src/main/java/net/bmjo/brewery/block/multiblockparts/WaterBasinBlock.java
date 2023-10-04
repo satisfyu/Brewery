@@ -3,14 +3,18 @@ package net.bmjo.brewery.block.multiblockparts;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.registry.BlockStateRegistry;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -34,7 +38,6 @@ public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!blockState.getValue(COMPLETE)) return InteractionResult.PASS;
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.getBlockEntity(blockPos) instanceof BrewKettleEntity brewKettleEntity) {
             if (itemStack.isEmpty()) { //EMPTY
@@ -73,6 +76,46 @@ public class WaterBasinBlock extends BrewKettleBlock implements EntityBlock {
             return InteractionResult.SUCCESS;
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        Level level = blockPlaceContext.getLevel();
+        BlockPos mainPos = blockPlaceContext.getClickedPos();
+        BlockState blockState = super.getStateForPlacement(blockPlaceContext);
+        if (blockState == null) return null;
+        Direction facing = blockState.getValue(FACING);
+        BlockPos backPos = mainPos.relative(facing.getOpposite());
+        boolean rightFree = level.getBlockState(mainPos.relative(facing.getClockWise())).isAir() && level.getBlockState(backPos.relative(facing.getClockWise())).isAir();
+        BlockPos sidePos = mainPos.relative(rightFree ? facing.getClockWise() : facing.getCounterClockWise());
+        BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
+        return canPlace(level, backPos, sidePos, diagonalPos) ? blockState : null;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos mainPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
+        super.setPlacedBy(level, mainPos, blockState, livingEntity, itemStack);
+        if (level.isClientSide) return;
+        Direction facing = blockState.getValue(FACING);
+        BlockPos backPos = mainPos.relative(facing.getOpposite());
+        boolean rightFree = level.getBlockState(mainPos.relative(facing.getClockWise())).isAir() && level.getBlockState(backPos.relative(facing.getClockWise())).isAir();
+        BlockPos sidePos = mainPos.relative(rightFree ? facing.getClockWise() : facing.getCounterClockWise());
+        BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
+        if (!canPlace(level, backPos, sidePos, diagonalPos)) return;
+        level.setBlock(backPos, ObjectRegistry.TIMER.get().defaultBlockState().setValue(FACING, facing), 3);
+        level.setBlock(sidePos, ObjectRegistry.OVEN.get().defaultBlockState().setValue(FACING, facing), 3);
+        level.setBlock(diagonalPos, ObjectRegistry.STEAM_WHISTLE.get().defaultBlockState().setValue(FACING, facing), 3);
+        //setPos to Entity
+    }
+
+    private boolean canPlace(Level level, BlockPos... blockPoses) {
+        for (BlockPos blockPos : blockPoses) {
+            if (!level.getBlockState(blockPos).isAir()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Nullable

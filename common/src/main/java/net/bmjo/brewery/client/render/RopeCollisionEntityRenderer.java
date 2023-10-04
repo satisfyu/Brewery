@@ -1,6 +1,6 @@
 package net.bmjo.brewery.client.render;
 
-import net.bmjo.brewery.entity.RopeCollisionEntity;
+import net.bmjo.brewery.entity.rope.RopeCollisionEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.EntityRenderer;

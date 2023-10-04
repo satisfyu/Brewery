@@ -1,9 +1,8 @@
 package net.bmjo.brewery.entity;
 
-import net.bmjo.brewery.block.multiblockparts.BrewKettleBlock;
-import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.block.brew_event.BrewEvent;
 import net.bmjo.brewery.block.brew_event.BrewEvents;
+import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.core.BlockPos;
@@ -11,14 +10,12 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -125,24 +122,6 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
 
     public boolean isPartOf(BlockPos blockPos) {
         return this.components != null && this.components.contains(blockPos);
-    }
-
-    public void activate(@NotNull Set<BlockPos> blockPos) {
-        components = blockPos;
-        blockPos.forEach(pos -> level.setBlock(pos, level.getBlockState(pos).setValue(BrewKettleBlock.COMPLETE, true), 3));
-    }
-
-    public void deactivate() { //TODO passiert nicht auf client (cringe)
-        if (this.components != null && level != null) {
-            this.ingredients.forEach(itemStack -> Containers.dropItemStack(level, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), itemStack));
-            this.ingredients.clear();
-            this.components.forEach(pos -> {
-                    if (level.getBlockState(pos).getBlock() instanceof BrewKettleBlock) {
-                        level.setBlock(pos, level.getBlockState(pos).setValue(BrewKettleBlock.COMPLETE, false), 3);
-                    }
-            });
-            this.components = null;
-        }
     }
 
     @Override

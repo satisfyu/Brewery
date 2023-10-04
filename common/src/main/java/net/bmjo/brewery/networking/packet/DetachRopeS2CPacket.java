@@ -1,7 +1,7 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.bmjo.brewery.util.rope.IncompleteRopeConnection;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.bmjo.brewery.util.rope.RopeHelper;

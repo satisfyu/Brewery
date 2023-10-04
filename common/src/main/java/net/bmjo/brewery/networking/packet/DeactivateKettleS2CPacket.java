@@ -15,7 +15,7 @@ public class DeactivateKettleS2CPacket implements NetworkManager.NetworkReceiver
             Level level = context.getPlayer().getLevel();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BrewKettleEntity brewKettleEntity) {
-                brewKettleEntity.deactivate();
+
             }
         });
     }

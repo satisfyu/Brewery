@@ -2,7 +2,7 @@ package net.bmjo.brewery.util.rope;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;

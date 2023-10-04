@@ -1,6 +1,6 @@
 package net.bmjo.brewery.util;
 
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -10,15 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BreweryMath {
-
-    public static int power(int base, int exponent) {
-        int value = 1;
-        for (int i = 0; i < exponent; i++) {
-            value *= base;
-        }
-        return value;
-    }
-
     public static BlockPos ofFloored(final Vec3 vec) {
         return ofFloored(vec.x(), vec.y(), vec.z());
     }

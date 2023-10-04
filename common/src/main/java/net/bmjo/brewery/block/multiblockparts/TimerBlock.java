@@ -23,7 +23,6 @@ public class TimerBlock extends BrewKettleBlock {
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!blockState.getValue(COMPLETE)) return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
         if (blockState.getValue(TIME)) {
             level.setBlock(blockPos, blockState.setValue(TIME, false), 3);
             return InteractionResult.SUCCESS;

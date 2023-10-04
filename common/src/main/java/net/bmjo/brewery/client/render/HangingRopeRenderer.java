@@ -2,7 +2,7 @@ package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.bmjo.brewery.entity.HangingRopeEntity;
+import net.bmjo.brewery.entity.rope.HangingRopeEntity;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.bmjo.brewery.util.BreweryMath;

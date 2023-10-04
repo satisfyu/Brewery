@@ -27,7 +27,6 @@ public class OvenBlock extends BrewKettleBlock {
 
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!blockState.getValue(COMPLETE)) return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.getFuel().containsKey(itemStack.getItem())) {
             level.setBlock(blockPos, blockState.setValue(HEAT, Heat.LIT), 3);
@@ -37,7 +36,7 @@ public class OvenBlock extends BrewKettleBlock {
             }
             return InteractionResult.SUCCESS;
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return blockState.use(level, player, interactionHand, blockHitResult);
     }
 
     @Override

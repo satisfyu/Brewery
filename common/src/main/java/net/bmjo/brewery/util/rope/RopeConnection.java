@@ -2,9 +2,10 @@ package net.bmjo.brewery.util.rope;
 
 import dev.architectury.networking.NetworkManager;
 import net.bmjo.brewery.Brewery;
-import net.bmjo.brewery.entity.HangingRopeEntity;
-import net.bmjo.brewery.entity.RopeCollisionEntity;
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.block.crops.HopsCropHeadBlock;
+import net.bmjo.brewery.entity.rope.HangingRopeEntity;
+import net.bmjo.brewery.entity.rope.RopeCollisionEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.bmjo.brewery.networking.BreweryNetworking;
 import net.bmjo.brewery.registry.EntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
@@ -254,7 +255,7 @@ public class RopeConnection {
         if (from.getLevel() instanceof ServerLevel serverLevel) {
             Set<BlockPos> blockPositions = BreweryMath.lineIntersection(this);
             for (BlockPos blockPos : blockPositions) {
-                HangingRopeEntity.notifyHops(blockPos, serverLevel);
+                HangingRopeEntity.notifyBlock(blockPos, serverLevel, HopsCropHeadBlock.getHeadBlock());
             }
         }
         collisions.clear();

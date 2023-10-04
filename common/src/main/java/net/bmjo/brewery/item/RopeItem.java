@@ -1,6 +1,6 @@
 package net.bmjo.brewery.item;
 
-import net.bmjo.brewery.entity.RopeKnotEntity;
+import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

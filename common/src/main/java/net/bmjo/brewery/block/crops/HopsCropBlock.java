@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block.crops;
 
-import net.bmjo.brewery.entity.HangingRopeEntity;
+import net.bmjo.brewery.entity.rope.HangingRopeEntity;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
