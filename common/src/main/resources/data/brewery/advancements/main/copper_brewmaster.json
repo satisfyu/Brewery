@@ -1,0 +1,31 @@
+{
+  "parent": "brewery:main/brewing_pioneer",
+  "display": {
+    "icon": {
+      "item": "brewery:copper_brewingstation"
+    },
+    "title": {
+      "translate": "brewery.advancement.place_copper_brewingstation"
+    },
+    "description": {
+      "translate": "brewery.advancement.place_copper_brewingstation.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "brewing_station": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "brewery:copper_brewingstation"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "brewing_station"
+    ]
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "parent": "brewery:main/wild_crops",
+  "display": {
+    "icon": {
+      "item": "brewery:barley"
+    },
+    "title": {
+      "translate": "brewery.advancement.crop_collector"
+    },
+    "description": {
+      "translate": "brewery.advancement.crop_collector.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 75
+  },
+  "criteria": {
+    "get_crops": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["brewery:barley"]
+          },
+          {
+            "items": ["brewery:corn"]
+          },
+          {
+            "items": ["brewery:hops"]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "get_crops"
+    ]
+  ]
+}

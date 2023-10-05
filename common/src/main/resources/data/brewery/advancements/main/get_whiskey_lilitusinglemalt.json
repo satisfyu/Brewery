@@ -1,0 +1,37 @@
+{
+  "parent": "brewery:main/copper_brewmaster",
+  "display": {
+    "icon": {
+      "item": "brewery:whiskey_lilitusinglemalt"
+    },
+    "title": {
+      "translate": "brewery.advancement.get_whiskey_lilitusinglemalt"
+    },
+    "description": {
+      "translate": "brewery.advancement.get_whiskey_lilitusinglemalt.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "whiskey_lilitusinglemalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:whiskey_lilitusinglemalt"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "whiskey_lilitusinglemalt"
+    ]
+  ]
+}

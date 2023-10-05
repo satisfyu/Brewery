@@ -1,0 +1,40 @@
+{
+  "parent": "brewery:main/root",
+  "criteria": {
+    "killed_elemental": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "brewery:beer_elemental"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "brewery.advancement.beer_elemental.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "brewery:beer_elemental_spawn_egg"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "brewery.advancement.beer_elemental.title"
+    }
+  },
+  "requirements": [
+    [
+      "killed_elemental"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

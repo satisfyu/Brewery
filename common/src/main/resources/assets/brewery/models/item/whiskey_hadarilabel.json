@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "brewery:item/mojang_label_whiskey"
+    "layer0": "brewery:item/hadari_label_whiskey"
   }
 }

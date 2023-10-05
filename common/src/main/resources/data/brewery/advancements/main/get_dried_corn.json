@@ -1,0 +1,37 @@
+{
+  "parent": "brewery:main/drying_expertise",
+  "display": {
+    "icon": {
+      "item": "brewery:dried_corn"
+    },
+    "title": {
+      "translate": "brewery.advancement.get_dried_corn"
+    },
+    "description": {
+      "translate": "brewery.advancement.get_dried_corn.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "dry_corn": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:dried_corn"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "dry_corn"
+    ]
+  ]
+}

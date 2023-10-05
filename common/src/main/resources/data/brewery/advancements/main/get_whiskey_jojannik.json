@@ -1,0 +1,37 @@
+{
+  "parent": "brewery:main/copper_brewmaster",
+  "display": {
+    "icon": {
+      "item": "brewery:whiskey_jojannik"
+    },
+    "title": {
+      "translate": "brewery.advancement.get_whiskey_jojannik"
+    },
+    "description": {
+      "translate": "brewery.advancement.get_whiskey_jojannik.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "whiskey_jojannik": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:whiskey_jojannik"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "whiskey_jojannik"
+    ]
+  ]
+}

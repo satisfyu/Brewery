@@ -1,0 +1,31 @@
+{
+  "parent": "brewery:main/copper_brewmaster",
+  "display": {
+    "icon": {
+      "item": "brewery:netherite_brewingstation"
+    },
+    "title": {
+      "translate": "brewery.advancement.place_netherite_brewingstation"
+    },
+    "description": {
+      "translate": "brewery.advancement.place_netherite_brewingstation.desc"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "brewing_station": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "brewery:netherite_brewingstation"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "brewing_station"
+    ]
+  ]
+}

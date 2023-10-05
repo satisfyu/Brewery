@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "item": "brewery:beer_standard"
+    },
+    "title": "",
+    "description": "",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "brewery:main/netherite_brewingstation",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "loot": [
+      "brewery:blocks/beer_standard"
+    ],
+    "experience": 225
+  }
+}

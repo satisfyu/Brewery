@@ -1,0 +1,31 @@
+{
+  "parent": "brewery:main/root",
+  "display": {
+    "icon": {
+      "item": "brewery:silo_wood"
+    },
+    "title": {
+      "translate": "brewery.advancement.place_silo_wood"
+    },
+    "description": {
+      "translate": "brewery.advancement.place_silo_wood.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "silo_wood": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "brewery:silo_wood"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "silo_wood"
+    ]
+  ]
+}

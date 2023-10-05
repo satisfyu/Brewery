@@ -2,8 +2,8 @@
 	"credit": "Made by Satisfy",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "brewery:block/whiskey_mojanglabel",
-		"particle": "brewery:block/whiskey_mojanglabel"
+		"0": "brewery:block/whiskey_hadarilabel",
+		"particle": "brewery:block/whiskey_hadarilabel"
 	},
 	"elements": [
 		{

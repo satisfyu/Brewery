@@ -1,0 +1,31 @@
+{
+  "parent": "brewery:main/root",
+  "display": {
+    "icon": {
+      "item": "brewery:wooden_brewingstation"
+    },
+    "title": {
+      "translate": "brewery.advancement.place_brewingstation"
+    },
+    "description": {
+      "translate": "brewery.advancement.place_brewingstation.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "brewing_station": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "brewery:wooden_brewingstation"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "brewing_station"
+    ]
+  ]
+}

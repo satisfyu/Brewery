@@ -1,0 +1,37 @@
+{
+  "parent": "brewery:main/brewing_pioneer",
+  "display": {
+    "icon": {
+      "item": "brewery:beer_barley"
+    },
+    "title": {
+      "translate": "brewery.advancement.get_beer_barley"
+    },
+    "description": {
+      "translate": "brewery.advancement.get_beer_barley.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "beer_barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:beer_barley"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "beer_barley"
+    ]
+  ]
+}

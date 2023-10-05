@@ -1,0 +1,76 @@
+{
+  "parent": "brewery:main/root",
+  "display": {
+    "icon": {
+      "item": "brewery:hops"
+    },
+    "title": {
+      "translate": "brewery.advancement.wild_crops"
+    },
+    "description": {
+      "translate": "brewery.advancement.wild_crops.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "hops_seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:hops_seeds"
+            ]
+          }
+        ]
+      }
+    },
+    "barley_seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:barley_seeds"
+            ]
+          }
+        ]
+      }
+    },
+    "hops": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:hops"
+            ]
+          }
+        ]
+      }
+    },
+    "barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:barley"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "barley_seeds",
+      "hops_seeds",
+      "hops",
+      "barley"
+    ]
+  ]
+}

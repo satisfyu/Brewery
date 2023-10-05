@@ -1,0 +1,37 @@
+{
+  "parent": "brewery:main/brewing_pioneer",
+  "display": {
+    "icon": {
+      "item": "brewery:beer_wheat"
+    },
+    "title": {
+      "translate": "brewery.advancement.get_beer_wheat"
+    },
+    "description": {
+      "translate": "brewery.advancement.get_beer_wheat.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "beer_wheat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:beer_wheat"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "beer_wheat"
+    ]
+  ]
+}

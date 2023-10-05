@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "brewery:beer_mug"
+    },
+    "title": {
+      "translate": "brewery.advancement.root"
+    },
+    "description": {
+      "translate": "brewery.advancement.root.desc"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "brewery:textures/block/brewery_planks.png"
+  },
+  "criteria": {
+    "seeds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "seeds"
+    ]
+  ]
+}
