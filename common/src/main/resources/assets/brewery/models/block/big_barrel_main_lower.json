@@ -1,0 +1,36 @@
+{
+	"credit": "Made by Satisfy",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "brewery:block/barrel_bottom",
+		"1": "brewery:block/barrel_side",
+		"2": "brewery:block/barrel_top",
+		"particle": "brewery:block/barrel_bottom"
+	},
+	"elements": [
+		{
+			"from": [0, 4, 0],
+			"to": [14, 18, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 0]},
+			"faces": {
+				"north": {"uv": [4, 8.5, 7.5, 12], "texture": "#2"},
+				"east": {"uv": [12, 8.5, 16, 12], "texture": "#1"},
+				"down": {"uv": [12, 8.5, 16, 12], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"name": "support",
+			"from": [0, 0, 3],
+			"to": [14, 4, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 0]},
+			"faces": {
+				"north": {"uv": [4.5, 0, 1, 1], "texture": "#0"},
+				"east": {"uv": [1, 0, 0, 1], "texture": "#0"},
+				"south": {"uv": [4.5, 0, 1, 1], "texture": "#0"},
+				"west": {"uv": [1, 0, 0, 1], "texture": "#0"},
+				"up": {"uv": [4.5, 0, 1, 1], "texture": "#0"},
+				"down": {"uv": [4.5, 0, 1, 1], "texture": "#0"}
+			}
+		}
+	]
+}

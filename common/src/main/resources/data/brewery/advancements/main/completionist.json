@@ -3,8 +3,12 @@
     "icon": {
       "item": "brewery:beer_standard"
     },
-    "title": "",
-    "description": "",
+    "title": {
+      "translate": "brewery.advancement.completionist"
+    },
+    "description": {
+      "translate": "brewery.advancement.completionist.desc"
+    },
     "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true,
@@ -17,9 +21,9 @@
     }
   },
   "rewards": {
+    "experience": 1000,
     "loot": [
-      "brewery:blocks/beer_standard"
-    ],
-    "experience": 225
+      "brewery:rewards/completionist_reward"
+    ]
   }
 }

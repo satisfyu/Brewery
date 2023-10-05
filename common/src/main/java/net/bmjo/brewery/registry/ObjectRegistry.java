@@ -57,7 +57,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> DRIED_WHEAT = registerBI("dried_wheat", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> DRIED_BARLEY = registerBI("dried_barley", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> DRIED_CORN = registerBI("dried_corn", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
-
     public static final RegistrySupplier<Block> BENCH = registerBI("bench", () -> new BenchBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> TABLE = registerBI("table", () -> new TableBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> BAR_COUNTER = registerBI("bar_counter", () -> new BarCounterBlock(BlockBehaviour.Properties.of(Material.WOOD).requiresCorrectToolForDrops().strength(3.5F).sound(SoundType.WOOD).noOcclusion()));
@@ -67,11 +66,8 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> BREWERY_WINDOW = registerBI("brewery_window", () -> new WindowBlock(BlockBehaviour.Properties.copy(Blocks.GLASS_PANE)));
     public static final RegistrySupplier<Block> BREWERY_TRAPDOOR = registerBI("brewery_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)));
     public static final RegistrySupplier<Block> BREWERY_DOOR = registerBI("brewery_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
-
     public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
-    //WOODEN BREWING STATION
-    //TODO
-    //BREWING STATION
+
     //TODO Multiblock
     public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> COPPER_BREWINGSTATION = registerBI("copper_brewingstation", () -> new BrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
@@ -82,8 +78,13 @@ public class ObjectRegistry {
     //TODO SILO -> Multiblock & logic
     public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
     public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    //TODO barrel as multiblock
-    public static final RegistrySupplier<Block> BIG_BARREL = registerBI("big_barrel", () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
+    public static final RegistrySupplier<Block> BARREL_MAIN = registerBI("barrel_main", () -> new BigBarrelBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
+    public static final RegistrySupplier<Block> BARREL_MAIN_HEAD = registerB("barrel_main_head", () -> new BigBarrelExtendedBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
+    public static final RegistrySupplier<Block> BARREL_RIGHT = registerB("barrel_right", () -> new BigBarrelExtendedBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
+    public static final RegistrySupplier<Block> BARREL_HEAD_RIGHT = registerB("barrel_head_right", () -> new BigBarrelExtendedBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
+
+
+
     public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeItem(getSettings()));
     public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
     public static final RegistrySupplier<Block> BEER_MUG = registerBI("beer_mug", () -> new BeerKegFlowerPotBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
@@ -158,7 +159,7 @@ public class ObjectRegistry {
     }
 
     public static void commonInit() {
-        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BIG_BARREL.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), WOODEN_BREWINGSTATION.get());
+        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), WOODEN_BREWINGSTATION.get());
         FuelRegistry.register(100, CORN.get(), BARLEY.get(), HOPS.get());
         FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
         FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());

@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "half=upper,facing=north": {
+      "model": "brewery:block/big_barrel_main_upper",
+      "y": 0
+    },
+    "half=upper,facing=south": {
+      "model": "brewery:block/big_barrel_main_upper",
+      "y": 180
+    },
+    "half=upper,facing=west": {
+      "model": "brewery:block/big_barrel_main_upper",
+      "y": 270
+    },
+    "half=upper,facing=east": {
+      "model": "brewery:block/big_barrel_main_upper",
+      "y": 90
+    },
+    "half=lower,facing=north": {
+      "model": "brewery:block/big_barrel_main_lower",
+      "y": 0
+    },
+    "half=lower,facing=south": {
+      "model": "brewery:block/big_barrel_main_lower",
+      "y": 180
+    },
+    "half=lower,facing=west": {
+      "model": "brewery:block/big_barrel_main_lower",
+      "y": 270
+    },
+    "half=lower,facing=east": {
+      "model": "brewery:block/big_barrel_main_lower",
+      "y": 90
+    }
+  }
+}
