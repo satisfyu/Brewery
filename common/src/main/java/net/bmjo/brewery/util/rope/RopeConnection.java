@@ -235,7 +235,7 @@ public class RopeConnection {
         for (Integer entityId : this.collisions) {
             Entity e = from.getLevel().getEntity(entityId);
             if (e instanceof RopeCollisionEntity) {
-                e.remove(Entity.RemovalReason.DISCARDED);
+                e.discard();
             } else {
                 Brewery.LOGGER.warn("Collision storage contained reference to {} (#{}) which is not a collision entity.", e, entityId);
             }
@@ -247,7 +247,7 @@ public class RopeConnection {
         for (Integer entityId : this.hangingRopes) {
             Entity entity = from.getLevel().getEntity(entityId);
             if (entity instanceof HangingRopeEntity) {
-                entity.remove(Entity.RemovalReason.DISCARDED);
+                entity.discard();
             } else {
                 Brewery.LOGGER.warn("Hanging storage contained reference to {} (#{}) which is not a hanging rope entity.", entity, entityId);
             }

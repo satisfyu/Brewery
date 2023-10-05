@@ -2,7 +2,6 @@ package net.bmjo.brewery.entity;
 
 import net.bmjo.brewery.block.brew_event.BrewEvent;
 import net.bmjo.brewery.block.brew_event.BrewEvents;
-import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
 import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.core.BlockPos;
@@ -16,8 +15,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,19 +29,24 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     @Nullable
     private BrewEvent event; //TODO NBT
     private NonNullList<ItemStack> ingredients = NonNullList.create();
-    @Nullable
-    private Set<BlockPos> components;
+    @NotNull
+    private Set<BlockPos> components = new HashSet<>(4);
 
     public BrewKettleEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
-    public boolean isActive() {
-        return this.components != null;
-    }
-
     public List<ItemStack> getIngredients() {
         return this.ingredients;
+    }
+
+    public void setComponents(BlockPos... components) {
+        if (components.length != 4) return;
+        this.components.addAll(Arrays.asList(components));
+    }
+
+    public @NotNull Set<BlockPos> getComponents() {
+        return components;
     }
 
     public void addIngredient(ItemStack itemStack) {
@@ -64,15 +71,6 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
     }
 
     @Nullable
-    public ItemStack removeIngredient() {
-        ItemStack itemStack = !this.ingredients.isEmpty() ? this.ingredients.get(0) : null;
-        if (itemStack != null) {
-            this.ingredients.remove(itemStack);
-        }
-        return itemStack;
-    }
-
-    @Nullable
     private ItemStack getStack(Item item) {
         for (ItemStack itemStack : this.ingredients) {
             if (itemStack.getItem() == item) {
@@ -82,9 +80,17 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
         return null;
     }
 
+    @Nullable
+    public ItemStack removeIngredient() {
+        ItemStack itemStack = this.ingredients.isEmpty() ? null : this.ingredients.iterator().next();
+        if (itemStack != null) {
+            this.ingredients.remove(itemStack);
+        }
+        return itemStack;
+    }
+
     @Override
     public void tick(Level level, BlockPos blockPos, BlockState blockState, BrewKettleEntity blockEntity) {
-        if (!isActive()) return;
         if (!hasRecipe()) {
             if (this.event != null) this.endEvent();
             return;
@@ -95,7 +101,7 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
             this.brew();
             return;
         } else if (brewTime % (5 * 20) == 0) {
-            this.event = BrewEvents.BREW_EVENTS.get(RandomSource.create().nextInt(BrewEvents.BREW_EVENTS.size())).get();
+            this.event = getRdmEvent();
             this.event.start(this.components, level);
         }
         this.brewTime++;
@@ -115,19 +121,18 @@ public class BrewKettleEntity extends BlockEntity implements BlockEntityTicker<B
         this.event = null;
     }
 
-    @Nullable
-    public BlockPos getController() {
-        return level != null && this.components != null ? this.components.stream().filter(pos -> level.getBlockState(pos).getBlock() instanceof WaterBasinBlock).findFirst().orElse(null) : null;
+    private BrewEvent getRdmEvent() {
+        return BrewEvents.BREW_EVENTS.get(RandomSource.create().nextInt(BrewEvents.BREW_EVENTS.size())).get();
     }
 
     public boolean isPartOf(BlockPos blockPos) {
-        return this.components != null && this.components.contains(blockPos);
+        return components.contains(blockPos);
     }
 
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        if (this.components != null) BreweryUtil.putBlockPos(compoundTag, this.components);
+        if (!this.components.isEmpty()) BreweryUtil.putBlockPos(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
     }
 

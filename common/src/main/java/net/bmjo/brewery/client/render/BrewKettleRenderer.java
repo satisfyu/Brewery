@@ -1,7 +1,7 @@
 package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bmjo.brewery.block.multiblockparts.WaterBasinBlock;
+import net.bmjo.brewery.block.multiblockparts.BrewKettleBlock;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;
@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class WaterBasinRenderer implements BlockEntityRenderer<BrewKettleEntity> {
-    public WaterBasinRenderer(BlockEntityRendererProvider.Context ctx) {
+public class BrewKettleRenderer implements BlockEntityRenderer<BrewKettleEntity> {
+    public BrewKettleRenderer(BlockEntityRendererProvider.Context ctx) {
 
     }
     @Override
@@ -25,7 +25,7 @@ public class WaterBasinRenderer implements BlockEntityRenderer<BrewKettleEntity>
             return;
         }
         BlockState selfState = blockEntity.getBlockState();
-        if (selfState.getBlock() instanceof WaterBasinBlock) {
+        if (selfState.getBlock() instanceof BrewKettleBlock) {
             List<ItemStack> ingredients = blockEntity.getIngredients();
             poseStack.pushPose();
             for (ItemStack itemStack : ingredients) {
