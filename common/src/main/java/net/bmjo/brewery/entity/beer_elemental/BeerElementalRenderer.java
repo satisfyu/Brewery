@@ -7,7 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import static net.bmjo.brewery.Brewery.MOD_ID;
 
 
-public class BeerElementalRenderer extends MobRenderer<BeerElementalEntity, BeerElementalModel<BeerElementalEntity>> {
+public class
+BeerElementalRenderer extends MobRenderer<BeerElementalEntity, BeerElementalModel<BeerElementalEntity>> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/beer_elemental.png");
 

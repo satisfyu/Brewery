@@ -13,6 +13,7 @@
   "effect.brewery.survivalist": "Survivalist",
   "effect.brewery.sliding": "Sliding",
   "entity.minecraft.villager.brewer": "Brewmaster",
+  "entity.brewery.beer_elemental": "Beer Elemental",
   "brewery.sound.breath": "Breath",
   "brewery.sound.beer_elemental_death": "Beer Elemental Dying",
   "brewery.sound.beer_elemental_ambient": "Beer Elemental Ambient",
@@ -164,6 +165,9 @@
   "brewery.advancement.get_whiskey_cristelwalker.desc": "Brew a Cristelwalker Whiskey",
   "brewery.advancement.get_whiskey_hadarilabel.desc": "Brew a HadariLabel Whiskey",
   "brewery.advancement.completionist": "Completionist",
-  "brewery.advancement.completionist.desc": "Complete all Brewery Advancements. Thank you for playing Brewery!"
-
+  "brewery.advancement.completionist.desc": "Complete all Brewery Advancements. Thank you for playing Brewery!",
+  "brewery.advancement.get_saturated": "Mhmmm, delicious",
+  "brewery.advancement.get_saturated.desc": "Don't ask where it comes from, just eat",
+  "brewery.advancement.eat_everything.title": "Oktoberfest-Buffet",
+  "brewery.advancement.eat_everything.desc": "Delight in a mix of distinctive meals"
 }

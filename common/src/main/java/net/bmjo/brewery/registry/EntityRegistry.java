@@ -5,6 +5,7 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
+import net.bmjo.brewery.entity.beer_elemental_barrel.BeerElementalAttackEntity;
 import net.bmjo.brewery.entity.rope.HangingRopeEntity;
 import net.bmjo.brewery.entity.rope.RopeCollisionEntity;
 import net.bmjo.brewery.entity.rope.RopeKnotEntity;
@@ -51,8 +52,15 @@ public class EntityRegistry {
                     .sized(1F, 1F)
                     .clientTrackingRange(80)
                     .updateInterval(3)
-                    .fireImmune()
                     .build(new BreweryIdentifier("beer_elemental").toString())
+    );
+
+    public static final RegistrySupplier<EntityType<BeerElementalAttackEntity>> BEER_ELEMENTAL_ATTACK = create("beer_elemental_attack",
+            () -> EntityType.Builder.<BeerElementalAttackEntity>of(BeerElementalAttackEntity::new, MobCategory.MISC)
+                    .sized(0.3125F, 0.3125F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
+                    .build(new BreweryIdentifier("beer_elemental_attack").toString())
     );
 
     public static <T extends EntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {

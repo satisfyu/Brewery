@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -94,29 +95,28 @@ public class BigBarrelBlock extends FacingBlock {
         level.setBlock(diagonalPos, ObjectRegistry.BARREL_HEAD_RIGHT.get().defaultBlockState().setValue(FACING, facing), 3);
     }
 
-    @Override
-    public void onBlockDestroyedByPlayer(BlockState state, Level worldIn, BlockPos pos, Player player) {
-        super.onBlockDestroyedByPlayer(state, worldIn, pos, player);
 
-        // Prüfe, ob es sich um einen unteren Block handelt
+    //TODO
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
+        super.playerDestroy(level, player, pos, state, blockEntity, stack);
+
+        Direction facing = state.getValue(FACING);
+
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
             BlockPos upperPos = pos.above();
 
-            // Zerstöre die oberen Blöcke
-            worldIn.destroyBlock(upperPos, true);
-            worldIn.destroyBlock(upperPos.relative(FACING), true);
-            worldIn.destroyBlock(upperPos.relative(FACING).relative(FACING.getClockWise()), true);
+            level.destroyBlock(upperPos, true);
+            level.destroyBlock(upperPos.relative(facing), true);
+            level.destroyBlock(upperPos.relative(facing.getCounterClockWise()), true);
         } else {
             BlockPos lowerPos = pos.below();
 
-            // Zerstöre die unteren Blöcke
-            worldIn.destroyBlock(lowerPos, true);
-            worldIn.destroyBlock(lowerPos.relative(FACING), true);
-            worldIn.destroyBlock(lowerPos.relative(FACING).relative(FACING.getCounterClockWise()), true);
+            level.destroyBlock(lowerPos, true);
+            level.destroyBlock(lowerPos.relative(facing), true);
+            level.destroyBlock(lowerPos.relative(facing.getClockWise()), true);
         }
     }
-}
-
 
     private boolean canPlace(Level level, BlockPos... blockPoses) {
         for (BlockPos blockPos : blockPoses) {

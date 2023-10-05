@@ -10,6 +10,7 @@ import net.bmjo.brewery.client.model.RopeKnotEntityModel;
 import net.bmjo.brewery.client.render.*;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalModel;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalRenderer;
+import net.bmjo.brewery.entity.beer_elemental_barrel.BeerElementalAttackRenderer;
 import net.bmjo.brewery.event.KeyInputHandler;
 import net.bmjo.brewery.event.PlayerJoinEvent;
 import net.bmjo.brewery.item.ItemPredicate;
@@ -57,6 +58,7 @@ public class BreweryClient {
         EntityRendererRegistry.register(EntityRegistry.HANGING_ROPE, HangingRopeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.BEER_ELEMENTAL, BeerElementalRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.BEER_ELEMENTAL_ATTACK, BeerElementalAttackRenderer::new);
 
         BlockEntityRendererRegistry.register(BlockEntityRegistry.BREW_KETTLE_BLOCK_ENTITY.get(), BrewKettleRenderer::new);
         BlockEntityRendererRegistry.register(BlockEntityRegistry.STANDARD.get(), StandardRenderer::new);

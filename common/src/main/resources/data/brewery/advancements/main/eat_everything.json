@@ -1,0 +1,117 @@
+{
+  "parent": "brewery:main/get_saturated",
+  "criteria": {
+    "fried_chicken": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:fried_chicken"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "pork_knuckle": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:pork_knuckle"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "sausage": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:sausage"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "mashed_potatoes": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:mashed_potatoes"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "dumplings": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:dumplings"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "potato_salad": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:potato_salad"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    },
+    "pretzel": {
+      "conditions": {
+        "item": {
+          "items": [
+            "brewery:pretzel"
+          ]
+        }
+      },
+      "trigger": "minecraft:consume_item"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "brewery.advancement.eat_everything.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "brewery:half_chicken"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "brewery.advancement.eat_everything.title"
+    }
+  },
+  "requirements": [
+    [
+      "fried_chicken"
+    ],
+    [
+      "pork_knuckle"
+    ],
+    [
+      "sausage"
+    ],
+    [
+      "mashed_potatoes"
+    ],
+    [
+      "dumplings"
+    ],
+    [
+      "potato_salad"
+    ],
+    [
+      "pretzel"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

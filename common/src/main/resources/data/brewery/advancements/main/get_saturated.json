@@ -1,0 +1,33 @@
+{
+  "parent": "brewery:main/kill_beer_elemental",
+  "criteria": {
+    "saturated": {
+      "conditions": {
+        "effects": {
+          "brewery:saturated": {}
+        }
+      },
+      "trigger": "minecraft:effects_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "brewery.advancement.get_saturated.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "brewery:gingerbread"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "brewery.advancement.get_saturated"
+    }
+  },
+  "requirements": [
+    [
+      "saturated"
+    ]
+  ]
+}
