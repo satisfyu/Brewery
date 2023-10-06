@@ -5,6 +5,7 @@ import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
+import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.bmjo.brewery.client.model.RopeKnotEntityModel;
 import net.bmjo.brewery.client.render.*;
@@ -21,6 +22,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 
 @Environment(EnvType.CLIENT)
@@ -41,6 +43,14 @@ public class BreweryClient {
                 ObjectRegistry.HOPS_CROP.get()
 
         );
+
+        ColorHandlerRegistry.registerBlockColors((state, world, pos, tintIndex) -> {
+                    if (world == null || pos == null) {
+                        return -1;
+                    }
+                    return BiomeColors.getAverageWaterColor(world, pos);
+                }, ObjectRegistry.WOODEN_BREWINGSTATION, ObjectRegistry.COPPER_BREWINGSTATION, ObjectRegistry.NETHERITE_BREWINGSTATION);
+
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());

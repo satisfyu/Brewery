@@ -1,12 +1,13 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"3": "brewery:block/brewing_station/wood/wooden_brewing_station_inside",
-		"4": "brewery:block/brewing_station/wood/wooden_brewing_station_top_1",
-		"7": "brewery:block/brewing_station/wood/wooden_brewing_station_side_4_on",
-		"10": "brewery:block/brewing_station/wood/wooden_brewing_station_side_1",
-		"11": "brewery:block/brewing_station/wood/wooden_brewing_station_top_2",
-		"particle": "brewery:block/brewing_station/wood/wooden_brewing_station_inside"
+		"3": "brewery:block/brewing_station/copper/copper_brewing_station_side_bottom_1",
+		"4": "brewery:block/brewing_station/copper/copper_brewing_station_bottom_2",
+		"5": "brewery:block/brewing_station/copper/copper_brewing_station_bottom_1",
+		"7": "brewery:block/brewing_station/copper/copper_brewing_station_side_4_off",
+		"10": "brewery:block/brewing_station/copper/copper_brewing_station_side_3",
+		"11": "brewery:block/brewing_station/copper/copper_brewing_station_top_3",
+		"particle": "brewery:block/brewing_station/copper/copper_brewing_station_side_bottom_1"
 	},
 	"elements": [
 		{
@@ -15,9 +16,9 @@
 			"to": [16, 2, 14],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
 			"faces": {
-				"south": {"uv": [0, 16, 14, 14], "texture": "#3"},
-				"west": {"uv": [14, 16, 0, 14], "texture": "#3"},
-				"down": {"uv": [14, 2, 0, 16], "rotation": 270, "texture": "#4"}
+				"south": {"uv": [0, 2, 14, 0], "texture": "#3"},
+				"west": {"uv": [14, 2, 0, 0], "texture": "#3"},
+				"down": {"uv": [14, 0, 0, 14], "rotation": 270, "texture": "#4"}
 			}
 		},
 		{
@@ -26,10 +27,10 @@
 			"to": [16, 16, 15],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 25, 8]},
 			"faces": {
-				"south": {"uv": [0, 0, 16, 14], "texture": "#10"},
-				"west": {"uv": [0, 0, 15, 14], "texture": "#7"},
+				"south": {"uv": [16, 0, 0, 14], "texture": "#10"},
+				"west": {"uv": [15, 0, 0, 14], "texture": "#7"},
 				"up": {"uv": [0, 0, 15, 16], "rotation": 90, "texture": "#11"},
-				"down": {"uv": [0, 14, 16, 0], "texture": "#10"}
+				"down": {"uv": [3, 13, 0, 16], "rotation": 90, "texture": "#5"}
 			}
 		}
 	],

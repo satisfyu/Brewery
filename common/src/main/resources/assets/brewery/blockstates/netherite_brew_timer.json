@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "brewery:block/netherite_brewingstation_timer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "brewery:block/netherite_brewingstation_timer"
+    },
+    "facing=south": {
+      "model": "brewery:block/netherite_brewingstation_timer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/netherite_brewingstation_timer",
+      "y": 270
+    }
+  }
+}

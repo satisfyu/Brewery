@@ -1,14 +1,16 @@
 {
 	"credit": "Made by Satisfy",
 	"textures": {
-		"3": "brewery:block/brewing_station/wood/wooden_brewing_station_side_3",
-		"4": "brewery:block/brewing_station/wood/wooden_brewing_station_side_2",
-		"5": "brewery:block/brewing_station/wood/wooden_brewing_station_inside",
-		"6": "brewery:block/brewing_station/wood/wooden_brewing_station_top_3",
-		"10": "brewery:block/brewing_station/wood/wooden_brewing_station_top_1",
-		"13": "brewery:block/brewing_station/wood/wooden_brewing_station_tachometer",
-		"16": "brewery:block/brewing_station/wood/wooden_brewing_station_button",
-		"particle": "brewery:block/brewing_station/wood/wooden_brewing_station_side_3"
+		"3": "brewery:block/brewing_station/netherite/netherite_brewing_station_side_2",
+		"4": "brewery:block/brewing_station/netherite/netherite_brewing_station_side_1",
+		"5": "brewery:block/brewing_station/netherite/netherite_brewing_station_side_bottom_1",
+		"6": "brewery:block/brewing_station/netherite/netherite_brewing_station_top_4",
+		"7": "brewery:block/brewing_station/netherite/netherite_brewing_station_top_1",
+		"8": "brewery:block/brewing_station/netherite/netherite_brewing_station_bottom_1",
+		"10": "brewery:block/brewing_station/netherite/netherite_brewing_station_bottom_2",
+		"13": "brewery:block/brewing_station/netherite/netherite_brewing_station_tachometer",
+		"16": "brewery:block/brewing_station/netherite/netherite_brewing_station_button",
+		"particle": "brewery:block/brewing_station/netherite/netherite_brewing_station_side_2"
 	},
 	"elements": [
 		{
@@ -59,10 +61,10 @@
 			"to": [16, 16, 15],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 24, 7]},
 			"faces": {
-				"east": {"uv": [15, 0, 16, 14], "texture": "#4"},
+				"east": {"uv": [0, 0, 1, 14], "texture": "#4"},
 				"south": {"uv": [0, 0, 16, 14], "texture": "#3"},
 				"up": {"uv": [0, 0, 1, 16], "rotation": 90, "texture": "#6"},
-				"down": {"uv": [15, 0, 16, 14], "rotation": 270, "texture": "#4"}
+				"down": {"uv": [9, 2, 10, 16], "rotation": 270, "texture": "#8"}
 			}
 		},
 		{
@@ -71,9 +73,9 @@
 			"to": [16, 16, 14],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 24, 7]},
 			"faces": {
-				"east": {"uv": [15, 0, 1, 14], "texture": "#4"},
+				"east": {"uv": [1, 0, 15, 14], "texture": "#4"},
 				"up": {"uv": [2, 0, 0, 14], "texture": "#6"},
-				"down": {"uv": [4, 12, 16, 14], "rotation": 270, "texture": "#3"}
+				"down": {"uv": [0, 12, 12, 14], "rotation": 270, "texture": "#8"}
 			}
 		},
 		{
@@ -82,9 +84,9 @@
 			"to": [14, 2, 14],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 25, 7]},
 			"faces": {
-				"east": {"uv": [0, 16, 14, 14], "texture": "#5"},
-				"south": {"uv": [14, 16, 0, 14], "texture": "#5"},
-				"down": {"uv": [14, 16, 0, 2], "rotation": 270, "texture": "#10"}
+				"east": {"uv": [0, 2, 14, 0], "texture": "#5"},
+				"south": {"uv": [14, 2, 0, 0], "texture": "#5"},
+				"down": {"uv": [14, 14, 0, 0], "rotation": 270, "texture": "#10"}
 			}
 		},
 		{
@@ -94,8 +96,7 @@
 			"rotation": {"angle": 0, "axis": "y", "origin": [9, 25, 7]},
 			"faces": {
 				"north": {"uv": [1, 15, 13, 14], "texture": "#10"},
-				"up": {"uv": [1, 2, 15, 16], "rotation": 90, "texture": "#10"},
-				"down": {"uv": [1, 2, 15, 16], "rotation": 270, "texture": "#10"}
+				"up": {"uv": [1, 2, 15, 16], "rotation": 90, "texture": "#7"}
 			}
 		}
 	],

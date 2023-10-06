@@ -1,7 +1,7 @@
 package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bmjo.brewery.block.multiblockparts.BrewKettleBlock;
+import net.bmjo.brewery.block.multiblockparts.NetheriteBrewKettleBlock;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;
@@ -25,7 +25,7 @@ public class BrewKettleRenderer implements BlockEntityRenderer<BrewKettleEntity>
             return;
         }
         BlockState selfState = blockEntity.getBlockState();
-        if (selfState.getBlock() instanceof BrewKettleBlock) {
+        if (selfState.getBlock() instanceof NetheriteBrewKettleBlock) {
             List<ItemStack> ingredients = blockEntity.getIngredients();
             poseStack.pushPose();
             for (ItemStack itemStack : ingredients) {

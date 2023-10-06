@@ -32,10 +32,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BrewKettleBlock extends BrewingStationBlock implements EntityBlock {
+public class NetheriteBrewKettleBlock extends BrewingStationBlock implements EntityBlock {
     public static final EnumProperty<Liquid> LIQUID;
 
-    public BrewKettleBlock(Properties properties) {
+    public NetheriteBrewKettleBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY));
     }
@@ -131,9 +131,9 @@ public class BrewKettleBlock extends BrewingStationBlock implements EntityBlock 
         BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
         BlockPos topPos = diagonalPos.above();
         if (!canPlace(level, backPos, sidePos, diagonalPos, topPos)) return;
-        level.setBlock(backPos, ObjectRegistry.BREW_TIMER.get().defaultBlockState().setValue(FACING, facing), 3);
-        level.setBlock(sidePos, ObjectRegistry.BREW_OVEN.get().defaultBlockState().setValue(FACING, facing), 3);
-        level.setBlock(diagonalPos, ObjectRegistry.BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing), 3);
+        level.setBlock(backPos, ObjectRegistry.NETHERITE_BREW_TIMER.get().defaultBlockState().setValue(FACING, facing), 3);
+        level.setBlock(sidePos, ObjectRegistry.NETHERTITE_BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing), 3);
+        level.setBlock(diagonalPos, ObjectRegistry.NETHERITE_BREW_OVEN.get().defaultBlockState().setValue(FACING, facing), 3);
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof BrewKettleEntity brewKettleEntity) {
