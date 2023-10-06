@@ -3,7 +3,9 @@ package net.bmjo.brewery.block.multiblockparts;
 import de.cristelknight.doapi.common.block.FacingBlock;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -22,8 +25,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class BigBarrelBlock extends FacingBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF;
@@ -125,5 +135,43 @@ public class BigBarrelBlock extends FacingBlock {
             }
         }
         return true;
+    }
+
+
+    private static final Supplier<VoxelShape> bottomVoxelShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.box(0, 0, 0.1875, 0.875, 0.25, 0.4375));
+        shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 0.875, 1, 1));
+        return shape;
+    };
+
+    private static final Supplier<VoxelShape> topVoxelShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.box(0, 0, 0, 0.875, 0.875, 1));
+        return shape;
+    };
+
+    public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, bottomVoxelShapeSupplier.get()));
+        }
+    });
+
+    public static final Map<Direction, VoxelShape> TOP_SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, topVoxelShapeSupplier.get()));
+        }
+    });
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        DoubleBlockHalf half = state.getValue(HALF);
+        Direction facing = state.getValue(FACING);
+
+        if (half == DoubleBlockHalf.LOWER) {
+            return BOTTOM_SHAPE.get(facing);
+        } else {
+            return TOP_SHAPE.get(facing);
+        }
     }
 }

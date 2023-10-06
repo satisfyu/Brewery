@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "brewery:big_barrel"
+      "brewery:barrel_main"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "brewery:big_barrel"
+        "recipe": "brewery:barrel_main"
       }
     }
   },

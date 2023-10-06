@@ -4,7 +4,9 @@ import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -19,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -29,8 +32,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class WoodenBrewKettleBlock extends BrewingStationBlock implements EntityBlock {
     public static final EnumProperty<Liquid> LIQUID;
@@ -175,5 +185,27 @@ public class WoodenBrewKettleBlock extends BrewingStationBlock implements Entity
 
     static {
         LIQUID = BlockStateRegistry.LIQUID;
+    }
+
+    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.or(shape, Shapes.box(0, 0, 0.125, 0.875, 0.125, 1));
+        shape = Shapes.or(shape, Shapes.box(0, 0.125, 0, 1, 1, 0.125));
+        shape = Shapes.or(shape, Shapes.box(0.875, 0.125, 0.125, 1, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0, 0.125, 0.125, 0.125, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0.125, 0.125, 0.9375, 0.875, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0.125, 0.5625, 0.09375, 0.875, 0.5625, 0.96875));
+        return shape;
+    };
+
+    public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
+        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+            map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+        }
+    });
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE.get(state.getValue(FACING));
     }
 }
