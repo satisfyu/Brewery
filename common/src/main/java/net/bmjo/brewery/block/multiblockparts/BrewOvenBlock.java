@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BrewOvenBlock extends BrewingStationBlock {
+public class BrewOvenBlock extends BrewingstationBlock {
     public static final EnumProperty<Heat> HEAT;
 
     public BrewOvenBlock(Properties properties) {
@@ -48,7 +48,7 @@ public class BrewOvenBlock extends BrewingStationBlock {
             }
             return InteractionResult.SUCCESS;
         }
-        return blockState.use(level, player, interactionHand, blockHitResult);
+        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class BrewOvenBlock extends BrewingStationBlock {
     });
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
     }
 

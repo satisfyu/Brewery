@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BrewTimerBlock extends BrewingStationBlock {
+public class BrewTimerBlock extends BrewingstationBlock {
     public static final BooleanProperty TIME;
 
     public BrewTimerBlock(Properties properties) {
@@ -71,7 +71,7 @@ public class BrewTimerBlock extends BrewingStationBlock {
     });
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
     }
 }

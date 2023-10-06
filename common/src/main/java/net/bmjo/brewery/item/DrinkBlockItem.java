@@ -3,6 +3,7 @@ package net.bmjo.brewery.item;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -27,13 +29,23 @@ public class DrinkBlockItem extends BlockItem {
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
+    public @NotNull UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.DRINK;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
         return ItemUtils.startUsingInstantly(level, player, interactionHand);
+    }
+
+    public static void addQuality(ItemStack itemStack, int quality) {
+        CompoundTag nbtData = new CompoundTag();
+        nbtData.putInt("brewery.beer_quality", Math.min(Math.max(quality, 0), 3));
+        itemStack.setTag(nbtData);
+    }
+
+    public void addCount(ItemStack resultSack, int solved) {//TODO maybe overrite
+        resultSack.setCount(solved);
     }
 
     @Override

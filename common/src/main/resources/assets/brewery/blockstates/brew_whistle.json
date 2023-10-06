@@ -1,0 +1,100 @@
+{
+  "variants": {
+    "material=wood,half=upper,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_whistle_top",
+      "y": 0
+    },
+    "material=wood,half=upper,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_whistle_top",
+      "y": 180
+    },
+    "material=wood,half=upper,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_whistle_top",
+      "y": 270
+    },
+    "material=wood,half=upper,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_whistle_top",
+      "y": 90
+    },
+    "material=wood,half=lower,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_whistle_bottom",
+      "y": 0
+    },
+    "material=wood,half=lower,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_whistle_bottom",
+      "y": 180
+    },
+    "material=wood,half=lower,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_whistle_bottom",
+      "y": 270
+    },
+    "material=wood,half=lower,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_whistle_bottom",
+      "y": 90
+    },
+    "material=copper,half=upper,facing=north": {
+      "model": "brewery:block/copper_brewingstation_whistle_top",
+      "y": 0
+    },
+    "material=copper,half=upper,facing=south": {
+      "model": "brewery:block/copper_brewingstation_whistle_top",
+      "y": 180
+    },
+    "material=copper,half=upper,facing=west": {
+      "model": "brewery:block/copper_brewingstation_whistle_top",
+      "y": 270
+    },
+    "material=copper,half=upper,facing=east": {
+      "model": "brewery:block/copper_brewingstation_whistle_top",
+      "y": 90
+    },
+    "material=copper,half=lower,facing=north": {
+      "model": "brewery:block/copper_brewingstation_whistle_bottom",
+      "y": 0
+    },
+    "material=copper,half=lower,facing=south": {
+      "model": "brewery:block/copper_brewingstation_whistle_bottom",
+      "y": 180
+    },
+    "material=copper,half=lower,facing=west": {
+      "model": "brewery:block/copper_brewingstation_whistle_bottom",
+      "y": 270
+    },
+    "material=copper,half=lower,facing=east": {
+      "model": "brewery:block/copper_brewingstation_whistle_bottom",
+      "y": 90
+    },
+    "material=netherite,half=upper,facing=north": {
+      "model": "brewery:block/netherite_brewingstation_whistle_top",
+      "y": 0
+    },
+    "material=netherite,half=upper,facing=south": {
+      "model": "brewery:block/netherite_brewingstation_whistle_top",
+      "y": 180
+    },
+    "material=netherite,half=upper,facing=west": {
+      "model": "brewery:block/netherite_brewingstation_whistle_top",
+      "y": 270
+    },
+    "material=netherite,half=upper,facing=east": {
+      "model": "brewery:block/netherite_brewingstation_whistle_top",
+      "y": 90
+    },
+    "material=netherite,half=lower,facing=north": {
+      "model": "brewery:block/netherite_brewingstation_whistle_bottom",
+      "y": 0
+    },
+    "material=netherite,half=lower,facing=south": {
+      "model": "brewery:block/netherite_brewingstation_whistle_bottom",
+      "y": 180
+    },
+    "material=netherite,half=lower,facing=west": {
+      "model": "brewery:block/netherite_brewingstation_whistle_bottom",
+      "y": 270
+    },
+    "material=netherite,half=lower,facing=east": {
+      "model": "brewery:block/netherite_brewingstation_whistle_bottom",
+      "y": 90
+    }
+  }
+}

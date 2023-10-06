@@ -1,7 +1,7 @@
 package net.bmjo.brewery.networking.packet;
 
 import dev.architectury.networking.NetworkManager;
-import net.bmjo.brewery.entity.BrewKettleEntity;
+import net.bmjo.brewery.entity.BrewstationEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -14,7 +14,7 @@ public class DeactivateKettleS2CPacket implements NetworkManager.NetworkReceiver
         context.queue(() -> {
             Level level = context.getPlayer().getLevel();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof BrewKettleEntity brewKettleEntity) {
+            if (blockEntity instanceof BrewstationEntity brewstationEntity) {
 
             }
         });

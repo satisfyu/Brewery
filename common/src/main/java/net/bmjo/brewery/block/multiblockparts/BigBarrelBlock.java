@@ -1,7 +1,6 @@
 package net.bmjo.brewery.block.multiblockparts;
 
 import de.cristelknight.doapi.common.block.FacingBlock;
-import net.bmjo.brewery.entity.BrewKettleEntity;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.ChatFormatting;
@@ -164,7 +163,7 @@ public class BigBarrelBlock extends FacingBlock {
     });
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         DoubleBlockHalf half = state.getValue(HALF);
         Direction facing = state.getValue(FACING);
 

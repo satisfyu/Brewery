@@ -1,7 +1,8 @@
 package net.bmjo.brewery.block.multiblockparts;
 
+import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.block.property.Liquid;
-import net.bmjo.brewery.entity.BrewKettleEntity;
+import net.bmjo.brewery.entity.BrewstationEntity;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
@@ -42,19 +43,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class NetheriteBrewKettleBlock extends BrewingStationBlock implements EntityBlock {
+public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock {
     public static final EnumProperty<Liquid> LIQUID;
+    private static final Supplier<VoxelShape> voxelShapeSupplier;
+    public static final Map<Direction, VoxelShape> SHAPE;
 
-    public NetheriteBrewKettleBlock(Properties properties) {
+    public BrewKettleBlock(BrewMaterial brewMaterial, Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY));
+        this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY).setValue(MATERIAL, brewMaterial));
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE.get(state.getValue(FACING));
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        if (level.getBlockEntity(blockPos) instanceof BrewKettleEntity brewKettleEntity) {
+        if (level.getBlockEntity(blockPos) instanceof BrewstationEntity brewKettleEntity) {
             if (itemStack.isEmpty()) { //EMPTY
                 ItemStack returnStack = brewKettleEntity.removeIngredient();
                 if (returnStack != null) {
@@ -99,7 +107,7 @@ public class NetheriteBrewKettleBlock extends BrewingStationBlock implements Ent
         if (entity instanceof ItemEntity item) {
             ItemStack itemStack = item.getItem();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof BrewKettleEntity brewKettleEntity) {
+            if (blockEntity instanceof BrewstationEntity brewKettleEntity) {
                 brewKettleEntity.addIngredient(itemStack);
                 if (itemStack.isEmpty()) {
                     entity.discard();
@@ -141,12 +149,13 @@ public class NetheriteBrewKettleBlock extends BrewingStationBlock implements Ent
         BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
         BlockPos topPos = diagonalPos.above();
         if (!canPlace(level, backPos, sidePos, diagonalPos, topPos)) return;
-        level.setBlock(backPos, ObjectRegistry.NETHERITE_BREW_TIMER.get().defaultBlockState().setValue(FACING, facing), 3);
-        level.setBlock(sidePos, ObjectRegistry.NETHERTITE_BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing), 3);
-        level.setBlock(diagonalPos, ObjectRegistry.NETHERITE_BREW_OVEN.get().defaultBlockState().setValue(FACING, facing), 3);
+        BrewMaterial brewMaterial = blockState.getValue(MATERIAL);
+        level.setBlock(backPos, ObjectRegistry.BREW_TIMER.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
+        level.setBlock(sidePos, ObjectRegistry.BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
+        level.setBlock(diagonalPos, ObjectRegistry.BREW_OVEN.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof BrewKettleEntity brewKettleEntity) {
+        if (blockEntity instanceof BrewstationEntity brewKettleEntity) {
             brewKettleEntity.setComponents(blockPos, backPos, sidePos, diagonalPos);
         }
     }
@@ -163,7 +172,7 @@ public class NetheriteBrewKettleBlock extends BrewingStationBlock implements Ent
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BrewKettleEntity(blockPos, blockState);
+        return new BrewstationEntity(blockPos, blockState);
     }
 
     @SuppressWarnings("unchecked")
@@ -185,27 +194,20 @@ public class NetheriteBrewKettleBlock extends BrewingStationBlock implements Ent
 
     static {
         LIQUID = BlockStateRegistry.LIQUID;
-    }
-
-    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.or(shape, Shapes.box(0, 0, 0.125, 0.875, 0.125, 1));
-        shape = Shapes.or(shape, Shapes.box(0, 0.125, 0, 1, 1, 0.125));
-        shape = Shapes.or(shape, Shapes.box(0.875, 0.125, 0.125, 1, 1, 1));
-        shape = Shapes.or(shape, Shapes.box(0, 0.125, 0.125, 0.125, 1, 1));
-        shape = Shapes.or(shape, Shapes.box(0.125, 0.125, 0.9375, 0.875, 1, 1));
-        shape = Shapes.or(shape, Shapes.box(0.125, 0.5625, 0.09375, 0.875, 0.5625, 0.96875));
-        return shape;
-    };
-
-    public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
-        }
-    });
-
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPE.get(state.getValue(FACING));
+        voxelShapeSupplier = () -> {
+            VoxelShape shape = Shapes.empty();
+            shape = Shapes.or(shape, Shapes.box(0, 0, 0.125, 0.875, 0.125, 1));
+            shape = Shapes.or(shape, Shapes.box(0, 0.125, 0, 1, 1, 0.125));
+            shape = Shapes.or(shape, Shapes.box(0.875, 0.125, 0.125, 1, 1, 1));
+            shape = Shapes.or(shape, Shapes.box(0, 0.125, 0.125, 0.125, 1, 1));
+            shape = Shapes.or(shape, Shapes.box(0.125, 0.125, 0.9375, 0.875, 1, 1));
+            shape = Shapes.or(shape, Shapes.box(0.125, 0.5625, 0.09375, 0.875, 0.5625, 0.96875));
+            return shape;
+        };
+        SHAPE = Util.make(new HashMap<>(), map -> {
+            for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+                map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+            }
+        });
     }
 }

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BrewWhistleBlock extends BrewingStationBlock {
+public class BrewWhistleBlock extends BrewingstationBlock {
     public static final BooleanProperty WHISTLE;
     public static final EnumProperty<DoubleBlockHalf> HALF;
 
@@ -93,7 +93,7 @@ public class BrewWhistleBlock extends BrewingStationBlock {
     });
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         DoubleBlockHalf half = state.getValue(HALF);
         Direction facing = state.getValue(FACING);
 

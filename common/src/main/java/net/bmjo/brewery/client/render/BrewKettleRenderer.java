@@ -1,8 +1,8 @@
 package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.bmjo.brewery.block.multiblockparts.NetheriteBrewKettleBlock;
-import net.bmjo.brewery.entity.BrewKettleEntity;
+import net.bmjo.brewery.block.multiblockparts.BrewingstationBlock;
+import net.bmjo.brewery.entity.BrewstationEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,18 +15,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class BrewKettleRenderer implements BlockEntityRenderer<BrewKettleEntity> {
+public class BrewKettleRenderer implements BlockEntityRenderer<BrewstationEntity> {
     public BrewKettleRenderer(BlockEntityRendererProvider.Context ctx) {
 
     }
     @Override
-    public void render(BrewKettleEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+    public void render(BrewstationEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if (!blockEntity.hasLevel()) {
             return;
         }
         BlockState selfState = blockEntity.getBlockState();
-        if (selfState.getBlock() instanceof NetheriteBrewKettleBlock) {
-            List<ItemStack> ingredients = blockEntity.getIngredients();
+        if (selfState.getBlock() instanceof BrewingstationBlock) {
+            List<ItemStack> ingredients = blockEntity.getIngredient();
             poseStack.pushPose();
             for (ItemStack itemStack : ingredients) {
                 poseStack.translate(0f, 0.4f, 0f);

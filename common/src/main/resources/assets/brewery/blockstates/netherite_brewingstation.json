@@ -1,82 +1,242 @@
 {
   "variants": {
-    "liquid=empty,facing=north": {
+    "material=wood,liquid=empty,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_empty",
+      "y": 0
+    },
+    "material=wood,liquid=empty,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_empty",
+      "y": 180
+    },
+    "material=wood,liquid=empty,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_empty",
+      "y": 270
+    },
+    "material=wood,liquid=empty,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_empty",
+      "y": 90
+    },
+    "material=wood,liquid=drained,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_drained",
+      "y": 0
+    },
+    "material=wood,liquid=drained,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_drained",
+      "y": 180
+    },
+    "material=wood,liquid=drained,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_drained",
+      "y": 270
+    },
+    "material=wood,liquid=drained,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_drained",
+      "y": 90
+    },
+    "material=wood,liquid=overflowing,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_overflowing",
+      "y": 0
+    },
+    "material=wood,liquid=overflowing,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_overflowing",
+      "y": 180
+    },
+    "material=wood,liquid=overflowing,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_overflowing",
+      "y": 270
+    },
+    "material=wood,liquid=overflowing,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_overflowing",
+      "y": 90
+    },
+    "material=wood,liquid=filled,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_filled",
+      "y": 0
+    },
+    "material=wood,liquid=filled,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_filled",
+      "y": 180
+    },
+    "material=wood,liquid=filled,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_filled",
+      "y": 270
+    },
+    "material=wood,liquid=filled,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_filled",
+      "y": 90
+    },
+    "material=wood,liquid=beer,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_beer",
+      "y": 0
+    },
+    "material=wood,liquid=beer,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_beer",
+      "y": 180
+    },
+    "material=wood,liquid=beer,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_beer",
+      "y": 270
+    },
+    "material=wood,liquid=beer,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_beer",
+      "y": 90
+    },
+    "material=copper,liquid=empty,facing=north": {
+      "model": "brewery:block/copper_brewingstation_empty",
+      "y": 0
+    },
+    "material=copper,liquid=empty,facing=south": {
+      "model": "brewery:block/copper_brewingstation_empty",
+      "y": 180
+    },
+    "material=copper,liquid=empty,facing=west": {
+      "model": "brewery:block/copper_brewingstation_empty",
+      "y": 270
+    },
+    "material=copper,liquid=empty,facing=east": {
+      "model": "brewery:block/copper_brewingstation_empty",
+      "y": 90
+    },
+    "material=copper,liquid=drained,facing=north": {
+      "model": "brewery:block/copper_brewingstation_drained",
+      "y": 0
+    },
+    "material=copper,liquid=drained,facing=south": {
+      "model": "brewery:block/copper_brewingstation_drained",
+      "y": 180
+    },
+    "material=copper,liquid=drained,facing=west": {
+      "model": "brewery:block/copper_brewingstation_drained",
+      "y": 270
+    },
+    "material=copper,liquid=drained,facing=east": {
+      "model": "brewery:block/copper_brewingstation_drained",
+      "y": 90
+    },
+    "material=copper,liquid=overflowing,facing=north": {
+      "model": "brewery:block/copper_brewingstation_overflowing",
+      "y": 0
+    },
+    "material=copper,liquid=overflowing,facing=south": {
+      "model": "brewery:block/copper_brewingstation_overflowing",
+      "y": 180
+    },
+    "material=copper,liquid=overflowing,facing=west": {
+      "model": "brewery:block/copper_brewingstation_overflowing",
+      "y": 270
+    },
+    "material=copper,liquid=overflowing,facing=east": {
+      "model": "brewery:block/copper_brewingstation_overflowing",
+      "y": 90
+    },
+    "material=copper,liquid=filled,facing=north": {
+      "model": "brewery:block/copper_brewingstation_filled",
+      "y": 0
+    },
+    "material=copper,liquid=filled,facing=south": {
+      "model": "brewery:block/copper_brewingstation_filled",
+      "y": 180
+    },
+    "material=copper,liquid=filled,facing=west": {
+      "model": "brewery:block/copper_brewingstation_filled",
+      "y": 270
+    },
+    "material=copper,liquid=filled,facing=east": {
+      "model": "brewery:block/copper_brewingstation_filled",
+      "y": 90
+    },
+    "material=copper,liquid=beer,facing=north": {
+      "model": "brewery:block/copper_brewingstation_beer",
+      "y": 0
+    },
+    "material=copper,liquid=beer,facing=south": {
+      "model": "brewery:block/copper_brewingstation_beer",
+      "y": 180
+    },
+    "material=copper,liquid=beer,facing=west": {
+      "model": "brewery:block/copper_brewingstation_beer",
+      "y": 270
+    },
+    "material=copper,liquid=beer,facing=east": {
+      "model": "brewery:block/copper_brewingstation_beer",
+      "y": 90
+    },
+    "material=netherite,liquid=empty,facing=north": {
       "model": "brewery:block/netherite_brewingstation_empty",
       "y": 0
     },
-    "liquid=empty,facing=south": {
+    "material=netherite,liquid=empty,facing=south": {
       "model": "brewery:block/netherite_brewingstation_empty",
       "y": 180
     },
-    "liquid=empty,facing=west": {
+    "material=netherite,liquid=empty,facing=west": {
       "model": "brewery:block/netherite_brewingstation_empty",
       "y": 270
     },
-    "liquid=empty,facing=east": {
+    "material=netherite,liquid=empty,facing=east": {
       "model": "brewery:block/netherite_brewingstation_empty",
       "y": 90
     },
-    "liquid=drained,facing=north": {
+    "material=netherite,liquid=drained,facing=north": {
       "model": "brewery:block/netherite_brewingstation_drained",
       "y": 0
     },
-    "liquid=drained,facing=south": {
+    "material=netherite,liquid=drained,facing=south": {
       "model": "brewery:block/netherite_brewingstation_drained",
       "y": 180
     },
-    "liquid=drained,facing=west": {
+    "material=netherite,liquid=drained,facing=west": {
       "model": "brewery:block/netherite_brewingstation_drained",
       "y": 270
     },
-    "liquid=drained,facing=east": {
+    "material=netherite,liquid=drained,facing=east": {
       "model": "brewery:block/netherite_brewingstation_drained",
       "y": 90
     },
-    "liquid=overflowing,facing=north": {
+    "material=netherite,liquid=overflowing,facing=north": {
       "model": "brewery:block/netherite_brewingstation_overflowing",
       "y": 0
     },
-    "liquid=overflowing,facing=south": {
+    "material=netherite,liquid=overflowing,facing=south": {
       "model": "brewery:block/netherite_brewingstation_overflowing",
       "y": 180
     },
-    "liquid=overflowing,facing=west": {
+    "material=netherite,liquid=overflowing,facing=west": {
       "model": "brewery:block/netherite_brewingstation_overflowing",
       "y": 270
     },
-    "liquid=overflowing,facing=east": {
+    "material=netherite,liquid=overflowing,facing=east": {
       "model": "brewery:block/netherite_brewingstation_overflowing",
       "y": 90
     },
-    "liquid=filled,facing=north": {
+    "material=netherite,liquid=filled,facing=north": {
       "model": "brewery:block/netherite_brewingstation_filled",
       "y": 0
     },
-    "liquid=filled,facing=south": {
+    "material=netherite,liquid=filled,facing=south": {
       "model": "brewery:block/netherite_brewingstation_filled",
       "y": 180
     },
-    "liquid=filled,facing=west": {
+    "material=netherite,liquid=filled,facing=west": {
       "model": "brewery:block/netherite_brewingstation_filled",
       "y": 270
     },
-    "liquid=filled,facing=east": {
+    "material=netherite,liquid=filled,facing=east": {
       "model": "brewery:block/netherite_brewingstation_filled",
       "y": 90
     },
-    "liquid=beer,facing=north": {
+    "material=netherite,liquid=beer,facing=north": {
       "model": "brewery:block/netherite_brewingstation_beer",
       "y": 0
     },
-    "liquid=beer,facing=south": {
+    "material=netherite,liquid=beer,facing=south": {
       "model": "brewery:block/netherite_brewingstation_beer",
       "y": 180
     },
-    "liquid=beer,facing=west": {
+    "material=netherite,liquid=beer,facing=west": {
       "model": "brewery:block/netherite_brewingstation_beer",
       "y": 270
     },
-    "liquid=beer,facing=east": {
+    "material=netherite,liquid=beer,facing=east": {
       "model": "brewery:block/netherite_brewingstation_beer",
       "y": 90
     }

@@ -1,0 +1,148 @@
+{
+  "variants": {
+    "material=wood,heat=off,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_oven_off",
+      "y": 0
+    },
+    "material=wood,heat=off,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_oven_off",
+      "y": 180
+    },
+    "material=wood,heat=off,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_oven_off",
+      "y": 270
+    },
+    "material=wood,heat=off,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_oven_off",
+      "y": 90
+    },
+    "material=wood,heat=weak,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_oven_weak",
+      "y": 0
+    },
+    "material=wood,heat=weak,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_oven_weak",
+      "y": 180
+    },
+    "material=wood,heat=weak,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_oven_weak",
+      "y": 270
+    },
+    "material=wood,heat=weak,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_oven_weak",
+      "y": 90
+    },
+    "material=wood,heat=lit,facing=north": {
+      "model": "brewery:block/wooden_brewingstation_oven_lit",
+      "y": 0
+    },
+    "material=wood,heat=lit,facing=south": {
+      "model": "brewery:block/wooden_brewingstation_oven_lit",
+      "y": 180
+    },
+    "material=wood,heat=lit,facing=west": {
+      "model": "brewery:block/wooden_brewingstation_oven_lit",
+      "y": 270
+    },
+    "material=wood,heat=lit,facing=east": {
+      "model": "brewery:block/wooden_brewingstation_oven_lit",
+      "y": 90
+    },
+    "material=copper,heat=off,facing=north": {
+      "model": "brewery:block/copper_brewingstation_oven_off",
+      "y": 0
+    },
+    "material=copper,heat=off,facing=south": {
+      "model": "brewery:block/copper_brewingstation_oven_off",
+      "y": 180
+    },
+    "material=copper,heat=off,facing=west": {
+      "model": "brewery:block/copper_brewingstation_oven_off",
+      "y": 270
+    },
+    "material=copper,heat=off,facing=east": {
+      "model": "brewery:block/copper_brewingstation_oven_off",
+      "y": 90
+    },
+    "material=copper,heat=weak,facing=north": {
+      "model": "brewery:block/copper_brewingstation_oven_weak",
+      "y": 0
+    },
+    "material=copper,heat=weak,facing=south": {
+      "model": "brewery:block/copper_brewingstation_oven_weak",
+      "y": 180
+    },
+    "material=copper,heat=weak,facing=west": {
+      "model": "brewery:block/copper_brewingstation_oven_weak",
+      "y": 270
+    },
+    "material=copper,heat=weak,facing=east": {
+      "model": "brewery:block/copper_brewingstation_oven_weak",
+      "y": 90
+    },
+    "material=copper,heat=lit,facing=north": {
+      "model": "brewery:block/copper_brewingstation_oven_lit",
+      "y": 0
+    },
+    "material=copper,heat=lit,facing=south": {
+      "model": "brewery:block/copper_brewingstation_oven_lit",
+      "y": 180
+    },
+    "material=copper,heat=lit,facing=west": {
+      "model": "brewery:block/copper_brewingstation_oven_lit",
+      "y": 270
+    },
+    "material=copper,heat=lit,facing=east": {
+      "model": "brewery:block/copper_brewingstation_oven_lit",
+      "y": 90
+    },
+    "material=netherite,heat=off,facing=north": {
+      "model": "brewery:block/netherite_brewingstation_oven_off",
+      "y": 0
+    },
+    "material=netherite,heat=off,facing=south": {
+      "model": "brewery:block/netherite_brewingstation_oven_off",
+      "y": 180
+    },
+    "material=netherite,heat=off,facing=west": {
+      "model": "brewery:block/netherite_brewingstation_oven_off",
+      "y": 270
+    },
+    "material=netherite,heat=off,facing=east": {
+      "model": "brewery:block/netherite_brewingstation_oven_off",
+      "y": 90
+    },
+    "material=netherite,heat=weak,facing=north": {
+      "model": "brewery:block/netherite_brewingstation_oven_weak",
+      "y": 0
+    },
+    "material=netherite,heat=weak,facing=south": {
+      "model": "brewery:block/netherite_brewingstation_oven_weak",
+      "y": 180
+    },
+    "material=netherite,heat=weak,facing=west": {
+      "model": "brewery:block/netherite_brewingstation_oven_weak",
+      "y": 270
+    },
+    "material=netherite,heat=weak,facing=east": {
+      "model": "brewery:block/netherite_brewingstation_oven_weak",
+      "y": 90
+    },
+    "material=netherite,heat=lit,facing=north": {
+      "model": "brewery:block/netherite_brewingstation_oven_lit",
+      "y": 0
+    },
+    "material=netherite,heat=lit,facing=south": {
+      "model": "brewery:block/netherite_brewingstation_oven_lit",
+      "y": 180
+    },
+    "material=netherite,heat=lit,facing=west": {
+      "model": "brewery:block/netherite_brewingstation_oven_lit",
+      "y": 270
+    },
+    "material=netherite,heat=lit,facing=east": {
+      "model": "brewery:block/netherite_brewingstation_oven_lit",
+      "y": 90
+    }
+  }
+}

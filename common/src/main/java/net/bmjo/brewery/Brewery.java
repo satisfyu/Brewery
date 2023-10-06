@@ -31,6 +31,7 @@ public class Brewery {
         SoundRegistry.registerSounds();
         CompostablesRegistry.init();
         EntityRegistry.register();
+        RecipeRegistry.registerRecipes();
         BlockEntityRegistry.registerBlockEntities();
         registerEvents();
     }

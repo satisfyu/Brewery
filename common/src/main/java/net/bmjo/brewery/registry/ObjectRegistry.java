@@ -14,6 +14,7 @@ import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.crops.HopsCropBodyBlock;
 import net.bmjo.brewery.block.crops.HopsCropHeadBlock;
 import net.bmjo.brewery.block.multiblockparts.*;
+import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.item.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
@@ -46,14 +47,14 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WILD_HOPS = registerWithoutItem("wild_hops", () -> new TallFlowerBlock(BlockBehaviour.Properties.copy(Blocks.ROSE_BUSH)));
     public static final RegistrySupplier<Block> HOPS_CROP = registerWithoutItem("hops_crop", () -> new HopsCropHeadBlock(getBushSettings().randomTicks()));
     public static final RegistrySupplier<Block> HOPS_CROP_BODY = registerWithoutItem("hops_crop_body", () -> new HopsCropBodyBlock(getBushSettings().randomTicks()));
-    public static final RegistrySupplier<Item> HOPS_SEEDS = registerItem("hops_seeds", () -> new BlockItem(HOPS_CROP.get(), getSettings()));
-    public static final RegistrySupplier<Item> HOPS = registerItem("hops", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
+    public static final RegistrySupplier<Item> HOPS_SEEDS = registerI("hops_seeds", () -> new BlockItem(HOPS_CROP.get(), getSettings()));
+    public static final RegistrySupplier<Item> HOPS = registerI("hops", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
     public static final RegistrySupplier<Block> BARLEY_CROP = registerWithoutItem("barley_crop", () -> new BarleyCropBlock(getBushSettings()));
-    public static final RegistrySupplier<Item> BARLEY_SEEDS = registerItem("barley_seeds", () -> new BlockItem(BARLEY_CROP.get(), getSettings()));
-    public static final RegistrySupplier<Item> BARLEY = registerItem("barley", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
+    public static final RegistrySupplier<Item> BARLEY_SEEDS = registerI("barley_seeds", () -> new BlockItem(BARLEY_CROP.get(), getSettings()));
+    public static final RegistrySupplier<Item> BARLEY = registerI("barley", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
     public static final RegistrySupplier<Block> CORN_CROP = registerWithoutItem("corn_crop", () -> new CornCropBlock(getBushSettings()));
-    public static final RegistrySupplier<Item> CORN_SEEDS = registerItem("corn_seeds", () -> new BlockItem(CORN_CROP.get(), getSettings()));
-    public static final RegistrySupplier<Item> CORN = registerItem("corn", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
+    public static final RegistrySupplier<Item> CORN_SEEDS = registerI("corn_seeds", () -> new BlockItem(CORN_CROP.get(), getSettings()));
+    public static final RegistrySupplier<Item> CORN = registerI("corn", () -> new IngredientItem(getSettings().food(Foods.APPLE)));
     public static final RegistrySupplier<Block> DRIED_WHEAT = registerBI("dried_wheat", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> DRIED_BARLEY = registerBI("dried_barley", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
     public static final RegistrySupplier<Block> DRIED_CORN = registerBI("dried_corn", () -> new BagBlock(BlockBehaviour.Properties.copy(Blocks.HAY_BLOCK)));
@@ -66,32 +67,25 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> BREWERY_WINDOW = registerBI("brewery_window", () -> new WindowBlock(BlockBehaviour.Properties.copy(Blocks.GLASS_PANE)));
     public static final RegistrySupplier<Block> BREWERY_TRAPDOOR = registerBI("brewery_trapdoor", () -> new TrapDoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_TRAPDOOR)));
     public static final RegistrySupplier<Block> BREWERY_DOOR = registerBI("brewery_door", () -> new DoorBlock(BlockBehaviour.Properties.copy(Blocks.OAK_DOOR)));
-    public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
-    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new WoodenBrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> WOODEN_BREW_WHISTLE = registerB("wooden_brew_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> WOODEN_BREW_OVEN = registerB("wooden_brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> WOODEN_BREW_TIMER = registerB("wooden_brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> COPPER_BREWINGSTATION = registerBI("copper_brewingstation", () -> new CopperBrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> COPPER_BREW_WHISTLE = registerB("copper_brew_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> COPPER_BREW_OVEN = registerB("copper_brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> COPPER_BREW_TIMER = registerB("copper_brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> NETHERITE_BREWINGSTATION = registerBI("netherite_brewingstation", () -> new NetheriteBrewKettleBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)));
-    public static final RegistrySupplier<Block> NETHERTITE_BREW_WHISTLE = registerB("netherite_brew_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> NETHERITE_BREW_OVEN = registerB("netherite_brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> NETHERITE_BREW_TIMER = registerB("netherite_brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> BREW_WHISTLE = registerB("steam_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> BREW_OVEN = registerB("oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
-    public static final RegistrySupplier<Block> BREW_TIMER = registerB("timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Item> BREATHALYZER = registerI("breathalyzer", () -> new Breathalyzer(getSettings()));
 
+    //TODO BREWINGSTATION + logic
+    public static final RegistrySupplier<Block> BREWINGSTATION = registerB("brew_kettle", () -> new BrewKettleBlock(BrewMaterial.WOOD, BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Item> WOODEN_BREWINGSTATION = registerI("wooden_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.WOOD, getSettings()));
+    public static final RegistrySupplier<Item> COPPER_BREWINGSTATION = registerI("copper_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.COPPER, getSettings()));
+    public static final RegistrySupplier<Item> NETHERITE_BREWINGSTATION = registerI("netherite_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.NETHERITE, getSettings()));
+    public static final RegistrySupplier<Block> BREW_WHISTLE = registerB("brew_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> BREW_OVEN = registerB("brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> BREW_TIMER = registerB("brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
 
     //TODO SILO -> Multiblock & logic
-    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewingStationBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewingstationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewingstationBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> BARREL_MAIN = registerBI("barrel_main", () -> new BigBarrelBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BARREL_MAIN_HEAD = registerB("barrel_main_head", () -> new BigBarrelMainHeadBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BARREL_RIGHT = registerB("barrel_right", () -> new BigBarrelRightBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BARREL_HEAD_RIGHT = registerB("barrel_head_right", () -> new BigBarrelRightHeadBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
-    public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeItem(getSettings()));
+    public static final RegistrySupplier<Item> ROPE = registerI("rope", () -> new RopeItem(getSettings()));
     public static final RegistrySupplier<Block> HANGING_ROPE = registerB("hanging_rope", () -> new HangingRope(BlockBehaviour.Properties.copy(Blocks.CYAN_WOOL)));
     public static final RegistrySupplier<Block> BEER_MUG = registerBI("beer_mug", () -> new BeerKegFlowerPotBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
     public static final RegistrySupplier<Block> BEER_WHEAT = registerBeverage("beer_wheat", () -> new BeverageBlock(getBeverageSettings()), MobEffects.DAMAGE_BOOST, 30 * 20);
@@ -103,23 +97,23 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WHISKEY_LILITUSINGLEMALT = registerBeverage("whiskey_lilitusinglemalt", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.CUDDLYWARM.get(), 30 * 20);
     public static final RegistrySupplier<Block> WHISKEY_JOJANNIK = registerBeverage("whiskey_jojannik", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.SURVIVALIST.get(), 30 * 20);
     public static final RegistrySupplier<Block> WHISKEY_CRISTELWALKER = registerBeverage("whiskey_cristelwalker", () -> new BeverageBlock(getBeverageSettings()), EffectRegistry.SLIDING.get(), 30 * 20);
-    public static final RegistrySupplier<Item> PORK_KNUCKLE = registerItem("pork_knuckle", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
-    public static final RegistrySupplier<Item> FRIED_CHICKEN = registerItem("fried_chicken", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
-    public static final RegistrySupplier<Item> HALF_CHICKEN = registerItem("half_chicken", () -> new SaturatedItem(getFoodItemSettings(8, 1.0f, EffectRegistry.SATURATED.get(), 6000)));
-    public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
-    public static final RegistrySupplier<Item> MASHED_POTATOES = registerItem("mashed_potatoes", () -> new SaturatedItem(getFoodItemSettings(8, 1.0f, EffectRegistry.SATURATED.get(), 6000)));
-    public static final RegistrySupplier<Item> POTATO_SALAD = registerItem("potato_salad", () -> new SaturatedItem(getFoodItemSettings(10, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
-    public static final RegistrySupplier<Item> DUMPLINGS = registerItem("dumplings", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
-    public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 0.7f, EffectRegistry.SATURATED.get(), 3000)));
+    public static final RegistrySupplier<Item> PORK_KNUCKLE = registerI("pork_knuckle", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
+    public static final RegistrySupplier<Item> FRIED_CHICKEN = registerI("fried_chicken", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
+    public static final RegistrySupplier<Item> HALF_CHICKEN = registerI("half_chicken", () -> new SaturatedItem(getFoodItemSettings(8, 1.0f, EffectRegistry.SATURATED.get(), 6000)));
+    public static final RegistrySupplier<Item> SAUSAGE = registerI("sausage", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
+    public static final RegistrySupplier<Item> MASHED_POTATOES = registerI("mashed_potatoes", () -> new SaturatedItem(getFoodItemSettings(8, 1.0f, EffectRegistry.SATURATED.get(), 6000)));
+    public static final RegistrySupplier<Item> POTATO_SALAD = registerI("potato_salad", () -> new SaturatedItem(getFoodItemSettings(10, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
+    public static final RegistrySupplier<Item> DUMPLINGS = registerI("dumplings", () -> new SaturatedItem(getFoodItemSettings(12, 1.2f, EffectRegistry.SATURATED.get(), 9000)));
+    public static final RegistrySupplier<Item> PRETZEL = registerI("pretzel", () -> new SaturatedItem(getFoodItemSettings(6, 0.7f, EffectRegistry.SATURATED.get(), 3000)));
     public static final RegistrySupplier<Block> GINGERBREAD = registerBI("gingerbread", () -> new GingerBreadBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission()));
-    public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.BEER_ELEMENTAL, -1, -1, getSettings()));
-    public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(getSettings().rarity(Rarity.EPIC)));
-    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
-    public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
-    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
-    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
-    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
+    public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerI("beer_elemental_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.BEER_ELEMENTAL, -1, -1, getSettings()));
+    public static final RegistrySupplier<Item> BREWFEST_HAT = registerI("brewfest_hat", () -> new BrewfestHatItem(getSettings().rarity(Rarity.EPIC)));
+    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerI("brewfest_regalia", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerI("brewfest_trousers", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_LEATHER, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerI("brewfest_boots", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_ARMOR, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerI("brewfest_dress", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.LEGS, getSettings().rarity(Rarity.RARE)));
+    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerI("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
+    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerI("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
 
 
     //TODO                      **** 1.20.1 ****
@@ -139,7 +133,7 @@ public class ObjectRegistry {
     public static final List<Supplier<Block>> STANDARD_FLOOR_BLOCKS = Lists.newArrayList();
     public static Supplier<Block> BEER_STANDARD;
 
-    private static <T extends Item> RegistrySupplier<T> registerItem(String path, Supplier<T> item) {
+    private static <T extends Item> RegistrySupplier<T> registerI(String path, Supplier<T> item) {
         final ResourceLocation id = new BreweryIdentifier(path);
         return ITEM_REGISTRAR.register(id, item);
     }
@@ -151,7 +145,7 @@ public class ObjectRegistry {
 
     private static <T extends Block> RegistrySupplier<T> registerBI(String path, Supplier<T> block) {
         RegistrySupplier<T> blockSupplier = registerB(path, block);
-        registerItem(path, () -> new BlockItem(blockSupplier.get(), getSettings()));
+        registerI(path, () -> new BlockItem(blockSupplier.get(), getSettings()));
         return blockSupplier;
     }
 
@@ -165,7 +159,7 @@ public class ObjectRegistry {
     }
 
     public static void commonInit() {
-        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), WOODEN_BREWINGSTATION.get());
+        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), BREWINGSTATION.get());
         FuelRegistry.register(100, CORN.get(), BARLEY.get(), HOPS.get());
         FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
         FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());
@@ -234,7 +228,7 @@ public class ObjectRegistry {
 
     private static <T extends Block> RegistrySupplier<T> registerBeverage(String name, Supplier<T> block, MobEffect effect, int duration) {
         RegistrySupplier<T> toReturn = registerWithoutItem(name, block);
-        registerItem(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(beverageFoodComponent(effect, duration)))));
+        registerI(name, () -> new DrinkBlockItem(toReturn.get(), getSettings(settings -> settings.food(beverageFoodComponent(effect, duration)))));
         return toReturn;
     }
 

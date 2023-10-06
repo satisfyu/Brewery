@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BigBarrelMainHeadBlock extends BrewingStationBlock {
+public class BigBarrelMainHeadBlock extends BrewingstationBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF;
 
     public BigBarrelMainHeadBlock(Properties properties) {
@@ -83,7 +83,7 @@ public class BigBarrelMainHeadBlock extends BrewingStationBlock {
     });
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         DoubleBlockHalf half = state.getValue(HALF);
         Direction facing = state.getValue(FACING);
 
