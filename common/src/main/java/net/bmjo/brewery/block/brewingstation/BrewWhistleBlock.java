@@ -1,5 +1,6 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.brewingstation;
 
+import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.Util;
@@ -31,7 +32,7 @@ public class BrewWhistleBlock extends BrewingstationBlock {
 
     public BrewWhistleBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(WHISTLE, false).setValue(HALF, DoubleBlockHalf.LOWER));
+        this.registerDefaultState(this.defaultBlockState().setValue(MATERIAL, BrewMaterial.WOOD).setValue(WHISTLE, false).setValue(HALF, DoubleBlockHalf.LOWER));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class BrewWhistleBlock extends BrewingstationBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(WHISTLE, HALF);
+        builder.add(MATERIAL, WHISTLE, HALF);
     }
 
     static {

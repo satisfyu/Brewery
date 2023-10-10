@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 public class BlockEntityRegistry {
     private static final Registrar<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Brewery.MOD_ID, Registry.BLOCK_ENTITY_TYPE_REGISTRY).getRegistrar();
 
-    public static final RegistrySupplier<BlockEntityType<BrewstationEntity>> BREWINGSTATION_BLOCK_ENTITY = create("brewingstation", () -> BlockEntityType.Builder.of(BrewstationEntity::new, ObjectRegistry.BREWINGSTATION.get()).build(null));
+    public static final RegistrySupplier<BlockEntityType<BrewstationEntity>> BREWINGSTATION_BLOCK_ENTITY = create("brewingstation", () -> BlockEntityType.Builder.of(BrewstationEntity::new, ObjectRegistry.WOODEN_BREWINGSTATION.get(),  ObjectRegistry.COPPER_BREWINGSTATION.get(),  ObjectRegistry.NETHERITE_BREWINGSTATION.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeerKegFlowerPotBlockEntity>> BEER_MUG_FLOWER_POT_BLOCK_ENTITY = create("beer_mug", () -> BlockEntityType.Builder.of(BeerKegFlowerPotBlockEntity::new, ObjectRegistry.BEER_MUG.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<StandardBlockEntity>> STANDARD = create("standard", () -> BlockEntityType.Builder.of(StandardBlockEntity::new, ObjectRegistry.STANDARD_BLOCKS.stream().map(Supplier::get).toList().toArray(new Block[0])).build(null));
 

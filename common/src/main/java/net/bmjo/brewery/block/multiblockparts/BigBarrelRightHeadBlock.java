@@ -1,5 +1,6 @@
 package net.bmjo.brewery.block.multiblockparts;
 
+import net.bmjo.brewery.block.brewingstation.BrewingstationBlock;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

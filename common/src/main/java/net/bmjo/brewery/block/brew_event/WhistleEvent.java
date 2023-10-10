@@ -1,5 +1,7 @@
 package net.bmjo.brewery.block.brew_event;
 
+import net.bmjo.brewery.block.brewingstation.BrewKettleBlock;
+import net.bmjo.brewery.block.brewingstation.BrewWhistleBlock;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
@@ -13,7 +15,7 @@ public class WhistleEvent implements BrewEvent {
     @Override
     public void start(Set<BlockPos> components, Level level) {
         if (components.isEmpty() || level == null) return;
-        BlockPos basinPos = BrewHelper.getBlock(ObjectRegistry.BREWINGSTATION.get(), components, level);
+        BlockPos basinPos = BrewHelper.getBlock(BrewKettleBlock.class, components, level);
         BlockPos whistlePos = BrewHelper.getBlock(ObjectRegistry.BREW_WHISTLE.get(), components, level);
         if (basinPos != null && whistlePos != null) {
             BlockState basinState = level.getBlockState(basinPos);
@@ -26,7 +28,7 @@ public class WhistleEvent implements BrewEvent {
     @Override
     public boolean isFinish(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return true;
-        BlockPos basinPos = BrewHelper.getBlock(ObjectRegistry.BREWINGSTATION.get(), components, level);
+        BlockPos basinPos = BrewHelper.getBlock(BrewKettleBlock.class, components, level);
         if (basinPos != null) {
             BlockState basinState = level.getBlockState(basinPos);
             return basinState.getValue(BlockStateRegistry.LIQUID) == Liquid.DRAINED;

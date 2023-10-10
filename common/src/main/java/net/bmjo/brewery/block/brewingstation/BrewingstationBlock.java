@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.brewingstation;
 
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.entity.BrewstationEntity;
@@ -17,10 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class BrewingstationBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<BrewMaterial> MATERIAL;
-
     public BrewingstationBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(MATERIAL, BrewMaterial.WOOD));
+        this.registerDefaultState(this.defaultBlockState());
     }
 
     @Override
@@ -57,7 +56,7 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(FACING, MATERIAL);
+        builder.add(FACING);
     }
 
     static {

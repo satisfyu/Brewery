@@ -49,7 +49,7 @@ public class BreweryClient {
                         return -1;
                     }
                     return BiomeColors.getAverageWaterColor(world, pos);
-        }, ObjectRegistry.BREWINGSTATION);
+        }, ObjectRegistry.WOODEN_BREWINGSTATION, ObjectRegistry.COPPER_BREWINGSTATION, ObjectRegistry.NETHERITE_BREWINGSTATION);
 
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());

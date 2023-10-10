@@ -17,4 +17,14 @@ public class BrewHelper {
         }
         return null;
     }
+
+    @Nullable
+    public static BlockPos getBlock(Class<?> clazz, Set<BlockPos> components, Level level) {
+        for (BlockPos pos : components) {
+            if (clazz.isInstance(level.getBlockState(pos).getBlock())) {
+                return pos;
+            }
+        }
+        return null;
+    }
 }

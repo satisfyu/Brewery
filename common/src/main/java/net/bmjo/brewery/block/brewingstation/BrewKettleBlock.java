@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.brewingstation;
 
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.block.property.Liquid;
@@ -47,10 +47,12 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     public static final EnumProperty<Liquid> LIQUID;
     private static final Supplier<VoxelShape> voxelShapeSupplier;
     public static final Map<Direction, VoxelShape> SHAPE;
+    private final BrewMaterial brewMaterial;
 
     public BrewKettleBlock(BrewMaterial brewMaterial, Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY).setValue(MATERIAL, brewMaterial));
+        this.brewMaterial = brewMaterial;
+        this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY));
     }
 
     @Override
@@ -149,10 +151,9 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
         BlockPos topPos = diagonalPos.above();
         if (!canPlace(level, backPos, sidePos, diagonalPos, topPos)) return;
-        BrewMaterial brewMaterial = blockState.getValue(MATERIAL);
-        level.setBlock(backPos, ObjectRegistry.BREW_TIMER.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
-        level.setBlock(sidePos, ObjectRegistry.BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
-        level.setBlock(diagonalPos, ObjectRegistry.BREW_OVEN.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, brewMaterial), 3);
+        level.setBlock(backPos, ObjectRegistry.BREW_TIMER.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, this.brewMaterial), 3);
+        level.setBlock(sidePos, ObjectRegistry.BREW_WHISTLE.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, this.brewMaterial), 3);
+        level.setBlock(diagonalPos, ObjectRegistry.BREW_OVEN.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, this.brewMaterial), 3);
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
         if (blockEntity instanceof BrewstationEntity brewKettleEntity) {

@@ -9,6 +9,7 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.*;
+import net.bmjo.brewery.block.brewingstation.*;
 import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.crops.HopsCropBodyBlock;
@@ -70,10 +71,9 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREATHALYZER = registerI("breathalyzer", () -> new Breathalyzer(getSettings()));
 
     //TODO BREWINGSTATION + logic
-    public static final RegistrySupplier<Block> BREWINGSTATION = registerB("brew_kettle", () -> new BrewKettleBlock(BrewMaterial.WOOD, BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Item> WOODEN_BREWINGSTATION = registerI("wooden_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.WOOD, getSettings()));
-    public static final RegistrySupplier<Item> COPPER_BREWINGSTATION = registerI("copper_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.COPPER, getSettings()));
-    public static final RegistrySupplier<Item> NETHERITE_BREWINGSTATION = registerI("netherite_brewingstation", () -> new BrewingstationItem(BREWINGSTATION.get(), BrewMaterial.NETHERITE, getSettings()));
+    public static final RegistrySupplier<Block> WOODEN_BREWINGSTATION = registerBI("wooden_brewingstation", () -> new BrewKettleBlock(BrewMaterial.WOOD, BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistrySupplier<Block> COPPER_BREWINGSTATION = registerBI("copper_brewingstation", () -> new BrewKettleBlock(BrewMaterial.COPPER, BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> NETHERITE_BREWINGSTATION = registerBI("netherite_brewingstation", () -> new BrewKettleBlock(BrewMaterial.NETHERITE, BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)));
     public static final RegistrySupplier<Block> BREW_WHISTLE = registerB("brew_whistle", () -> new BrewWhistleBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> BREW_OVEN = registerB("brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> BREW_TIMER = registerB("brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
@@ -159,7 +159,7 @@ public class ObjectRegistry {
     }
 
     public static void commonInit() {
-        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), BREWINGSTATION.get());
+        FuelRegistry.register(300, BEER_STANDARD.get(), BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), WOODEN_BREWINGSTATION.get());
         FuelRegistry.register(100, CORN.get(), BARLEY.get(), HOPS.get());
         FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
         FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());
