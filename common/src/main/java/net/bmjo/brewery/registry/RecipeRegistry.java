@@ -19,7 +19,7 @@ public class RecipeRegistry {
     private static final Registrar<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Brewery.MOD_ID, Registry.RECIPE_SERIALIZER_REGISTRY).getRegistrar();
 
     public static final RegistrySupplier<RecipeType<BrewingRecipe>> BREWING_RECIPE_TYPE = create("brew");
-    public static final RegistrySupplier<RecipeSerializer<BrewingRecipe>> BREWING_RECIPE_SERIALIZER = create("brew", BrewingRecipe.Serializer::new);
+    public static final RegistrySupplier<RecipeSerializer<BrewingRecipe>> BREWING_RECIPE_SERIALIZER = create("brewing", BrewingRecipe.Serializer::new);
 
     private static <T extends Recipe<?>> RegistrySupplier<RecipeType<T>> create(String name) {
         Supplier<RecipeType<T>> type = () -> new RecipeType<>() {

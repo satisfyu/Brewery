@@ -3,14 +3,18 @@ package net.bmjo.brewery.block.brew_event;
 import net.bmjo.brewery.block.brewingstation.BrewKettleBlock;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.registry.BlockStateRegistry;
-import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
 
-public class KettleEvent implements BrewEvent {
+public class KettleEvent extends BrewEvent {
+    protected KettleEvent() {
+        super(new BreweryIdentifier("kettle"));
+    }
+
     @Override
     public void start(Set<BlockPos> components, Level level) {
         if (components == null || level == null) return;

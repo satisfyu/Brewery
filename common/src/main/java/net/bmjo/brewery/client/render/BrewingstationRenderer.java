@@ -15,10 +15,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class BrewKettleRenderer implements BlockEntityRenderer<BrewstationEntity> {
-    public BrewKettleRenderer(BlockEntityRendererProvider.Context ctx) {
+public class BrewingstationRenderer implements BlockEntityRenderer<BrewstationEntity> {
+    public BrewingstationRenderer(BlockEntityRendererProvider.Context ctx) {
 
     }
+
     @Override
     public void render(BrewstationEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if (!blockEntity.hasLevel()) {
@@ -28,8 +29,10 @@ public class BrewKettleRenderer implements BlockEntityRenderer<BrewstationEntity
         if (selfState.getBlock() instanceof BrewingstationBlock) {
             List<ItemStack> ingredients = blockEntity.getIngredient();
             poseStack.pushPose();
+            poseStack.scale(0.8F, 0.8F, 0.8F);
+            poseStack.translate(0.5f, 0.2F, 0.5f);
             for (ItemStack itemStack : ingredients) {
-                poseStack.translate(0f, 0.4f, 0f);
+                poseStack.translate(0.0f, 0.2f, 0.0f);
                 BreweryUtil.renderItem(itemStack, poseStack, multiBufferSource, blockEntity);
             }
             poseStack.popPose();

@@ -1,5 +1,8 @@
 package net.bmjo.brewery.block.brew_event;
 
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -16,5 +19,15 @@ public class BrewEvents {
     public static Supplier<BrewEvent> registerBrewEvent(Supplier<BrewEvent> brewEventSupplier) {
         BREW_EVENTS.add(brewEventSupplier);
         return brewEventSupplier;
+    }
+
+    @Nullable
+    public static Supplier<BrewEvent> byId(ResourceLocation id) {
+        for (Supplier<BrewEvent> brewEvent : BREW_EVENTS) {
+            if (brewEvent.get().id().equals(id)) {
+                return brewEvent;
+            }
+        }
+        return null;
     }
 }

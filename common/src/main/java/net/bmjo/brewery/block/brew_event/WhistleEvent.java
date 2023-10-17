@@ -1,17 +1,21 @@
 package net.bmjo.brewery.block.brew_event;
 
 import net.bmjo.brewery.block.brewingstation.BrewKettleBlock;
-import net.bmjo.brewery.block.brewingstation.BrewWhistleBlock;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
+import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
 
-public class WhistleEvent implements BrewEvent {
+public class WhistleEvent extends BrewEvent {
+    protected WhistleEvent() {
+        super(new BreweryIdentifier("whistle"));
+    }
+
     @Override
     public void start(Set<BlockPos> components, Level level) {
         if (components.isEmpty() || level == null) return;
@@ -20,8 +24,8 @@ public class WhistleEvent implements BrewEvent {
         if (basinPos != null && whistlePos != null) {
             BlockState basinState = level.getBlockState(basinPos);
             BlockState whistleState = level.getBlockState(whistlePos);
-            level.setBlock(basinPos, basinState.setValue(BlockStateRegistry.LIQUID, Liquid.DRAINED), 3);
-            level.setBlock(whistlePos, whistleState.setValue(BlockStateRegistry.WHISTLE, true), 3);
+            level.setBlockAndUpdate(basinPos, basinState.setValue(BlockStateRegistry.LIQUID, Liquid.DRAINED));
+            level.setBlockAndUpdate(whistlePos, whistleState.setValue(BlockStateRegistry.WHISTLE, true));
         }
     }
 

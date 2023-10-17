@@ -1,0 +1,11 @@
+{
+  "type": "brewery:brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:emerald"
+    }
+  ],
+  "result": {
+    "item": "minecraft:diamond"
+  }
+}

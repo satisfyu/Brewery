@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -55,6 +56,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         this.registerDefaultState(this.defaultBlockState().setValue(LIQUID, Liquid.EMPTY));
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
@@ -63,19 +65,34 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     @SuppressWarnings("deprecation")
     @Override
     public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (interactionHand == InteractionHand.OFF_HAND) return InteractionResult.CONSUME;
+        if (level.isClientSide) return InteractionResult.CONSUME;
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.getBlockEntity(blockPos) instanceof BrewstationEntity brewKettleEntity) {
             if (itemStack.isEmpty()) { //EMPTY
                 ItemStack returnStack = brewKettleEntity.removeIngredient();
                 if (returnStack != null) {
                     player.addItem(returnStack);
+                    //brewKettleEntity.updateInClientWorld();
+                    level.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS);
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;
             }
+            if (itemStack.getItem() == ObjectRegistry.BEER_MUG.get().asItem()) { //BEER
+                if (blockState.getValue(LIQUID) == Liquid.BEER) {
+                    ItemStack beerStack = brewKettleEntity.getBeer();
+                    if (beerStack != null) {
+                        player.addItem(beerStack);
+                        return InteractionResult.SUCCESS;
+                    }
+                    return InteractionResult.CONSUME;
+                }
+                return InteractionResult.PASS;
+            }
             if (itemStack.getItem() == Items.WATER_BUCKET) { //WATER_BUCKET
-                if (blockState.getValue(LIQUID) != Liquid.FILLED || blockState.getValue(LIQUID) != Liquid.OVERFLOWING) {
-                    level.setBlock(blockPos, blockState.setValue(LIQUID, Liquid.FILLED), 3);
+                if (blockState.getValue(LIQUID) == Liquid.EMPTY || blockState.getValue(LIQUID) == Liquid.DRAINED) {
+                    level.setBlockAndUpdate(blockPos, blockState.setValue(LIQUID, Liquid.FILLED));
                     level.playSound(null, blockPos, SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.isCreative()) {
                         player.setItemInHand(interactionHand, new ItemStack(Items.BUCKET));
@@ -87,7 +104,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
             if (itemStack.getItem() == Items.BUCKET) { //BUCKET
                 Liquid liquid = blockState.getValue(LIQUID);
                 if (liquid == Liquid.FILLED || liquid == Liquid.OVERFLOWING) {
-                    level.setBlock(blockPos, blockState.setValue(LIQUID, liquid == Liquid.OVERFLOWING ? Liquid.FILLED : Liquid.EMPTY), 3);
+                    level.setBlockAndUpdate(blockPos, blockState.setValue(LIQUID, liquid == Liquid.OVERFLOWING ? Liquid.FILLED : Liquid.EMPTY));
                     level.playSound(null, blockPos, SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.isCreative()) {
                         player.setItemInHand(interactionHand, new ItemStack(Items.WATER_BUCKET));
@@ -97,8 +114,12 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                 return InteractionResult.CONSUME;
             }
             //ITEM
-            brewKettleEntity.addIngredient(itemStack);
-            return InteractionResult.SUCCESS;
+            InteractionResult interactionResult = brewKettleEntity.addIngredient(itemStack);
+            if (interactionResult == InteractionResult.SUCCESS) {
+                //brewKettleEntity.updateInClientWorld();
+                level.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_CLIENTS);
+            }
+            return interactionResult;
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
@@ -111,10 +132,24 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof BrewstationEntity brewKettleEntity) {
                 brewKettleEntity.addIngredient(itemStack);
+                brewKettleEntity.updateInClientWorld();
                 if (itemStack.isEmpty()) {
                     entity.discard();
                 }
             }
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof BrewstationEntity brewstationEntity) {
+                Containers.dropContents(world, pos, brewstationEntity);
+                world.updateNeighbourForOutputSignal(pos, this);
+            }
+            super.onRemove(state, world, pos, newState, moved);
         }
     }
 
@@ -127,7 +162,6 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         if (blockState == null) return null;
         Direction facing = blockState.getValue(FACING);
         BlockPos backPos = mainPos.relative(facing.getOpposite());
-        //boolean rightFree = level.getBlockState(mainPos.relative(facing.getCounterClockWise())).isAir() && level.getBlockState(backPos.relative(facing.getCounterClockWise())).isAir();
         BlockPos sidePos = mainPos.relative(facing.getCounterClockWise());
         BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
         BlockPos topPos = diagonalPos.above();
@@ -146,7 +180,6 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         if (level.isClientSide) return;
         Direction facing = blockState.getValue(FACING);
         BlockPos backPos = blockPos.relative(facing.getOpposite());
-        //boolean rightFree = level.getBlockState(blockPos.relative(facing.getCounterClockWise())).isAir() && level.getBlockState(backPos.relative(facing.getCounterClockWise())).isAir();
         BlockPos sidePos = blockPos.relative(facing.getCounterClockWise());
         BlockPos diagonalPos = sidePos.relative(facing.getOpposite());
         BlockPos topPos = diagonalPos.above();

@@ -28,7 +28,7 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {//TODO WHISTLE
         BrewstationEntity brewstationEntity = getController(blockPos, level);
         if (brewstationEntity != null) {
             for (BlockPos pos : brewstationEntity.getComponents()) {

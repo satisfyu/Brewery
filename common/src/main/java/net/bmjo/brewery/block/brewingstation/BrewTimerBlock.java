@@ -6,6 +6,7 @@ import net.bmjo.brewery.util.BreweryUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +28,9 @@ import java.util.function.Supplier;
 
 public class BrewTimerBlock extends BrewingstationBlock {
     public static final BooleanProperty TIME;
+    private static final Supplier<VoxelShape> voxelShapeSupplier;
+
+    public static final Map<Direction, VoxelShape> SHAPE;
 
     public BrewTimerBlock(Properties properties) {
         super(properties);
@@ -42,6 +46,17 @@ public class BrewTimerBlock extends BrewingstationBlock {
         return InteractionResult.CONSUME;
     }
 
+    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
+        if (blockState.getValue(TIME)) {
+
+        }
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE.get(state.getValue(FACING));
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
@@ -50,29 +65,22 @@ public class BrewTimerBlock extends BrewingstationBlock {
 
     static {
         TIME = BlockStateRegistry.TIME;
-    }
+        voxelShapeSupplier = () -> {
+            VoxelShape shape = Shapes.empty();
+            shape = Shapes.or(shape, Shapes.box(0.125, 0.5, 0.9375, 0.5, 0.875, 1));
+            shape = Shapes.or(shape, Shapes.box(0.6875, 0.6875, 0.9375, 0.8125, 0.8125, 1));
+            shape = Shapes.or(shape, Shapes.box(0.6875, 0.5, 0.9375, 0.8125, 0.625, 1));
+            shape = Shapes.or(shape, Shapes.box(0, 0.125, 0.875, 1, 1, 0.9375));
+            shape = Shapes.or(shape, Shapes.box(0.875, 0.125, 0, 1, 1, 0.875));
+            shape = Shapes.or(shape, Shapes.box(0, 0, 0, 0.875, 0.125, 0.875));
+            shape = Shapes.or(shape, Shapes.box(0, 0.9375, 0, 0.875, 1, 0.875));
 
-    private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {
-        VoxelShape shape = Shapes.empty();
-        shape = Shapes.or(shape, Shapes.box(0.125, 0.5, 0.9375, 0.5, 0.875, 1));
-        shape = Shapes.or(shape, Shapes.box(0.6875, 0.6875, 0.9375, 0.8125, 0.8125, 1));
-        shape = Shapes.or(shape, Shapes.box(0.6875, 0.5, 0.9375, 0.8125, 0.625, 1));
-        shape = Shapes.or(shape, Shapes.box(0, 0.125, 0.875, 1, 1, 0.9375));
-        shape = Shapes.or(shape, Shapes.box(0.875, 0.125, 0, 1, 1, 0.875));
-        shape = Shapes.or(shape, Shapes.box(0, 0, 0, 0.875, 0.125, 0.875));
-        shape = Shapes.or(shape, Shapes.box(0, 0.9375, 0, 0.875, 1, 0.875));
-
-        return shape;
-    };
-
-    public static final Map<Direction, VoxelShape> SHAPE = Util.make(new HashMap<>(), map -> {
-        for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
-            map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
-        }
-    });
-
-    @Override
-    public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPE.get(state.getValue(FACING));
+            return shape;
+        };
+        SHAPE = Util.make(new HashMap<>(), map -> {
+            for (Direction direction : Direction.Plane.HORIZONTAL.stream().toList()) {
+                map.put(direction, BreweryUtil.rotateShape(Direction.NORTH, direction, voxelShapeSupplier.get()));
+            }
+        });
     }
 }
