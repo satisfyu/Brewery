@@ -1,8 +1,8 @@
 package net.bmjo.brewery.block.brewingstation;
 
+import net.bmjo.brewery.block.entity.BrewstationEntity;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.block.property.Liquid;
-import net.bmjo.brewery.entity.BrewstationEntity;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.util.BreweryUtil;

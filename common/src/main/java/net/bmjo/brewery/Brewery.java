@@ -4,6 +4,7 @@ import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
+import net.bmjo.brewery.block.SiloBlock;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
 import net.bmjo.brewery.event.*;
 import net.bmjo.brewery.networking.BreweryNetworking;
@@ -30,6 +31,7 @@ public class Brewery {
         BreweryNetworking.registerC2SPackets();
         SoundRegistry.registerSounds();
         CompostablesRegistry.init();
+        SiloBlock.registerDryers();
         EntityRegistry.register();
         RecipeRegistry.registerRecipes();
         BlockEntityRegistry.registerBlockEntities();

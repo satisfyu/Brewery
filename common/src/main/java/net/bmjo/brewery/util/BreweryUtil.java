@@ -13,16 +13,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,7 +29,9 @@ import java.util.Objects;
 import java.util.Set;
 
 public class BreweryUtil {
+    public static final Direction[] HORIZONTAL_DIRECTIONS = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     private static final String BLOCK_POS_KEY = "block_pos";
+    private static final String BLOCK_POSES_KEY = "block_poses";
 
     public static Collection<ServerPlayer> tracking(ServerLevel world, BlockPos pos) {
         Objects.requireNonNull(pos, "BlockPos cannot be null");
@@ -42,10 +43,6 @@ public class BreweryUtil {
         Objects.requireNonNull(pos, "The chunk pos cannot be null");
 
         return world.getChunkSource().chunkMap.getPlayers(pos, false);
-    }
-
-    public static boolean isSolid(LevelReader levelReader, BlockPos blockPos){
-        return levelReader.getBlockState(blockPos.below()).getMaterial().isSolid();
     }
 
     public static int getLightLevel(Level world, BlockPos pos) {
@@ -78,7 +75,17 @@ public class BreweryUtil {
 
     public static <T> void registerObject(Registry<T> registry, ResourceLocation id, T object) {}
 
-    public static void putBlockPos(CompoundTag compoundTag, Collection<BlockPos> blockPoses) {
+    public static void putBlockPos(CompoundTag compoundTag, BlockPos blockPos) {
+        if (blockPos == null)
+            return;
+        int[] positions = new int[3];
+        positions[0] = blockPos.getX();
+        positions[1] = blockPos.getY();
+        positions[2] = blockPos.getZ();
+        compoundTag.putIntArray(BLOCK_POS_KEY, positions);
+    }
+
+    public static void putBlockPoses(CompoundTag compoundTag, Collection<BlockPos> blockPoses) {
         if (blockPoses == null || blockPoses.isEmpty()) return;
         int[] positions = new int[blockPoses.size() * 3];
         int pos = 0;
@@ -88,35 +95,33 @@ public class BreweryUtil {
             positions[pos * 3 + 2] = blockPos.getZ();
             pos++;
         }
-        compoundTag.putIntArray(BLOCK_POS_KEY, positions);
+        compoundTag.putIntArray(BLOCK_POSES_KEY, positions);
+    }
+
+    @Nullable
+    public static BlockPos readBlockPos(CompoundTag compoundTag) {
+        if (!compoundTag.contains(BLOCK_POS_KEY))
+            return null;
+        int[] positions = compoundTag.getIntArray(BLOCK_POS_KEY);
+        return new BlockPos(positions[0], positions[1], positions[2]);
     }
 
 
-    public static Set<BlockPos> readBlockPos(CompoundTag compoundTag) {
-        int[] positions = compoundTag.getIntArray(BLOCK_POS_KEY);
+    public static Set<BlockPos> readBlockPoses(CompoundTag compoundTag) {
         Set<BlockPos> blockSet = new HashSet<>();
-        for (int pos = 0; pos < positions.length / 3; pos++) {
+        if (!compoundTag.contains(BLOCK_POSES_KEY))
+            return blockSet;
+        int[] positions = compoundTag.getIntArray(BLOCK_POSES_KEY);
+        for (int pos = 0; pos < positions.length / 3; pos++)
             blockSet.add(new BlockPos(positions[pos * 3], positions[pos * 3 + 1], positions[pos * 3 + 2]));
-        }
         return blockSet;
     }
 
-    public enum LocationState implements StringRepresentable {
-        TOP_LEFT("top_left"), TOP("top"), TOP_RIGHT("top_right"), LEFT("left"), CENTER("center"), RIGHT("right"), BOTTOM_LEFT("bottom_left"), BOTTOM("bottom"), BOTTOM_RIGHT("bottom_right");
-
-        private final String name;
-
-        LocationState(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return this.name;
-        }
-
-        @Override
-        public String getSerializedName() {
-            return this.name;
-        }
+    @Nullable
+    public static <T> T getLastElement(final Collection<T> c) {
+        T lastElement = null;
+        for (T t : c)
+            lastElement = t;
+        return lastElement;
     }
 }

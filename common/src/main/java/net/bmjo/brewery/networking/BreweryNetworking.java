@@ -26,7 +26,6 @@ public class BreweryNetworking {
     public static void registerS2CPackets() {
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ALCOHOL_SYNC_S2C_ID, new AlcoholSyncS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DRUNK_EFFECT_S2C_ID, new DrunkEffectS2CPacket());
-        NetworkManager.registerReceiver(NetworkManager.Side.S2C, DEACTIVATE_KETTLE_S2C_ID, new DeactivateKettleS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, ATTACH_ROPE_S2C_ID, new AttachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, DETACH_ROPE_S2C_ID, new DetachRopeS2CPacket());
         NetworkManager.registerReceiver(NetworkManager.Side.S2C, SYNC_ROPE_S2C_ID, new SyncRopeS2CPacket());

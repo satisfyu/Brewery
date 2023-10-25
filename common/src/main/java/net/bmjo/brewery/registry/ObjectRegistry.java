@@ -14,7 +14,10 @@ import net.bmjo.brewery.block.crops.BarleyCropBlock;
 import net.bmjo.brewery.block.crops.CornCropBlock;
 import net.bmjo.brewery.block.crops.HopsCropBodyBlock;
 import net.bmjo.brewery.block.crops.HopsCropHeadBlock;
-import net.bmjo.brewery.block.multiblockparts.*;
+import net.bmjo.brewery.block.multiblockparts.BigBarrelBlock;
+import net.bmjo.brewery.block.multiblockparts.BigBarrelMainHeadBlock;
+import net.bmjo.brewery.block.multiblockparts.BigBarrelRightBlock;
+import net.bmjo.brewery.block.multiblockparts.BigBarrelRightHeadBlock;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.item.*;
 import net.bmjo.brewery.util.BreweryIdentifier;
@@ -115,6 +118,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerI("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_SHOES = registerI("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
 
+    public static final RegistrySupplier<Block> SILO = registerBI("silo", () -> new SiloBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK).noOcclusion()));
 
     //TODO                      **** 1.20.1 ****
     //TODO * conditional recipes -> candlelight, Potato Salad / Dumplings

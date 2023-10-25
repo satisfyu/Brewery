@@ -1,4 +1,4 @@
-package net.bmjo.brewery.entity;
+package net.bmjo.brewery.block.entity;
 
 import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.brew_event.BrewEvent;
@@ -55,6 +55,11 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
     public BrewstationEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.BREWINGSTATION_BLOCK_ENTITY.get(), blockPos, blockState);
         ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
+    }
+
+    public void updateInClientWorld() {
+        if (this.level instanceof ServerLevel serverLevel)
+            serverLevel.getChunkSource().blockChanged(this.getBlockPos());
     }
 
     public void setComponents(BlockPos... components) {
@@ -181,15 +186,9 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         return components.contains(blockPos);
     }
 
-    public void updateInClientWorld() {
-        if (this.level instanceof ServerLevel serverLevel) {
-            serverLevel.getChunkSource().blockChanged(this.getBlockPos());
-        }
-    }
-
     @Override
     public void saveAdditional(CompoundTag compoundTag) {
-        if (!this.components.isEmpty()) BreweryUtil.putBlockPos(compoundTag, this.components);
+        if (!this.components.isEmpty()) BreweryUtil.putBlockPoses(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
         compoundTag.put("beer", this.beer.save(new CompoundTag()));
         if (this.event != null) compoundTag.putString("brew_event", this.event.id().toString());
@@ -197,7 +196,7 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
 
     @Override
     public void load(CompoundTag compoundTag) {
-        this.components = BreweryUtil.readBlockPos(compoundTag);
+        this.components = BreweryUtil.readBlockPoses(compoundTag);
         this.ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients);
         if (compoundTag.contains("beer")) this.beer = ItemStack.of(compoundTag.getCompound("beer"));

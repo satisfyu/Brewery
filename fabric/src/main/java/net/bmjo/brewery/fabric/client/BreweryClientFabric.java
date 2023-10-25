@@ -8,6 +8,5 @@ public class BreweryClientFabric implements ClientModInitializer {
     public void onInitializeClient() {
         BreweryClient.onInitializeClient();
         BreweryClient.preInitClient();
-
     }
 }

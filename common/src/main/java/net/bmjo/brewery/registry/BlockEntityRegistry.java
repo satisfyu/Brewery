@@ -4,8 +4,9 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.block.entity.BrewstationEntity;
+import net.bmjo.brewery.block.entity.SiloBlockEntity;
 import net.bmjo.brewery.entity.BeerKegFlowerPotBlockEntity;
-import net.bmjo.brewery.entity.BrewstationEntity;
 import net.bmjo.brewery.entity.StandardBlockEntity;
 import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.Registry;
@@ -20,7 +21,7 @@ public class BlockEntityRegistry {
     public static final RegistrySupplier<BlockEntityType<BrewstationEntity>> BREWINGSTATION_BLOCK_ENTITY = create("brewingstation", () -> BlockEntityType.Builder.of(BrewstationEntity::new, ObjectRegistry.WOODEN_BREWINGSTATION.get(),  ObjectRegistry.COPPER_BREWINGSTATION.get(),  ObjectRegistry.NETHERITE_BREWINGSTATION.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeerKegFlowerPotBlockEntity>> BEER_MUG_FLOWER_POT_BLOCK_ENTITY = create("beer_mug", () -> BlockEntityType.Builder.of(BeerKegFlowerPotBlockEntity::new, ObjectRegistry.BEER_MUG.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<StandardBlockEntity>> STANDARD = create("standard", () -> BlockEntityType.Builder.of(StandardBlockEntity::new, ObjectRegistry.STANDARD_BLOCKS.stream().map(Supplier::get).toList().toArray(new Block[0])).build(null));
-
+    public static final RegistrySupplier<BlockEntityType<SiloBlockEntity>> SILO = create("silo", () -> BlockEntityType.Builder.of(SiloBlockEntity::new, ObjectRegistry.SILO.get()).build(null));
 
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(new BreweryIdentifier(path), type);

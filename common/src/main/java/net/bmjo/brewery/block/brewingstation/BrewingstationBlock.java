@@ -1,7 +1,7 @@
 package net.bmjo.brewery.block.brewingstation;
 
+import net.bmjo.brewery.block.entity.BrewstationEntity;
 import net.bmjo.brewery.block.property.BrewMaterial;
-import net.bmjo.brewery.entity.BrewstationEntity;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
