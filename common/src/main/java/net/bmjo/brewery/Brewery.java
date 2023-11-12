@@ -30,7 +30,6 @@ public class Brewery {
         CommonEvents.init();
         BreweryNetworking.registerC2SPackets();
         SoundRegistry.registerSounds();
-        CompostablesRegistry.init();
         SiloBlock.registerDryers();
         EntityRegistry.register();
         RecipeRegistry.registerRecipes();

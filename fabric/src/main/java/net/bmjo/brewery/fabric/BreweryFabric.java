@@ -9,6 +9,7 @@ public class BreweryFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Brewery.init();
+        CompostablesRegistry.init();
         Brewery.commonSetup();
         BreweryFabricVillagers.init();
         BreweryBiomeModification.init();
