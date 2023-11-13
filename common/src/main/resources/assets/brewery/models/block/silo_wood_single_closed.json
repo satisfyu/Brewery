@@ -1,0 +1,24 @@
+{
+	"credit": "Made by Satisfy",
+	"texture_size": [64, 64],
+	"textures": {
+		"2": "brewery:block/silo/silo_front_open_wood",
+		"3": "brewery:block/silo/silo_connected_wood",
+		"4": "brewery:block/silo/silo_top_connected_wood",
+		"particle": "brewery:block/silo/silo_connected_wood"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"east": {"uv": [12, 12, 16, 16], "texture": "#3"},
+				"south": {"uv": [12, 12, 16, 16], "texture": "#3"},
+				"west": {"uv": [12, 12, 16, 16], "texture": "#3"},
+				"up": {"uv": [0, 12, 4, 16], "texture": "#4"},
+				"down": {"uv": [0, 12, 4, 16], "texture": "#4"}
+			}
+		}
+	]
+}

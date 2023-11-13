@@ -1,5 +1,6 @@
 package net.bmjo.brewery.block;
 
+import de.cristelknight.doapi.common.block.FacingBlock;
 import net.bmjo.brewery.block.entity.SiloBlockEntity;
 import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -39,19 +39,28 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
-public class SiloBlock extends Block implements EntityBlock {
+public class SiloBlock extends FacingBlock implements EntityBlock {
     public static final HashMap<Item, Item> DRYERS = new HashMap<>();
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
     public static final BooleanProperty OPEN = BooleanProperty.create("open");
     public static final EnumProperty<Shape> SHAPE = EnumProperty.create("shape", Shape.class);
 
-    public SiloBlock(BlockBehaviour.Properties settings) {
+    public SiloBlock(Properties settings) {
         super(settings);
         this.registerDefaultState(this.defaultBlockState().setValue(TOP, true)
                 .setValue(BOTTOM, true)
                 .setValue(OPEN, false)
-                .setValue(SHAPE, Shape.NONE));
+                .setValue(SHAPE, Shape.NONE)
+                .setValue(FACING, Direction.NORTH));
+    }
+
+    public Direction getFacing(BlockState state) {
+        return state.getValue(FACING);
+    }
+
+    public BlockState setFacing(BlockState state, Direction facing) {
+        return state.setValue(FACING, facing);
     }
 
     public static void addDry(ItemLike itemLike, ItemLike resultItem) {
@@ -68,7 +77,10 @@ public class SiloBlock extends Block implements EntityBlock {
     }
 
     public static boolean isSilo(ItemStack itemStack) {
-        return itemStack.getItem() instanceof BlockItem bi && bi.getBlock() == ObjectRegistry.SILO.get();
+        Item item = itemStack.getItem();
+        return (item instanceof BlockItem bi) &&
+                (bi.getBlock() == ObjectRegistry.SILO_WOOD.get() ||
+                        bi.getBlock() == ObjectRegistry.SILO_COPPER.get());
     }
 
     public static boolean isSilo(BlockState state) {
@@ -153,7 +165,7 @@ public class SiloBlock extends Block implements EntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(TOP, BOTTOM, OPEN, SHAPE);
+        builder.add(TOP, BOTTOM, OPEN, SHAPE, FACING);
     }
 
     @SuppressWarnings("unchecked")

@@ -1,9 +1,9 @@
 {
   "itemGroup.brewery.creative_tab": "Brewery",
   "disclaimer.brewery.disclaimer": "Brewery Disclaimer: %s",
-  "disclaimer.brewery.drugs": "Dont do drugs!",
-  "disclaimer.brewery.drive": "Dont drink and drive!",
-  "disclaimer.brewery.alcohol": "Alcohol is a dangerous drug.",
+  "disclaimer.brewery.drugs": "Cheers to virtual brews! This mod is all about pixelated fun; real-world drinking responsibility is key",
+  "disclaimer.brewery.drive": "In-game brews are a blast, but real-life responsibilities come first",
+  "disclaimer.brewery.alcohol": "Pixel pints are for fun - keep real-world drinking in check",
   "effect.brewery.drunk": "Intoxication",
   "effect.brewery.blackout": "Blackout",
   "effect.brewery.teleport": "Teleport",

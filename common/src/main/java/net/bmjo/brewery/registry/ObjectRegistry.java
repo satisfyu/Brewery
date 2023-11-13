@@ -81,9 +81,8 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> BREW_OVEN = registerB("brew_oven", () -> new BrewOvenBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
     public static final RegistrySupplier<Block> BREW_TIMER = registerB("brew_timer", () -> new BrewTimerBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
 
-    //TODO SILO -> Multiblock & logic
-    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new BrewingstationBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
-    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new BrewingstationBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK)));
+    public static final RegistrySupplier<Block> SILO_WOOD = registerBI("silo_wood", () -> new SiloBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion()));
+    public static final RegistrySupplier<Block> SILO_COPPER = registerBI("silo_copper", () -> new SiloBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK).noOcclusion()));
     public static final RegistrySupplier<Block> BARREL_MAIN = registerBI("barrel_main", () -> new BigBarrelBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BARREL_MAIN_HEAD = registerB("barrel_main_head", () -> new BigBarrelMainHeadBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BARREL_RIGHT = registerB("barrel_right", () -> new BigBarrelRightBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0f, 3.0f).sound(SoundType.WOOD)));
@@ -118,7 +117,6 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerI("brewfest_blouse", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.CHEST, getSettings().rarity(Rarity.COMMON)));
     public static final RegistrySupplier<Item> BREWFEST_SHOES = registerI("brewfest_shoes", () -> new BrewfestArmorItem(MaterialRegistry.BREWFEST_DRESS, EquipmentSlot.FEET, getSettings().rarity(Rarity.UNCOMMON)));
 
-    public static final RegistrySupplier<Block> SILO = registerBI("silo", () -> new SiloBlock(BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK).noOcclusion()));
 
     //TODO                      **** 1.20.1 ****
     //TODO * conditional recipes -> candlelight, Potato Salad / Dumplings
