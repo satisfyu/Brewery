@@ -3,7 +3,8 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"4": "brewery:block/silo/silo_top_connected",
-		"6": "brewery:block/silo/silo_connected"
+		"6": "brewery:block/silo/silo_connected",
+		"particle": "brewery:block/silo/silo_connected"
 	},
 	"elements": [
 		{

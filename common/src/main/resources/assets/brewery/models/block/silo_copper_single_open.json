@@ -4,7 +4,7 @@
 		"2": "brewery:block/silo/silo_front_open",
 		"3": "brewery:block/silo/silo_connected",
 		"4": "brewery:block/silo/silo_top_connected",
-		"particle": "brewery:block/silo/silo_top"
+		"particle": "brewery:block/silo/silo_connected"
 	},
 	"elements": [
 		{
