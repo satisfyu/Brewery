@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.barrel;
 
 import de.cristelknight.doapi.common.block.FacingBlock;
 import net.bmjo.brewery.registry.ObjectRegistry;
@@ -105,7 +105,6 @@ public class BigBarrelBlock extends FacingBlock {
     }
 
 
-    //TODO
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack stack) {
         super.playerDestroy(level, player, pos, state, blockEntity, stack);
@@ -113,19 +112,44 @@ public class BigBarrelBlock extends FacingBlock {
         Direction facing = state.getValue(FACING);
 
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER) {
-            BlockPos upperPos = pos.above();
-
-            level.destroyBlock(upperPos, true);
-            level.destroyBlock(upperPos.relative(facing), true);
-            level.destroyBlock(upperPos.relative(facing.getCounterClockWise()), true);
+            destroyBlockAndSurrounding(level, player, pos);
+            destroyBlockAndSurrounding(level, player, pos.above());
+            destroyBlockAndSurrounding(level, player, pos.above().relative(facing));
+            destroyBlockAndSurrounding(level, player, pos.above().relative(facing.getCounterClockWise()));
         } else {
-            BlockPos lowerPos = pos.below();
-
-            level.destroyBlock(lowerPos, true);
-            level.destroyBlock(lowerPos.relative(facing), true);
-            level.destroyBlock(lowerPos.relative(facing.getClockWise()), true);
+            destroyBlockAndSurrounding(level, player, pos);
+            destroyBlockAndSurrounding(level, player, pos.below());
+            destroyBlockAndSurrounding(level, player, pos.below().relative(facing));
+            destroyBlockAndSurrounding(level, player, pos.below().relative(facing.getClockWise()));
         }
     }
+
+    private void destroyBlockAndSurrounding(Level level, Player player, BlockPos pos) {
+        BlockState blockState = level.getBlockState(pos);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        // Destroy the block itself
+        level.destroyBlock(pos, true);
+
+        // Destroy the block entity if it exists
+        if (blockEntity != null) {
+            level.removeBlockEntity(pos);
+        }
+
+        // Destroy surrounding blocks
+        destroySurroundingBlocks(level, player, pos);
+    }
+
+    private void destroySurroundingBlocks(Level level, Player player, BlockPos pos) {
+        Direction facing = level.getBlockState(pos).getValue(FACING);
+
+        destroyBlockAndSurrounding(level, player, pos.relative(facing));
+        destroyBlockAndSurrounding(level, player, pos.relative(facing.getCounterClockWise()));
+        destroyBlockAndSurrounding(level, player, pos.relative(facing).above());
+        destroyBlockAndSurrounding(level, player, pos.relative(facing.getCounterClockWise()).above());
+    }
+
+
 
     private boolean canPlace(Level level, BlockPos... blockPoses) {
         for (BlockPos blockPos : blockPoses) {

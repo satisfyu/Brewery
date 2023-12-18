@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.barrel;
 
 import net.bmjo.brewery.block.brewingstation.BrewingstationBlock;
 import net.bmjo.brewery.util.BreweryUtil;

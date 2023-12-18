@@ -70,6 +70,9 @@ public class SiloBlock extends FacingBlock implements EntityBlock {
 
     public static void registerDryers() {
         addDry(Items.WHEAT, ObjectRegistry.DRIED_WHEAT.get());
+        addDry(ObjectRegistry.CORN.get(), ObjectRegistry.DRIED_CORN.get());
+        addDry(ObjectRegistry.BARLEY.get(), ObjectRegistry.DRIED_BARLEY.get());
+
     }
 
     public static boolean isDryItem(ItemStack itemStack) {

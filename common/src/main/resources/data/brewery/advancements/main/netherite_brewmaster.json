@@ -15,6 +15,12 @@
     "announce_to_chat": true,
     "hidden": false
   },
+  "rewards": {
+    "experience": 800,
+    "loot": [
+      "brewery:advancements/completionist"
+    ]
+  },
   "criteria": {
     "brewing_station": {
       "trigger": "minecraft:placed_block",

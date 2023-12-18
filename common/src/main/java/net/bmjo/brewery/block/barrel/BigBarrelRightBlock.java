@@ -1,4 +1,4 @@
-package net.bmjo.brewery.block.multiblockparts;
+package net.bmjo.brewery.block.barrel;
 
 import net.bmjo.brewery.block.brewingstation.BrewingstationBlock;
 import net.bmjo.brewery.util.BreweryUtil;
@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BigBarrelMainHeadBlock extends BrewingstationBlock {
+public class BigBarrelRightBlock extends BrewingstationBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF;
 
-    public BigBarrelMainHeadBlock(Properties properties) {
+    public BigBarrelRightBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(HALF, DoubleBlockHalf.LOWER));
     }
@@ -60,14 +60,14 @@ public class BigBarrelMainHeadBlock extends BrewingstationBlock {
 
     private static final Supplier<VoxelShape> bottomVoxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.or(shape, Shapes.box(0, 0, 0.5625, 0.875, 0.25, 0.8125));
-        shape = Shapes.or(shape, Shapes.box(0, 0.25, 0, 0.875, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0.125, 0.25, 0, 1, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0.125, 0, 0.1875, 1, 0.25, 0.4375));
         return shape;
     };
 
     private static final Supplier<VoxelShape> topVoxelShapeSupplier = () -> {
         VoxelShape shape = Shapes.empty();
-        shape = Shapes.or(shape, Shapes.box(0, 0, 0, 0.875, 1, 1));
+        shape = Shapes.or(shape, Shapes.box(0.125, 0, 0, 1, 1, 1));
         return shape;
     };
 

@@ -331,6 +331,7 @@ public class SiloBlockEntity extends BlockEntity implements IMultiBlockEntityCon
         compoundTag.putIntArray("Times", this.times);
     }
 
+
     @Override
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
