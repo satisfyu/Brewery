@@ -1,5 +1,6 @@
 package net.bmjo.brewery.block.brewingstation;
 
+import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.block.property.Heat;
 import net.bmjo.brewery.registry.BlockStateRegistry;

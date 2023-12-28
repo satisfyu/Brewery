@@ -2,7 +2,7 @@ package net.bmjo.brewery.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.bmjo.brewery.block.brewingstation.BrewingstationBlock;
-import net.bmjo.brewery.block.entity.BrewstationEntity;
+import net.bmjo.brewery.block.entity.BrewstationBlockEntity;
 import net.bmjo.brewery.util.BreweryUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -15,13 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class BrewingstationRenderer implements BlockEntityRenderer<BrewstationEntity> {
+public class BrewingstationRenderer implements BlockEntityRenderer<BrewstationBlockEntity> {
     public BrewingstationRenderer(BlockEntityRendererProvider.Context ctx) {
 
     }
 
     @Override
-    public void render(BrewstationEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
+    public void render(BrewstationBlockEntity blockEntity, float f, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j) {
         if (!blockEntity.hasLevel()) {
             return;
         }

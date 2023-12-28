@@ -5,6 +5,7 @@ import dev.architectury.event.events.common.PlayerEvent;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import net.bmjo.brewery.block.SiloBlock;
+import net.bmjo.brewery.block.brew_event.BrewEvents;
 import net.bmjo.brewery.entity.beer_elemental.BeerElementalEntity;
 import net.bmjo.brewery.event.*;
 import net.bmjo.brewery.networking.BreweryNetworking;
@@ -25,6 +26,7 @@ public class Brewery {
 
     public static void init() {
         LOGGER.debug("Initiate " + MOD_ID);
+        BrewEvents.loadClass();
         ObjectRegistry.register();
         EffectRegistry.registerEffects();
         CommonEvents.init();

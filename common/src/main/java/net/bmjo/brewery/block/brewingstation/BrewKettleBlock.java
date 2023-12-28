@@ -1,6 +1,6 @@
 package net.bmjo.brewery.block.brewingstation;
 
-import net.bmjo.brewery.block.entity.BrewstationEntity;
+import net.bmjo.brewery.block.entity.BrewstationBlockEntity;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.registry.BlockStateRegistry;
@@ -68,7 +68,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         if (interactionHand == InteractionHand.OFF_HAND) return InteractionResult.CONSUME;
         if (level.isClientSide) return InteractionResult.CONSUME;
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        if (level.getBlockEntity(blockPos) instanceof BrewstationEntity brewKettleEntity) {
+        if (level.getBlockEntity(blockPos) instanceof BrewstationBlockEntity brewKettleEntity) {
             if (itemStack.isEmpty()) { //EMPTY
                 ItemStack returnStack = brewKettleEntity.removeIngredient();
                 if (returnStack != null) {
@@ -130,7 +130,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         if (entity instanceof ItemEntity item) {
             ItemStack itemStack = item.getItem();
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof BrewstationEntity brewKettleEntity) {
+            if (blockEntity instanceof BrewstationBlockEntity brewKettleEntity) {
                 brewKettleEntity.addIngredient(itemStack);
                 brewKettleEntity.updateInClientWorld();
                 if (itemStack.isEmpty()) {
@@ -145,7 +145,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof BrewstationEntity brewstationEntity) {
+            if (blockEntity instanceof BrewstationBlockEntity brewstationEntity) {
                 Containers.dropContents(world, pos, brewstationEntity);
                 world.updateNeighbourForOutputSignal(pos, this);
             }
@@ -169,7 +169,6 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         Player player = blockPlaceContext.getPlayer();
         if (!placeable && player != null) {
             player.displayClientMessage(Component.literal("Cant place Brewingstation here. Needs a 2x2x2 space.").withStyle(ChatFormatting.RED), true);
-            player.playSound(SoundEvents.WOOL_HIT);
         }
         return placeable ? blockState : null;
     }
@@ -189,7 +188,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         level.setBlock(diagonalPos, ObjectRegistry.BREW_OVEN.get().defaultBlockState().setValue(FACING, facing).setValue(MATERIAL, this.brewMaterial), 3);
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity instanceof BrewstationEntity brewKettleEntity) {
+        if (blockEntity instanceof BrewstationBlockEntity brewKettleEntity) {
             brewKettleEntity.setComponents(blockPos, backPos, sidePos, diagonalPos);
         }
     }
@@ -206,7 +205,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BrewstationEntity(blockPos, blockState);
+        return new BrewstationBlockEntity(blockPos, blockState);
     }
 
     @SuppressWarnings("unchecked")

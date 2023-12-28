@@ -1,11 +1,17 @@
 package net.bmjo.brewery.block.brewingstation;
 
-import net.bmjo.brewery.block.entity.BrewstationEntity;
+import net.bmjo.brewery.Brewery;
+import net.bmjo.brewery.block.entity.BrewstationBlockEntity;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.registry.BlockStateRegistry;
+import net.bmjo.brewery.registry.ObjectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -28,8 +34,24 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {//TODO WHISTLE
-        BrewstationEntity brewstationEntity = getController(blockPos, level);
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+        if(!(this.getClass() == BrewKettleBlock.class)) {
+
+
+            BrewstationBlockEntity blockEntity = getController(blockPos, blockGetter);
+            if(blockEntity != null){
+                Brewery.LOGGER.error("Is null (blockEntity)");
+                return blockEntity.getBlockState().getBlock().getCloneItemStack(blockGetter, blockPos, blockState);
+            }
+
+        }
+
+        return super.getCloneItemStack(blockGetter, blockPos, blockState);
+    }
+
+    @Override
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        BrewstationBlockEntity brewstationEntity = getController(blockPos, level);
         if (brewstationEntity != null) {
             for (BlockPos pos : brewstationEntity.getComponents()) {
                 if (!pos.equals(blockPos)) {
@@ -41,11 +63,24 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     }
 
     @Nullable
-    protected BrewstationEntity getController(BlockPos centerPos, Level level) {
+    protected BrewstationBlockEntity getController(BlockPos centerPos, Level level) {
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
                 BlockEntity blockEntity = level.getBlockEntity(centerPos.offset(x, 0, y));
-                if (blockEntity instanceof BrewstationEntity brewstationEntity && brewstationEntity.isPartOf(centerPos)) {
+                if (blockEntity instanceof BrewstationBlockEntity brewstationEntity && brewstationEntity.isPartOf(centerPos)) {
+                    return brewstationEntity;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    protected BrewstationBlockEntity getController(BlockPos centerPos, BlockGetter blockGetter) {
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                BlockEntity blockEntity = blockGetter.getBlockEntity(centerPos.offset(x, 0, y));
+                if (blockEntity instanceof BrewstationBlockEntity brewstationEntity && brewstationEntity.isPartOf(centerPos)) {
                     return brewstationEntity;
                 }
             }
