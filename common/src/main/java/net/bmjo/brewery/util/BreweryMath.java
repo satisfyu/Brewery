@@ -4,12 +4,18 @@ import net.bmjo.brewery.entity.rope.RopeKnotEntity;
 import net.bmjo.brewery.util.rope.RopeConnection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class BreweryMath {
+
+    public static int getRandomHighNumber(RandomSource rnd, int lowerBound, int upperBound) {
+        int range = upperBound - lowerBound + 1;
+        return upperBound - (int) (Math.pow(rnd.nextDouble(), 1.5) * range);
+    }
     public static BlockPos ofFloored(final Vec3 vec) {
         return ofFloored(vec.x(), vec.y(), vec.z());
     }

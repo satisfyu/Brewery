@@ -11,7 +11,9 @@ import net.bmjo.brewery.registry.BlockEntityRegistry;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.registry.ObjectRegistry;
 import net.bmjo.brewery.registry.RecipeRegistry;
+import net.bmjo.brewery.util.BreweryMath;
 import net.bmjo.brewery.util.BreweryUtil;
+import net.bmjo.brewery.util.ImplementedInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -35,24 +37,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
-public class BrewstationEntity extends BlockEntity implements Container, BlockEntityTicker<BrewstationEntity> {
+public class BrewstationBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<BrewstationBlockEntity> {
     @NotNull
     private Set<BlockPos> components = new HashSet<>(4);
-    private static final int MAX_BREW_TIME = 40 * 20;
+    private static final int MAX_BREW_TIME = 60 * 20;
+    private static final int MIN_TIME_FOR_EVENT = 5 * 20;
+    private static final int MAX_TIME_FOR_EVENT = 15 * 20;
     private int brewTime;
-    @Nullable
-    private BrewEvent event;
+    private int timeToNextEvent = Integer.MIN_VALUE;
+    private final Set<BrewEvent> runningEvents = new HashSet<>();
     private int solved;
+    private int totalEvents;
     private NonNullList<ItemStack> ingredients;
     private ItemStack beer = ItemStack.EMPTY;
 
-    public BrewstationEntity(BlockPos blockPos, BlockState blockState) {
+    public BrewstationBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityRegistry.BREWINGSTATION_BLOCK_ENTITY.get(), blockPos, blockState);
         ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
     }
@@ -70,13 +72,6 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         this.components.addAll(Arrays.asList(components));
     }
 
-    public @NotNull Set<BlockPos> getComponents() {
-        return components;
-    }
-
-    public List<ItemStack> getIngredient() {
-        return this.ingredients;
-    }
 
     public InteractionResult addIngredient(ItemStack itemStack) {
         for (int i = 0; i < 3; i++) {
@@ -114,29 +109,37 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
     }
 
     @Override
-    public void tick(Level level, BlockPos blockPos, BlockState blockState, BrewstationEntity blockEntity) {
+    public void tick(Level level, BlockPos blockPos, BlockState blockState, BrewstationBlockEntity blockEntity) {
         if (level.isClientSide) return;
         if (!this.beer.isEmpty()) return;
         Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeRegistry.BREWING_RECIPE_TYPE.get(), this, level).orElse(null);
         if (!canBrew(recipe)) {
-            if (this.event != null) this.endEvent();
+            endBrewing();
             return;
         }
-        if (this.event != null) {
-            if (this.event.isFinish(this.components, level)) {
-                this.endEvent();
-                this.solved++;
-            }
-        } else {
-            if (brewTime >= MAX_BREW_TIME) {
-                this.brew(recipe);
-                return;
-            } else if (brewTime % (10 * 20) == 100) {
-                this.event = getRdmEvent();
-                this.event.start(this.components, level);
-            }
-            this.brewTime++;
+        if(timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
+
+        BrewHelper.checkRunningEvents(this);
+
+        int timeLeft = MAX_BREW_TIME - brewTime;
+
+        if (brewTime >= MAX_BREW_TIME) {
+            this.brew(recipe);
+            return;
+        } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
+            BrewEvent event = BrewHelper.getRdmEvent(this);
+            Brewery.LOGGER.warn("Starting event!" + BrewEvents.getId(event).getPath());
+            event.start(this.components, level);
+            runningEvents.add(event);
+            totalEvents++;
+            setTimeToEvent();
         }
+        brewTime++;
+        timeToNextEvent--;
+    }
+
+    private void setTimeToEvent(){
+        timeToNextEvent = BreweryMath.getRandomHighNumber(this.getLevel().getRandom(), MIN_TIME_FOR_EVENT, MAX_TIME_FOR_EVENT);
     }
 
     private boolean canBrew(Recipe<?> recipe) {
@@ -146,15 +149,22 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
     }
 
     private void brew(Recipe<?> recipe) {
+        Brewery.LOGGER.warn("Brewing!!!");
+
         ItemStack resultSack = recipe.getResultItem();
         DrinkBlockItem.addQuality(resultSack, this.solved);
         if (resultSack.getItem() instanceof DrinkBlockItem drinkItem) {
             drinkItem.addCount(resultSack, this.solved);
         }
         this.beer = resultSack;
+
+        endBrewing();
+
         if (this.level != null) {
             BlockState blockState = this.level.getBlockState(this.getBlockPos());
             this.level.setBlockAndUpdate(this.getBlockPos(), blockState.setValue(BlockStateRegistry.LIQUID, Liquid.BEER));
+
+            //Todo:
             BlockPos ovenPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, level);
             BlockState ovenState = this.level.getBlockState(ovenPos);
             this.level.setBlockAndUpdate(ovenPos, ovenState.setValue(BlockStateRegistry.HEAT, Heat.OFF));
@@ -168,19 +178,17 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
                 }
             }
         }
+
+    }
+
+    public void endBrewing(){
+        BrewHelper.finishEvents(this);
         this.solved = 0;
         this.brewTime = 0;
+        this.totalEvents = 0;
+        this.timeToNextEvent = Integer.MIN_VALUE;
     }
 
-    private void endEvent() {
-        if (this.event == null) return;
-        this.event.finish(this.components, level);
-        this.event = null;
-    }
-
-    private BrewEvent getRdmEvent() {
-        return BrewEvents.BREW_EVENTS.get(RandomSource.create().nextInt(BrewEvents.BREW_EVENTS.size())).get();
-    }
 
     public boolean isPartOf(BlockPos blockPos) {
         return components.contains(blockPos);
@@ -191,7 +199,11 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         if (!this.components.isEmpty()) BreweryUtil.putBlockPoses(compoundTag, this.components);
         ContainerHelper.saveAllItems(compoundTag, this.ingredients);
         compoundTag.put("beer", this.beer.save(new CompoundTag()));
-        if (this.event != null) compoundTag.putString("brew_event", this.event.id().toString());
+        compoundTag.putInt("solved", solved);
+        compoundTag.putInt("brewTime", brewTime);
+        compoundTag.putInt("totalEvents", totalEvents);
+        compoundTag.putInt("timeToNextEvent", timeToNextEvent);
+        BrewHelper.saveAdditional(this, compoundTag);
     }
 
     @Override
@@ -200,10 +212,11 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         this.ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients);
         if (compoundTag.contains("beer")) this.beer = ItemStack.of(compoundTag.getCompound("beer"));
-        if (compoundTag.contains("brew_event")) {
-            Supplier<BrewEvent> brewEvent = BrewEvents.byId(new ResourceLocation(compoundTag.getString("brew_event")));
-            this.event = brewEvent != null ? brewEvent.get() : null;
-        }
+        this.solved = compoundTag.getInt("solved");
+        this.brewTime = compoundTag.getInt("brewTime");
+        this.totalEvents = compoundTag.getInt("totalEvents");
+        this.timeToNextEvent = compoundTag.getInt("timeToNextEvent");
+        BrewHelper.load(this, compoundTag);
     }
 
     @Nullable
@@ -219,40 +232,28 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         return compoundTag;
     }
 
+    public void growSolved() {
+        this.solved++;
+    }
+
+    public Set<BrewEvent> getRunningEvents() {
+        return runningEvents;
+    }
+
+    public @NotNull Set<BlockPos> getComponents() {
+        return components;
+    }
+
+    public List<ItemStack> getIngredient() {
+        return this.ingredients;
+    }
+
+
     //CONTAINER
     @Override
-    public int getContainerSize() {
-        return 3;
+    public NonNullList<ItemStack> getItems() {
+        return ingredients;
     }
-
-    @Override
-    public boolean isEmpty() {
-        return this.ingredients.stream().allMatch(ItemStack::isEmpty);
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int slot) {
-        return this.ingredients.get(slot);
-    }
-
-    @Override
-    public @NotNull ItemStack removeItem(int slot, int amount) {
-        return ContainerHelper.removeItem(this.ingredients, slot, amount);
-    }
-
-    @Override
-    public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(this.ingredients, slot);
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        this.ingredients.set(slot, stack);
-        if (stack.getCount() > this.getMaxStackSize()) {
-            stack.setCount(this.getMaxStackSize());
-        }
-    }
-
     @Override
     public boolean stillValid(Player player) {
         assert this.level != null;
@@ -261,10 +262,5 @@ public class BrewstationEntity extends BlockEntity implements Container, BlockEn
         } else {
             return player.distanceToSqr((double) this.worldPosition.getX() + 0.5, (double) this.worldPosition.getY() + 0.5, (double) this.worldPosition.getZ() + 0.5) <= 64.0;
         }
-    }
-
-    @Override
-    public void clearContent() {
-        this.ingredients.clear();
     }
 }

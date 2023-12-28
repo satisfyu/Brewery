@@ -1,20 +1,43 @@
 package net.bmjo.brewery.block.brew_event;
 
+import net.bmjo.brewery.block.entity.BrewstationBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 
 import java.util.Set;
 
 public abstract class BrewEvent {
-    private final ResourceLocation id;
 
-    protected BrewEvent(ResourceLocation id) {
-        this.id = id;
+    private int timeLeft;
+
+    public void tick(BrewstationBlockEntity entity){
+        onTick(entity);
+        timeLeft--;
     }
 
-    public final ResourceLocation id() {
-        return this.id;
+    public int getTimeLeft() {
+        return timeLeft;
+    }
+
+    public void setTime(int timeLeft) {
+        this.timeLeft = timeLeft;
+    }
+
+    public abstract CompoundTag save(CompoundTag compoundTag);
+
+    public abstract void load(CompoundTag compoundTag);
+
+    public void onTick(BrewstationBlockEntity entity) {
+
+    }
+
+    protected BrewEvent() {
+        this(0);
+    }
+
+    protected BrewEvent(int time){
+        timeLeft = time;
     }
 
     public abstract void start(Set<BlockPos> components, Level level);

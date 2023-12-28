@@ -1,18 +1,26 @@
 package net.bmjo.brewery.block.brew_event;
 
 import net.bmjo.brewery.block.brewingstation.BrewKettleBlock;
+import net.bmjo.brewery.block.property.Heat;
 import net.bmjo.brewery.block.property.Liquid;
 import net.bmjo.brewery.registry.BlockStateRegistry;
-import net.bmjo.brewery.util.BreweryIdentifier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Set;
 
 public class KettleEvent extends BrewEvent {
-    protected KettleEvent() {
-        super(new BreweryIdentifier("kettle"));
+
+    @Override
+    public CompoundTag save(CompoundTag compoundTag) {
+        return compoundTag;
+    }
+
+    @Override
+    public void load(CompoundTag compoundTag) {
+
     }
 
     @Override
@@ -34,5 +42,10 @@ public class KettleEvent extends BrewEvent {
             return basinState.getValue(BlockStateRegistry.LIQUID) != Liquid.OVERFLOWING;
         }
         return true;
+    }
+
+    @Override
+    public void finish(Set<BlockPos> components, Level level) {
+        BrewHelper.resetWater(components, level);
     }
 }

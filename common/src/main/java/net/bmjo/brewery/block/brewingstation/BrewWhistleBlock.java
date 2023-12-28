@@ -1,5 +1,6 @@
 package net.bmjo.brewery.block.brewingstation;
 
+import net.bmjo.brewery.Brewery;
 import net.bmjo.brewery.block.property.BrewMaterial;
 import net.bmjo.brewery.registry.BlockStateRegistry;
 import net.bmjo.brewery.util.BreweryUtil;
@@ -10,6 +11,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -62,18 +65,22 @@ public class BrewWhistleBlock extends BrewingstationBlock {
         }
     }
 
-    public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
-        if (blockState.getValue(WHISTLE) && blockState.getValue(HALF) == DoubleBlockHalf.UPPER) {
-            double x = blockPos.getX() + 0.5D;
-            double y = blockPos.getY();
-            double z = blockPos.getZ() + 0.5D;
-            if (randomSource.nextDouble() < 0.1D) {
-                level.playLocalSound(x, y, z, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.8F, 0.7F, false);
-            }
-            double j = randomSource.nextDouble() * 12.0D / 16.0D;
-            level.addParticle(ParticleTypes.SMOKE, x, y + j, z, 0.0, 0.0, 0.0);
+    @Override
+    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+        if(blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
+            blockPos = blockPos.below();
         }
+        super.playerWillDestroy(level, blockPos, blockState, player);
     }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+        if(blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
+            blockPos = blockPos.below();
+        }
+        return super.getCloneItemStack(blockGetter, blockPos, blockState);
+    }
+
 
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
