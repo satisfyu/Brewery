@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class BrewHelper {
 
@@ -56,11 +57,11 @@ public class BrewHelper {
         return null;
     }
 
-    public static List<BrewEvent> possibleEvents(BrewstationBlockEntity entity) {
-        List<BrewEvent> possibleEvents = new ArrayList<>();
-        Set<BrewEvent> runningEvents = entity.getRunningEvents();
+    public static List<ResourceLocation> possibleEvents(BrewstationBlockEntity entity) {
+        List<ResourceLocation> possibleEvents = new ArrayList<>();
+        List<ResourceLocation> runningEvents = BrewEvents.toLocations(entity.getRunningEvents());
 
-        for (BrewEvent event : BrewEvents.BREW_EVENTS.values()) {
+        for (ResourceLocation event : BrewEvents.BREW_EVENTS.keySet()) {
             boolean canAdd = true;
 
             // Check if the event is already running
@@ -68,7 +69,7 @@ public class BrewHelper {
                 canAdd = false;
             } else {
                 // Check for conflicts with currently running events
-                for (BrewEvent runningEvent : runningEvents) {
+                for (ResourceLocation runningEvent : runningEvents) {
                     if (conflictsWith(event, runningEvent)) { // Adjust this condition based on your event conflict logic
                         canAdd = false;
                         break; // No need to check further running events if there's a conflict
@@ -83,18 +84,18 @@ public class BrewHelper {
         return possibleEvents;
     }
 
-    private static boolean conflictsWith(BrewEvent event1, BrewEvent event2) {
-        ResourceLocation id1 = BrewEvents.getId(event1);
-        ResourceLocation id2 = BrewEvents.getId(event2);
-
-        return (id1.equals(BrewEvents.WHISTLE_EVENT) && id2.equals(BrewEvents.KETTLE_EVENT)) ||
-                (id1.equals(BrewEvents.KETTLE_EVENT) && id2.equals(BrewEvents.WHISTLE_EVENT));
+    private static boolean conflictsWith(ResourceLocation event1, ResourceLocation event2) {
+        return (event1.equals(BrewEvents.WHISTLE_EVENT) && event2.equals(BrewEvents.KETTLE_EVENT)) ||
+                (event1.equals(BrewEvents.KETTLE_EVENT) && event2.equals(BrewEvents.WHISTLE_EVENT));
     }
 
     public static BrewEvent getRdmEvent(BrewstationBlockEntity entity) {
-        List<BrewEvent> possibleEvents = possibleEvents(entity);
-        BrewEvent event = possibleEvents.get(entity.getLevel().getRandom().nextInt(possibleEvents.size()));
-        event.setTime(entity.getLevel().getRandom().nextInt(8 * 20,20 * 20));
+        List<ResourceLocation> possibleEvents = possibleEvents(entity);
+        ResourceLocation eventLocation = possibleEvents.get(entity.getLevel().getRandom().nextInt(possibleEvents.size()));
+
+        Supplier<BrewEvent> type = BrewEvents.byId(eventLocation);
+        BrewEvent event = type.get();
+        event.setTimeForEvent(entity.getLevel().getRandom().nextInt(8 * 20,20 * 20));
         return event;
     }
 
@@ -155,11 +156,12 @@ public class BrewHelper {
             if(tag instanceof CompoundTag cTag){
                 String id = cTag.getString("id");
                 ResourceLocation location = ResourceLocation.tryParse(id);
-                BrewEvent type = BrewEvents.byId(location);
+                Supplier<BrewEvent> type = BrewEvents.byId(location);
                 if(type == null) continue;
-                type.load(compoundTag);
-                type.setTime(cTag.getInt("timeLeft"));
-                entity.getRunningEvents().add(type);
+                BrewEvent event = type.get();
+                event.load(compoundTag);
+                event.setTimeForEvent(cTag.getInt("timeLeft"));
+                entity.getRunningEvents().add(event);
             }
         }
     }

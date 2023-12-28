@@ -27,8 +27,12 @@ public class BrewEvents {
         return resourceLocation;
     }
 
-    public static Collection<BrewEvent> getAllEvents(){
-        return BrewEvents.BREW_EVENTS.values();
+    public static List<ResourceLocation> toLocations(Collection<BrewEvent> events){
+        return events.stream().map(BrewEvents::getId).collect(Collectors.toList());
+    }
+
+    public static List<BrewEvent> toEvents(List<Supplier<BrewEvent>> events){
+        return events.stream().map(Supplier::get).collect(Collectors.toList());
     }
 
     @Nullable
@@ -43,7 +47,7 @@ public class BrewEvents {
     }
 
     @Nullable
-    public static BrewEvent byId(ResourceLocation id) {
+    public static Supplier<BrewEvent> byId(ResourceLocation id) {
         return BREW_EVENTS.get(id);
     }
 }

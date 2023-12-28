@@ -20,7 +20,7 @@ public abstract class BrewEvent {
         return timeLeft;
     }
 
-    public void setTime(int timeLeft) {
+    public void setTimeForEvent(int timeLeft) {
         this.timeLeft = timeLeft;
     }
 
