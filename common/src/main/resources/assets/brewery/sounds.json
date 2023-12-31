@@ -28,5 +28,35 @@
       "brewery:beer_elemental_death2",
       "brewery:beer_elemental_death3"
     ]
+  },
+  "drawer_open": {
+    "subtitle": "brewery.sound.drawer_open",
+    "sounds": [
+      "brewery:drawer_open"
+    ]
+  },
+  "drawer_close": {
+    "subtitle": "brewery.sound.drawer_close",
+    "sounds": [
+      "brewery:drawer_close"
+    ]
+  },
+  "cabinet_open": {
+    "subtitle": "brewery.sound.cabinet_open",
+    "sounds": [
+      "brewery:cabinet_open"
+    ]
+  },
+  "cabinet_close": {
+    "subtitle": "brewery.sound.cabinet_close",
+    "sounds": [
+      "brewery:cabinet_close"
+    ]
+  },
+  "timer_ticking": {
+    "subtitle": "brewery.sound.timer_ticking",
+    "sounds": [
+      "brewery:timer_ticking"
+    ]
   }
 }

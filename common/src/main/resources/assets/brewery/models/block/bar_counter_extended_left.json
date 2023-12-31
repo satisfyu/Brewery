@@ -4,7 +4,7 @@
 		"0": "brewery:block/bar_bottom",
 		"1": "brewery:block/bar_side_connected",
 		"2": "brewery:block/bar_top_connected",
-		"3": "brewery:block/bar_side",
+		"4": "brewery:block/bar_front",
 		"particle": "brewery:block/bar_bottom"
 	},
 	"elements": [
@@ -13,9 +13,9 @@
 			"to": [16, 16, 16],
 			"faces": {
 				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"east": {"uv": [0, 0, 13, 16], "texture": "#3"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"west": {"uv": [3, 0, 16, 16], "texture": "#3"},
+				"east": {"uv": [16, 0, 3, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#4"},
+				"west": {"uv": [3, 0, 16, 16], "texture": "#0"},
 				"up": {"uv": [0, 3, 16, 16], "texture": "#2"},
 				"down": {"uv": [3, 0, 16, 16], "rotation": 90, "texture": "#0"}
 			}
@@ -24,8 +24,8 @@
 			"from": [0, 13, 0],
 			"to": [16, 16, 3],
 			"faces": {
-				"north": {"uv": [16, 0, 0, 3], "texture": "#1"},
-				"east": {"uv": [13, 0, 16, 3], "texture": "#3"},
+				"north": {"uv": [0, 0, 16, 3], "texture": "#1"},
+				"east": {"uv": [13, 0, 16, 3], "texture": "#1"},
 				"south": {"uv": [0, 0, 16, 3], "texture": "#0"},
 				"west": {"uv": [0, 0, 3, 3], "texture": "#1"},
 				"up": {"uv": [0, 0, 16, 3], "texture": "#2"},

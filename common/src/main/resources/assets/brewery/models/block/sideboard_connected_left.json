@@ -1,0 +1,25 @@
+{
+	"credit": "Made by Satisfy",
+	"textures": {
+		"1": "brewery:block/sideboard_connected_left",
+		"2": "brewery:block/sideboard_top_left",
+		"3": "brewery:block/bar_side_connected",
+		"5": "brewery:block/sideboard_side",
+		"particle": "brewery:block/sideboard_connected_left"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 4],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [16, 0, 0]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"east": {"uv": [14, 0, 2, 16], "texture": "#5"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"west": {"uv": [14, 0, 2, 16], "texture": "#5"},
+				"up": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#2"},
+				"down": {"uv": [2, 0, 14, 16], "rotation": 90, "texture": "#2"}
+			}
+		}
+	]
+}

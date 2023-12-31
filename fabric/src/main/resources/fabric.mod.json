@@ -5,24 +5,24 @@
   "name": "Brewery",
   "description": "O'zapft is! Welcome to Brewery. Establish your own brewery and craft beer and whiskey.",
   "authors": [
-    "BaumeisterJO, satisfy"
+    "BaumeisterJO, satisfy, Cristelknight"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/satisfyu/Brewery"
   },
   "license": "ARR",
-  "icon": "assets/brewery/icon.png",
+  "icon": "pack.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.bmjo.brewery.fabric.BreweryFabric"
+      "net.satisfy.brewery.fabric.BreweryFabric"
     ],
     "client": [
-      "net.bmjo.brewery.fabric.client.BreweryClientFabric"
+      "net.satisfy.brewery.fabric.client.BreweryClientFabric"
     ],
     "doapi": [
-      "net.bmjo.brewery.util.api.BreweryDoAPI"
+      "net.satisfy.brewery.util.api.BreweryDoAPI"
     ]
   },
   "mixins": [
