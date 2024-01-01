@@ -20,7 +20,6 @@ public class BlockEntityRegistry {
     public static final RegistrySupplier<BlockEntityType<StandardBlockEntity>> STANDARD = create("standard", () -> BlockEntityType.Builder.of(StandardBlockEntity::new, ObjectRegistry.STANDARD_BLOCKS.stream().map(Supplier::get).toList().toArray(new Block[0])).build(null));
     public static final RegistrySupplier<BlockEntityType<SiloBlockEntity>> SILO = create("silo", () -> BlockEntityType.Builder.of(SiloBlockEntity::new, ObjectRegistry.SILO_WOOD.get(), ObjectRegistry.SILO_COPPER.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<StorageBlockEntity>> STORAGE_BLOCK_ENTITY = create("storage_block", () -> BlockEntityType.Builder.of(StorageBlockEntity::new, ObjectRegistry.CABINET.get(), ObjectRegistry.DRAWER.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<SideBoardBlockEntity>> SIDEBOARD = create("sideboard", () -> BlockEntityType.Builder.of(SideBoardBlockEntity::new, ObjectRegistry.SIDEBOARD.get()).build(null));
 
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
         return BLOCK_ENTITY_TYPES.register(new BreweryIdentifier(path), type);

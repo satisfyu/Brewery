@@ -1,5 +1,5 @@
 package net.satisfy.brewery.block;
-
+/*
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -66,3 +66,5 @@ public class SideBoardBlock extends ChestBlock {
         tooltip.add(Component.translatable("block.brewery.expandable.tooltip").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
     }
 }
+
+*/
