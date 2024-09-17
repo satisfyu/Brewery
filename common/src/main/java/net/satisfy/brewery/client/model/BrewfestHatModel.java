@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.satisfy.brewery.util.BreweryIdentifier;
 
 public class BrewfestHatModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BreweryIdentifier("brewfest_hat"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BreweryIdentifier.of("brewfest_hat"), "main");
     private final ModelPart brewfest_hat;
 
     public BrewfestHatModel(ModelPart root) {
@@ -33,10 +33,10 @@ public class BrewfestHatModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
         poseStack.pushPose();
-        poseStack.scale(1.08F, 1.08F, 1.08F);
-        brewfest_hat.render(poseStack, buffer, packedLight, packedOverlay);
+        poseStack.scale(1.05F, 1.05F, 1.05F);
+        brewfest_hat.render(poseStack, vertexConsumer, i, j, k);
         poseStack.popPose();
     }
 

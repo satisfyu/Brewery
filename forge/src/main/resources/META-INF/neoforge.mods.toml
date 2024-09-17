@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 license = "Custom"
-#issueTrackerURL = ""
+issueTrackerURL = "https://github.com/satisfyu/Let-s-Do-Hub"
 
 [[mixins]]
 config = "brewery.mixins.json"
@@ -11,9 +11,9 @@ config = "brewery-common.mixins.json"
 
 [[mods]]
 modId = "brewery"
-version = "2.1.0"
+version = "2.1.0-beta-release"
 displayName = "[Let's Do] Brewery"
-authors = "BaumeisterJO, satisfy"
+authors = "binaris, satisfy"
 description = '''
 Ozapft is! Brau Bier, beiss in a Bretzn – willkomme zum Braufescht!'''
 logoFile = "pack.png"
@@ -42,7 +42,7 @@ side = "BOTH"
 [[dependencies.brewery]]
 modId = "doapi"
 type = "required"
-versionRange = "[1.3.0,)"
+versionRange = "[1.2.0,)"
 ordering = "AFTER"
 side = "BOTH"
 

@@ -7,13 +7,13 @@ architectury {
     neoForge()
 }
 
-def jarFileName = 'letsdo-brewery-forge'
+def jarFileName = 'letsdo-brewery-neoforge'
 
 archivesBaseName = jarFileName
 
 configurations {
     common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+    shadowCommon
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
@@ -32,8 +32,8 @@ repositories {
 dependencies {
     neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
-    modImplementation "maven.modrinth:do-api:${project.doapi_version}-forge"
-    modImplementation "maven.modrinth:lets-do-farm-charm:${project.farm_and_charm_version}-forge"
+    modImplementation "maven.modrinth:do-api:${project.doapi_version}-neoforge"
+    modImplementation "maven.modrinth:lets-do-farm-charm:${project.farm_and_charm_version}-neoforge"
 
     modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
