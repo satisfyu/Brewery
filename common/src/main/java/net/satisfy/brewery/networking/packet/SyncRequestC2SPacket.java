@@ -1,17 +1,24 @@
 package net.satisfy.brewery.networking.packet;
 
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.satisfy.brewery.effect.alcohol.AlcoholManager;
-import net.satisfy.brewery.effect.alcohol.AlcoholPlayer;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.satisfy.brewery.util.BreweryIdentifier;
+import org.jetbrains.annotations.NotNull;
 
-public class SyncRequestC2SPacket implements NetworkManager.NetworkReceiver {
+public record SyncRequestC2SPacket(boolean empty) implements CustomPacketPayload {
+    public static final ResourceLocation PACKET_RESOURCE_LOCATION = BreweryIdentifier.of("sync_request_c2s");
+    public static final CustomPacketPayload.Type<SyncRequestC2SPacket> PACKET_ID = new CustomPacketPayload.Type<>(PACKET_RESOURCE_LOCATION);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, SyncRequestC2SPacket> PACKET_CODEC = StreamCodec.composite(
+            ByteBufCodecs.BOOL, SyncRequestC2SPacket::empty,
+            SyncRequestC2SPacket::new
+    );
+
     @Override
-    public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
-        ServerPlayer serverPlayer = (ServerPlayer) context.getPlayer();
-        if (serverPlayer instanceof AlcoholPlayer alcoholPlayer) {
-            AlcoholManager.syncAlcohol(serverPlayer, alcoholPlayer.getAlcohol());
-        }
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return PACKET_ID;
     }
 }

@@ -33,7 +33,7 @@ public class RopeKnotEntityModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        rope.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k) {
+        rope.render(poseStack, vertexConsumer, i, j, k);
     }
 }

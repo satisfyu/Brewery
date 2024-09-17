@@ -31,7 +31,7 @@ public class FogRendererMixin {
     private static float drunkColor(ClientLevel.ClientLevelData levelData) {
         Player player = BreweryClient.getPlayer();
         if (player instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.getAlcohol().isBlackout()) {
-            MobEffectInstance effect = player.getEffect(MobEffectRegistry.BLACKOUT.get());
+            MobEffectInstance effect = player.getEffect(MobEffectRegistry.BLACKOUT);
             if (effect != null && effect.getDuration() <= AlcoholManager.BEGIN_TIME) {
                 if (effect.getDuration() < 10) {
                     return 1.0F - (float) effect.getDuration() / 10.0F;
@@ -48,7 +48,7 @@ public class FogRendererMixin {
     private static void drunkFog(Camera camera, FogRenderer.FogMode fogMode, float f, boolean bl, float g, CallbackInfo ci) {
         Entity entity = camera.getEntity();
         if (entity instanceof LivingEntity livingEntity && entity instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.getAlcohol().isBlackout()) {
-            MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT.get());
+            MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT);
             if (effect != null) {
                 int time = effect.getDuration();
                 if (time <= AlcoholManager.BEGIN_TIME) {

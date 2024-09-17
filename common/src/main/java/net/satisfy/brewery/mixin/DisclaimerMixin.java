@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Mixin(LevelLoadingScreen.class)
 public abstract class DisclaimerMixin extends Screen {
@@ -51,8 +51,8 @@ public abstract class DisclaimerMixin extends Screen {
             this.addRenderableWidget(new PlainTextButton(x, this.height - this.font.lineHeight * (disclaimers.length + 1) - 4, width, 10, title, (button) -> {
                 String url = "https://www.who.int/news-room/fact-sheets/detail/alcohol";
                 try {
-                    Util.getPlatform().openUrl(new URL(url));
-                } catch (MalformedURLException e) {
+                    Util.getPlatform().openUri(new URI(url));
+                } catch (URISyntaxException e) {
                     Brewery.LOGGER.debug("Unable to load URL: [" + url + "]");
                 }
             }, this.font));

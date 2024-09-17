@@ -10,6 +10,6 @@ public class PlacedFeatures {
 
 
     public static ResourceKey<PlacedFeature> registerKey(String name) {
-        return ResourceKey.create(Registries.PLACED_FEATURE, new BreweryIdentifier(name));
+        return ResourceKey.create(Registries.PLACED_FEATURE, BreweryIdentifier.of(name));
     }
 }

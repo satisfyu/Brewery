@@ -16,7 +16,7 @@ public interface IBrewfestArmorSet {
     }
 
     private static boolean isBrewfestBoots(ArmorItem armorItem) {
-        return armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_ARMOR || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_LEATHER;
+        return armorItem == ArmorMaterialRegistry.BREWFEST_ARMOR || armorItem == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem == ArmorMaterialRegistry.BREWFEST_LEATHER;
     }
 
 
@@ -30,7 +30,7 @@ public interface IBrewfestArmorSet {
     }
 
     private static boolean isBrewfestLeggings(ArmorItem armorItem) {
-        return armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_LEATHER || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_ARMOR;
+        return armorItem == ArmorMaterialRegistry.BREWFEST_LEATHER || armorItem == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem == ArmorMaterialRegistry.BREWFEST_ARMOR;
     }
 
     static boolean hasBrewfestBreastplate(Player player) {
@@ -43,7 +43,7 @@ public interface IBrewfestArmorSet {
     }
 
     private static boolean isBrewfestBreastplate(ArmorItem armorItem) {
-        return armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_ARMOR || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_LEATHER;
+        return armorItem == ArmorMaterialRegistry.BREWFEST_ARMOR || armorItem == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem == ArmorMaterialRegistry.BREWFEST_LEATHER;
     }
 
     static boolean hasBrewfestHelmet(Player player) {
@@ -57,6 +57,6 @@ public interface IBrewfestArmorSet {
 
 
     private static boolean isBrewfestHelmet(ArmorItem armorItem) {
-        return armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_LEATHER || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_DRESS || armorItem.getMaterial() == ArmorMaterialRegistry.BREWFEST_LEATHER;
+        return armorItem == ArmorMaterialRegistry.BREWFEST_LEATHER || armorItem == ArmorMaterialRegistry.BREWFEST_DRESS;
     }
 }

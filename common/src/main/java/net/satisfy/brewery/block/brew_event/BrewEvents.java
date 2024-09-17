@@ -24,7 +24,7 @@ public class BrewEvents {
     }
 
     public static ResourceLocation registerBrewEvent(String id, Supplier<BrewEvent> brewEventSupplier) {
-        ResourceLocation resourceLocation = new BreweryIdentifier(id);
+        ResourceLocation resourceLocation = BreweryIdentifier.of(id);
         BREW_EVENTS.put(resourceLocation, brewEventSupplier);
         return resourceLocation;
     }

@@ -32,7 +32,7 @@ public class MotionBlur {
 
     public static PostChain getShader() {
         try {
-            return new PostChain(client.getTextureManager(), client.getResourceManager(), client.getMainRenderTarget(), new ResourceLocation("shaders/post/phosphor.json"));
+            return new PostChain(client.getTextureManager(), client.getResourceManager(), client.getMainRenderTarget(), ResourceLocation.withDefaultNamespace("shaders/post/phosphor.json"));
         } catch (IOException e) {
             return null;
         }

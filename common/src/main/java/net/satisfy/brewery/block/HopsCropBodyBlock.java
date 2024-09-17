@@ -33,7 +33,7 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return new ItemStack(getHeadBlock());
     }
 
@@ -61,7 +61,7 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean bl) {
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return true;
     }
 

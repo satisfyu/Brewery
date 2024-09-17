@@ -2,7 +2,6 @@ package net.satisfy.brewery.util.rope;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +16,8 @@ import net.satisfy.brewery.block.HopsCropHeadBlock;
 import net.satisfy.brewery.block.entity.rope.HangingRopeEntity;
 import net.satisfy.brewery.block.entity.rope.RopeCollisionEntity;
 import net.satisfy.brewery.block.entity.rope.RopeKnotEntity;
-import net.satisfy.brewery.networking.BreweryNetworking;
+import net.satisfy.brewery.networking.packet.AttachRopeS2CPacket;
+import net.satisfy.brewery.networking.packet.DetachRopeS2CPacket;
 import net.satisfy.brewery.registry.EntityRegistry;
 import net.satisfy.brewery.registry.ObjectRegistry;
 import net.satisfy.brewery.util.BreweryMath;
@@ -120,10 +120,8 @@ public class RopeConnection {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
         for (ServerPlayer player : trackingPlayers) {
-            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            buf.writeInt(from.getId());
-            buf.writeInt(to.getId());
-            NetworkManager.sendToPlayer(player, BreweryNetworking.ATTACH_ROPE_S2C_ID, buf);
+            AttachRopeS2CPacket packet = new AttachRopeS2CPacket(from.getId(), to.getId());
+            NetworkManager.sendToPlayer(player, packet);
         }
     }
 
@@ -234,10 +232,8 @@ public class RopeConnection {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
         for (ServerPlayer player : trackingPlayers) {
-            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            buf.writeInt(from.getId());
-            buf.writeInt(to.getId());
-            NetworkManager.sendToPlayer(player, BreweryNetworking.DETACH_ROPE_S2C_ID, buf);
+            DetachRopeS2CPacket packet = new DetachRopeS2CPacket(from.getId(), to.getId());
+            NetworkManager.sendToPlayer(player, packet);
         }
     }
 

@@ -1,0 +1,44 @@
+{
+  "parent": "brewery:main/copper_brewmaster",
+  "criteria": {
+    "brewing_station": {
+      "conditions": {
+        "location": [
+          {
+            "block": "brewery:netherite_brewingstation",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.brewery.place_netherite_brewingstation.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "id": "brewery:netherite_brewingstation",
+      "count": 1
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.brewery.place_netherite_brewingstation"
+    }
+  },
+  "rewards": {
+    "experience": 800,
+    "loot": [
+      "brewery:advancements/completionist"
+    ]
+  },
+  "requirements": [
+    [
+      "brewing_station"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -71,7 +70,7 @@ public class BrewTimerBlock extends BrewingstationBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (Boolean.TRUE.equals(blockState.getValue(TIME))) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(TIME, false).setValue(ACTIVATED, false));
             return InteractionResult.SUCCESS;

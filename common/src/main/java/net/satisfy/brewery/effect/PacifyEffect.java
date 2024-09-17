@@ -15,35 +15,34 @@ public class PacifyEffect extends MobEffect {
     }
 
     @Override
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-        if (entity instanceof Player) {
-            AttributeInstance attribute = entity.getAttribute(Attributes.FOLLOW_RANGE);
-            if (attribute != null) {
-                attribute.setBaseValue(attribute.getValue() * 0.75);
-            }
+    public void addAttributeModifiers(AttributeMap attributeMap, int i) {
+        AttributeInstance attribute = attributeMap.getInstance(Attributes.FOLLOW_RANGE);
+        if (attribute != null) {
+            attribute.setBaseValue(attribute.getValue() * 0.75);
+        }
+
+        super.addAttributeModifiers(attributeMap, i);
+    }
+
+    public static void onRemove(LivingEntity entity) {
+        AttributeInstance attribute = entity.getAttribute(Attributes.FOLLOW_RANGE);
+        if (attribute != null) {
+            attribute.setBaseValue(attribute.getValue() / 0.75);
         }
     }
 
-    @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-        if (entity instanceof Player) {
-            AttributeInstance attribute = entity.getAttribute(Attributes.FOLLOW_RANGE);
-            if (attribute != null) {
-                attribute.setBaseValue(attribute.getValue() / 0.75);
-            }
-        }
-    }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
         return true;
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player) {
             entity.level().getEntitiesOfClass(EnderMan.class, entity.getBoundingBox().inflate(32.0D))
                     .forEach(enderman -> enderman.setTarget(null));
         }
+        return super.applyEffectTick(entity, amplifier);
     }
 }

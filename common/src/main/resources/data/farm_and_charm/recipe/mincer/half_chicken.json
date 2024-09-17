@@ -1,0 +1,11 @@
+{
+  "type": "farm_and_charm:mincer",
+  "ingredient": {
+    "item": "minecraft:cooked_chicken"
+  },
+  "recipe_type": "MEAT",
+  "result": {
+    "id": "brewery:half_chicken",
+    "count": 2
+  }
+}

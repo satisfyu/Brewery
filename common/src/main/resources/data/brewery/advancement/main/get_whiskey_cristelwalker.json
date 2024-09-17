@@ -1,0 +1,38 @@
+{
+  "parent": "brewery:main/netherite_brewmaster",
+  "display": {
+    "icon": {
+      "id": "brewery:whiskey_cristelwalker",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancement.brewery.get_whiskey_cristelwalker"
+    },
+    "description": {
+      "translate": "advancement.brewery.get_whiskey_cristelwalker.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "whiskey_cristelwalker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:whiskey_cristelwalker"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "whiskey_cristelwalker"
+    ]
+  ]
+}

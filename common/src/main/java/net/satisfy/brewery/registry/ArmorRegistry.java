@@ -5,7 +5,6 @@ import de.cristelknight.doapi.client.render.feature.CustomArmorSet;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
@@ -52,14 +51,16 @@ public class ArmorRegistry {
 
 
     public static <T extends LivingEntity> void registerArmorModels(CustomArmorManager<T> armors, EntityModelSet modelLoader) {
-        armors.addArmor(new CustomArmorSet<T>(ObjectRegistry.BREWFEST_REGALIA.get(), ObjectRegistry.BREWFEST_BOOTS.get(), ObjectRegistry.BREWFEST_TROUSERS.get())
-                .setTexture(new BreweryIdentifier("lederhosen"))
+        armors.addArmor(new CustomArmorSet<T>(ObjectRegistry.BREWFEST_REGALIA.get(), ObjectRegistry.BREWFEST_BOOTS.get(),
+                ObjectRegistry.BREWFEST_TROUSERS.get())
+                .setTexture(BreweryIdentifier.of("lederhosen"))
                 .setOuterModel(new LederhosenOuter<>(modelLoader.bakeLayer(LederhosenOuter.LAYER_LOCATION)))
                 .setInnerModel(new LederhosenInner<>(modelLoader.bakeLayer(LederhosenInner.LAYER_LOCATION))));
-        armors.addArmor(new CustomArmorSet<T>(ObjectRegistry.BREWFEST_BLOUSE.get(), ObjectRegistry.BREWFEST_DRESS.get(), ObjectRegistry.BREWFEST_SHOES.get())
-                .setTexture(new BreweryIdentifier("dirndl"))
-                .setOuterModel(new LederhosenOuter<>(modelLoader.bakeLayer(LederhosenOuter.LAYER_LOCATION)))
-                .setInnerModel(new LederhosenInner<>(modelLoader.bakeLayer(LederhosenInner.LAYER_LOCATION))));
+        armors.addArmor(new CustomArmorSet<T>(ObjectRegistry.BREWFEST_BLOUSE.get(), ObjectRegistry.BREWFEST_DRESS.get(),
+                ObjectRegistry.BREWFEST_SHOES.get())
+                .setTexture(BreweryIdentifier.of("dirndl"))
+                .setOuterModel(new DirndlOuter<>(modelLoader.bakeLayer(DirndlOuter.LAYER_LOCATION)))
+                .setInnerModel(new DirndlInner<>(modelLoader.bakeLayer(DirndlInner.LAYER_LOCATION))));
     }
 
     public static void appendTooltip(List<Component> tooltip) {

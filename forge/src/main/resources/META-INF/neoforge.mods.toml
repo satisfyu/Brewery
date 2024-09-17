@@ -1,0 +1,54 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "Custom"
+#issueTrackerURL = ""
+
+[[mixins]]
+config = "brewery.mixins.json"
+
+[[mixins]]
+config = "brewery-common.mixins.json"
+
+[[mods]]
+modId = "brewery"
+version = "2.1.0"
+displayName = "[Let's Do] Brewery"
+authors = "BaumeisterJO, satisfy"
+description = '''
+Ozapft is! Brau Bier, beiss in a Bretzn – willkomme zum Braufescht!'''
+logoFile = "pack.png"
+
+[[dependencies.brewery]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "architectury"
+type = "required"
+versionRange = "[9.1.12,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "doapi"
+type = "required"
+versionRange = "[1.3.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.brewery]]
+modId = "farm_and_charm"
+type = "required"
+versionRange = "[0.0.1,)"
+ordering = "AFTER"
+side = "BOTH"

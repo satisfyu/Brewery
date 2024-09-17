@@ -1,0 +1,21 @@
+{
+  "type": "farm_and_charm:crafting_bowl",
+  "ingredients": [
+    {
+      "item": "minecraft:beetroot"
+    },
+    {
+      "item": "minecraft:baked_potato"
+    },
+    {
+      "tag": "farm_and_charm:cabbage"
+    },
+    {
+      "tag": "farm_and_charm:tomato"
+    }
+  ],
+  "result": {
+    "id": "brewery:potato_salad",
+    "count": 2
+  }
+}

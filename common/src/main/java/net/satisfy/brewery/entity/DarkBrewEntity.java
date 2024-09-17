@@ -35,7 +35,7 @@ public class DarkBrewEntity extends ThrowableItemProjectile {
     }
 
     private ParticleOptions getParticleParameters() {
-        ItemStack itemStack = this.getItemRaw();
+        ItemStack itemStack = this.getItem();
         ParticleOptions particle = itemStack.isEmpty() ? ParticleTypes.LANDING_HONEY : new ItemParticleOption(ParticleTypes.ITEM, itemStack);
         if (this.level().isClientSide) {
             spawnBlockParticles(Blocks.GLASS_PANE.defaultBlockState(), 100);

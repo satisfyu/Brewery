@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 
 public class LederhosenOuter<T extends LivingEntity> extends HumanoidModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new DoApiRL("lederhosen"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(DoApiRL.asResourceLocation("lederhosen"), "main");
 
     public LederhosenOuter(ModelPart root) {
         super(root);

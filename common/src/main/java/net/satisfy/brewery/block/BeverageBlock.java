@@ -66,7 +66,8 @@ public class BeverageBlock extends StorageBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        InteractionHand hand = player.getUsedItemHand();
         final ItemStack stack = player.getItemInHand(hand);
         BlockEntity blockEntity = world.getBlockEntity(pos);
 

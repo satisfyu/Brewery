@@ -1,0 +1,22 @@
+{
+  "type": "farm_and_charm:pot_cooking",
+  "ingredients": [
+    {
+      "item": "farm_and_charm:minced_beef"
+    },
+    {
+      "item": "farm_and_charm:minced_beef"
+    },
+    {
+      "tag": "farm_and_charm:cabbage"
+    }
+  ],
+  "container": {
+    "id": "minecraft:bowl",
+    "count": 1
+  },
+  "result": {
+    "id": "brewery:sausage",
+    "count": 1
+  }
+}

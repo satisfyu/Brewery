@@ -13,7 +13,7 @@ public class RepulsionEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
             List<LivingEntity> entities = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(4.0), e -> e != player);
             for (LivingEntity target : entities) {
@@ -25,10 +25,11 @@ public class RepulsionEffect extends MobEffect {
                 }
             }
         }
+        return true;
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
-        return duration % 40 == 0;
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
+        return i % 40 == 0;
     }
 }

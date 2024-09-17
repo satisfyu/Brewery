@@ -1,0 +1,11 @@
+{
+  "type": "farm_and_charm:drying",
+  "ingredient": {
+    "item": "farm_and_charm:corn"
+  },
+  "recipe_type": "MEAT",
+  "result": {
+    "id": "brewery:dried_corn",
+    "count": 1
+  }
+}

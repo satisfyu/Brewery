@@ -32,7 +32,8 @@
     ]
   },
   "mixins": [
-    "brewery-common.mixins.json"
+    "brewery-common.mixins.json",
+    "brewery-fabric.mixins.json"
   ],
   "depends": {
     "fabric": "*",

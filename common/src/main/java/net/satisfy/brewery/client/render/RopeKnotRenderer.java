@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
 public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
-    private static final ResourceLocation KNOT_TEXTURE = new BreweryIdentifier("textures/rope/rope_knot.png");
+    private static final ResourceLocation KNOT_TEXTURE = BreweryIdentifier.of("textures/rope/rope_knot.png");
     private final RopeRender hopRopeRenderer = new RopeRender();
     private final RopeKnotEntityModel<RopeKnotEntity> model;
 
@@ -52,7 +52,7 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             this.model.setupAnim(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
             VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(KNOT_TEXTURE));
-            this.model.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+            this.model.renderToBuffer(poseStack, vertexConsumer, light, OverlayTexture.NO_OVERLAY);
             poseStack.popPose();
         }
 
@@ -69,7 +69,7 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
         Entity toEntity = connection.to();
         Vec3 ropeVec = connection.getConnectionVec(tickDelta);
 
-        RenderType entityCutout = RenderType.entityCutoutNoCull(new BreweryIdentifier("textures/rope/rope.png"));
+        RenderType entityCutout = RenderType.entityCutoutNoCull(BreweryIdentifier.of("textures/rope/rope.png"));
         VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(entityCutout);
 
         BlockPos blockPosOfStart = BreweryMath.ofFloored(fromKnot.getEyePosition(tickDelta));
@@ -88,6 +88,6 @@ public class RopeKnotRenderer extends EntityRenderer<RopeKnotEntity> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(RopeKnotEntity entity) {
-        return new ResourceLocation("");
+        return ResourceLocation.withDefaultNamespace("");
     }
 }

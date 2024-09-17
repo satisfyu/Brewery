@@ -18,6 +18,7 @@ public class Brewery {
         DataFixerRegistry.init();
         ObjectRegistry.init();
         TabRegistry.init();
+        ArmorMaterialRegistry.init();
         BlockEntityRegistry.init();
         EntityRegistry.init();
         MobEffectRegistry.init();

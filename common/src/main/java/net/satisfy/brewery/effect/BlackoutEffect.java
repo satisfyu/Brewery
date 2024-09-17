@@ -8,7 +8,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.effect.alcohol.AlcoholManager;
@@ -21,39 +20,37 @@ public class BlackoutEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT.get());
+    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT);
         assert effect != null;
         int duration = effect.getDuration();
         switch (duration) {
             case AlcoholManager.FALL_DOWN -> {
                 Level level = livingEntity.level();
                 BlockState blockState = livingEntity.getBlockStateOn();
-                SoundEvent soundEvent = blockState.getBlock().getSoundType(blockState).getFallSound();
+                SoundEvent soundEvent = blockState.getSoundType().getFallSound();
                 livingEntity.playSound(soundEvent, 1.0f, 1.0f);
                 level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), soundEvent, SoundSource.PLAYERS, 1.0f, 1.0f);
             }
             case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
         }
-        super.applyEffectTick(livingEntity, amplifier);
+        return true;
     }
 
-    @Override
-    public void removeAttributeModifiers(LivingEntity livingEntity, AttributeMap attributeMap, int i) {
+    public static void onRemove(LivingEntity livingEntity) {
         if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
             alcoholPlayer.getAlcohol().soberUp();
-            if (livingEntity.hasEffect(MobEffectRegistry.DRUNK.get())) {
-                livingEntity.removeEffect(MobEffectRegistry.DRUNK.get());
+            if (livingEntity.hasEffect(MobEffectRegistry.DRUNK)) {
+                livingEntity.removeEffect(MobEffectRegistry.DRUNK);
             }
             if (livingEntity instanceof ServerPlayer serverPlayer) {
                 AlcoholManager.syncAlcohol(serverPlayer, alcoholPlayer.getAlcohol());
             }
         }
-        super.removeAttributeModifiers(livingEntity, attributeMap, i);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
-        return duration == AlcoholManager.FALL_DOWN || duration == AlcoholManager.WANDER_AROUND;
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
+        return i == AlcoholManager.FALL_DOWN || i == AlcoholManager.WANDER_AROUND;
     }
 }

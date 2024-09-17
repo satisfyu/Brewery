@@ -17,9 +17,9 @@ import net.satisfy.brewery.util.BreweryIdentifier;
 @SuppressWarnings("unused, deprecation")
 public class BreweryFabricVillagers {
 
-    private static final BreweryIdentifier BREWER_POI_IDENTIFIER = new BreweryIdentifier("brewer_poi");
+    private static final ResourceLocation BREWER_POI_IDENTIFIER = BreweryIdentifier.of("brewer_poi");
     public static final PoiType BREWER_POI = PointOfInterestHelper.register(BREWER_POI_IDENTIFIER, 1, 12, ObjectRegistry.BAR_COUNTER.get());
-    public static final VillagerProfession BREWER = Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, new ResourceLocation("brewery", "brewer"), VillagerProfessionBuilder.create().id(new ResourceLocation("brewery", "brewer")).workstation(ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, BREWER_POI_IDENTIFIER)).build());
+    public static final VillagerProfession BREWER = Registry.register(BuiltInRegistries.VILLAGER_PROFESSION, ResourceLocation.fromNamespaceAndPath("brewery", "brewer"), VillagerProfessionBuilder.create().id(ResourceLocation.fromNamespaceAndPath("brewery", "brewer")).workstation(ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, BREWER_POI_IDENTIFIER)).build());
 
     public static void init() {
         TradeOfferHelper.registerVillagerOffers(BREWER, 1, factories -> {

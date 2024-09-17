@@ -4,7 +4,6 @@ package net.satisfy.brewery.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 
 public class HaleyEffect extends MobEffect {
@@ -13,7 +12,7 @@ public class HaleyEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
             if (!player.getCommandSenderWorld().isClientSide) {
                 player.getAbilities().mayfly = true;
@@ -21,10 +20,10 @@ public class HaleyEffect extends MobEffect {
                 player.onUpdateAbilities();
             }
         }
+        return true;
     }
 
-    @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+    public static void onRemove(LivingEntity entity) {
         if (entity instanceof Player player) {
             if (!player.getCommandSenderWorld().isClientSide) {
                 player.getAbilities().mayfly = player.isCreative();
@@ -35,7 +34,7 @@ public class HaleyEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
         return true;
     }
 }

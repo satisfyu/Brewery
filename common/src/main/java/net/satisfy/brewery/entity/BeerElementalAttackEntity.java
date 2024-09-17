@@ -12,6 +12,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.satisfy.brewery.registry.EntityRegistry;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +24,7 @@ public class BeerElementalAttackEntity extends AbstractHurtingProjectile {
     }
 
     public BeerElementalAttackEntity(Level level, LivingEntity livingEntity, double d, double e, double f) {
-        super(EntityRegistry.BEER_ELEMENTAL_ATTACK.get(), livingEntity, d, e, f, level);
+        super(EntityRegistry.BEER_ELEMENTAL_ATTACK.get(), livingEntity, new Vec3(d, e, f), level);
 
         double velocityModifier = 0.4;
         this.setDeltaMovement(this.getDeltaMovement().multiply(velocityModifier, velocityModifier, velocityModifier));

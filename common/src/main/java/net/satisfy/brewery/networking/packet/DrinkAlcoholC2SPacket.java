@@ -1,32 +1,24 @@
 package net.satisfy.brewery.networking.packet;
 
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.satisfy.brewery.effect.alcohol.AlcoholLevel;
-import net.satisfy.brewery.effect.alcohol.AlcoholManager;
-import net.satisfy.brewery.effect.alcohol.AlcoholPlayer;
-import net.satisfy.brewery.registry.MobEffectRegistry;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.satisfy.brewery.util.BreweryIdentifier;
+import org.jetbrains.annotations.NotNull;
 
-public class DrinkAlcoholC2SPacket implements NetworkManager.NetworkReceiver {
+public record DrinkAlcoholC2SPacket(boolean empty) implements CustomPacketPayload {
+    public static final ResourceLocation PACKET_RESOURCE_LOCATION = BreweryIdentifier.of("drink_alcohol_c2s");
+    public static final CustomPacketPayload.Type<DrinkAlcoholC2SPacket> PACKET_ID = new CustomPacketPayload.Type<>(PACKET_RESOURCE_LOCATION);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, DrinkAlcoholC2SPacket> PACKET_CODEC = StreamCodec.composite(
+            ByteBufCodecs.BOOL, DrinkAlcoholC2SPacket::empty,
+            DrinkAlcoholC2SPacket::new
+    );
+
     @Override
-    public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
-        ServerPlayer serverPlayer = (ServerPlayer) context.getPlayer();
-        if (serverPlayer instanceof AlcoholPlayer alcoholPlayer) {
-            AlcoholLevel alcoholLevel = alcoholPlayer.getAlcohol();
-            alcoholLevel.drink();
-
-            serverPlayer.addEffect(new MobEffectInstance(MobEffectRegistry.DRUNK.get(), AlcoholManager.DRUNK_TIME, alcoholLevel.getDrunkenness() - 1, false, alcoholLevel.isDrunk()));
-            if (alcoholLevel.isBlackout()) {
-                if (!serverPlayer.hasEffect(MobEffectRegistry.BLACKOUT.get())) {
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffectRegistry.BLACKOUT.get(), 15 * 20, 0, false, false));
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 13 * 20, 0, false, false));
-                }
-            }
-
-            AlcoholManager.syncAlcohol(serverPlayer, alcoholLevel);
-        }
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return PACKET_ID;
     }
 }

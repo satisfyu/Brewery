@@ -14,7 +14,7 @@ public class MobFollowPlayerMixin {
     @Inject(method = "shouldFollow", at = @At("HEAD"), cancellable = true)
     private void followEffectCheck(LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
         if (livingEntity instanceof Player player) {
-            if (player.hasEffect(MobEffectRegistry.SNOWWHITE.get())) {
+            if (player.hasEffect(MobEffectRegistry.SNOWWHITE)) {
                 cir.setReturnValue(true);
             }
         }

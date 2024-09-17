@@ -5,9 +5,9 @@ import net.satisfy.brewery.util.BreweryIdentifier;
 
 @SuppressWarnings("unused")
 public class ModelRegistry {
-    public static final ModelLayerLocation ROPE_KNOT = new ModelLayerLocation(new BreweryIdentifier("rope_knot"), "main");
-    public static final ModelLayerLocation BEER_ELEMENTAL = new ModelLayerLocation(new BreweryIdentifier("beer_elemental"), "main");
-    public static final ModelLayerLocation BEER_ELEMENTAL_ATTACK = new ModelLayerLocation(new BreweryIdentifier("beer_elemental_attack"), "main");
-    public static final ModelLayerLocation HANGING_ROPE = new ModelLayerLocation(new BreweryIdentifier("hanging_rope"), "main");
-    public static final ModelLayerLocation ROPE_COLLISION = new ModelLayerLocation(new BreweryIdentifier("rope_collision"), "main");
+    public static final ModelLayerLocation ROPE_KNOT = new ModelLayerLocation(BreweryIdentifier.of("rope_knot"), "main");
+    public static final ModelLayerLocation BEER_ELEMENTAL = new ModelLayerLocation(BreweryIdentifier.of("beer_elemental"), "main");
+    public static final ModelLayerLocation BEER_ELEMENTAL_ATTACK = new ModelLayerLocation(BreweryIdentifier.of("beer_elemental_attack"), "main");
+    public static final ModelLayerLocation HANGING_ROPE = new ModelLayerLocation(BreweryIdentifier.of("hanging_rope"), "main");
+    public static final ModelLayerLocation ROPE_COLLISION = new ModelLayerLocation(BreweryIdentifier.of("rope_collision"), "main");
 }

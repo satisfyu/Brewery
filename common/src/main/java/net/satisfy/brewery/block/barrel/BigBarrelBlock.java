@@ -1,9 +1,10 @@
 package net.satisfy.brewery.block.barrel;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +16,7 @@ import net.satisfy.brewery.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class BigBarrelBlock extends HorizontalDirectionalBlock {
-
+    public static final MapCodec<BigBarrelBlock> CODEC = simpleCodec(BigBarrelBlock::new);
     public static final EnumProperty<DoubleBlockHalf> HALF;
 
     static {
@@ -28,13 +29,17 @@ public class BigBarrelBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
-        if (!(this instanceof BigBarrelMainBlock)) {
-            return ObjectRegistry.BARREL_MAIN.get().getCloneItemStack(getter, pos, state);
-        }
-        return super.getCloneItemStack(getter, pos, state);
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
+    @Override
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        if (!(this instanceof BigBarrelMainBlock)) {
+            return ObjectRegistry.BARREL_MAIN.get().getCloneItemStack(levelReader, blockPos, blockState);
+        }
+        return super.getCloneItemStack(levelReader, blockPos, blockState);
+    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

@@ -13,7 +13,7 @@ public class MiningEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
             int y = player.getBlockY();
             MobEffectInstance currentEffect = player.getEffect(MobEffects.DIG_SPEED);
@@ -24,6 +24,7 @@ public class MiningEffect extends MobEffect {
                 player.addEffect(newEffect);
             }
         }
+        return true;
     }
 
     private MobEffectInstance determineEffectByYLevel(int y) {
@@ -45,7 +46,7 @@ public class MiningEffect extends MobEffect {
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
-        return duration % 20 == 0;
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
+        return i % 20 == 0;
     }
 }

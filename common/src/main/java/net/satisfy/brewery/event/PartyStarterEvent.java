@@ -2,6 +2,7 @@ package net.satisfy.brewery.event;
 
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.PlayerEvent;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.satisfy.brewery.registry.MobEffectRegistry;
@@ -23,7 +25,7 @@ public class PartyStarterEvent implements PlayerEvent.AttackEntity {
 
     @Override
     public EventResult attack(Player player, Level level, Entity target, InteractionHand hand, @Nullable EntityHitResult result) {
-        if (player.hasEffect(MobEffectRegistry.PARTYSTARTER.get())) {
+        if (player.hasEffect(MobEffectRegistry.PARTYSTARTER)) {
             if (target instanceof LivingEntity entity) {
                 int numExplosions = 3;
 
@@ -40,7 +42,11 @@ public class PartyStarterEvent implements PlayerEvent.AttackEntity {
                     explosions.add(explosion);
                     fireworkNbt.put("Explosions", explosions);
                     fireworkNbt.putByte("Flight", (byte) 0);
-                    fireworkStack.getOrCreateTagElement("Fireworks").put("Explosions", explosions);
+
+                    CustomData customData = fireworkStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+                    CompoundTag tag = customData.copyTag();
+                    tag.put("Fireworks", fireworkNbt);
+                    fireworkStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
                     FireworkRocketEntity fireworkRocket = new FireworkRocketEntity(level, fireworkStack, entity);
                     fireworkRocket.setAirSupply(0);

@@ -16,7 +16,7 @@ public abstract class GameRendererMixin {
             RenderSystem.disableBlend();
             RenderSystem.disableDepthTest();
             RenderSystem.resetTextureMatrix();
-            MotionBlur.shader.process(MotionBlur.client.getFrameTime() - 10);
+            MotionBlur.shader.process(MotionBlur.client.getFrameTimeNs() - 10);
         }
     }
 }

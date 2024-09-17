@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 
 public class DirndlInner<T extends LivingEntity> extends HumanoidModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new DoApiRL("dirndl_inner"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(DoApiRL.asResourceLocation("dirndl_inner"), "main");
 
     public DirndlInner(ModelPart root) {
         super(root);

@@ -58,7 +58,7 @@ public abstract class HopsCropBlock extends Block {
     }
 
     protected static boolean isRopeAbove(LevelAccessor levelAccessor, BlockPos blockPos) {
-        List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, new AABB(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1)));
+        List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, new AABB(blockPos.above().getCenter(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1).getCenter()));
         for (HangingRopeEntity hangingRope : results) {
             if (hangingRope.active()) return true;
         }
@@ -104,7 +104,8 @@ public abstract class HopsCropBlock extends Block {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        InteractionHand interactionHand = player.getUsedItemHand();
         if (player.getItemInHand(interactionHand).is(Items.BONE_MEAL)) {
             return InteractionResult.PASS;
         }
@@ -113,7 +114,7 @@ public abstract class HopsCropBlock extends Block {
             dropHops(level, blockPos, blockState);
             return InteractionResult.sidedSuccess(level.isClientSide);
         } else {
-            return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+            return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);
         }
     }
 

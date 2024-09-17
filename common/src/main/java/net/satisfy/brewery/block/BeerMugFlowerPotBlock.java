@@ -54,7 +54,8 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, BlockHitResult hit) {
+        InteractionHand hand = player.getUsedItemHand();
         if (hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
         BeerMugBlockEntity be = (BeerMugBlockEntity) world.getBlockEntity(pos);
         if (be == null) return InteractionResult.PASS;
@@ -84,7 +85,7 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
             }
             return InteractionResult.sidedSuccess(world.isClientSide);
         }
-        return super.use(state, world, pos, player, hand, hit);
+        return super.useWithoutItem(state, world, pos, player, hit);
     }
 
     public boolean fitInPot(ItemStack item) {
@@ -107,7 +108,7 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 

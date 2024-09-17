@@ -12,6 +12,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,9 +23,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -368,6 +368,11 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         return blockState.is(Blocks.TRIPWIRE_HOOK) ? 6 / 16.0F : 10 / 16.0F;
     }
 
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
+    }
+
     //OVERRIDE SHIT
     @Override
     public void setPos(double x, double y, double z) {
@@ -377,16 +382,6 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     @Override
     protected void setDirection(Direction direction) {
         // AbstractDecorationEntity.facing should not be used
-    }
-
-    @Override
-    public int getWidth() {
-        return 9;
-    }
-
-    @Override
-    public int getHeight() {
-        return 9;
     }
 
     @Override
@@ -400,12 +395,12 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     }
 
     @Override
-    protected void recalculateBoundingBox() {
-        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
-        setPosRaw(x + 0.5D, y + getYOffset(x, y, z), z + 0.5D);
+    protected @NotNull AABB calculateBoundingBox(BlockPos blockPos, Direction direction) {
+        setPosRaw(blockPos.getX() + 0.5D, blockPos.getY() +
+                getYOffset(blockPos.getX(), blockPos.getY(), blockPos.getZ()), blockPos.getZ() + 0.5D);
         double w = getType().getWidth() / 2.0;
         double h = getType().getHeight();
-        setBoundingBox(new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w));
+        return new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w);
     }
 
     @Override
@@ -440,18 +435,12 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     }
 
     @Override
-    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return EntityRegistry.ROPE_KNOT.get().getHeight() / 2;
-    }
-
-    @Override
     public @NotNull SoundSource getSoundSource() {
         return SoundSource.BLOCKS;
     }
 
-
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return super.getAddEntityPacket(serverEntity);
     }
 }

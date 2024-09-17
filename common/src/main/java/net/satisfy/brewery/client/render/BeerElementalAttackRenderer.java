@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
@@ -19,7 +18,7 @@ import org.joml.Vector4f;
 
 public class BeerElementalAttackRenderer extends EntityRenderer<BeerElementalAttackEntity> {
 
-    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(Brewery.MOD_ID, "textures/particle/beer_elemental_attack.png");
+    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(Brewery.MOD_ID, "textures/particle/beer_elemental_attack.png");
 
     private static final float SCALE = 0.4F;
     private static final Vec2[] UVS = new Vec2[]{new Vec2(1F, 1F), new Vec2(0F, 1F), new Vec2(0F, 0F), new Vec2(1F, 0F)};
@@ -38,10 +37,8 @@ public class BeerElementalAttackRenderer extends EntityRenderer<BeerElementalAtt
             Vector4f pos = new Vector4f(localPos.x(), localPos.y() + 0.5F, localPos.z(), 1.0F);
             pos.mul(poseMatrix);
 
-            vertexBuilder.vertex(pos.x(), pos.y(), pos.z(),
-                    1.0F, 1.0F, 1.0F, 1.0F,
-                    quadUvs.x, quadUvs.y,
-                    OverlayTexture.NO_OVERLAY,
+            vertexBuilder.addVertex(pos.x(), pos.y(), pos.z(),
+                    1, 1.0F, 1.0F, 1,
                     combinedLight,
                     0F, 1F, 0F
             );

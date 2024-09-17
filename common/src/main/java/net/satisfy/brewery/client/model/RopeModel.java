@@ -28,13 +28,12 @@ public record RopeModel(float[] vertices, float[] uvs) {
             int skyLight = (int) Mth.lerp(f, (float) sLight0, (float) sLight1);
             int light = LightTexture.pack(blockLight, skyLight);
             buffer
-                    .vertex(modelMatrix, vertices[i * 3], vertices[i * 3 + 1], vertices[i * 3 + 2])
-                    .color(-1)
-                    .uv(uvs[i * 2], uvs[i * 2 + 1])
-                    .overlayCoords(OverlayTexture.NO_OVERLAY)
-                    .uv2(light)
-                    .normal(normalMatrix, 1, 0.35f, 0)
-                    .endVertex();
+                    .addVertex(modelMatrix, vertices[i * 3], vertices[i * 3 + 1], vertices[i * 3 + 2])
+                    .setColor(-1)
+                    .setUv(uvs[i * 2], uvs[i * 2 + 1])
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(light)
+                    .setNormal(poseStack.last(), 1, 0.35f, 0);
         }
     }
 

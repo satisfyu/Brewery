@@ -1,11 +1,13 @@
 package net.satisfy.brewery.block.brewingstation;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,10 +22,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class BrewingstationBlock extends HorizontalDirectionalBlock {
     public static final EnumProperty<BrewMaterial> MATERIAL = BlockStateRegistry.MATERIAL;
+    public static final MapCodec<BrewingstationBlock> CODEC = simpleCodec(BrewingstationBlock::new);
 
     public BrewingstationBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState());
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
     @Override
@@ -32,11 +40,11 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
-        ItemStack stack = super.getCloneItemStack(getter, pos, state);
-        BrewstationBlockEntity blockEntity = getController(pos, getter);
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        ItemStack stack = super.getCloneItemStack(levelReader, blockPos, blockState);
+        BrewstationBlockEntity blockEntity = getController(blockPos, levelReader);
         if (blockEntity != null) {
-            return blockEntity.getBlockState().getBlock().getCloneItemStack(getter, pos, state);
+            return blockEntity.getBlockState().getBlock().getCloneItemStack(levelReader, blockPos, blockState);
         }
         return stack;
     }
@@ -49,14 +57,14 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
 
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public @NotNull BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         BrewstationBlockEntity brewstationEntity = getController(pos, level);
         if (brewstationEntity != null) {
             brewstationEntity.getComponents().stream()
                     .filter(componentPos -> !componentPos.equals(pos))
                     .forEach(componentPos -> level.removeBlock(componentPos, false));
         }
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable

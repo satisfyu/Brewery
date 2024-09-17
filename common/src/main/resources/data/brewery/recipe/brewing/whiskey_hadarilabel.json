@@ -1,0 +1,19 @@
+{
+  "type": "brewery:brewing",
+  "ingredients": [
+    {
+      "item": "brewery:dried_wheat"
+    },
+    {
+      "item": "brewery:dried_corn"
+    },
+    {
+      "item": "farm_and_charm:yeast"
+    }
+  ],
+  "material": "COPPER",
+  "result": {
+    "id": "brewery:whiskey_carrasconlabel",
+    "count": 1
+  }
+}

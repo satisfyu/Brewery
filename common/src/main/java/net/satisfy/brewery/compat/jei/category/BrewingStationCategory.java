@@ -18,9 +18,9 @@ import net.satisfy.brewery.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewingStationCategory implements IRecipeCategory<BrewingRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(Brewery.MOD_ID, "brewing");
+    public final static ResourceLocation UID = ResourceLocation.fromNamespaceAndPath(Brewery.MOD_ID, "brewing");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(Brewery.MOD_ID, "textures/gui/brewingstation.png");
+            ResourceLocation.fromNamespaceAndPath(Brewery.MOD_ID, "textures/gui/brewingstation.png");
 
     private final IDrawable background;
     private final IDrawable icon;

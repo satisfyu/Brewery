@@ -25,7 +25,7 @@ public class EntityRegistry {
     public static final RegistrySupplier<EntityType<DarkBrewEntity>> DARK_BREW = create("dark_brew",
             () -> EntityType.Builder.<DarkBrewEntity>of(DarkBrewEntity::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
-                    .build(new BreweryIdentifier("dark_brew").toString())
+                    .build(BreweryIdentifier.of("dark_brew").toString())
     );
 
     public static final RegistrySupplier<EntityType<RopeKnotEntity>> ROPE_KNOT = create("rope_knot",
@@ -34,7 +34,7 @@ public class EntityRegistry {
                     .clientTrackingRange(20)
                     .canSpawnFarFromPlayer()
                     .fireImmune()
-                    .build(new BreweryIdentifier("rope_knot").toString())
+                    .build(BreweryIdentifier.of("rope_knot").toString())
     );
 
     public static final RegistrySupplier<EntityType<RopeCollisionEntity>> ROPE_COLLISION = create("rope_collision", ()
@@ -44,7 +44,7 @@ public class EntityRegistry {
             .noSave()
             .noSummon()
             .fireImmune()
-            .build(new BreweryIdentifier("rope_collision").toString())
+            .build(BreweryIdentifier.of("rope_collision").toString())
     );
 
     public static final RegistrySupplier<EntityType<HangingRopeEntity>> HANGING_ROPE = create("hanging_rope",
@@ -54,7 +54,7 @@ public class EntityRegistry {
                     .noSave()
                     .noSummon()
                     .fireImmune()
-                    .build(new BreweryIdentifier("hanging_rope").toString())
+                    .build(BreweryIdentifier.of("hanging_rope").toString())
     );
 
     public static final RegistrySupplier<EntityType<BeerElementalEntity>> BEER_ELEMENTAL = create("beer_elemental",
@@ -62,7 +62,7 @@ public class EntityRegistry {
                     .sized(1.0F, 1.6F)
                     .clientTrackingRange(80)
                     .updateInterval(3)
-                    .build(new BreweryIdentifier("beer_elemental").toString())
+                    .build(BreweryIdentifier.of("beer_elemental").toString())
     );
 
     public static final RegistrySupplier<EntityType<BeerElementalAttackEntity>> BEER_ELEMENTAL_ATTACK = create("beer_elemental_attack",
@@ -70,11 +70,11 @@ public class EntityRegistry {
                     .sized(0.3125F, 0.3125F)
                     .clientTrackingRange(4)
                     .updateInterval(10)
-                    .build(new BreweryIdentifier("beer_elemental_attack").toString())
+                    .build(BreweryIdentifier.of("beer_elemental_attack").toString())
     );
 
     public static <T extends EntityType<?>> RegistrySupplier<T> create(final String path, final Supplier<T> type) {
-        return ENTITY_TYPES.register(new BreweryIdentifier(path), type);
+        return ENTITY_TYPES.register(BreweryIdentifier.of(path), type);
     }
 
     public static void registerBeerElemental() {

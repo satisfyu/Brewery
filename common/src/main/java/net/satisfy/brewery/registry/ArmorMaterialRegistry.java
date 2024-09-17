@@ -1,69 +1,66 @@
 package net.satisfy.brewery.registry;
 
-import net.minecraft.sounds.SoundEvent;
+import dev.architectury.registry.registries.DeferredRegister;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.crafting.Ingredient;
-import org.jetbrains.annotations.NotNull;
+import net.satisfy.brewery.Brewery;
+import net.satisfy.brewery.util.BreweryIdentifier;
+
+import java.util.EnumMap;
+import java.util.List;
 
 public class ArmorMaterialRegistry {
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Brewery.MOD_ID, Registries.ARMOR_MATERIAL);
     private static final Ingredient WOOL_REPAIR_INGREDIENT = Ingredient.of(ItemTags.WOOL);
 
-    public static final ArmorMaterial BREWFEST_ARMOR = new BrewfestArmorMaterial("brewfest", ArmorMaterials.LEATHER, WOOL_REPAIR_INGREDIENT);
-    public static final ArmorMaterial BREWFEST_LEATHER = BREWFEST_ARMOR;
-    public static final ArmorMaterial BREWFEST_DRESS = new BrewfestArmorMaterial("dirndl", ArmorMaterials.LEATHER, WOOL_REPAIR_INGREDIENT, ArmorMaterials.IRON.getEnchantmentValue(), ArmorMaterials.TURTLE.getEquipSound());
+    public static final Holder<ArmorMaterial> BREWFEST_ARMOR = ARMOR_MATERIALS.register("lederhosen", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 1);
+                map.put(ArmorItem.Type.LEGGINGS, 1);
+                map.put(ArmorItem.Type.CHESTPLATE, 1);
+                map.put(ArmorItem.Type.HELMET, 1);
+                map.put(ArmorItem.Type.BODY, 1);
+            }),
+            ArmorMaterials.LEATHER.value().enchantmentValue(),
+            ArmorMaterials.LEATHER.value().equipSound(),
+            () -> WOOL_REPAIR_INGREDIENT,
+            List.of(
+                    new ArmorMaterial.Layer(
+                            BreweryIdentifier.of("brewfest")
+                    )
+            ),
+            ArmorMaterials.LEATHER.value().toughness(),
+            ArmorMaterials.LEATHER.value().knockbackResistance()
+    ));
 
-    private static class BrewfestArmorMaterial implements ArmorMaterial {
-        private final String name;
-        private final ArmorMaterial delegate;
-        private final Ingredient repairIngredient;
-        private final int enchantmentValue;
-        private final SoundEvent equipSound;
+    public static final Holder<ArmorMaterial> BREWFEST_LEATHER = BREWFEST_ARMOR;
+    public static final Holder<ArmorMaterial> BREWFEST_DRESS = ARMOR_MATERIALS.register("dirndl", () -> new ArmorMaterial(
+            Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+                map.put(ArmorItem.Type.BOOTS, 1);
+                map.put(ArmorItem.Type.LEGGINGS, 1);
+                map.put(ArmorItem.Type.CHESTPLATE, 1);
+                map.put(ArmorItem.Type.HELMET, 1);
+                map.put(ArmorItem.Type.BODY, 1);
+            }),
+                    ArmorMaterials.IRON.value().enchantmentValue(),
+                    ArmorMaterials.TURTLE.value().equipSound(),
+                    () -> WOOL_REPAIR_INGREDIENT,
+                    List.of(
+                            new ArmorMaterial.Layer(
+                                    BreweryIdentifier.of("dirndl")
+                            )
+                    ),
+                    ArmorMaterials.LEATHER.value().toughness(),
+                    ArmorMaterials.LEATHER.value().knockbackResistance()
+            ));
 
-        BrewfestArmorMaterial(String name, ArmorMaterial delegate, Ingredient repairIngredient) {
-            this(name, delegate, repairIngredient, delegate.getEnchantmentValue(), delegate.getEquipSound());
-        }
-
-        BrewfestArmorMaterial(String name, ArmorMaterial delegate, Ingredient repairIngredient, int enchantmentValue, SoundEvent equipSound) {
-            this.name = name;
-            this.delegate = delegate;
-            this.repairIngredient = repairIngredient;
-            this.enchantmentValue = enchantmentValue;
-            this.equipSound = equipSound;
-        }
-
-        public int getDurabilityForType(ArmorItem.Type type) {
-            return delegate.getDurabilityForType(type);
-        }
-
-        public int getDefenseForType(ArmorItem.Type type) {
-            return 1;
-        }
-
-        public int getEnchantmentValue() {
-            return enchantmentValue;
-        }
-
-        public @NotNull SoundEvent getEquipSound() {
-            return equipSound;
-        }
-
-        public @NotNull Ingredient getRepairIngredient() {
-            return repairIngredient;
-        }
-
-        public @NotNull String getName() {
-            return name;
-        }
-
-        public float getToughness() {
-            return delegate.getToughness();
-        }
-
-        public float getKnockbackResistance() {
-            return delegate.getKnockbackResistance();
-        }
+    public static void init() {
+        ARMOR_MATERIALS.register();
     }
 }

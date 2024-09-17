@@ -1,0 +1,38 @@
+{
+  "parent": "brewery:main/brewing_pioneer",
+  "display": {
+    "icon": {
+      "id": "brewery:beer_hops",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancement.brewery.get_beer_hops"
+    },
+    "description": {
+      "translate": "advancement.brewery.get_beer_hops.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "beer_hops": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:beer_hops"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "beer_hops"
+    ]
+  ]
+}

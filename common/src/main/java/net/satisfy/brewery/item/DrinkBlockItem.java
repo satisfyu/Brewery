@@ -3,6 +3,8 @@ package net.satisfy.brewery.item;
 import de.cristelknight.doapi.common.block.entity.StorageBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -15,6 +17,7 @@ import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,19 +31,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class DrinkBlockItem extends BlockItem {
-    private final MobEffect effect;
+    private final Holder<MobEffect> effect;
     private final int baseDuration;
 
-    public DrinkBlockItem(MobEffect effect, int duration, Block block, Properties settings) {
+    public DrinkBlockItem(Holder<MobEffect> effect, int duration, Block block, Properties settings) {
         super(block, settings);
         this.effect = effect;
         this.baseDuration = duration;
     }
 
     public static void addQuality(ItemStack itemStack, int quality) {
-        CompoundTag nbtData = new CompoundTag();
+        CustomData customData = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        CompoundTag nbtData = customData.copyTag();
         nbtData.putInt("brewery.beer_quality", Math.min(Math.max(quality, 0), 3));
-        itemStack.setTag(nbtData);
+
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbtData));
     }
 
     @Override
@@ -80,8 +85,9 @@ public class DrinkBlockItem extends BlockItem {
         if (livingEntity instanceof ServerPlayer serverPlayer) {
             AlcoholManager.drinkAlcohol(serverPlayer);
 
-            if (itemStack.hasTag() && Objects.requireNonNull(itemStack.getTag()).contains("brewery.beer_quality")) {
-                int quality = itemStack.getTag().getInt("brewery.beer_quality");
+            CustomData customData = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            if(customData.contains("brewery.beer_quality")) {
+                int quality = customData.copyTag().getInt("brewery.beer_quality");
                 MobEffectInstance effectInstance = calculateEffectForQuality(quality);
                 serverPlayer.addEffect(effectInstance);
             } else {
@@ -116,9 +122,11 @@ public class DrinkBlockItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, List<Component> tooltip, TooltipFlag context) {
-        int beerQuality = stack.hasTag() && Objects.requireNonNull(stack.getTag()).contains("brewery.beer_quality") ? stack.getTag().getInt("brewery.beer_quality") : 1;
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
+        CustomData customData = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        int beerQuality = customData.contains("brewery.beer_quality") ? customData.copyTag().getInt("brewery.beer_quality") : 1;
         int durationMultiplier = 1;
+
         int effectLevel = switch (beerQuality) {
             case 2 -> {
                 durationMultiplier = 3;
@@ -132,13 +140,13 @@ public class DrinkBlockItem extends BlockItem {
         };
 
         if (this.effect != null) {
-            MutableComponent effectName = Component.translatable(this.effect.getDescriptionId());
+            MutableComponent effectName = Component.translatable(this.effect.value().getDescriptionId());
             if (effectLevel > 1) {
                 effectName.append(" ").append(Component.translatable("potion.potency." + (effectLevel - 1)));
             }
-            String durationText = MobEffectUtil.formatDuration(new MobEffectInstance(this.effect, this.baseDuration * durationMultiplier), 1.0f).getString();
+            String durationText = MobEffectUtil.formatDuration(new MobEffectInstance(this.effect, this.baseDuration * durationMultiplier), 1.0f, tooltipContext.tickRate()).getString();
             MutableComponent effectDuration = Component.translatable(" (").append(Component.translatable(durationText)).append(Component.translatable(")"));
-            tooltip.add(effectName.append(effectDuration).withStyle(this.effect.getCategory().getTooltipFormatting()));
+            tooltip.add(effectName.append(effectDuration).withStyle(this.effect.value().getCategory().getTooltipFormatting()));
         } else {
             tooltip.add(Component.translatable("effect.none").withStyle(ChatFormatting.GRAY));
         }
@@ -146,5 +154,6 @@ public class DrinkBlockItem extends BlockItem {
         if (beerQuality > 1) {
             tooltip.add(Component.translatable("tooltip.brewery.beer_quality", beerQuality).withStyle(ChatFormatting.GOLD));
         }
+
     }
 }

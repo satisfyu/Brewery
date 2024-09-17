@@ -5,7 +5,7 @@ import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.loot.LootDataManager;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.EntityHitResult;
 import net.satisfy.brewery.registry.MobEffectRegistry;
 import net.satisfy.brewery.util.BreweryLoottableInjector;
@@ -28,32 +28,32 @@ public class CommonEvents {
         PlayerEvent.ATTACK_ENTITY.register(CommonEvents::onPlayerAttack);
     }
 
-    public static void onModifyLootTable(LootDataManager tables, ResourceLocation id, LootEvent.LootTableModificationContext context, boolean builtin) {
-        BreweryLoottableInjector.InjectLoot(id, context);
+    private static void onModifyLootTable(ResourceKey<LootTable> lootTableResourceKey, LootEvent.LootTableModificationContext context, boolean b) {
+        BreweryLoottableInjector.InjectLoot(lootTableResourceKey.location(), context);
     }
 
     public static EventResult onPlayerAttack(Player player, Level level, Entity target, InteractionHand hand, @Nullable EntityHitResult result) {
-        if (player.hasEffect(MobEffectRegistry.PROTECTIVETOUCH.get())) {
+        if (player.hasEffect(MobEffectRegistry.PROTECTIVETOUCH)) {
             handleProtectiveTouch(level, target);
             return EventResult.interruptFalse();
         }
-        if (player.hasEffect(MobEffectRegistry.HEALINGTOUCH.get())) {
+        if (player.hasEffect(MobEffectRegistry.HEALINGTOUCH)) {
             handleHealingTouch(level, target);
             return EventResult.interruptFalse();
         }
-        if (player.hasEffect(MobEffectRegistry.RENEWINGTOUCH.get())) {
+        if (player.hasEffect(MobEffectRegistry.RENEWINGTOUCH)) {
             handleRenewingTouch(level, target);
             return EventResult.interruptFalse();
         }
-        if (player.hasEffect(MobEffectRegistry.TOXICTOUCH.get())) {
+        if (player.hasEffect(MobEffectRegistry.TOXICTOUCH)) {
             handleToxicTouch(level, target);
             return EventResult.pass();
         }
-        if (player.hasEffect(MobEffectRegistry.LIGHTNING_STRIKE.get())) {
+        if (player.hasEffect(MobEffectRegistry.LIGHTNING_STRIKE)) {
             handlelightningStrike(level, target);
             return EventResult.pass();
         }
-        if (player.hasEffect(MobEffectRegistry.EXPLOSION.get())) {
+        if (player.hasEffect(MobEffectRegistry.EXPLOSION)) {
             handleExplosiveTouch(level, target, player);
             return EventResult.pass();
         }

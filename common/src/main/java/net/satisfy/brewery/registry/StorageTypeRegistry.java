@@ -10,7 +10,7 @@ import java.util.Set;
 import static net.satisfy.brewery.registry.ObjectRegistry.*;
 
 public class StorageTypeRegistry {
-    public static final ResourceLocation BEVERAGE = new BreweryIdentifier("beverage");
+    public static final ResourceLocation BEVERAGE = BreweryIdentifier.of("beverage");
 
     public static void registerBlocks(Set<Block> blocks) {
         blocks.addAll(List.of(

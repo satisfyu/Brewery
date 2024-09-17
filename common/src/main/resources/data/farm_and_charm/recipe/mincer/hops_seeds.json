@@ -1,0 +1,11 @@
+{
+  "type": "farm_and_charm:mincer",
+  "ingredient": {
+    "item": "brewery:hops"
+  },
+  "recipe_type": "MEAT",
+  "result": {
+    "id": "brewery:hops_seeds",
+    "count": 4
+  }
+}

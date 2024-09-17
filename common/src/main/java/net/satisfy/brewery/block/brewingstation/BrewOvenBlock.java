@@ -14,7 +14,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -68,7 +67,8 @@ public class BrewOvenBlock extends BrewingstationBlock {
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        InteractionHand interactionHand = blockHitResult.getDirection() == Direction.UP ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.getFuel().containsKey(itemStack.getItem())) {
             level.setBlock(blockPos, blockState.setValue(HEAT, Heat.LIT), 3);
@@ -78,14 +78,14 @@ public class BrewOvenBlock extends BrewingstationBlock {
             }
             return InteractionResult.SUCCESS;
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);
     }
 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         boolean isHeated = state.getValue(HEAT) != Heat.OFF;
 
-        if (isHeated && !entity.fireImmune() && entity instanceof Player player && !EnchantmentHelper.hasFrostWalker(player)) {
+        if (isHeated && !entity.fireImmune() && entity instanceof Player player) {
             entity.hurt(world.damageSources().inFire(), 1.0F);
         }
         super.stepOn(world, pos, state, entity);

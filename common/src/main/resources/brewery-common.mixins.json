@@ -11,11 +11,13 @@
   ],
   "mixins": [
     "AlcoholPlayerMixin",
+    "CustomArmorManagerAccessor",
+    "CustomArmorManagerMixin",
+    "LivingEntityMixin",
     "MixinTomatoCropBlock",
     "MobFollowPlayerMixin",
     "PlayerMixin",
-    "VillagerDiscountMixin",
-    "rope.ServerEntityMixin"
+    "VillagerDiscountMixin"
   ],
   "injectors": {
     "defaultRequire": 1

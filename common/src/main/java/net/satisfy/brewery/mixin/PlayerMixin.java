@@ -24,8 +24,8 @@ public abstract class PlayerMixin extends Entity {
     @Inject(method = "updatePlayerPose", at = @At(value = "HEAD"), cancellable = true)
     protected void drunkPose(CallbackInfo ci) {
         if (this instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.getAlcohol().isBlackout()) {
-            if (alcoholPlayer instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffectRegistry.BLACKOUT.get())) {
-                MobEffectInstance effectInstance = livingEntity.getEffect(MobEffectRegistry.BLACKOUT.get());
+            if (alcoholPlayer instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffectRegistry.BLACKOUT)) {
+                MobEffectInstance effectInstance = livingEntity.getEffect(MobEffectRegistry.BLACKOUT);
                 if (effectInstance.getDuration() <= AlcoholManager.FALL_DOWN) {
                     this.setPose(Pose.SWIMMING);
                     ci.cancel();

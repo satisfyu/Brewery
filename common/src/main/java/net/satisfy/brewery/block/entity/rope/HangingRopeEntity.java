@@ -9,6 +9,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -17,9 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.brewery.block.HopsCropBlock;
-import net.satisfy.brewery.networking.BreweryNetworking;
+import net.satisfy.brewery.networking.packet.ChangeHangingRopeS2CPacket;
 import net.satisfy.brewery.registry.EntityRegistry;
 import net.satisfy.brewery.registry.ObjectRegistry;
 import net.satisfy.brewery.util.rope.RopeConnection;
@@ -138,10 +138,9 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     private void sendChangePacket(ServerLevel serverLevel) {
         List<ServerPlayer> trackingPlayers = serverLevel.players();
         for (ServerPlayer serverPlayer : trackingPlayers) {
-            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            buf.writeInt(this.getId());
-            buf.writeBoolean(this.active);
-            NetworkManager.sendToPlayer(serverPlayer, BreweryNetworking.CHANGE_HANGING_ROPE_S2C_ID, buf);
+
+            ChangeHangingRopeS2CPacket packet = new ChangeHangingRopeS2CPacket(this.getId(), this.active);
+            NetworkManager.sendToPlayer(serverPlayer, packet);
         }
     }
 
@@ -169,6 +168,11 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     //Override Stuff
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
+    }
+
+    @Override
     public void setPos(double x, double y, double z) {
         super.setPos((double) Mth.floor(x) + 0.5D, y, (double) Mth.floor(z) + 0.5D);
     }
@@ -182,11 +186,6 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     @Override
     public @NotNull Vec3 getRopeHoldPosition(float f) {
         return getPosition(f).add(getLeashOffset());
-    }
-
-    @Override
-    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return EntityRegistry.HANGING_ROPE.get().getHeight() / 2;
     }
 
     @Override
@@ -210,11 +209,6 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     }
 
     @Override
-    protected void defineSynchedData() {
-
-    }
-
-    @Override
     protected void addAdditionalSaveData(CompoundTag compoundTag) {
 
     }
@@ -225,8 +219,8 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkManager.createAddEntityPacket(this);
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return NetworkManager.createAddEntityPacket(this, serverEntity);
     }
 
     @Override

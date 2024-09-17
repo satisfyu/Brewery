@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "B": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    "##B",
+    "## ",
+    "## "
+  ],
+  "result": {
+    "count": 1,
+    "id": "brewery:bar_counter"
+  }
+}

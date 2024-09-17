@@ -4,6 +4,7 @@ import de.cristelknight.doapi.common.registry.DoApiSoundEventRegistry;
 import de.cristelknight.doapi.common.util.GeneralUtil;
 import de.cristelknight.doapi.common.world.ImplementedInventory;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -37,10 +40,7 @@ import net.satisfy.brewery.util.BreweryMath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BrewstationBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<BrewstationBlockEntity> {
     @NotNull
@@ -111,8 +111,12 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         if (level.isClientSide) return;
         if (!this.beer.isEmpty()) return;
 
-        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get(), this, level).orElse(null);
-        if (!canBrew(recipe)) {
+        RecipeManager recipeManager = level.getRecipeManager();
+        List<RecipeHolder<BrewingRecipe>> recipes = recipeManager.getAllRecipesFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get());
+        Optional<BrewingRecipe> recipe = Optional.ofNullable(getRecipe(recipes, ingredients));
+
+
+        if (recipe.isEmpty() || !canBrew(recipe.get())) {
             endBrewing();
             return;
         }
@@ -131,7 +135,7 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
 
         if (brewTime >= MAX_BREW_TIME) {
             RegistryAccess access = level.registryAccess();
-            this.brew(recipe, access);
+            this.brew(recipe.get(), access);
         } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
             BrewEvent event = BrewHelper.getRdmEvent(this);
             if (event != null) {
@@ -146,6 +150,28 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         }
         brewTime++;
         timeToNextEvent--;
+    }
+
+    private BrewingRecipe getRecipe(List<RecipeHolder<BrewingRecipe>> recipes, NonNullList<ItemStack> inventory) {
+        recipeLoop:
+        for (RecipeHolder<BrewingRecipe> recipeHolder : recipes) {
+            BrewingRecipe recipe = recipeHolder.value();
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                boolean ingredientFound = false;
+                for (int slotIndex = 1; slotIndex < inventory.size(); slotIndex++) {
+                    ItemStack slotItem = inventory.get(slotIndex);
+                    if (ingredient.test(slotItem)) {
+                        ingredientFound = true;
+                        break;
+                    }
+                }
+                if (!ingredientFound) {
+                    continue recipeLoop;
+                }
+            }
+            return recipe;
+        }
+        return null;
     }
 
     private void setTimeToEvent() {
@@ -228,10 +254,10 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public void saveAdditional(CompoundTag compoundTag) {
-        if (!this.components.isEmpty()) GeneralUtil.putBlockPoses(compoundTag, this.components);
-        ContainerHelper.saveAllItems(compoundTag, this.ingredients);
-        compoundTag.put("beer", this.beer.save(new CompoundTag()));
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        if(!this.components.isEmpty()) GeneralUtil.putBlockPoses(compoundTag, this.components);
+        ContainerHelper.saveAllItems(compoundTag, this.ingredients, provider);
+        if(!this.beer.isEmpty()) compoundTag.put("beer", this.beer.save(provider));
         compoundTag.putInt("solved", solved);
         compoundTag.putInt("brewTime", brewTime);
         compoundTag.putInt("totalEvents", totalEvents);
@@ -240,11 +266,11 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public void load(CompoundTag compoundTag) {
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         this.components = GeneralUtil.readBlockPoses(compoundTag);
         this.ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(compoundTag, this.ingredients);
-        if (compoundTag.contains("beer")) this.beer = ItemStack.of(compoundTag.getCompound("beer"));
+        ContainerHelper.loadAllItems(compoundTag, this.ingredients, provider);
+        if (compoundTag.contains("beer")) this.beer = ItemStack.parse(provider, compoundTag.getCompound("beer")).get();
         this.solved = compoundTag.getInt("solved");
         this.brewTime = compoundTag.getInt("brewTime");
         this.totalEvents = compoundTag.getInt("totalEvents");
@@ -259,9 +285,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
-        this.saveAdditional(compoundTag);
+        this.saveAdditional(compoundTag, provider);
         return compoundTag;
     }
 

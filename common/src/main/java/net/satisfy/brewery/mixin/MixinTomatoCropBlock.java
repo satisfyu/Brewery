@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class MixinTomatoCropBlock {
     @Inject(method = "isRopeAbove", at = @At("HEAD"), cancellable = true)
     private static void modifyIsRopeAbove(LevelAccessor levelAccessor, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
-        AABB searchArea = new AABB(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1));
+        AABB searchArea = new AABB(blockPos.above().getCenter(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1).getCenter());
         List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, searchArea);
         for (HangingRopeEntity hangingRope : results) {
             if (hangingRope.active()) {

@@ -1,0 +1,38 @@
+{
+  "parent": "farm_and_charm:main/introduction_drying",
+  "display": {
+    "icon": {
+      "id": "brewery:dried_barley",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancement.brewery.get_dried_barley"
+    },
+    "description": {
+      "translate": "advancement.brewery.get_dried_barley.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "dry_barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "brewery:dried_barley"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "dry_barley"
+    ]
+  ]
+}

@@ -19,6 +19,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -83,7 +84,8 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    public @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        InteractionHand interactionHand = blockHitResult.getDirection().getAxis() == Direction.Axis.Y ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         if (interactionHand == InteractionHand.OFF_HAND) return InteractionResult.CONSUME;
         if (level.isClientSide) return InteractionResult.CONSUME;
         ItemStack itemStack = player.getItemInHand(interactionHand);
@@ -150,7 +152,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                 return interactionResult;
             }
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useWithoutItem(blockState, level, blockPos, player, blockHitResult);
     }
 
     @Override
@@ -189,8 +191,8 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
 
     @SuppressWarnings("all")
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
-        BrewMaterial material = state.getValue(MATERIAL);
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        BrewMaterial material = blockState.getValue(MATERIAL);
         switch (material) {
             case COPPER:
                 return new ItemStack(ObjectRegistry.COPPER_BREWINGSTATION.get());
@@ -199,7 +201,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
             case NETHERITE:
                 return new ItemStack(ObjectRegistry.NETHERITE_BREWINGSTATION.get());
             default:
-                return super.getCloneItemStack(getter, pos, state);
+                return super.getCloneItemStack(levelReader, blockPos, blockState);
         }
     }
 

@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 public class BreweryBiomeModification {
 
     public static void init() {
-        BiomeModification world = BiomeModifications.create(new BreweryIdentifier("world_features"));
+        BiomeModification world = BiomeModifications.create(BreweryIdentifier.of("world_features"));
         Predicate<BiomeSelectionContext> beachBiomes = getBrewerySelector("taiga");
 
 
@@ -21,7 +21,7 @@ public class BreweryBiomeModification {
     }
 
     private static Predicate<BiomeSelectionContext> getBrewerySelector(String path) {
-        return BiomeSelectors.tag(TagKey.create(Registries.BIOME, new BreweryIdentifier(path)));
+        return BiomeSelectors.tag(TagKey.create(Registries.BIOME, BreweryIdentifier.of(path)));
     }
 
 
