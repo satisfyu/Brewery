@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": {
+      "item": "minecraft:red_wool"
+    },
+    "A": {
+      "item": "minecraft:black_wool"
+    }
+  },
+  "pattern": [
+    "A A",
+    "AXA",
+    "XXX"
+  ],
+  "result": {
+    "item": "brewery:brewfest_dress"
+  },
+  "show_notification": true
+}

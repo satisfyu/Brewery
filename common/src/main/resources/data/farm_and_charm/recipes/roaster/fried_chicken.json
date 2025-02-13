@@ -23,5 +23,6 @@
   "result": {
     "item": "brewery:fried_chicken",
     "count": 2
-  }
+  },
+  "requiresLearning": false
 }

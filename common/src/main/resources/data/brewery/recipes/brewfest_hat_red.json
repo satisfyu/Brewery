@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": {
+      "item": "brewery:patterned_wool"
+    },
+    "A": {
+      "item": "minecraft:red_wool"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "A A"
+  ],
+  "result": {
+    "item": "brewery:brewfest_hat_red"
+  },
+  "show_notification": true
+}

@@ -8,7 +8,10 @@
       "item": "minecraft:porkchop"
     }
   ],
-  "item": "brewery:pork_knuckle",
-  "count": 2,
-  "experience": 0.5
+  "result": {
+    "item": "brewery:pork_knuckle",
+    "count": 4
+  },
+  "experience": 0.5,
+  "requiresLearning": false
 }

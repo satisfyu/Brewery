@@ -30,12 +30,16 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
         this.stateManager = new ContainerOpenersCounter() {
             @Override
             protected void onOpen(Level world, BlockPos pos, BlockState state) {
-                world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), 3);
+                if (state.hasProperty(BlockStateProperties.OPEN)) {
+                    world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), 3);
+                }
             }
 
             @Override
             protected void onClose(Level world, BlockPos pos, BlockState state) {
-                world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, false), 3);
+                if (state.hasProperty(BlockStateProperties.OPEN)) {
+                    world.setBlock(pos, state.setValue(BlockStateProperties.OPEN, false), 3);
+                }
             }
 
             @Override
@@ -47,9 +51,8 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
                 if (player.containerMenu instanceof ChestMenu) {
                     Container inventory = ((ChestMenu) player.containerMenu).getContainer();
                     return inventory == CabinetBlockEntity.this;
-                } else {
-                    return false;
                 }
+                return false;
             }
         };
     }
@@ -93,7 +96,7 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
 
     @Override
     protected @NotNull AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new ChestMenu(MenuType.GENERIC_9x4, syncId, playerInventory, this, 4); // 4x9 Layout
+        return new ChestMenu(MenuType.GENERIC_9x4, syncId, playerInventory, this, 4);
     }
 
     @Override

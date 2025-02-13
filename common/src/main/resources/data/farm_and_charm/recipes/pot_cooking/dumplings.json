@@ -17,5 +17,6 @@
   "result": {
     "item": "brewery:dumplings",
     "count": 1
-  }
+  },
+  "requiresLearning": false
 }

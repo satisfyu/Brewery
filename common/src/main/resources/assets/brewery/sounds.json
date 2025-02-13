@@ -1,12 +1,12 @@
 {
   "breath": {
-    "subtitle": "brewery.sound.breath",
+    "subtitle": "sound.brewery.breath",
     "sounds": [
       "brewery:breath"
     ]
   },
   "beer_elemental_ambient": {
-    "subtitle": "brewery.sound.beer_elemental_ambient",
+    "subtitle": "sound.brewery.beer_elemental_ambient",
     "sounds": [
       "brewery:beer_elemental_ambient1",
       "brewery:beer_elemental_ambient2",
@@ -14,7 +14,7 @@
     ]
   },
   "beer_elemental_hurt": {
-    "subtitle": "brewery.sound.beer_elemental_hurt",
+    "subtitle": "sound.brewery.beer_elemental_hurt",
     "sounds": [
       "brewery:beer_elemental_hurt1",
       "brewery:beer_elemental_hurt2",
@@ -22,7 +22,7 @@
     ]
   },
   "beer_elemental_death": {
-    "subtitle": "brewery.sound.beer_elemental_death",
+    "subtitle": "sound.brewery.beer_elemental_death",
     "sounds": [
       "brewery:beer_elemental_death1",
       "brewery:beer_elemental_death2",
@@ -30,7 +30,7 @@
     ]
   },
   "beer_elemental_attack": {
-    "subtitle": "brewery.sound.beer_elemental_attack",
+    "subtitle": "sound.brewery.beer_elemental_attack",
     "sounds": [
       "brewery:beer_elemental_attack1",
       "brewery:beer_elemental_attack2",
@@ -39,37 +39,37 @@
     ]
   },
   "brewstation_ambient": {
-    "subtitle": "brewery.sound.brewstation_ambient",
+    "subtitle": "sound.brewery.brewstation_ambient",
     "sounds": [
       "brewery:brewstation_ambient"
     ]
   },
   "brewstation_kettle": {
-    "subtitle": "brewery.sound.brewstation_kettle",
+    "subtitle": "sound.brewery.brewstation_kettle",
     "sounds": [
       "brewery:brewstation_kettle"
     ]
   },
   "brewstation_oven": {
-    "subtitle": "brewery.sound.brewstation_oven",
+    "subtitle": "sound.brewery.brewstation_oven",
     "sounds": [
       "brewery:brewstation_oven"
     ]
   },
   "brewstation_process_failed": {
-    "subtitle": "brewery.sound.brewstation_process_failed",
+    "subtitle": "sound.brewery.brewstation_process_failed",
     "sounds": [
       "brewery:brewstation_process_failed"
     ]
   },
   "brewstation_timer_loop": {
-    "subtitle": "brewery.sound.brewstation_timer",
+    "subtitle": "sound.brewery.brewstation_timer",
     "sounds": [
       "brewery:brewstation_timer_loop"
     ]
   },
   "brewstation_whistle": {
-    "subtitle": "brewery.sound.brewstation_whistle",
+    "subtitle": "sound.brewery.brewstation_whistle",
     "sounds": [
       "brewery:brewstation_whistle1",
       "brewery:brewstation_whistle2",
@@ -77,25 +77,25 @@
     ]
   },
   "drawer_open": {
-    "subtitle": "brewery.sound.drawer_open",
+    "subtitle": "sound.brewery.drawer_open",
     "sounds": [
       "brewery:drawer_open"
     ]
   },
   "drawer_close": {
-    "subtitle": "brewery.sound.drawer_close",
+    "subtitle": "sound.brewery.drawer_close",
     "sounds": [
       "brewery:drawer_close"
     ]
   },
   "cabinet_open": {
-    "subtitle": "brewery.sound.cabinet_open",
+    "subtitle": "sound.brewery.cabinet_open",
     "sounds": [
       "brewery:cabinet_open"
     ]
   },
   "cabinet_close": {
-    "subtitle": "brewery.sound.cabinet_close",
+    "subtitle": "sound.brewery.cabinet_close",
     "sounds": [
       "brewery:cabinet_close"
     ]

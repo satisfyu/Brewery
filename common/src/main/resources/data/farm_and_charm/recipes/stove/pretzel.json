@@ -11,7 +11,10 @@
       "tag": "farm_and_charm:butter"
     }
   ],
-  "item": "brewery:pretzel",
-  "count": 4,
-  "experience": 0.5
+  "result": {
+    "item": "brewery:pretzel",
+    "count": 4
+  },
+  "experience": 0.5,
+  "requiresLearning": false
 }

@@ -1,39 +1,118 @@
 package net.satisfy.brewery.core.block;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.brewery.core.block.entity.SideBoardBlockEntity;
-import net.satisfy.brewery.core.registry.EntityTypeRegistry;
+import net.satisfy.brewery.core.block.entity.CabinetBlockEntity;
+import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class SideBoardBlock extends ChestBlock {
+@SuppressWarnings("deprecation")
+public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+    private static final Map<GeneralUtil.LineConnectingType, Supplier<VoxelShape>> SHAPES_SUPPLIERS = new HashMap<>();
+    private static final Map<Direction, Map<GeneralUtil.LineConnectingType, VoxelShape>> SHAPES = new EnumMap<>(Direction.class);
+    public static final BooleanProperty WATERLOGGED;
+    public static final DirectionProperty FACING;
+    public static final EnumProperty<GeneralUtil.LineConnectingType> TYPE;
+    private final Supplier<SoundEvent> openSound;
+    private final Supplier<SoundEvent> closeSound;
 
-    public static final Map<Direction, VoxelShape> SHAPES = Util.make(new HashMap<>(), map -> {
-        map.put(Direction.NORTH, Block.box(0,0,4, 16, 16, 16));
-        map.put(Direction.SOUTH, Block.box(0,0,0, 16, 16, 12));
-        map.put(Direction.WEST, Block.box(4,0,0, 16, 16, 16));
-        map.put(Direction.EAST, Block.box(0,0,0, 12, 16, 16));
+    public SideBoardBlock(Properties settings, Supplier<SoundEvent> openSound, Supplier<SoundEvent> closeSound) {
+        super(settings);
+        this.openSound = openSound;
+        this.closeSound = closeSound;
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH).setValue(TYPE, GeneralUtil.LineConnectingType.NONE));
+    }
 
-    });
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Level world = context.getLevel();
+        BlockPos clickedPos = context.getClickedPos();
+        Direction facing = context.getHorizontalDirection().getOpposite();
+        BlockState blockState = this.defaultBlockState().setValue(FACING, facing)
+                .setValue(WATERLOGGED, world.getFluidState(clickedPos).getType() == Fluids.WATER);
+        return switch (facing) {
+            case EAST -> blockState.setValue(TYPE, getType(blockState, world.getBlockState(clickedPos.south()), world.getBlockState(clickedPos.north())));
+            case SOUTH -> blockState.setValue(TYPE, getType(blockState, world.getBlockState(clickedPos.west()), world.getBlockState(clickedPos.east())));
+            case WEST -> blockState.setValue(TYPE, getType(blockState, world.getBlockState(clickedPos.north()), world.getBlockState(clickedPos.south())));
+            default -> blockState.setValue(TYPE, getType(blockState, world.getBlockState(clickedPos.east()), world.getBlockState(clickedPos.west())));
+        };
+    }
 
-    public SideBoardBlock(Properties settings) {
-        super(settings, EntityTypeRegistry.SIDEBOARD_BLOCK_ENTITY::get);
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED, FACING, TYPE);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof Container container) {
+                Containers.dropContents(world, pos, container);
+                world.updateNeighbourForOutputSignal(pos, this);
+            }
+            super.onRemove(state, world, pos, newState, moved);
+        }
+    }
+
+    @Override
+    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (world.isClientSide) {
+            return InteractionResult.SUCCESS;
+        } else {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof CabinetBlockEntity blockEntity1) {
+                player.openMenu(blockEntity1);
+            }
+
+            return InteractionResult.CONSUME;
+        }
+    }
+
+    public void playSound(Level world, BlockPos pos, boolean isOpen) {
+        world.playSound(null, pos, isOpen ? openSound.get() : closeSound.get(), SoundSource.BLOCKS, 1.0f, 1.1f);
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CabinetBlockEntity(pos, state);
     }
 
     @Override
@@ -42,18 +121,114 @@ public class SideBoardBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new SideBoardBlockEntity(pos, state);
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        if (itemStack.hasCustomHoverName()) {
+            BlockEntity blockEntity = world.getBlockEntity(pos);
+            if (blockEntity instanceof CabinetBlockEntity blockEntity1) {
+                blockEntity1.setCustomName(itemStack.getHoverName());
+            }
+        }
     }
 
     @Override
+    public @NotNull FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    public GeneralUtil.LineConnectingType getType(BlockState state, BlockState left, BlockState right) {
+        boolean shape_left_same = isConnectable(left, state);
+        boolean shape_right_same = isConnectable(right, state);
+
+        if (shape_left_same && shape_right_same) {
+            return GeneralUtil.LineConnectingType.MIDDLE;
+        } else if (shape_left_same) {
+            return GeneralUtil.LineConnectingType.LEFT;
+        } else if (shape_right_same) {
+            return GeneralUtil.LineConnectingType.RIGHT;
+        }
+        return GeneralUtil.LineConnectingType.NONE;
+    }
+
+    protected boolean isConnectable(BlockState state1, BlockState state2) {
+        return state1.getBlock() == state2.getBlock() && state1.getValue(FACING) == state2.getValue(FACING);
+    }
+
+    @Override
+    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+        if (world.isClientSide) return;
+
+        Direction facing = state.getValue(FACING);
+        GeneralUtil.LineConnectingType type;
+        switch (facing) {
+            case EAST -> type = getType(state, world.getBlockState(pos.south()), world.getBlockState(pos.north()));
+            case SOUTH -> type = getType(state, world.getBlockState(pos.west()), world.getBlockState(pos.east()));
+            case WEST -> type = getType(state, world.getBlockState(pos.north()), world.getBlockState(pos.south()));
+            default -> type = getType(state, world.getBlockState(pos.east()), world.getBlockState(pos.west()));
+        }
+        if (state.getValue(TYPE) != type) {
+            state = state.setValue(TYPE, type);
+        }
+        world.setBlock(pos, state, 3);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPES.get(state.getValue(FACING));
+        Direction direction = state.getValue(FACING);
+        GeneralUtil.LineConnectingType type = state.getValue(TYPE);
+        return SHAPES.get(direction).get(type);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return null;
+    private static VoxelShape makeSingleShape() {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.0625, 0.25, 0.1875, 0.25), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.0625, 0.9375, 0.1875, 0.25), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.75, 0.25, 0.1875, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.75, 0.9375, 0.1875, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.1875, 0.0625, 0.9375, 0.8125, 0.9375), BooleanOp.OR);
+        return shape;
+    }
+
+    private static VoxelShape makeRightShape() {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.1875, 0.0625, 0.9375, 0.8125, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.0625, 0.9375, 0.1875, 0.25), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.75, 0, 0.75, 0.9375, 0.1875, 0.9375), BooleanOp.OR);
+        return shape;
+    }
+
+    private static VoxelShape makeLeftShape() {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0.1875, 0.0625, 1, 0.8125, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.75, 0.25, 0.1875, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0.0625, 0, 0.0625, 0.25, 0.1875, 0.25), BooleanOp.OR);
+        return shape;
+    }
+
+    private static VoxelShape makeMiddleShape() {
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.join(shape, Shapes.box(0, 0.1875, 0.0625, 1, 0.8125, 0.9375), BooleanOp.OR);
+        shape = Shapes.join(shape, Shapes.box(0, 0.8125, 0, 1, 1, 1), BooleanOp.OR);
+        return shape;
+    }
+
+    static {
+        WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        FACING = BlockStateProperties.HORIZONTAL_FACING;
+        TYPE = GeneralUtil.LINE_CONNECTING_TYPE;
+        SHAPES_SUPPLIERS.put(GeneralUtil.LineConnectingType.NONE, SideBoardBlock::makeSingleShape);
+        SHAPES_SUPPLIERS.put(GeneralUtil.LineConnectingType.MIDDLE, SideBoardBlock::makeMiddleShape);
+        SHAPES_SUPPLIERS.put(GeneralUtil.LineConnectingType.RIGHT, SideBoardBlock::makeRightShape);
+        SHAPES_SUPPLIERS.put(GeneralUtil.LineConnectingType.LEFT, SideBoardBlock::makeLeftShape);
+
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            SHAPES.put(direction, new HashMap<>());
+            for (Map.Entry<GeneralUtil.LineConnectingType, Supplier<VoxelShape>> entry : SHAPES_SUPPLIERS.entrySet()) {
+                SHAPES.get(direction).put(entry.getKey(), GeneralUtil.rotateShape(Direction.NORTH, direction, entry.getValue().get()));
+            }
+        }
     }
 }

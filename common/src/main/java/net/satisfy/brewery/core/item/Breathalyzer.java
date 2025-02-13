@@ -46,6 +46,9 @@ public class Breathalyzer extends Item {
         }
     }
 
+
+
+
     @Override
     public @NotNull UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.TOOT_HORN;
