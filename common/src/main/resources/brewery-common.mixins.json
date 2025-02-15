@@ -11,10 +11,11 @@
   ],
   "mixins": [
     "AlcoholPlayerMixin",
-    "MixinTomatoCropBlock",
     "MobFollowPlayerMixin",
     "PlayerMixin",
+    "TomatoCropBlockMixin",
     "VillagerDiscountMixin",
+    "ZombieMixin",
     "rope.ServerEntityMixin"
   ],
   "injectors": {

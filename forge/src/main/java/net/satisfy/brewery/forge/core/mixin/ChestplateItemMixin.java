@@ -10,7 +10,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.satisfy.brewery.client.model.BrewfestChestplateModel;
 import net.satisfy.brewery.core.item.BrewfestChestItem;
 import net.satisfy.brewery.core.registry.ArmorRegistry;
 import org.jetbrains.annotations.NotNull;

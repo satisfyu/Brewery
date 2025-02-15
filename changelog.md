@@ -1,12 +1,7 @@
-[Unreleased] - 2025.02.08
-
-To-Do: 
-* Rope Rework
-* Villager? Armor Items?
-* Drawer, Cabinet, etc. color
+[2.0.5] - 2025.02.15
 
 **Added**
-
+* Zombies have a really low Chance to spawn wearing a Brewfest Outfit and Holding a Bottle of Whiskey
 
 **Changed**
 * Increased Bar Counter crafting result count from "1" to "2"

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 
 @Mixin(TomatoCropBlock.class)
-public abstract class MixinTomatoCropBlock {
+public abstract class TomatoCropBlockMixin {
     @Inject(method = "isRopeAbove", at = @At("HEAD"), cancellable = true)
     private static void modifyIsRopeAbove(LevelAccessor levelAccessor, BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
         AABB searchArea = new AABB(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1));

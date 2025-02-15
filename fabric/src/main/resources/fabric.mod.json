@@ -8,10 +8,10 @@
     "satisfy"
   ],
   "credits": [
-    "MissLilitu, BaumeisterJO, EC"
+    "MissLilitu, CR-055"
   ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/lets-do-brewery",
+    "issues": "https://github.com/satisfyu/Let-s-Do-Hub",
     "sources": "https://github.com/satisfyu/Brewery"
   },
   "license": "Custom",
@@ -38,6 +38,6 @@
     "fabric": "*",
     "minecraft": ">=1.20.1",
     "architectury": ">=6.5.82",
-    "farm_and_charm": ">=0.0.1"
+    "farm_and_charm": ">=1.0.6"
   }
 }
