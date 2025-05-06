@@ -1,3 +1,16 @@
+[2.0.6] - 2025.05.06
+
+**Added**
+_no changes_
+
+**Changed**
+_no changes_
+
+**Fixed**
+- fixed bucket stack consumption in BrewKettleBlock to only consume one bucket at a time
+
+***
+
 [2.0.5] - 2025.02.15
 
 **Added**

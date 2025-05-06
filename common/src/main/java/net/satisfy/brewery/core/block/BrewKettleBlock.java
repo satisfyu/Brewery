@@ -15,7 +15,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -89,7 +88,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         if (level.isClientSide) return InteractionResult.CONSUME;
         ItemStack itemStack = player.getItemInHand(interactionHand);
         if (level.getBlockEntity(blockPos) instanceof BrewstationBlockEntity brewKettleEntity) {
-            if (itemStack.isEmpty()) { //EMPTY
+            if (itemStack.isEmpty()) {
                 ItemStack returnStack = brewKettleEntity.removeIngredient();
                 if (returnStack != null) {
                     player.addItem(returnStack);
@@ -97,10 +96,9 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                     level.sendBlockUpdated(blockPos, blockState, blockState, UPDATE_CLIENTS);
                     return InteractionResult.SUCCESS;
                 }
-
                 return InteractionResult.CONSUME;
             }
-            if (itemStack.getItem() == ObjectRegistry.BEER_MUG.get().asItem()) { //BEER
+            if (itemStack.getItem() == ObjectRegistry.BEER_MUG.get().asItem()) {
                 if (blockState.getValue(LIQUID) == Liquid.BEER) {
                     ItemStack beerStack = brewKettleEntity.getBeer();
                     if (beerStack != null) {
@@ -119,7 +117,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                 }
                 return InteractionResult.PASS;
             }
-            if (itemStack.getItem() == Items.WATER_BUCKET) { //WATER_BUCKET
+            if (itemStack.getItem() == Items.WATER_BUCKET) {
                 if (blockState.getValue(LIQUID) == Liquid.EMPTY || blockState.getValue(LIQUID) == Liquid.DRAINED) {
                     level.setBlockAndUpdate(blockPos, blockState.setValue(LIQUID, Liquid.FILLED));
                     level.playSound(null, blockPos, SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -130,14 +128,17 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                 }
                 return InteractionResult.CONSUME;
             }
-            if (itemStack.getItem() == Items.BUCKET) { //BUCKET
+            if (itemStack.getItem() == Items.BUCKET) {
                 Liquid liquid = blockState.getValue(LIQUID);
                 if (liquid == Liquid.FILLED || liquid == Liquid.OVERFLOWING) {
                     level.setBlockAndUpdate(blockPos, blockState.setValue(LIQUID, liquid == Liquid.OVERFLOWING ? Liquid.FILLED : Liquid.EMPTY));
                     level.playSound(null, blockPos, SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1.0F, 1.0F);
                     if (!player.isCreative()) {
-
-                        player.setItemInHand(interactionHand, ItemUtils.createFilledResult(player.getItemInHand(interactionHand),player,new ItemStack(Items.WATER_BUCKET)));
+                        itemStack.shrink(1);
+                        ItemStack filledBucket = new ItemStack(Items.WATER_BUCKET);
+                        if (!player.addItem(filledBucket)) {
+                            player.drop(filledBucket, false);
+                        }
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -154,6 +155,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         }
         return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
+
 
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
@@ -189,20 +191,14 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         }
     }
 
-    @SuppressWarnings("all")
     @Override
     public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
         BrewMaterial material = state.getValue(MATERIAL);
-        switch (material) {
-            case COPPER:
-                return new ItemStack(ObjectRegistry.COPPER_BREWINGSTATION.get());
-            case WOOD:
-                return new ItemStack(ObjectRegistry.WOODEN_BREWINGSTATION.get());
-            case NETHERITE:
-                return new ItemStack(ObjectRegistry.NETHERITE_BREWINGSTATION.get());
-            default:
-                return super.getCloneItemStack(getter, pos, state);
-        }
+        return switch (material) {
+            case COPPER -> new ItemStack(ObjectRegistry.COPPER_BREWINGSTATION.get());
+            case WOOD -> new ItemStack(ObjectRegistry.WOODEN_BREWINGSTATION.get());
+            case NETHERITE -> new ItemStack(ObjectRegistry.NETHERITE_BREWINGSTATION.get());
+        };
     }
 
     @Nullable
