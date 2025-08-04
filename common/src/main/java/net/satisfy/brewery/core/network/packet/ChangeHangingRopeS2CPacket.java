@@ -1,9 +1,8 @@
-package net.satisfy.brewery.core.networking.packet;
+package net.satisfy.brewery.core.network.packet;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.entity.rope.HangingRopeEntity;
 
 public class ChangeHangingRopeS2CPacket implements NetworkManager.NetworkReceiver {

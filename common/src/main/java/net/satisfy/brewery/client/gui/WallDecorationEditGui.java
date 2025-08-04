@@ -7,8 +7,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
-import net.satisfy.brewery.core.network.PacketHandler;
-import net.satisfy.brewery.core.network.SetWallDecorationTextPacket;
+import net.satisfy.brewery.core.network.BreweryNetworking;
+import net.satisfy.brewery.core.network.packet.SetWallDecorationTextPacket;
 import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 import java.util.List;
@@ -72,7 +72,7 @@ public class WallDecorationEditGui extends Screen {
     @Override
     public void onClose() {
         List<String> texts = List.of(textField.getValue());
-        PacketHandler.sendToServer(new SetWallDecorationTextPacket(entity.getBlockPos(), texts));
+        BreweryNetworking.sendSetSignTextToServer(new SetWallDecorationTextPacket(entity.getBlockPos(), texts));
         super.onClose();
     }
 }

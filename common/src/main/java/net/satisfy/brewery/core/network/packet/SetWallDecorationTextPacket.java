@@ -1,4 +1,4 @@
-package net.satisfy.brewery.core.network;
+package net.satisfy.brewery.core.network.packet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;

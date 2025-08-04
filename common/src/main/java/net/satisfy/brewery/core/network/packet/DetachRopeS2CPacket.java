@@ -1,4 +1,4 @@
-package net.satisfy.brewery.core.networking.packet;
+package net.satisfy.brewery.core.network.packet;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.client.Minecraft;

@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.satisfy.brewery.core.block.entity.rope.RopeKnotEntity;
 import net.satisfy.brewery.core.util.rope.RopeConnection;
-import net.satisfy.brewery.core.networking.BreweryNetworking;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholLevel;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
-import net.satisfy.brewery.core.networking.BreweryNetworking;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 
 public class DrunkEffect extends MobEffect {

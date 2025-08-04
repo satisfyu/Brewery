@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.brewery.core.networking.BreweryNetworking;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 
 public class AlcoholManager {

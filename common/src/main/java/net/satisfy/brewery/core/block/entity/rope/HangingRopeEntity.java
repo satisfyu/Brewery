@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.brewery.core.block.HopsCropBlock;
-import net.satisfy.brewery.core.networking.BreweryNetworking;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 import net.satisfy.brewery.core.util.rope.RopeConnection;

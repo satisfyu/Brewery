@@ -21,7 +21,7 @@ import net.satisfy.brewery.client.renderer.entity.*;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.brewery.core.event.PlayerJoinEvent;
 import net.satisfy.brewery.core.item.ItemPredicate;
-import net.satisfy.brewery.core.networking.BreweryNetworking;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.ModelRegistry;
 import net.satisfy.brewery.core.registry.StorageTypeRegistry;
