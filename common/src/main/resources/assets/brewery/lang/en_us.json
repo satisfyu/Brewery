@@ -175,5 +175,7 @@
   "sound.brewery.drawer_open": "Drawer Opens",
   "sound.brewery.drawer_close": "Drawer Closes",
   "sound.brewery.cabinet_open": "Cabinet Opens",
-  "sound.brewery.cabinet_close": "Cabinet Closes"
+  "sound.brewery.cabinet_close": "Cabinet Closes",
+  "gui.brewery.wall_decoration.edit": "Edit Gingerbread Lettering",
+  "gui.brewery.wall_decoration.done" : "Done"
 }

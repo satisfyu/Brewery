@@ -14,9 +14,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.satisfy.brewery.client.gui.WallDecorationEditGui;
 import net.satisfy.brewery.client.model.*;
 import net.satisfy.brewery.client.renderer.block.*;
 import net.satisfy.brewery.client.renderer.entity.*;
+import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.brewery.core.event.PlayerJoinEvent;
 import net.satisfy.brewery.core.item.ItemPredicate;
 import net.satisfy.brewery.core.networking.BreweryNetworking;
@@ -53,12 +55,16 @@ public class BreweryClient {
         BlockEntityRendererRegistry.register(EntityTypeRegistry.STORAGE_ENTITY.get(), context -> new StorageBlockEntityRenderer());
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEER_MUG_BLOCK_ENTITY.get(), BeerMugRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BREWINGSTATION_BLOCK_ENTITY.get(), BrewingstationRenderer::new);
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.WALL_DECORATION.get(), context -> new WallDecorationBlockRenderer());
         StorageBlockEntityRenderer.registerStorageType(StorageTypeRegistry.BEVERAGE, new BeverageRenderer());
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
         ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
     }
 
+    public static void openStreetSignScreen(WallDecorationBlockEntity entity) {
+        Minecraft.getInstance().setScreen(new WallDecorationEditGui(entity));
+    }
 
     public static void preInitClient() {
         registerEntityRenderers();

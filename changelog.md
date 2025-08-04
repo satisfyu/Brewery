@@ -1,13 +1,12 @@
-[2.0.6] - 2025.05.08
+[2.0.6] 
 
 **Added**
-_no changes_
-
-**Changed**
-_no changes_
+* You can now add your own Text to Gingerbread Wall Decoration
 
 **Fixed**
-- fixed bucket stack consumption in BrewKettleBlock to only consume one bucket at a time
+* Bucket stack consumption in BrewKettleBlock to only consume one bucket at a time
+* Baby Zombies spawning with slightly oversizd Brewery Clothing
+* Single Brewing Station Parts being movable by using Pistons
 
 ***
 

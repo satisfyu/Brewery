@@ -4,6 +4,11 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -11,9 +16,15 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.satisfy.brewery.client.BreweryClient;
+import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.farm_and_charm.core.block.FacingBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-public class WallDecorationBlock extends FacingBlock {
+public class WallDecorationBlock extends FacingBlock implements EntityBlock {
     private static final Map<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0, 0, 15.0, 16, 16, 16.0), Direction.SOUTH, Block.box(0, 0, 0.0, 16, 16, 1.0), Direction.WEST, Block.box(15.0, 0, 0, 16.0, 16, 16), Direction.EAST, Block.box(0.0, 0, 0, 1.0, 16, 16)));
 
     public WallDecorationBlock(Properties settings) {
@@ -66,4 +77,39 @@ public class WallDecorationBlock extends FacingBlock {
         }
         return state;
     }
+
+    @Override
+    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack heldItem = player.getItemInHand(hand);
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof WallDecorationBlockEntity signEntity) {
+            if (heldItem.is(Items.GLOW_INK_SAC)) {
+                if (!signEntity.isGlowing()) {
+                    signEntity.setGlowing(true);
+                    if (!player.isCreative()) {
+                        heldItem.shrink(1);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.CONSUME;
+            }
+            if (level.isClientSide) {
+                BreweryClient.openStreetSignScreen(signEntity);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public @NotNull RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new WallDecorationBlockEntity(pos, state);
+    }
+
 }
