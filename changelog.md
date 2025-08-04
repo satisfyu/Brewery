@@ -7,6 +7,7 @@
 * Bucket stack consumption in BrewKettleBlock to only consume one bucket at a time
 * Baby Zombies spawning with slightly oversizd Brewery Clothing
 * Single Brewing Station Parts being movable by using Pistons
+* Rope rendering not restoring after world reload. RopeConnection is now persisted via NBT
 
 ***
 
