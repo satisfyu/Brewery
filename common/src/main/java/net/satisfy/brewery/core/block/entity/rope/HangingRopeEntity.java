@@ -215,13 +215,22 @@ public class HangingRopeEntity extends Entity implements IRopeEntity, EntitySpaw
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag compoundTag) {
-
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        if (this.connection != null) {
+            CompoundTag connTag = new CompoundTag();
+            this.connection.saveTo(connTag);
+            tag.put("Connection", connTag);
+        }
+        tag.putBoolean("Active", this.active);
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag compoundTag) {
-
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        this.active = tag.getBoolean("Active");
+        if (tag.contains("Connection")) {
+            CompoundTag connTag = tag.getCompound("Connection");
+            this.connection = RopeConnection.loadFrom(this, connTag);
+        }
     }
 
     @Override

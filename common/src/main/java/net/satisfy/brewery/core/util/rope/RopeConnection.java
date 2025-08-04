@@ -2,6 +2,7 @@ package net.satisfy.brewery.core.util.rope;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -259,6 +260,24 @@ public class RopeConnection {
             }
         }
         collisions.clear();
+    }
+
+    public void saveTo(CompoundTag tag) {
+        tag.putInt("FromId", this.from().getId());
+        tag.putInt("ToId", this.to().getId());
+    }
+
+    @Nullable
+    public static RopeConnection loadFrom(Entity contextEntity, CompoundTag tag) {
+        Level level = contextEntity.level();
+        Entity fromEntity = level.getEntity(tag.getInt("FromId"));
+        Entity toEntity = level.getEntity(tag.getInt("ToId"));
+        int activeRopes = tag.getInt("ActiveRopes");
+
+        if (fromEntity instanceof RopeKnotEntity fromKnot && toEntity != null) {
+            return RopeConnection.create(fromKnot, toEntity, activeRopes);
+        }
+        return null;
     }
 
     @Override
