@@ -1,0 +1,18 @@
+{
+  "type": "brewery:brewing",
+  "ingredients": [
+    {
+      "item": "brewery:hops"
+    },
+    {
+      "item": "brewery:dried_wheat"
+    },
+    {
+      "item": "farm_and_charm:yeast"
+    }
+  ],
+  "material": "WOOD",
+  "result": {
+    "id": "brewery:beer_wheat"
+  }
+}

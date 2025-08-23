@@ -1,0 +1,11 @@
+{
+  "type": "farm_and_charm:mincer",
+  "ingredient": {
+    "item": "minecraft:baked_potato"
+  },
+  "recipe_type": "MEAT",
+  "result": {
+    "id": "brewery:mashed_potatoes",
+    "count": 2
+  }
+}

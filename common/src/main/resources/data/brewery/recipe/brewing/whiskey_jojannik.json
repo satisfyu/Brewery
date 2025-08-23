@@ -1,0 +1,18 @@
+{
+  "type": "brewery:brewing",
+  "ingredients": [
+    {
+      "item": "brewery:dried_barley"
+    },
+    {
+      "item": "brewery:dried_barley"
+    },
+    {
+      "item": "farm_and_charm:yeast"
+    }
+  ],
+  "material": "COPPER",
+  "result": {
+    "id": "brewery:whiskey_jojannik"
+  }
+}

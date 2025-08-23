@@ -1,0 +1,17 @@
+{
+  "type": "farm_and_charm:stove",
+  "ingredients": [
+    {
+      "tag": "brewery:beer"
+    },
+    {
+      "item": "minecraft:porkchop"
+    }
+  ],
+  "result": {
+    "id": "brewery:pork_knuckle",
+    "count": 4
+  },
+  "experience": 0.5,
+  "requiresLearning": false
+}

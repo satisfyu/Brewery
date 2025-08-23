@@ -1,0 +1,18 @@
+{
+  "type": "brewery:brewing",
+  "ingredients": [
+    {
+      "item": "brewery:whiskey_jojannik"
+    },
+    {
+      "item": "brewery:whiskey_lilitusinglemalt"
+    },
+    {
+      "item": "brewery:whiskey_maggoallan"
+    }
+  ],
+  "material": "NETHERITE",
+  "result": {
+    "id": "brewery:dark_brew"
+  }
+}
