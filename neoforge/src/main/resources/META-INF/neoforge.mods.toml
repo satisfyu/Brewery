@@ -1,6 +1,12 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[4,)"
 license = "Custom"
+
+[[mixins]]
+config = [
+    "brewery-common.mixins.json",
+    "brewery.mixins.json"
+]
 
 [[mods]]
 modId = "brewery"
@@ -13,23 +19,26 @@ Ozapft is! Brau Bier, beiss in a Bretzn – willkomme zum Braufescht!'''
 logoFile = "pack.png"
 
 [[dependencies.brewery]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
 ordering = "NONE"
 side = "BOTH"
+
 [[dependencies.brewery]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.1,)"
+type = "required"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
+
 [[dependencies.brewery]]
 modId = "architectury"
 mandatory = true
-versionRange = "[9.1.12,)"
+versionRange = "[9.0.8,)"
 ordering = "AFTER"
 side = "BOTH"
+
 [[dependencies.brewery]]
 modId = "farm_and_charm"
 mandatory = true

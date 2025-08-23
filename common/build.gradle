@@ -8,7 +8,7 @@ loom {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modImplementation "maven.modrinth:lets-do-farm-charm:${project.farm_and_charm_version}-fabric"
+    modImplementation "net.satisfy.farm_and_charm:farm_and_charm-common:${project.farm_and_charm_version}"
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
