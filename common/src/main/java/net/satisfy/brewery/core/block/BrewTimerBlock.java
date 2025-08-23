@@ -71,7 +71,7 @@ public class BrewTimerBlock extends BrewingstationBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (Boolean.TRUE.equals(blockState.getValue(TIME))) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(TIME, false).setValue(ACTIVATED, false));
             return InteractionResult.SUCCESS;

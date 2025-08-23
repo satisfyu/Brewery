@@ -1,6 +1,7 @@
 package net.satisfy.brewery.core.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -58,19 +59,19 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.saveAdditional(nbt, provider);
         if (!this.trySaveLootTable(nbt)) {
-            ContainerHelper.saveAllItems(nbt, this.inventory);
+            ContainerHelper.saveAllItems(nbt, this.inventory, provider);
         }
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         this.inventory = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
         if (!this.tryLoadLootTable(nbt)) {
-            ContainerHelper.loadAllItems(nbt, this.inventory);
+            ContainerHelper.loadAllItems(nbt, this.inventory, provider);
         }
     }
 

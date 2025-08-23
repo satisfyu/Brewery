@@ -2,6 +2,7 @@ package net.satisfy.brewery.forge.core.mixin;
 
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -9,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.satisfy.brewery.core.item.BrewfestChestItem;
 import net.satisfy.brewery.core.registry.ArmorRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -39,11 +40,11 @@ public abstract class ChestplateItemMixin extends ArmorItem {
     }
 
     @Override
-    public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-        return chestplateTexture.toString();
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+        return chestplateTexture;
     }
 
-    private ChestplateItemMixin(ArmorMaterial armorMaterial, Type armorType, Properties itemProperties) {
+    private ChestplateItemMixin(Holder<ArmorMaterial> armorMaterial, Type armorType, Properties itemProperties) {
         super(armorMaterial, armorType, itemProperties);
     }
 }

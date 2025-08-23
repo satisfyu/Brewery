@@ -46,9 +46,9 @@ public class WallDecorationEditGui extends Screen {
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, mouseX, mouseY, partialTick);
 
-        ResourceLocation texture = new BreweryIdentifier("textures/block/gingerbread_heart.png");
+        ResourceLocation texture = BreweryIdentifier.identifier("textures/block/gingerbread_heart.png");
         int w = 16 * 8;
         int h = 16 * 8;
         int x = (int)(this.width / 2.0 - 65);

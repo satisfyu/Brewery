@@ -37,7 +37,7 @@ public class MobEffectRegistry {
 
     static {
         DRUNK = registerEffect("drunk", DrunkEffect::new);
-        BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setFactorDataFactory(() -> new MobEffectInstance.FactorData(22)));
+        BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setBlendDuration(22));
         MINING = registerEffect("mining", () -> new MiningEffect(MobEffectCategory.BENEFICIAL, 0));
         PACIFY = registerEffect("pacify", () -> new PacifyEffect(MobEffectCategory.BENEFICIAL, 0));
         REPULSION = registerEffect("repulsion", () -> new RepulsionEffect(MobEffectCategory.BENEFICIAL, 0));
@@ -55,10 +55,10 @@ public class MobEffectRegistry {
     }
 
     private static RegistrySupplier<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {
-        if (Platform.isForge()) {
+        if (Platform.isNeoForge()) {
             return MOB_EFFECTS.register(name, effect);
         }
-        return MOB_EFFECTS_REGISTRAR.register(new BreweryIdentifier(name), effect);
+        return MOB_EFFECTS_REGISTRAR.register(BreweryIdentifier.identifier(name), effect);
     }
 
     public static void init() {

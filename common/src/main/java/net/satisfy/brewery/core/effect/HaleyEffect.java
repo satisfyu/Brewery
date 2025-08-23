@@ -13,7 +13,7 @@ public class HaleyEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
             if (!player.getCommandSenderWorld().isClientSide) {
                 player.getAbilities().mayfly = true;
@@ -21,21 +21,25 @@ public class HaleyEffect extends MobEffect {
                 player.onUpdateAbilities();
             }
         }
+        return super.applyEffectTick(entity, amplifier);
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+    public void removeAttributeModifiers(AttributeMap attributeMap) {
+        // TODO fixme
+        /*
         if (entity instanceof Player player) {
             if (!player.getCommandSenderWorld().isClientSide) {
                 player.getAbilities().mayfly = player.isCreative();
                 player.getAbilities().flying = player.isCreative();
                 player.onUpdateAbilities();
             }
-        }
+        }*/
+        super.removeAttributeModifiers(attributeMap);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 }

@@ -1,16 +1,19 @@
 package net.satisfy.brewery.core.event;
 
 import dev.architectury.event.events.common.LootEvent;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
-import net.satisfy.brewery.Brewery;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 public class LoottableInjector {
-    public static void InjectLoot(ResourceLocation id, LootEvent.LootTableModificationContext context) {
+    public static void InjectLoot(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context) {
         String prefix = "minecraft:chests/";
-        String name = id.toString();
+        String name = key.toString();
 
         if (name.startsWith(prefix)) {
             String file = name.substring(name.indexOf(prefix) + prefix.length());
@@ -24,14 +27,14 @@ public class LoottableInjector {
         }
     }
 
-    public static LootPool getPool(String entryName) {
-        return LootPool.lootPool().add(getPoolEntry(entryName)).build();
+    public static LootPool.Builder getPool(String entryName) {
+        return LootPool.lootPool().add(getPoolEntry(entryName));
     }
 
     @SuppressWarnings("rawtypes")
     private static LootPoolEntryContainer.Builder getPoolEntry(String name) {
-        ResourceLocation table = new ResourceLocation(Brewery.MOD_ID, "chests/" + name);
-        return LootTableReference.lootTableReference(table);
+        ResourceKey table = ResourceKey.create(Registries.LOOT_TABLE, BreweryIdentifier.identifier("chests/" + name));
+        return NestedLootTable.lootTableReference(table);
     }
 }
 

@@ -3,11 +3,19 @@ package net.satisfy.brewery.core.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
@@ -17,14 +25,12 @@ import net.satisfy.brewery.core.block.property.BrewMaterial;
 import net.satisfy.brewery.core.registry.RecipeTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public class BrewingRecipe implements Recipe<Container> {
-    private final ResourceLocation identifier;
+public class BrewingRecipe implements Recipe<RecipeInput> {
     private final NonNullList<Ingredient> ingredients;
     private final ItemStack output;
     private final BrewMaterial material;
 
-    public BrewingRecipe(ResourceLocation identifier, NonNullList<Ingredient> ingredients, ItemStack output, BrewMaterial material) {
-        this.identifier = identifier;
+    public BrewingRecipe(NonNullList<Ingredient> ingredients, ItemStack output, BrewMaterial material) {
         this.ingredients = ingredients;
         this.output = output;
         this.material = material;
@@ -35,7 +41,7 @@ public class BrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public boolean matches(Container inventory, Level world) {
+    public boolean matches(RecipeInput inventory, Level world) {
         StackedContents recipeMatcher = new StackedContents();
         int matchingStacks = 0;
 
@@ -50,7 +56,7 @@ public class BrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(Container container, RegistryAccess registryAccess) {
+    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -66,13 +72,12 @@ public class BrewingRecipe implements Recipe<Container> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return this.output.copy();
     }
 
-    @Override
     public @NotNull ResourceLocation getId() {
-        return this.identifier;
+        return RecipeTypeRegistry.BREWING_RECIPE_TYPE.getId();
     }
 
     @Override
@@ -92,45 +97,51 @@ public class BrewingRecipe implements Recipe<Container> {
 
     public static class Serializer implements RecipeSerializer<BrewingRecipe> {
 
-        public static NonNullList<Ingredient> deserializeIngredients(JsonArray json) {
-            NonNullList<Ingredient> ingredients = NonNullList.create();
-            for (int i = 0; i < json.size(); i++) {
-                Ingredient ingredient = Ingredient.fromJson(json.get(i));
-                if (!ingredient.isEmpty()) {
-                    ingredients.add(ingredient);
+        public static final StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> STREAM_CODEC = StreamCodec.of(BrewingRecipe.Serializer::toNetwork, BrewingRecipe.Serializer::fromNetwork);
+        private static final MapCodec<BrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> {
+            return instance.group(Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap((list) -> {
+                Ingredient[] ingredients = list.stream().filter((ingredient) -> !ingredient.isEmpty()).toArray(Ingredient[]::new);
+                if (ingredients.length == 0) {
+                    return DataResult.error(() -> {
+                        return "No ingredients for Brewing recipe";
+                    });
+                } else {
+                    return ingredients.length > 3 ? DataResult.error(() -> {
+                        return "Too many ingredients for Brewing recipe";
+                    }) : DataResult.success(NonNullList.of(Ingredient.EMPTY, ingredients));
                 }
-            }
-            return ingredients;
+            }, DataResult::success).forGetter(bakingStationRecipe -> bakingStationRecipe.ingredients),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(bakingStationRecipe -> bakingStationRecipe.output),
+                    Codec.STRING.fieldOf("material").forGetter(brewingRecipe -> brewingRecipe.material.toString())).apply(instance, (ingredients1, stack, string) -> new BrewingRecipe(ingredients1, stack, BrewMaterial.valueOf(string)));
+        });
+
+        public static @NotNull BrewingRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
+            int i = buf.readVarInt();
+            NonNullList<Ingredient> nonNullList = NonNullList.withSize(i, Ingredient.EMPTY);
+            nonNullList.replaceAll((ingredient) -> Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
+            ItemStack itemStack = ItemStack.STREAM_CODEC.decode(buf);
+            BrewMaterial material = buf.readEnum(BrewMaterial.class);
+            return new BrewingRecipe(nonNullList, itemStack, material);
         }
 
-        @Override
-        public @NotNull BrewingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
-            final var ingredients = deserializeIngredients(GsonHelper.getAsJsonArray(jsonObject, "ingredients"));
-            if (ingredients.isEmpty()) {
-                throw new JsonParseException("No ingredients for Brewing");
-            } else if (ingredients.size() > 3) {
-                throw new JsonParseException("Too many ingredients for Brewing");
-            } else {
-                BrewMaterial brewMaterial = BrewMaterial.valueOf(jsonObject.get("material").getAsString());
-                return new BrewingRecipe(resourceLocation, ingredients, ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result")), brewMaterial);
-            }
-        }
-
-        @Override
-        public @NotNull BrewingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-            final var ingredients = NonNullList.withSize(buf.readVarInt(), Ingredient.EMPTY);
-            ingredients.replaceAll(ignored -> Ingredient.fromNetwork(buf));
-            return new BrewingRecipe(id, ingredients, buf.readItem(), buf.readEnum(BrewMaterial.class));
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buf, BrewingRecipe recipe) {
+        public static void toNetwork(RegistryFriendlyByteBuf buf, BrewingRecipe recipe) {
             buf.writeVarInt(recipe.ingredients.size());
             for (Ingredient ingredient : recipe.ingredients) {
-                ingredient.toNetwork(buf);
+                Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
             }
-            buf.writeItem(recipe.output);
+
+            ItemStack.STREAM_CODEC.encode(buf, recipe.output);
             buf.writeEnum(recipe.material);
+        }
+
+        @Override
+        public MapCodec<BrewingRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> streamCodec() {
+            return STREAM_CODEC;
         }
     }
 }

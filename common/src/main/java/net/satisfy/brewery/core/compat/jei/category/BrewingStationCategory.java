@@ -15,12 +15,13 @@ import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.compat.jei.BreweryJEIClientPlugin;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
+import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewingStationCategory implements IRecipeCategory<BrewingRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(Brewery.MOD_ID, "brewing");
+    public final static ResourceLocation UID = BreweryIdentifier.identifier("brewing");
     public final static ResourceLocation TEXTURE =
-            new ResourceLocation(Brewery.MOD_ID, "textures/gui/brewingstation.png");
+            BreweryIdentifier.identifier("textures/gui/brewingstation.png");
 
     private final IDrawable background;
     private final IDrawable icon;

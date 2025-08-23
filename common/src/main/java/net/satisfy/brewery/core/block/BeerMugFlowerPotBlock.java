@@ -5,6 +5,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -54,10 +55,10 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (hand == InteractionHand.OFF_HAND) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         BeerMugBlockEntity be = (BeerMugBlockEntity) world.getBlockEntity(pos);
-        if (be == null) return InteractionResult.PASS;
+        if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         ItemStack handStack = player.getItemInHand(hand);
         Item flower = be.getFlower();
@@ -68,13 +69,13 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
                 be.setFlower(null);
                 world.sendBlockUpdated(pos, state, state, 3);
             }
-            return InteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(world.isClientSide);
         } else if (!player.isShiftKeyDown() && handStack.isEmpty() && flower != null) {
             if (!world.isClientSide) {
                 player.addItem(flower.getDefaultInstance());
                 be.setFlower(null);
             }
-            return InteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(world.isClientSide);
         } else if (!player.isShiftKeyDown() && fitInPot(handStack) && flower == null) {
             if (!world.isClientSide) {
                 be.setFlower(handStack.getItem());
@@ -82,9 +83,9 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
                     handStack.shrink(1);
                 }
             }
-            return InteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(world.isClientSide);
         }
-        return super.use(state, world, pos, player, hand, hit);
+        return super.useItemOn(itemStack, state, world, pos, player, hand, hit);
     }
 
     public boolean fitInPot(ItemStack item) {
@@ -107,7 +108,7 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter world, BlockPos pos, PathComputationType type) {
+    protected boolean isPathfindable(BlockState blockState, PathComputationType pathComputationType) {
         return false;
     }
 

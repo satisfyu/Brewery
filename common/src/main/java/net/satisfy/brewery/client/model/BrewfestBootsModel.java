@@ -12,7 +12,7 @@ import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewfestBootsModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BreweryIdentifier("brewfest_boots"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BreweryIdentifier.identifier("brewfest_boots"), "main");
     private final ModelPart right_leg;
     private final ModelPart left_leg;
 
@@ -33,11 +33,11 @@ public class BrewfestBootsModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int alpha) {
         poseStack.pushPose();
         poseStack.scale(1.075F, 1.075F, 1.075F);
-        right_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_leg.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        right_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
+        left_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
         poseStack.popPose();
     }
 

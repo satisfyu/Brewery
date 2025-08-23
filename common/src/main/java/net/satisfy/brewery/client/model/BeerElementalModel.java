@@ -11,13 +11,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
 import net.satisfy.brewery.Brewery;
+import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class BeerElementalModel<T extends Monster> extends EntityModel<T> {
 
-    public static final ModelLayerLocation BEER_ELEMENTAL_MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(Brewery.MOD_ID, "beer_elemental"), "main");
+    public static final ModelLayerLocation BEER_ELEMENTAL_MODEL_LAYER = new ModelLayerLocation(BreweryIdentifier.identifier("beer_elemental"), "main");
     private final ModelPart[] upperBodyParts;
 
     private final ModelPart upperBodyParts0;
@@ -156,19 +157,19 @@ public class BeerElementalModel<T extends Monster> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        upperBodyParts0.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts1.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts2.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts3.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts4.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts5.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts6.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts7.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts8.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts9.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts10.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        upperBodyParts11.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int alpha) {
+        upperBodyParts0.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts1.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts2.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts3.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts4.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts5.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts6.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts7.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts8.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts9.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts10.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        upperBodyParts11.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
+        Head.render(poseStack, vertexConsumer, packedLight, packedOverlay, alpha);
     }
 }

@@ -12,6 +12,8 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -364,22 +366,17 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     }
 
     @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+
+    }
+
+    @Override
     public void setPos(double x, double y, double z) {
         super.setPos(Mth.floor(x) + 0.5D, Mth.floor(y) + getYOffset(x, y, z), Mth.floor(z) + 0.5D);
     }
 
     @Override
     protected void setDirection(Direction direction) {
-    }
-
-    @Override
-    public int getWidth() {
-        return 9;
-    }
-
-    @Override
-    public int getHeight() {
-        return 9;
     }
 
     @Override
@@ -399,6 +396,15 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
         double w = getType().getWidth() / 2.0;
         double h = getType().getHeight();
         setBoundingBox(new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w));
+    }
+
+    @Override
+    protected AABB calculateBoundingBox(BlockPos blockPos, Direction direction) {
+        int x = pos.getX(), y = pos.getY(), z = pos.getZ();
+        setPosRaw(x + 0.5D, y + getYOffset(x, y, z), z + 0.5D);
+        double w = getType().getWidth() / 2.0;
+        double h = getType().getHeight();
+        return new AABB(getX() - w, getY(), getZ() - w, getX() + w, getY() + h, getZ() + w);
     }
 
     @Override
@@ -433,18 +439,13 @@ public class RopeKnotEntity extends HangingEntity implements IRopeEntity {
     }
 
     @Override
-    protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return EntityTypeRegistry.ROPE_KNOT.get().getHeight() / 2;
-    }
-
-    @Override
     public @NotNull SoundSource getSoundSource() {
         return SoundSource.BLOCKS;
     }
 
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity);
     }
 }

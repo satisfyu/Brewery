@@ -12,19 +12,20 @@ public class CombustionEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.getCommandSenderWorld() instanceof ServerLevel) {
             entity.blockPosition();
             entity.level().getEntities(entity, entity.getBoundingBox().inflate(4)).forEach(e -> {
                 if (e instanceof Monster && entity.getRandom().nextFloat() < 0.02) {
-                    e.setSecondsOnFire(5);
+                    e.igniteForSeconds(5);
                 }
             });
         }
+        return super.applyEffectTick(entity, amplifier);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 }

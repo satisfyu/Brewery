@@ -1,9 +1,10 @@
 package net.satisfy.brewery.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,7 +13,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
-import org.jetbrains.annotations.NotNull;
 
 public class BigBarrelBlock extends HorizontalDirectionalBlock {
 
@@ -27,14 +27,20 @@ public class BigBarrelBlock extends HorizontalDirectionalBlock {
         this.registerDefaultState(this.defaultBlockState());
     }
 
+    public static final MapCodec<BigBarrelBlock> CODEC = simpleCodec(BigBarrelBlock::new);
+
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
-        if (!(this instanceof BigBarrelMainBlock)) {
-            return ObjectRegistry.BARREL_MAIN.get().getCloneItemStack(getter, pos, state);
-        }
-        return super.getCloneItemStack(getter, pos, state);
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 
+    @Override
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        if (!(this instanceof BigBarrelMainBlock)) {
+            return ObjectRegistry.BARREL_MAIN.get().getCloneItemStack(levelReader, blockPos, blockState);
+        }
+        return super.getCloneItemStack(levelReader, blockPos, blockState);
+    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {

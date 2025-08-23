@@ -1,6 +1,7 @@
 package net.satisfy.brewery.core.effect;
 
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -21,8 +22,8 @@ public class BlackoutEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT.get());
+    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        MobEffectInstance effect = livingEntity.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()));
         assert effect != null;
         int duration = effect.getDuration();
         switch (duration) {
@@ -35,11 +36,13 @@ public class BlackoutEffect extends MobEffect {
             }
             case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
         }
-        super.applyEffectTick(livingEntity, amplifier);
+        return super.applyEffectTick(livingEntity, amplifier);
     }
 
     @Override
-    public void removeAttributeModifiers(LivingEntity livingEntity, AttributeMap attributeMap, int i) {
+    public void removeAttributeModifiers(AttributeMap attributeMap) {
+        // TODO fixme
+        /*
         if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
             alcoholPlayer.brewery$getAlcohol().soberUp();
             if (livingEntity.hasEffect(MobEffectRegistry.DRUNK.get())) {
@@ -48,12 +51,12 @@ public class BlackoutEffect extends MobEffect {
             if (livingEntity instanceof ServerPlayer serverPlayer) {
                 AlcoholManager.syncAlcohol(serverPlayer, alcoholPlayer.brewery$getAlcohol());
             }
-        }
-        super.removeAttributeModifiers(livingEntity, attributeMap, i);
+        }*/
+        super.removeAttributeModifiers(attributeMap);
     }
 
     @Override
-    public boolean isDurationEffectTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return duration == AlcoholManager.FALL_DOWN || duration == AlcoholManager.WANDER_AROUND;
     }
 }

@@ -1,11 +1,13 @@
 package net.satisfy.brewery.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,21 +28,28 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
         this.registerDefaultState(this.defaultBlockState());
     }
 
+    public static final MapCodec<BrewingstationBlock> CODEC = simpleCodec(BrewingstationBlock::new);
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
-        BrewstationBlockEntity blockEntity = getController(pos, getter);
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos pos, BlockState state) {
+        BrewstationBlockEntity blockEntity = getController(pos, levelReader);
         if (blockEntity != null) {
             ItemStack beerStack = blockEntity.getBeer();
             if (beerStack != null && !beerStack.isEmpty()) {
                 return beerStack;
             }
         }
-        return super.getCloneItemStack(getter, pos, state);
+        return super.getCloneItemStack(levelReader, pos, state);
     }
 
     @Override
@@ -50,14 +59,14 @@ public class BrewingstationBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         BrewstationBlockEntity brewstationEntity = getController(pos, level);
         if (brewstationEntity != null) {
             brewstationEntity.getComponents().stream()
                     .filter(componentPos -> !componentPos.equals(pos))
                     .forEach(componentPos -> level.removeBlock(componentPos, false));
         }
-        super.playerWillDestroy(level, pos, state, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable

@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("deprecation")
 public class BeverageBlock extends StorageBlock {
     private static final VoxelShape SHAPE = Shapes.box(0.125, 0, 0.125, 0.875, 0.875, 0.875);
-    public static final TagKey<Item> SMALL_BOTTLE = TagKey.create(Registries.ITEM, new BreweryIdentifier("small_bottle"));
+    public static final TagKey<Item> SMALL_BOTTLE = TagKey.create(Registries.ITEM, BreweryIdentifier.identifier("small_bottle"));
     public static final BooleanProperty FAKE_MODEL = BooleanProperty.create("fake_model");
 
     private final int maxCount;

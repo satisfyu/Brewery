@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -97,15 +98,15 @@ public class BrewWhistleBlock extends BrewingstationBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if (blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
             blockPos = blockPos.below();
         }
-        super.playerWillDestroy(level, blockPos, blockState, player);
+        return super.playerWillDestroy(level, blockPos, blockState, player);
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter blockGetter, BlockPos blockPos, BlockState blockState) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader blockGetter, BlockPos blockPos, BlockState blockState) {
         if (blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
             blockPos = blockPos.below();
         }

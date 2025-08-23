@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -53,18 +54,17 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getItemInHand(hand);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (itemStack.getItem().equals(ObjectRegistry.PATTERNED_CARPET.get())) {
             if (!state.getValue(HAS_TABLECLOTH)) {
                 world.setBlock(pos, state.setValue(HAS_TABLECLOTH, true), 3);
                 if (!player.isCreative()) {
                     itemStack.shrink(1);
                 }
-                return InteractionResult.sidedSuccess(world.isClientSide);
+                return ItemInteractionResult.sidedSuccess(world.isClientSide);
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

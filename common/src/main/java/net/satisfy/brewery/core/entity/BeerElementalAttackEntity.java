@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.SoundEventRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -22,12 +23,18 @@ public class BeerElementalAttackEntity extends AbstractHurtingProjectile {
         playCreationSound();
     }
 
-    public BeerElementalAttackEntity(Level level, LivingEntity livingEntity, double d, double e, double f) {
-        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), livingEntity, d, e, f, level);
+    public BeerElementalAttackEntity(Level level, double d, double e, double f, Vec3 vec3) {
+        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), d, e, f, vec3, level);
 
         double velocityModifier = 0.4;
         this.setDeltaMovement(this.getDeltaMovement().multiply(velocityModifier, velocityModifier, velocityModifier));
 
+    }
+
+    public BeerElementalAttackEntity(Level level, BeerElementalEntity elemental, double triangle, double dY, double triangle1) {
+        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), triangle, dY, triangle1, new Vec3(elemental.getX(), elemental.getY(), elemental.getZ()), level);
+        double velocityModifier = 0.4;
+        this.setDeltaMovement(this.getDeltaMovement().multiply(velocityModifier, velocityModifier, velocityModifier));
     }
 
     private void playCreationSound() {

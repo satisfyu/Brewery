@@ -8,11 +8,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -66,26 +65,24 @@ public class BrewOvenBlock extends BrewingstationBlock {
         return state.getValue(HEAT) != Heat.OFF;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        ItemStack itemStack = player.getItemInHand(interactionHand);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.getFuel().containsKey(itemStack.getItem())) {
             level.setBlock(blockPos, blockState.setValue(HEAT, Heat.LIT), 3);
             level.playSound(null, blockPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
             if (!player.isCreative()) {
                 itemStack.shrink(1);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         boolean isHeated = state.getValue(HEAT) != Heat.OFF;
 
-        if (isHeated && !entity.fireImmune() && entity instanceof Player player && !EnchantmentHelper.hasFrostWalker(player)) {
+        if (isHeated && !entity.fireImmune() && entity instanceof Player player) {
             entity.hurt(world.damageSources().inFire(), 1.0F);
         }
         super.stepOn(world, pos, state, entity);

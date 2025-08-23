@@ -1,17 +1,28 @@
 package net.satisfy.brewery.core.network.packet;
 
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.FriendlyByteBuf;
-import net.satisfy.brewery.core.effect.alcohol.MotionBlur;
+public record DrunkEffectS2CPacket(boolean activate) implements CustomPacketPayload {
 
-public class DrunkEffectS2CPacket implements NetworkManager.NetworkReceiver {
-    @Override
-    public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
-        Minecraft client = Minecraft.getInstance();
+    public static final Type<DrunkEffectS2CPacket> TYPE = new Type<>(BreweryNetworking.DRUNK_EFFECT_S2C_ID);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, DrunkEffectS2CPacket> STREAM_CODEC =
+            StreamCodec.of(DrunkEffectS2CPacket::toNetwork, DrunkEffectS2CPacket::fromNetwork);
+
+    public static void toNetwork(RegistryFriendlyByteBuf buf, DrunkEffectS2CPacket msg) {
+    }
+
+    public static DrunkEffectS2CPacket fromNetwork(RegistryFriendlyByteBuf buf) {
         boolean activate = buf.readBoolean();
-        client.execute(activate ? MotionBlur::activate : MotionBlur::deactivate);
+        return new DrunkEffectS2CPacket(activate);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }
 

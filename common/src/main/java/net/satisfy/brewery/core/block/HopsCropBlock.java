@@ -7,7 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public abstract class HopsCropBlock extends Block {
     public static final IntegerProperty AGE;
     private static final int MAX_AGE = 3;
@@ -58,7 +57,7 @@ public abstract class HopsCropBlock extends Block {
     }
 
     protected static boolean isRopeAbove(LevelAccessor levelAccessor, BlockPos blockPos) {
-        List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, new AABB(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1)));
+        List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, AABB.encapsulatingFullBlocks(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1)));
         for (HangingRopeEntity hangingRope : results) {
             if (hangingRope.active()) return true;
         }
@@ -104,16 +103,16 @@ public abstract class HopsCropBlock extends Block {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player.getItemInHand(interactionHand).is(Items.BONE_MEAL)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         int age = blockState.getValue(AGE);
         if (age > 1) {
             dropHops(level, blockPos, blockState);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         } else {
-            return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+            return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
         }
     }
 

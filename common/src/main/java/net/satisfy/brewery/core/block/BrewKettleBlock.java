@@ -1,5 +1,9 @@
 package net.satisfy.brewery.core.block;
 
+import com.mojang.serialization.MapCodec;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.satisfy.brewery.core.registry.SoundEventRegistry;
 import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import net.minecraft.Util;
@@ -11,7 +15,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -69,6 +72,10 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
 
     private final BrewMaterial brewMaterial;
 
+    public BrewKettleBlock(Properties properties) {
+        this(BrewMaterial.WOOD, properties);
+    }
+
     public BrewKettleBlock(BrewMaterial brewMaterial, Properties properties) {
         super(properties);
         this.brewMaterial = brewMaterial;
@@ -81,12 +88,10 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         return SHAPE.get(state.getValue(FACING));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (interactionHand == InteractionHand.OFF_HAND) return InteractionResult.CONSUME;
-        if (level.isClientSide) return InteractionResult.CONSUME;
-        ItemStack itemStack = player.getItemInHand(interactionHand);
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (interactionHand == InteractionHand.OFF_HAND) return ItemInteractionResult.CONSUME;
+        if (level.isClientSide) return ItemInteractionResult.CONSUME;
         if (level.getBlockEntity(blockPos) instanceof BrewstationBlockEntity brewKettleEntity) {
             if (itemStack.isEmpty()) {
                 ItemStack returnStack = brewKettleEntity.removeIngredient();
@@ -94,9 +99,9 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                     player.addItem(returnStack);
                     level.playSound(null, blockPos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
                     level.sendBlockUpdated(blockPos, blockState, blockState, UPDATE_CLIENTS);
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
             if (itemStack.getItem() == ObjectRegistry.BEER_MUG.get().asItem()) {
                 if (blockState.getValue(LIQUID) == Liquid.BEER) {
@@ -111,11 +116,11 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                             level.playSound(null, blockPos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0F, 1.0F);
                             level.sendBlockUpdated(blockPos, blockState, blockState, UPDATE_CLIENTS);
                         }
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     }
-                    return InteractionResult.CONSUME;
+                    return ItemInteractionResult.CONSUME;
                 }
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             if (itemStack.getItem() == Items.WATER_BUCKET) {
                 if (blockState.getValue(LIQUID) == Liquid.EMPTY || blockState.getValue(LIQUID) == Liquid.DRAINED) {
@@ -124,9 +129,9 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                     if (!player.isCreative()) {
                         player.setItemInHand(interactionHand, new ItemStack(Items.BUCKET));
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
             if (itemStack.getItem() == Items.BUCKET) {
                 Liquid liquid = blockState.getValue(LIQUID);
@@ -140,20 +145,20 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                             player.drop(filledBucket, false);
                         }
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
             if (blockState.getValue(LIQUID) != Liquid.BEER) {
-                InteractionResult interactionResult = brewKettleEntity.addIngredient(itemStack);
-                if (interactionResult == InteractionResult.SUCCESS) {
+                ItemInteractionResult interactionResult = brewKettleEntity.addIngredient(itemStack);
+                if (interactionResult == ItemInteractionResult.SUCCESS) {
                     level.playSound(null, blockPos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.PLAYERS, 1.0F, 1.0F);
                     level.sendBlockUpdated(blockPos, blockState, blockState, UPDATE_CLIENTS);
                 }
                 return interactionResult;
             }
         }
-        return super.use(blockState, level, blockPos, player, interactionHand, blockHitResult);
+        return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
 
@@ -192,7 +197,7 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     }
 
     @Override
-    public @NotNull ItemStack getCloneItemStack(BlockGetter getter, BlockPos pos, BlockState state) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader getter, BlockPos pos, BlockState state) {
         BrewMaterial material = state.getValue(MATERIAL);
         return switch (material) {
             case COPPER -> new ItemStack(ObjectRegistry.COPPER_BREWINGSTATION.get());
@@ -267,5 +272,12 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(LIQUID);
+    }
+
+    public static final MapCodec<BrewKettleBlock> CODEC = simpleCodec(BrewKettleBlock::new);
+
+    @Override
+    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+        return CODEC;
     }
 }

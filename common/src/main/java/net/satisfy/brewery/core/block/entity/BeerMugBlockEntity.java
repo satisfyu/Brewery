@@ -1,6 +1,7 @@
 package net.satisfy.brewery.core.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -33,31 +34,31 @@ public class BeerMugBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        writeFlower(nbt, flower);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
+        writeFlower(compoundTag, flower, provider);
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        flower = readFlower(nbt);
+    protected void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.loadAdditional(compoundTag, provider);
+        flower = readFlower(compoundTag, provider);
     }
 
-    public void writeFlower(CompoundTag nbt, Item flower) {
+    public void writeFlower(CompoundTag nbt, Item flower, HolderLookup.Provider provider) {
         CompoundTag nbtCompound = new CompoundTag();
         if (flower != null) {
-            flower.getDefaultInstance().save(nbtCompound);
+            flower.getDefaultInstance().save(provider, nbtCompound);
         }
         nbt.put(FLOWER_KEY, nbtCompound);
     }
 
-    public Item readFlower(CompoundTag nbt) {
-        super.load(nbt);
+    public Item readFlower(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
         if (nbt.contains(FLOWER_KEY)) {
             CompoundTag nbtCompound = nbt.getCompound(FLOWER_KEY);
             if (!nbtCompound.isEmpty()) {
-                return ItemStack.of(nbtCompound).getItem();
+                return ItemStack.parseOptional(provider, nbtCompound).getItem();
             }
         }
         return null;
@@ -70,8 +71,8 @@ public class BeerMugBlockEntity extends BlockEntity {
 
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
+        return this.saveWithoutMetadata(provider);
     }
 
     @Override

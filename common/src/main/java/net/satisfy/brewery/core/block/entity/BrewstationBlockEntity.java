@@ -1,6 +1,7 @@
 package net.satisfy.brewery.core.block.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
@@ -12,10 +13,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -70,15 +73,15 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         this.components.addAll(Arrays.asList(components));
     }
 
-    public InteractionResult addIngredient(ItemStack itemStack) {
+    public ItemInteractionResult addIngredient(ItemStack itemStack) {
         for (int i = 0; i < 3; i++) {
             ItemStack stack = this.ingredients.get(i);
             if (stack.isEmpty()) {
                 this.setItem(i, itemStack.split(1));
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Nullable
@@ -110,41 +113,46 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         if (level.isClientSide) return;
         if (!this.beer.isEmpty()) return;
 
-        Recipe<?> recipe = level.getRecipeManager().getRecipeFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get(), this, level).orElse(null);
-        if (!canBrew(recipe)) {
-            endBrewing();
-            return;
-        }
+        List<RecipeHolder<BrewingRecipe>> recipeHolders = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get());
 
-        if (soundTime >= SOUND_DURATION) {
-            assert this.level != null;
-            level.playSound(null, blockPos, SoundEventRegistry.BREWSTATION_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-            soundTime = 0;
-        }
-        soundTime++;
-        if(timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
-
-        BrewHelper.checkRunningEvents(this);
-
-        int timeLeft = MAX_BREW_TIME - brewTime;
-
-        if (brewTime >= MAX_BREW_TIME) {
-            RegistryAccess access = level.registryAccess();
-            this.brew(recipe, access);
-        } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
-            BrewEvent event = BrewHelper.getRdmEvent(this);
-            if (event != null) {
-                ResourceLocation eventId = BrewEvents.getId(event);
-                if (eventId != null) {
-                    event.start(this.components, level);
-                    runningEvents.add(event);
-                    totalEvents++;
+        recipeHolders.forEach(recipe -> {
+            if (recipe != null) {
+                if (!canBrew(recipe.value())) {
+                    endBrewing();
+                    return;
                 }
+
+                if (soundTime >= SOUND_DURATION) {
+                    assert this.level != null;
+                    level.playSound(null, blockPos, SoundEventRegistry.BREWSTATION_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                    soundTime = 0;
+                }
+                soundTime++;
+                if(timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
+
+                BrewHelper.checkRunningEvents(this);
+
+                int timeLeft = MAX_BREW_TIME - brewTime;
+
+                if (brewTime >= MAX_BREW_TIME) {
+                    RegistryAccess access = level.registryAccess();
+                    this.brew(recipe.value(), access);
+                } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
+                    BrewEvent event = BrewHelper.getRdmEvent(this);
+                    if (event != null) {
+                        ResourceLocation eventId = BrewEvents.getId(event);
+                        if (eventId != null) {
+                            event.start(this.components, level);
+                            runningEvents.add(event);
+                            totalEvents++;
+                        }
+                    }
+                    setTimeToEvent();
+                }
+                brewTime++;
+                timeToNextEvent--;
             }
-            setTimeToEvent();
-        }
-        brewTime++;
-        timeToNextEvent--;
+        });
     }
 
     private void setTimeToEvent() {
@@ -227,10 +235,10 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public void saveAdditional(CompoundTag compoundTag) {
+    public void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         if (!this.components.isEmpty()) GeneralUtil.putBlockPoses(compoundTag, this.components);
-        ContainerHelper.saveAllItems(compoundTag, this.ingredients);
-        compoundTag.put("beer", this.beer.save(new CompoundTag()));
+        ContainerHelper.saveAllItems(compoundTag, this.ingredients, provider);
+        compoundTag.put("beer", this.beer.save(provider, new CompoundTag()));
         compoundTag.putInt("solved", solved);
         compoundTag.putInt("brewTime", brewTime);
         compoundTag.putInt("totalEvents", totalEvents);
@@ -239,11 +247,11 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public void load(CompoundTag compoundTag) {
+    public void loadAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         this.components = GeneralUtil.readBlockPoses(compoundTag);
         this.ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(compoundTag, this.ingredients);
-        if (compoundTag.contains("beer")) this.beer = ItemStack.of(compoundTag.getCompound("beer"));
+        ContainerHelper.loadAllItems(compoundTag, this.ingredients, provider);
+        if (compoundTag.contains("beer")) this.beer = ItemStack.parseOptional(provider, compoundTag.getCompound("beer"));
         this.solved = compoundTag.getInt("solved");
         this.brewTime = compoundTag.getInt("brewTime");
         this.totalEvents = compoundTag.getInt("totalEvents");
@@ -258,9 +266,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag() {
+    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
-        this.saveAdditional(compoundTag);
+        this.saveAdditional(compoundTag, provider);
         return compoundTag;
     }
 

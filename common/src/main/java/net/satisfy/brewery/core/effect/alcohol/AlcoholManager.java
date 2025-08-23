@@ -1,6 +1,7 @@
 package net.satisfy.brewery.core.effect.alcohol;
 
 import dev.architectury.networking.NetworkManager;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.satisfy.brewery.core.network.BreweryNetworking;
+import net.satisfy.brewery.core.network.packet.AlcoholSyncS2CPacket;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 
 public class AlcoholManager {
@@ -26,10 +28,10 @@ public class AlcoholManager {
             AlcoholLevel alcoholLevel = alcoholPlayer.brewery$getAlcohol();
             alcoholLevel.drink();
 
-            serverPlayer.addEffect(new MobEffectInstance(MobEffectRegistry.DRUNK.get(), AlcoholManager.DRUNK_TIME, alcoholLevel.getDrunkenness() - 1, false, alcoholLevel.isDrunk()));
+            serverPlayer.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()), AlcoholManager.DRUNK_TIME, alcoholLevel.getDrunkenness() - 1, false, alcoholLevel.isDrunk()));
             if (alcoholLevel.isBlackout()) {
-                if (!serverPlayer.hasEffect(MobEffectRegistry.BLACKOUT.get())) {
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffectRegistry.BLACKOUT.get(), 15 * 20, 0, false, false));
+                if (!serverPlayer.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()))) {
+                    serverPlayer.addEffect(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()), 15 * 20, 0, false, false));
                     serverPlayer.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 13 * 20, 0, false, false));
                 }
             }
@@ -39,10 +41,7 @@ public class AlcoholManager {
     }
 
     public static void syncAlcohol(ServerPlayer serverPlayer, AlcoholLevel alcoholLevel) {
-        FriendlyByteBuf buffer = BreweryNetworking.createPacketBuf();
-        buffer.writeInt(alcoholLevel.getDrunkenness());
-        buffer.writeInt(alcoholLevel.getImmunity());
-        NetworkManager.sendToPlayer(serverPlayer, BreweryNetworking.ALCOHOL_SYNC_S2C_ID, buffer);
+        NetworkManager.sendToPlayer(serverPlayer, new AlcoholSyncS2CPacket(alcoholLevel.getDrunkenness(), alcoholLevel.getImmunity()));
     }
 
     public static void movePlayer(LivingEntity livingEntity, Level level) {

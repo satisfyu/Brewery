@@ -1,7 +1,10 @@
 package net.satisfy.brewery.core.block;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -52,6 +55,10 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
     private final Supplier<SoundEvent> openSound;
     private final Supplier<SoundEvent> closeSound;
 
+    public SideBoardBlock(Properties settings) {
+        this(settings, null, null);
+    }
+
     public SideBoardBlock(Properties settings, Supplier<SoundEvent> openSound, Supplier<SoundEvent> closeSound) {
         super(settings);
         this.openSound = openSound;
@@ -92,7 +99,7 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useWithoutItem(BlockState blockState, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (world.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -115,6 +122,13 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
         return new CabinetBlockEntity(pos, state);
     }
 
+    public static final MapCodec<SideBoardBlock> CODEC = simpleCodec(SideBoardBlock::new);
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
@@ -122,10 +136,10 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
 
     @Override
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-        if (itemStack.hasCustomHoverName()) {
+        if (itemStack.has(DataComponents.CUSTOM_NAME)) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof CabinetBlockEntity blockEntity1) {
-                blockEntity1.setCustomName(itemStack.getHoverName());
+                blockEntity1.setComponents(DataComponentMap.builder().set(DataComponents.CUSTOM_NAME, itemStack.getHoverName()).build());
             }
         }
     }

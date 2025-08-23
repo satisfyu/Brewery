@@ -1,25 +1,21 @@
 package net.satisfy.brewery.core.network.packet;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 
 import java.util.List;
 
-public class SetWallDecorationTextPacket {
-    private final BlockPos pos;
-    private final List<String> texts;
+public record SetWallDecorationTextPacket(BlockPos pos, List<String> texts) implements CustomPacketPayload {
 
-    public SetWallDecorationTextPacket(BlockPos pos, List<String> texts) {
-        this.pos = pos;
-        this.texts = texts;
-    }
+    public static final Type<SetWallDecorationTextPacket> TYPE = new Type<>(BreweryNetworking.SET_SIGN_TEXT);
 
-    public static void encode(SetWallDecorationTextPacket msg, FriendlyByteBuf buf) {
+    public static final StreamCodec<RegistryFriendlyByteBuf, SetWallDecorationTextPacket> STREAM_CODEC =
+            StreamCodec.of(SetWallDecorationTextPacket::toNetwork, SetWallDecorationTextPacket::fromNetwork);
+
+    public static void toNetwork(RegistryFriendlyByteBuf buf, SetWallDecorationTextPacket msg) {
         buf.writeBlockPos(msg.pos);
         buf.writeInt(msg.texts.size());
         for (String text : msg.texts) {
@@ -27,7 +23,7 @@ public class SetWallDecorationTextPacket {
         }
     }
 
-    public static SetWallDecorationTextPacket decode(FriendlyByteBuf buf) {
+    public static SetWallDecorationTextPacket fromNetwork(RegistryFriendlyByteBuf buf) {
         BlockPos pos = buf.readBlockPos();
         int size = buf.readInt();
         List<String> texts = new java.util.ArrayList<>();
@@ -37,15 +33,8 @@ public class SetWallDecorationTextPacket {
         return new SetWallDecorationTextPacket(pos, texts);
     }
 
-    public static void handle(SetWallDecorationTextPacket msg, ServerPlayer player) {
-        Level level = player.level();
-        if (level.isLoaded(msg.pos)) {
-            BlockEntity entity = level.getBlockEntity(msg.pos);
-            if (entity instanceof WallDecorationBlockEntity signEntity) {
-                for (int i = 0; i < msg.texts.size() && i < 4; i++) {
-                    signEntity.setText(i, Component.literal(msg.texts.get(i)));
-                }
-            }
-        }
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

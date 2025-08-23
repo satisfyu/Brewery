@@ -18,7 +18,7 @@ public class BrewfestBootsRenderer implements ArmorRenderer {
         if (stack.getItem() instanceof BrewfestBootsItem boots) {
             Model model = ArmorRegistry.getBootsModel(boots, contextModel.rightLeg, contextModel.leftLeg);
 
-            model.renderToBuffer(matrices, vertexConsumers.getBuffer(model.renderType(boots.getBootsTexture())), light, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+            model.renderToBuffer(matrices, vertexConsumers.getBuffer(model.renderType(boots.getBootsTexture())), light, OverlayTexture.NO_OVERLAY);
         }
     }
 }

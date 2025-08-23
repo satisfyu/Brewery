@@ -1,5 +1,7 @@
 package net.satisfy.brewery.core.item;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -17,7 +19,7 @@ import java.util.List;
 public class BrewfestHatItem extends ArmorItem {
     private final ResourceLocation hatTexture;
 
-    public BrewfestHatItem(ArmorMaterial armorMaterial, Type type, Properties properties, ResourceLocation hatTexture) {
+    public BrewfestHatItem(Holder<ArmorMaterial> armorMaterial, Type type, Properties properties, ResourceLocation hatTexture) {
         super(armorMaterial, type, properties);
         this.hatTexture = hatTexture;
     }
@@ -29,7 +31,8 @@ public class BrewfestHatItem extends ArmorItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level world, @NotNull List<Component> tooltip, TooltipFlag context) {
+    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
+        Level world = Minecraft.getInstance().level;
         if(world != null && world.isClientSide()){
             ArmorRegistry.appendToolTip(tooltip);
         }

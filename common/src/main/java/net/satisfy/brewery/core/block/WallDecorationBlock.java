@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -79,7 +80,7 @@ public class WallDecorationBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         ItemStack heldItem = player.getItemInHand(hand);
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof WallDecorationBlockEntity signEntity) {
@@ -89,23 +90,22 @@ public class WallDecorationBlock extends FacingBlock implements EntityBlock {
                     if (!player.isCreative()) {
                         heldItem.shrink(1);
                     }
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.CONSUME;
+                return ItemInteractionResult.CONSUME;
             }
             if (level.isClientSide) {
                 BreweryClient.openStreetSignScreen(signEntity);
             }
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
-
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class StorageTypeRegistry {
-    public static final ResourceLocation BEVERAGE = new BreweryIdentifier("beverage");
+    public static final ResourceLocation BEVERAGE = BreweryIdentifier.identifier("beverage");
 
     public static Set<Block> registerBlocks(Set<Block> blocks) {
         blocks.add(ObjectRegistry.BEER_MUG.get());

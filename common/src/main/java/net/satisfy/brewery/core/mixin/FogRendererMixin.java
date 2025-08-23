@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -31,7 +32,7 @@ public class FogRendererMixin {
     private static float drunkColor(ClientLevel.ClientLevelData levelData) {
         Player player = BreweryClient.getPlayer();
         if (player instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.brewery$getAlcohol().isBlackout()) {
-            MobEffectInstance effect = player.getEffect(MobEffectRegistry.BLACKOUT.get());
+            MobEffectInstance effect = player.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()));
             if (effect != null && effect.getDuration() <= AlcoholManager.BEGIN_TIME) {
                 if (effect.getDuration() < 10) {
                     return 1.0F - (float) effect.getDuration() / 10.0F;
@@ -48,7 +49,7 @@ public class FogRendererMixin {
     private static void drunkFog(Camera camera, FogRenderer.FogMode fogMode, float f, boolean bl, float g, CallbackInfo ci) {
         Entity entity = camera.getEntity();
         if (entity instanceof LivingEntity livingEntity && entity instanceof AlcoholPlayer alcoholPlayer && alcoholPlayer.brewery$getAlcohol().isBlackout()) {
-            MobEffectInstance effect = livingEntity.getEffect(MobEffectRegistry.BLACKOUT.get());
+            MobEffectInstance effect = livingEntity.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()));
             if (effect != null) {
                 int time = effect.getDuration();
                 if (time <= AlcoholManager.BEGIN_TIME) {

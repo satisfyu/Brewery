@@ -18,6 +18,7 @@ import net.satisfy.brewery.core.block.entity.rope.HangingRopeEntity;
 import net.satisfy.brewery.core.block.entity.rope.RopeCollisionEntity;
 import net.satisfy.brewery.core.block.entity.rope.RopeKnotEntity;
 import net.satisfy.brewery.core.network.BreweryNetworking;
+import net.satisfy.brewery.core.network.packet.AttachRopeS2CPacket;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 import net.satisfy.brewery.core.util.BreweryMath;
@@ -118,10 +119,7 @@ public class RopeConnection {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
         for (ServerPlayer player : trackingPlayers) {
-            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            buf.writeInt(from.getId());
-            buf.writeInt(to.getId());
-            NetworkManager.sendToPlayer(player, BreweryNetworking.ATTACH_ROPE_S2C_ID, buf);
+            NetworkManager.sendToPlayer(player, new AttachRopeS2CPacket(from.getId(), to.getId()));
         }
     }
 
@@ -229,10 +227,7 @@ public class RopeConnection {
         Set<ServerPlayer> trackingPlayers = getTrackingPlayers(serverLevel, this);
 
         for (ServerPlayer player : trackingPlayers) {
-            FriendlyByteBuf buf = BreweryNetworking.createPacketBuf();
-            buf.writeInt(from.getId());
-            buf.writeInt(to.getId());
-            NetworkManager.sendToPlayer(player, BreweryNetworking.DETACH_ROPE_S2C_ID, buf);
+            NetworkManager.sendToPlayer(player, new AttachRopeS2CPacket(from.getId(), to.getId()));
         }
     }
 

@@ -12,7 +12,7 @@ import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewfestChestplateModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new BreweryIdentifier("brewfest_chest"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BreweryIdentifier.identifier("brewfest_chest"), "main");
     private final ModelPart body;
     private final ModelPart left_arm;
     private final ModelPart right_arm;
@@ -36,11 +36,11 @@ public class BrewfestChestplateModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int alpha) {
         poseStack.pushPose();
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        right_arm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
-        left_arm.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        body.render(poseStack, buffer, packedLight, packedOverlay, alpha);
+        right_arm.render(poseStack, buffer, packedLight, packedOverlay, alpha);
+        left_arm.render(poseStack, buffer, packedLight, packedOverlay, alpha);
         poseStack.popPose();
     }
 

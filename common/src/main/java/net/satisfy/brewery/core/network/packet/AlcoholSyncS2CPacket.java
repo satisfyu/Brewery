@@ -1,28 +1,30 @@
 package net.satisfy.brewery.core.network.packet;
 
-import dev.architectury.networking.NetworkManager;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.FriendlyByteBuf;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholLevel;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
-import net.satisfy.brewery.core.effect.alcohol.MotionBlur;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.satisfy.brewery.core.network.BreweryNetworking;
 
-public class AlcoholSyncS2CPacket implements NetworkManager.NetworkReceiver {
-    @Override
-    public void receive(FriendlyByteBuf buf, NetworkManager.PacketContext context) {
-        LocalPlayer localPlayer = (LocalPlayer) context.getPlayer();
+public record AlcoholSyncS2CPacket(int drunkenness, int immunity) implements CustomPacketPayload {
+
+    public static final Type<AlcoholSyncS2CPacket> TYPE = new Type<>(BreweryNetworking.ALCOHOL_SYNC_S2C_ID);
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, AlcoholSyncS2CPacket> STREAM_CODEC =
+            StreamCodec.of(AlcoholSyncS2CPacket::toNetwork, AlcoholSyncS2CPacket::fromNetwork);
+
+    public static void toNetwork(RegistryFriendlyByteBuf buf, AlcoholSyncS2CPacket msg) {
+        buf.writeInt(msg.drunkenness());
+        buf.writeInt(msg.immunity());
+    }
+
+    public static AlcoholSyncS2CPacket fromNetwork(RegistryFriendlyByteBuf buf) {
         int drunkenness = buf.readInt();
         int immunity = buf.readInt();
-        context.queue(() -> {
-            if (localPlayer instanceof AlcoholPlayer alcoholPlayer) {
-                alcoholPlayer.brewery$setAlcohol(new AlcoholLevel(drunkenness, immunity));
-                if (alcoholPlayer.brewery$getAlcohol().isDrunk()) {
-                    MotionBlur.activate();
-                }
-                if (!alcoholPlayer.brewery$getAlcohol().isDrunk()) {
-                    MotionBlur.deactivate();
-                }
-            }
-        });
+        return new AlcoholSyncS2CPacket(drunkenness, immunity);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Zombie.class)
 public abstract class ZombieMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
-    private void addBreweryOutfit(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnData, CompoundTag compound, CallbackInfoReturnable<SpawnGroupData> cir) {
+    private void addBreweryOutfit(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
         Zombie zombie = (Zombie)(Object)this;
         if (!zombie.isBaby() && Math.random() < 0.03) {
             zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ObjectRegistry.BREWFEST_HAT_RED.get()));
