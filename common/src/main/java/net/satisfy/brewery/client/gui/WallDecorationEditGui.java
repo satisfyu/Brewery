@@ -70,6 +70,11 @@ public class WallDecorationEditGui extends Screen {
     }
 
     @Override
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderMenuBackground(graphics);
+    }
+
+    @Override
     public void onClose() {
         List<String> texts = List.of(textField.getValue());
         BreweryNetworking.sendSetSignTextToServer(new SetWallDecorationTextPacket(entity.getBlockPos(), texts));

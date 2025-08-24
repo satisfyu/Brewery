@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.satisfy.brewery.core.block.BrewKettleBlock;
 import net.satisfy.brewery.core.block.BrewWhistleBlock;
-import net.satisfy.brewery.core.block.property.Liquid;
 import net.satisfy.brewery.core.block.entity.BrewstationBlockEntity;
+import net.satisfy.brewery.core.block.property.Liquid;
 import net.satisfy.brewery.core.registry.BlockStateRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 

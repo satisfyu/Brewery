@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.core.block.BrewKettleBlock;
-import net.satisfy.brewery.core.block.property.Liquid;
 import net.satisfy.brewery.core.block.entity.BrewstationBlockEntity;
+import net.satisfy.brewery.core.block.property.Liquid;
 import net.satisfy.brewery.core.registry.BlockStateRegistry;
 import org.jetbrains.annotations.Nullable;
 

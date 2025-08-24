@@ -7,7 +7,6 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.effect.*;
 import net.satisfy.brewery.core.util.BreweryIdentifier;

@@ -2,23 +2,16 @@ package net.satisfy.brewery.core.effect;
 
 
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholLevel;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
-import net.satisfy.brewery.core.network.BreweryNetworking;
-import net.satisfy.brewery.core.network.packet.DrinkAlcoholC2SPacket;
 import net.satisfy.brewery.core.network.packet.DrunkEffectS2CPacket;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 

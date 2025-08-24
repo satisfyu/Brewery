@@ -20,7 +20,6 @@ import net.satisfy.brewery.core.effect.alcohol.AlcoholLevel;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
 import net.satisfy.brewery.core.registry.SoundEventRegistry;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

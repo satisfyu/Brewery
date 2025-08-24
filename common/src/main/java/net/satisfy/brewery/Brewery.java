@@ -2,8 +2,8 @@ package net.satisfy.brewery;
 
 import dev.architectury.event.events.common.InteractionEvent;
 import dev.architectury.event.events.common.PlayerEvent;
-import net.satisfy.brewery.core.event.brew_event.BrewEvents;
 import net.satisfy.brewery.core.event.*;
+import net.satisfy.brewery.core.event.brew_event.BrewEvents;
 import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.*;
 

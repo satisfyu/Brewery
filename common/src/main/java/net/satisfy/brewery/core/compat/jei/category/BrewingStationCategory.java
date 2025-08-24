@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.compat.jei.BreweryJEIClientPlugin;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
 import net.satisfy.brewery.core.registry.ObjectRegistry;

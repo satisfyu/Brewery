@@ -1,19 +1,8 @@
 package net.satisfy.brewery.core.network;
 
 import dev.architectury.networking.NetworkManager;
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.satisfy.brewery.core.network.handler.AlcoholSyncS2CPacketHandler;
-import net.satisfy.brewery.core.network.handler.AttachRopeS2CPacketHandler;
-import net.satisfy.brewery.core.network.handler.ChangeHangingRopeS2CPacketHandler;
-import net.satisfy.brewery.core.network.handler.DetachRopeS2CPacketHandler;
-import net.satisfy.brewery.core.network.handler.DrinkAlcoholC2SPacketHandler;
-import net.satisfy.brewery.core.network.handler.DrunkEffectS2CPacketHandler;
-import net.satisfy.brewery.core.network.handler.SetWallDecorationTextPacketHandler;
-import net.satisfy.brewery.core.network.handler.SyncRequestC2SPacketHandler;
-import net.satisfy.brewery.core.network.handler.SyncRopeS2CPacketHandler;
+import net.satisfy.brewery.core.network.handler.*;
 import net.satisfy.brewery.core.network.packet.*;
 import net.satisfy.brewery.core.util.BreweryIdentifier;
 

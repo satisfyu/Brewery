@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.CompletionistBannerBlock;
 import net.satisfy.brewery.core.block.CompletionistWallBannerBlock;
 import net.satisfy.brewery.core.block.entity.CompletionistBannerEntity;
@@ -50,8 +49,7 @@ public class CompletionistBannerRenderer implements BlockEntityRenderer<Completi
 
     public static void renderBanner(PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, ModelPart modelPart, CompletionistBannerEntity banner) {
         ResourceLocation location = ((CompletionistBannerBlock) banner.getBlockState().getBlock()).getRenderTexture();
-        VertexConsumer vc = multiBufferSource.getBuffer(RenderType.entitySolid(location));
-
+        VertexConsumer vc = multiBufferSource.getBuffer(RenderType.entityCutoutNoCull(location));
         modelPart.render(poseStack, vc, i, j);
     }
 

@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.farm_and_charm.core.util.GeneralUtil;
-import org.jetbrains.annotations.NotNull;
 
 public class BeerMugBlockEntity extends BlockEntity {
     public static final String FLOWER_KEY = "flower";

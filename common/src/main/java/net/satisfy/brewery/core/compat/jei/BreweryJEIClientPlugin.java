@@ -10,11 +10,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.compat.jei.category.BrewingStationCategory;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
-import net.satisfy.brewery.core.registry.RecipeTypeRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
+import net.satisfy.brewery.core.registry.RecipeTypeRegistry;
 import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 

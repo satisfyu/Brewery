@@ -2,7 +2,6 @@ package net.satisfy.brewery.core.effect;
 
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -12,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 

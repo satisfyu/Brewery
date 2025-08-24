@@ -2,7 +2,6 @@ package net.satisfy.brewery.core.effect.alcohol;
 
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.network.packet.AlcoholSyncS2CPacket;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 

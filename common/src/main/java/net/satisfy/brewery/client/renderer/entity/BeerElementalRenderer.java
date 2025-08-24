@@ -8,8 +8,6 @@ import net.satisfy.brewery.core.entity.BeerElementalEntity;
 import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 
-import static net.satisfy.brewery.Brewery.MOD_ID;
-
 
 public class
 BeerElementalRenderer extends MobRenderer<BeerElementalEntity, BeerElementalModel<BeerElementalEntity>> {

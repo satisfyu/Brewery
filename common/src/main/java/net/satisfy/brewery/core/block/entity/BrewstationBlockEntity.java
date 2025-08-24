@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,13 +22,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.brewery.core.event.brew_event.BrewEvent;
-import net.satisfy.brewery.core.event.brew_event.BrewEvents;
-import net.satisfy.brewery.core.event.brew_event.BrewHelper;
 import net.satisfy.brewery.core.block.property.BrewMaterial;
 import net.satisfy.brewery.core.block.property.Heat;
 import net.satisfy.brewery.core.block.property.Liquid;
 import net.satisfy.brewery.core.entity.BeerElementalEntity;
+import net.satisfy.brewery.core.event.brew_event.BrewEvent;
+import net.satisfy.brewery.core.event.brew_event.BrewEvents;
+import net.satisfy.brewery.core.event.brew_event.BrewHelper;
 import net.satisfy.brewery.core.item.DrinkBlockItem;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
 import net.satisfy.brewery.core.registry.*;
@@ -236,13 +235,17 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
 
     @Override
     public void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
-        if (!this.components.isEmpty()) GeneralUtil.putBlockPoses(compoundTag, this.components);
+        if (!this.components.isEmpty()) {
+            GeneralUtil.putBlockPoses(compoundTag, this.components);
+        }
         ContainerHelper.saveAllItems(compoundTag, this.ingredients, provider);
-        compoundTag.put("beer", this.beer.save(provider, new CompoundTag()));
-        compoundTag.putInt("solved", solved);
-        compoundTag.putInt("brewTime", brewTime);
-        compoundTag.putInt("totalEvents", totalEvents);
-        compoundTag.putInt("timeToNextEvent", timeToNextEvent);
+        if (!this.beer.isEmpty()) {
+            compoundTag.put("beer", this.beer.save(provider, new CompoundTag()));
+        }
+        compoundTag.putInt("solved", this.solved);
+        compoundTag.putInt("brewTime", this.brewTime);
+        compoundTag.putInt("totalEvents", this.totalEvents);
+        compoundTag.putInt("timeToNextEvent", this.timeToNextEvent);
         BrewHelper.saveAdditional(this, compoundTag);
     }
 
@@ -251,7 +254,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         this.components = GeneralUtil.readBlockPoses(compoundTag);
         this.ingredients = NonNullList.withSize(3, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(compoundTag, this.ingredients, provider);
-        if (compoundTag.contains("beer")) this.beer = ItemStack.parseOptional(provider, compoundTag.getCompound("beer"));
+        if (compoundTag.contains("beer")) {
+            this.beer = ItemStack.parseOptional(provider, compoundTag.getCompound("beer"));
+        }
         this.solved = compoundTag.getInt("solved");
         this.brewTime = compoundTag.getInt("brewTime");
         this.totalEvents = compoundTag.getInt("totalEvents");
