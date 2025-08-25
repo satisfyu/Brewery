@@ -136,7 +136,7 @@ public class DrinkBlockItem extends BlockItem {
             if (effectLevel > 1) {
                 effectName.append(" ").append(Component.translatable("potion.potency." + (effectLevel - 1)));
             }
-            String durationText = MobEffectUtil.formatDuration(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(this.effect), this.baseDuration * durationMultiplier), 1, 1.0f).getString();
+            String durationText = MobEffectUtil.formatDuration(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(this.effect), this.baseDuration * durationMultiplier), 1, 20).getString();
             MutableComponent effectDuration = Component.translatable(" (").append(Component.translatable(durationText)).append(Component.translatable(")"));
             tooltip.add(effectName.append(effectDuration).withStyle(this.effect.getCategory().getTooltipFormatting()));
         } else {
