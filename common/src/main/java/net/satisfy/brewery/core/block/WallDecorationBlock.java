@@ -31,7 +31,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings("deprecation")
 public class WallDecorationBlock extends FacingBlock implements EntityBlock {
     private static final Map<Direction, VoxelShape> BOUNDING_SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0, 0, 15.0, 16, 16, 16.0), Direction.SOUTH, Block.box(0, 0, 0.0, 16, 16, 1.0), Direction.WEST, Block.box(15.0, 0, 0, 16.0, 16, 16), Direction.EAST, Block.box(0.0, 0, 0, 1.0, 16, 16)));
 
@@ -79,7 +78,7 @@ public class WallDecorationBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         ItemStack heldItem = player.getItemInHand(hand);
         BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof WallDecorationBlockEntity signEntity) {

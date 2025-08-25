@@ -16,6 +16,8 @@
     "brewery:drawer",
     "brewery:brew_whistle",
     "brewery:brew_oven",
-    "brewery:brew_timer"
+    "brewery:brew_timer",
+    "brewery:rope_knot",
+    "brewery:rope"
   ]
 }

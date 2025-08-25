@@ -29,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings("deprecation")
 public class TableBlock extends LineConnectingBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED;
     public static final BooleanProperty HAS_TABLECLOTH = BooleanProperty.create("has_tablecloth");
@@ -53,7 +52,7 @@ public class TableBlock extends LineConnectingBlock implements SimpleWaterlogged
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (itemStack.getItem().equals(ObjectRegistry.PATTERNED_CARPET.get())) {
             if (!state.getValue(HAS_TABLECLOTH)) {
                 world.setBlock(pos, state.setValue(HAS_TABLECLOTH, true), 3);

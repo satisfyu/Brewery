@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
+import org.jetbrains.annotations.NotNull;
 
 public class BigBarrelBlock extends HorizontalDirectionalBlock {
-
     public static final EnumProperty<DoubleBlockHalf> HALF;
 
     static {
@@ -30,12 +30,12 @@ public class BigBarrelBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<BigBarrelBlock> CODEC = simpleCodec(BigBarrelBlock::new);
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    protected @NotNull MapCodec<? extends HorizontalDirectionalBlock> codec() {
         return CODEC;
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         if (!(this instanceof BigBarrelMainBlock)) {
             return ObjectRegistry.BARREL_MAIN.get().getCloneItemStack(levelReader, blockPos, blockState);
         }

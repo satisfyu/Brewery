@@ -6,8 +6,7 @@
   "client": [
     "FogRendererMixin",
     "GameRendererMixin",
-    "WindowMixin",
-    "rope.PickMixin"
+    "WindowMixin"
   ],
   "mixins": [
     "AlcoholPlayerMixin",
@@ -15,8 +14,7 @@
     "PlayerMixin",
     "TomatoCropBlockMixin",
     "VillagerDiscountMixin",
-    "ZombieMixin",
-    "rope.ServerEntityMixin"
+    "ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1

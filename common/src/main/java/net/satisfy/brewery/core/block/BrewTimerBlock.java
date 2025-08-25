@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused, deprecation")
+@SuppressWarnings("unused")
 public class BrewTimerBlock extends BrewingstationBlock {
     public static final BooleanProperty TIME;
     public static final BooleanProperty ACTIVATED;
@@ -70,7 +70,7 @@ public class BrewTimerBlock extends BrewingstationBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
         if (Boolean.TRUE.equals(blockState.getValue(TIME))) {
             level.setBlockAndUpdate(blockPos, blockState.setValue(TIME, false).setValue(ACTIVATED, false));
             return InteractionResult.SUCCESS;
@@ -79,7 +79,6 @@ public class BrewTimerBlock extends BrewingstationBlock {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
     }

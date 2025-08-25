@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public class CompletionistWallBannerBlock extends CompletionistBannerBlock {
-
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.SOUTH, box(0.0, 0.0, 14.0, 16.0, 12.5, 16.0), Direction.NORTH, box(0.0, 0.0, 0.0, 16.0, 12.5, 2.0), Direction.EAST, box(14.0, 0.0, 0.0, 16.0, 12.5, 16.0), Direction.WEST, box(0.0, 0.0, 0.0, 2.0, 12.5, 16.0)));
 

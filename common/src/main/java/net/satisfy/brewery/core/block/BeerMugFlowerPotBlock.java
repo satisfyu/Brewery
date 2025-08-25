@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     private static final VoxelShape SHAPE;
 

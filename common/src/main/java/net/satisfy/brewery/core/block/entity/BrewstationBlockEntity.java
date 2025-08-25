@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +33,6 @@ import net.satisfy.brewery.core.event.brew_event.BrewHelper;
 import net.satisfy.brewery.core.item.DrinkBlockItem;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
 import net.satisfy.brewery.core.registry.*;
-import net.satisfy.brewery.core.util.BreweryMath;
 import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import net.satisfy.farm_and_charm.core.world.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
@@ -156,8 +156,13 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
 
     private void setTimeToEvent() {
         if (this.level != null) {
-            timeToNextEvent = BreweryMath.getRandomHighNumber(this.level.getRandom(), MIN_TIME_FOR_EVENT, MAX_TIME_FOR_EVENT);
+            timeToNextEvent = getRandomHighNumber(this.level.getRandom(), MIN_TIME_FOR_EVENT, MAX_TIME_FOR_EVENT);
         }
+    }
+
+    public static int getRandomHighNumber(RandomSource rnd, int lowerBound, int upperBound) {
+        int range = upperBound - lowerBound + 1;
+        return upperBound - (int) (Math.pow(rnd.nextDouble(), 1.5) * range);
     }
 
     private boolean canBrew(@Nullable Recipe<?> recipe) {

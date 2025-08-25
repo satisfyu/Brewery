@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BigBarrelMainBlock extends BigBarrelBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF;
     private static final Supplier<VoxelShape> bottomVoxelShapeSupplier = () -> {

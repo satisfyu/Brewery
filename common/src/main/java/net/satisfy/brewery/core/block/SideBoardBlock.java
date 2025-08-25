@@ -44,7 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     private static final Map<GeneralUtil.LineConnectingType, Supplier<VoxelShape>> SHAPES_SUPPLIERS = new HashMap<>();
     private static final Map<Direction, Map<GeneralUtil.LineConnectingType, VoxelShape>> SHAPES = new EnumMap<>(Direction.class);
@@ -98,7 +97,7 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState blockState, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level world, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (world.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -124,7 +123,7 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
     public static final MapCodec<SideBoardBlock> CODEC = simpleCodec(SideBoardBlock::new);
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
@@ -185,7 +184,6 @@ public class SideBoardBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
         GeneralUtil.LineConnectingType type = state.getValue(TYPE);

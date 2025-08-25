@@ -66,7 +66,7 @@ public class BrewOvenBlock extends BrewingstationBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.getFuel().containsKey(itemStack.getItem())) {
             level.setBlock(blockPos, blockState.setValue(HEAT, Heat.LIT), 3);
             level.playSound(null, blockPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -82,7 +82,7 @@ public class BrewOvenBlock extends BrewingstationBlock {
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         boolean isHeated = state.getValue(HEAT) != Heat.OFF;
 
-        if (isHeated && !entity.fireImmune() && entity instanceof Player player) {
+        if (isHeated && !entity.fireImmune() && entity instanceof Player) {
             entity.hurt(world.damageSources().inFire(), 1.0F);
         }
         super.stepOn(world, pos, state, entity);
@@ -124,7 +124,6 @@ public class BrewOvenBlock extends BrewingstationBlock {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));

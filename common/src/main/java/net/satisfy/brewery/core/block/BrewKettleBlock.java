@@ -82,14 +82,13 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         this.registerDefaultState(this.defaultBlockState().setValue(MATERIAL, brewMaterial).setValue(LIQUID, Liquid.EMPTY));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return SHAPE.get(state.getValue(FACING));
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (interactionHand == InteractionHand.OFF_HAND) return ItemInteractionResult.CONSUME;
         if (level.isClientSide) return ItemInteractionResult.CONSUME;
         if (level.getBlockEntity(blockPos) instanceof BrewstationBlockEntity brewKettleEntity) {
@@ -183,7 +182,6 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {

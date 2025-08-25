@@ -28,7 +28,6 @@ import java.util.function.Supplier;
 import static net.satisfy.farm_and_charm.core.util.GeneralUtil.LINE_CONNECTING_TYPE;
 
 
-@SuppressWarnings("deprecation")
 public class BarCounterBlock extends Block {
 
     public static final DirectionProperty FACING;

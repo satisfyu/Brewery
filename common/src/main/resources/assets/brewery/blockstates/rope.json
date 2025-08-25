@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "brewery:block/rope"
+    },
+    "facing=south": {
+      "model": "brewery:block/rope",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "brewery:block/rope",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "brewery:block/rope",
+      "y": 90
+    }
+  }
+}

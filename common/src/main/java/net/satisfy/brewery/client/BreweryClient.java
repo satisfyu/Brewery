@@ -1,7 +1,6 @@
 package net.satisfy.brewery.client;
 
 import dev.architectury.event.events.client.ClientPlayerEvent;
-import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -17,15 +16,14 @@ import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.brewery.client.gui.WallDecorationEditGui;
 import net.satisfy.brewery.client.model.*;
 import net.satisfy.brewery.client.renderer.block.*;
-import net.satisfy.brewery.client.renderer.entity.*;
+import net.satisfy.brewery.client.renderer.entity.BeerElementalAttackRenderer;
+import net.satisfy.brewery.client.renderer.entity.BeerElementalRenderer;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.brewery.core.event.PlayerJoinEvent;
 import net.satisfy.brewery.core.item.ItemPredicate;
 import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
-import net.satisfy.brewery.core.registry.ModelRegistry;
 import net.satisfy.brewery.core.registry.StorageTypeRegistry;
-import net.satisfy.brewery.core.util.rope.RopeHelper;
 
 import static net.satisfy.brewery.core.registry.ObjectRegistry.*;
 
@@ -51,6 +49,7 @@ public class BreweryClient {
             return BiomeColors.getAverageWaterColor(world, pos);
         }, WOODEN_BREWINGSTATION, COPPER_BREWINGSTATION, NETHERITE_BREWINGSTATION);
 
+        BlockEntityRendererRegistry.register(EntityTypeRegistry.ROPE_KNOT_BLOCK_ENTITY.get(), ctx -> new RopeKnotRenderer());
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BREWERY_BANNER.get(), CompletionistBannerRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.STORAGE_ENTITY.get(), context -> new StorageBlockEntityRenderer());
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEER_MUG_BLOCK_ENTITY.get(), BeerMugRenderer::new);
@@ -59,7 +58,6 @@ public class BreweryClient {
         StorageBlockEntityRenderer.registerStorageType(StorageTypeRegistry.BEVERAGE, new BeverageRenderer());
 
         ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
-        ClientTickEvent.CLIENT_LEVEL_PRE.register((clientLevel) -> RopeHelper.tick());
     }
 
     public static void openStreetSignScreen(WallDecorationBlockEntity entity) {
@@ -72,9 +70,6 @@ public class BreweryClient {
     }
 
     private static void registerEntityRenderers() {
-        EntityRendererRegistry.register(EntityTypeRegistry.ROPE_KNOT, RopeKnotRenderer::new);
-        EntityRendererRegistry.register(EntityTypeRegistry.HANGING_ROPE, HangingRopeRenderer::new);
-        EntityRendererRegistry.register(EntityTypeRegistry.ROPE_COLLISION, RopeCollisionEntityRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.BEER_ELEMENTAL, BeerElementalRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK, BeerElementalAttackRenderer::new);
         EntityRendererRegistry.register(EntityTypeRegistry.DARK_BREW, ThrownItemRenderer::new);
@@ -86,7 +81,6 @@ public class BreweryClient {
         EntityModelLayerRegistry.register(BrewfestLeggingsModel.LAYER_LOCATION, BrewfestLeggingsModel::createBodyLayer);
         EntityModelLayerRegistry.register(BrewfestBootsModel.LAYER_LOCATION, BrewfestBootsModel::createBodyLayer);
         EntityModelLayerRegistry.register(BeerElementalModel.BEER_ELEMENTAL_MODEL_LAYER, BeerElementalModel::createBodyLayer);
-        EntityModelLayerRegistry.register(ModelRegistry.ROPE_KNOT, RopeKnotEntityModel::createBodyLayer);
         EntityModelLayerRegistry.register(CompletionistBannerRenderer.LAYER_LOCATION, CompletionistBannerRenderer::createBodyLayer);
     }
 

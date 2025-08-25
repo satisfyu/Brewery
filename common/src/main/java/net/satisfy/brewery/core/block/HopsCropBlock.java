@@ -22,16 +22,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.satisfy.brewery.core.block.entity.rope.HangingRopeEntity;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 import net.satisfy.farm_and_charm.core.registry.TagRegistry;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public abstract class HopsCropBlock extends Block {
     public static final IntegerProperty AGE;
@@ -56,12 +52,9 @@ public abstract class HopsCropBlock extends Block {
         return (HopsCropBodyBlock) ObjectRegistry.HOPS_CROP_BODY.get();
     }
 
-    protected static boolean isRopeAbove(LevelAccessor levelAccessor, BlockPos blockPos) {
-        List<HangingRopeEntity> results = levelAccessor.getEntitiesOfClass(HangingRopeEntity.class, AABB.encapsulatingFullBlocks(blockPos.above(), blockPos.above().offset(1, HangingRopeEntity.MAX_LENGTH, 1)));
-        for (HangingRopeEntity hangingRope : results) {
-            if (hangingRope.active()) return true;
-        }
-        return false;
+    protected static boolean isRopeAbove(LevelAccessor level, BlockPos pos) {
+        BlockState above = level.getBlockState(pos.above());
+        return above.getBlock() instanceof RopeBlock || above.getBlock() instanceof RopeKnotBlock;
     }
 
     protected static int getHeight(BlockPos blockPos, LevelAccessor levelAccessor) {
@@ -103,7 +96,7 @@ public abstract class HopsCropBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (player.getItemInHand(interactionHand).is(Items.BONE_MEAL)) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }

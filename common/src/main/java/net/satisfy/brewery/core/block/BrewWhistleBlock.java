@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-@SuppressWarnings("deprecation")
 public class BrewWhistleBlock extends BrewingstationBlock {
     public static final BooleanProperty WHISTLE;
     public static final EnumProperty<DoubleBlockHalf> HALF;
@@ -98,7 +97,7 @@ public class BrewWhistleBlock extends BrewingstationBlock {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
+    public @NotNull BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if (blockState.getValue(HALF).equals(DoubleBlockHalf.UPPER)) {
             blockPos = blockPos.below();
         }
