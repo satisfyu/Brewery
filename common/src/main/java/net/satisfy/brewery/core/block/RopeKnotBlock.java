@@ -145,10 +145,20 @@ public class RopeKnotBlock extends BaseEntityBlock {
 
     private boolean connectsTo(BlockState neighbor, Direction dirTowardNeighbor) {
         if (neighbor.getBlock() instanceof RopeBlock) {
-            Direction facing = neighbor.getValue(RopeBlock.FACING);
-            return facing.getAxis() == dirTowardNeighbor.getAxis();
+            Direction needOnNeighbor = dirTowardNeighbor.getOpposite();
+            return neighbor.getValue(ropeProp(needOnNeighbor));
         }
         return false;
+    }
+
+    private static BooleanProperty ropeProp(Direction dir) {
+        return switch (dir) {
+            case NORTH -> RopeBlock.NORTH;
+            case SOUTH -> RopeBlock.SOUTH;
+            case EAST  -> RopeBlock.EAST;
+            case WEST  -> RopeBlock.WEST;
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     @Override

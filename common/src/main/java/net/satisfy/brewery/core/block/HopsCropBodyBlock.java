@@ -33,7 +33,7 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+    public @NotNull ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return new ItemStack(getHeadBlock());
     }
 
@@ -43,7 +43,6 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
         return (!bl || !blockPlaceContext.getItemInHand().is(getHeadBlock().asItem())) && bl;
     }
 
-    @SuppressWarnings("deprecation")
     public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
         if (direction == Direction.DOWN && !blockState.canSurvive(levelAccessor, blockPos)) {
             levelAccessor.scheduleTick(blockPos, this, 1);

@@ -48,7 +48,6 @@ public class HopsCropHeadBlock extends HopsCropBlock implements BonemealableBloc
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
         if ((direction == Direction.DOWN && !blockState.canSurvive(levelAccessor, blockPos)) || (getHeight(blockPos, levelAccessor) > 2 && !isRopeAbove(levelAccessor, blockPos))) {

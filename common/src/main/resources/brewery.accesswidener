@@ -1,4 +1,3 @@
 accessWidener   v2  named
-extendable method net/minecraft/world/entity/decoration/HangingEntity recalculateBoundingBox ()V
 accessible method net/minecraft/world/level/block/state/BlockBehaviour getSoundType (Lnet/minecraft/world/level/block/state/BlockState;)Lnet/minecraft/world/level/block/SoundType;
 extendable method net/minecraft/world/entity/LivingEntity getDimensions (Lnet/minecraft/world/entity/Pose;)Lnet/minecraft/world/entity/EntityDimensions;

@@ -1,19 +1,73 @@
 {
-  "variants": {
-    "facing=north": {
-      "model": "brewery:block/rope"
+  "multipart": [
+    {
+      "apply": {
+        "model": "brewery:block/rope_connection_center"
+      }
     },
-    "facing=south": {
-      "model": "brewery:block/rope",
-      "y": 180
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_north"
+      }
     },
-    "facing=west": {
-      "model": "brewery:block/rope",
-      "y": 270
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_south"
+      }
     },
-    "facing=east": {
-      "model": "brewery:block/rope",
-      "y": 90
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_west"
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_east"
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_up"
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_down"
+      }
+    },
+    {
+      "when": {
+        "supporting_rope_knot": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_supporting_knot"
+      }
+    },
+    {
+      "when": {
+        "rope_knot": "true"
+      },
+      "apply": {
+        "model": "brewery:block/rope_connection_knot"
+      }
     }
-  }
+  ]
 }

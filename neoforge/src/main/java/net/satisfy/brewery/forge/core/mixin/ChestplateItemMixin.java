@@ -32,7 +32,8 @@ public abstract class ChestplateItemMixin extends ArmorItem {
         consumer.accept(
                 new IClientItemExtensions() {
                     @Override
-                    public @NotNull Model getGenericArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
+                    @NotNull
+                    public Model getGenericArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                         return ArmorRegistry.getChestplateModel(itemStack.getItem(), original.body, original.leftArm, original.rightArm, original.leftLeg, original.rightLeg);
                     }
                 }
@@ -40,7 +41,8 @@ public abstract class ChestplateItemMixin extends ArmorItem {
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
+    @NotNull
+    public ResourceLocation getArmorTexture(@NotNull ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
         return chestplateTexture;
     }
 
