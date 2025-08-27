@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -43,21 +42,6 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
         return (!bl || !blockPlaceContext.getItemInHand().is(getHeadBlock().asItem())) && bl;
     }
 
-    public @NotNull BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
-        if (direction == Direction.DOWN && !blockState.canSurvive(levelAccessor, blockPos)) {
-            levelAccessor.scheduleTick(blockPos, this, 1);
-        }
-        HopsCropHeadBlock hopsCropHeadBlock = getHeadBlock();
-        if (direction == Direction.UP && !blockState2.is(this) && !blockState2.is(hopsCropHeadBlock)) {
-            if (getHeight(blockPos, levelAccessor) > 2 && !isRopeAbove(levelAccessor, blockPos)) {
-                levelAccessor.scheduleTick(blockPos, hopsCropHeadBlock, 1);
-            }
-            return hopsCropHeadBlock.getStateForAge(blockState.getValue(AGE));
-        } else {
-            return blockState;
-        }
-    }
-
     @Override
     public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return true;
@@ -68,21 +52,8 @@ public class HopsCropBodyBlock extends HopsCropBlock implements BonemealableBloc
         return true;
     }
 
-
     @Override
     public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
-        Optional<BlockPos> optional = this.getHeadPos(serverLevel, blockPos, blockState.getBlock());
-        if (optional.isPresent()) {
-            BlockPos pos = optional.get();
-            if (HopsCropHeadBlock.canGrowInto(serverLevel, pos.above())) {
-                serverLevel.setBlockAndUpdate(pos.above(), ObjectRegistry.HOPS_CROP.get().defaultBlockState());
-                return;
-            }
-        }
-        if (this.canGrow(blockState)) {
-            serverLevel.setBlockAndUpdate(blockPos, getStateForAge(blockState.getValue(AGE) + 1));
-        } else {
-            dropHops(serverLevel, blockPos, blockState);
-        }
+
     }
 }

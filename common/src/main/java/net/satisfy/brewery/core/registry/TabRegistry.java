@@ -70,7 +70,6 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.BREWFEST_BOOTS.get());
                 out.accept(ObjectRegistry.BREWFEST_SHOES.get());
                 out.accept(ObjectRegistry.BREATHALYZER.get());
-                out.accept(ObjectRegistry.ROPE.get());
                 out.accept(ObjectRegistry.BREWERY_BANNER.get());
                 out.accept(ObjectRegistry.BEER_ELEMENTAL_SPAWN_EGG.get());
             })

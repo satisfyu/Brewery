@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class HopsCropBlock extends Block {
     public static final IntegerProperty AGE;
+    public static final BooleanProperty SUPPORTED = BooleanProperty.create("supported");
     private static final int MAX_AGE = 3;
 
     static {
@@ -50,11 +52,6 @@ public abstract class HopsCropBlock extends Block {
 
     public static HopsCropBodyBlock getBodyBlock() {
         return (HopsCropBodyBlock) ObjectRegistry.HOPS_CROP_BODY.get();
-    }
-
-    protected static boolean isRopeAbove(LevelAccessor level, BlockPos pos) {
-        BlockState above = level.getBlockState(pos.above());
-        return above.getBlock() instanceof RopeBlock || above.getBlock() instanceof RopeKnotBlock;
     }
 
     protected static int getHeight(BlockPos blockPos, LevelAccessor levelAccessor) {
@@ -148,6 +145,6 @@ public abstract class HopsCropBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(AGE);
+        builder.add(AGE, SUPPORTED);
     }
 }

@@ -31,9 +31,7 @@ import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SATIATION;
-import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SUSTENANCE;
-
+import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.*;
 
 public class ObjectRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Brewery.MOD_ID, Registries.BLOCK);
@@ -112,17 +110,8 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> DUMPLINGS_BLOCK = registerWithoutItem("dumplings", () -> new FoodBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(7).saturationModifier(0.8F).build()));
     public static final RegistrySupplier<Item> DUMPLINGS = registerItem("dumplings", () -> new EffectBlockItem(DUMPLINGS_BLOCK.get(), getFoodItemSettings(6, 0.5f, SATIATION.get(), 6000)));
     public static final RegistrySupplier<Block> GINGERBREAD = registerWithItem("gingerbread", () -> new WallDecorationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FLOWER_POT)));
-
     public static final RegistrySupplier<Block> BREWERY_BANNER = registerWithItem("brewery_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
     public static final RegistrySupplier<Block> BREWERY_WALL_BANNER = registerWithoutItem("brewery_wall_banner", () -> new CompletionistWallBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
-
-
-    public static final RegistrySupplier<Block> ROPE_BLOCK = registerWithItem("rope", () -> new RopeBlock(BlockBehaviour.Properties.of().noOcclusion().strength(0.5F).sound(SoundType.WOOL)));
-    public static final RegistrySupplier<Block> ROPE_KNOT = registerWithItem("rope_knot", () -> new RopeKnotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_FENCE).noOcclusion()));
-    public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeComboItem(ROPE_BLOCK.get(), getSettings()));
-
-
-
 
     public static void init() {
         ITEMS.register();
@@ -142,12 +131,6 @@ public class ObjectRegistry {
 
     public static BlockBehaviour.Properties properties(float breakSpeed, float explosionResist) {
         return BlockBehaviour.Properties.of().strength(breakSpeed, explosionResist);
-    }
-
-    private static Item.Properties getSettingsWithoutTab(Consumer<Item.Properties> consumer) {
-        Item.Properties settings = new Item.Properties();
-        consumer.accept(settings);
-        return settings;
     }
 
     private static Item.Properties getSettings(Consumer<Item.Properties> consumer) {

@@ -49,7 +49,6 @@ public class BreweryClient {
             return BiomeColors.getAverageWaterColor(world, pos);
         }, WOODEN_BREWINGSTATION, COPPER_BREWINGSTATION, NETHERITE_BREWINGSTATION);
 
-        BlockEntityRendererRegistry.register(EntityTypeRegistry.ROPE_KNOT_BLOCK_ENTITY.get(), ctx -> new RopeKnotRenderer());
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BREWERY_BANNER.get(), CompletionistBannerRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.STORAGE_ENTITY.get(), context -> new StorageBlockEntityRenderer());
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEER_MUG_BLOCK_ENTITY.get(), BeerMugRenderer::new);

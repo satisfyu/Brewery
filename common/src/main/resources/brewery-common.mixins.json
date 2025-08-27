@@ -12,7 +12,6 @@
     "AlcoholPlayerMixin",
     "MobFollowPlayerMixin",
     "PlayerMixin",
-    "TomatoCropBlockMixin",
     "VillagerDiscountMixin",
     "ZombieMixin"
   ],

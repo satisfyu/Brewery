@@ -34,7 +34,6 @@ public class EntityTypeRegistry {
     public static final RegistrySupplier<BlockEntityType<CabinetBlockEntity>> CABINET_BLOCK_ENTITY = registerBlockEntity("cabinet", () -> BlockEntityType.Builder.of(CabinetBlockEntity::new, addCabinet(new HashSet<>()).toArray(new Block[0])).build(null));
     public static final RegistrySupplier<BlockEntityType<CompletionistBannerEntity>> BREWERY_BANNER = registerBlockEntity("brewery_banner", () -> BlockEntityType.Builder.of(CompletionistBannerEntity::new, ObjectRegistry.BREWERY_BANNER.get(), ObjectRegistry.BREWERY_WALL_BANNER.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<WallDecorationBlockEntity>> WALL_DECORATION = registerBlockEntity("wall_decoration", () -> BlockEntityType.Builder.of(WallDecorationBlockEntity::new, ObjectRegistry.GINGERBREAD.get()).build(null));
-    public static final RegistrySupplier<BlockEntityType<RopeKnotBlockEntity>> ROPE_KNOT_BLOCK_ENTITY = registerBlockEntity("rope_knot", () -> BlockEntityType.Builder.of(RopeKnotBlockEntity::new, ObjectRegistry.ROPE_KNOT.get()).build(null));
 
     public static Set<Block> addCabinet(Set<Block> blocks) {
         blocks.add(ObjectRegistry.CABINET.get());
