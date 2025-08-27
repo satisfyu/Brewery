@@ -2,7 +2,6 @@ package net.satisfy.brewery.core.compat.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -23,34 +22,29 @@ import java.util.Objects;
 
 @JeiPlugin
 public class BreweryJEIClientPlugin implements IModPlugin {
-    public static RecipeType<BrewingRecipe> BREWING_TYPE = new RecipeType<>(BrewingStationCategory.UID, BrewingRecipe.class);
-
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return BreweryIdentifier.identifier( "jei_plugin");
+        return BreweryIdentifier.identifier("jei_plugin");
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(new BrewingStationCategory(registration.getJeiHelpers().getGuiHelper()));
-
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
         List<RecipeHolder<BrewingRecipe>> recipeHolders = rm.getAllRecipesFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get());
-        List<BrewingRecipe> recipesbrewing = new ArrayList<>();
-        recipeHolders.forEach(recipeHolder -> {
-            recipesbrewing.add(recipeHolder.value());
-        });
-        registration.addRecipes(BREWING_TYPE, recipesbrewing);
+        List<BrewingRecipe> recipes = new ArrayList<>();
+        recipeHolders.forEach(rh -> recipes.add(rh.value()));
+        registration.addRecipes(BrewingStationCategory.TYPE, recipes);
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ObjectRegistry.WOODEN_BREWINGSTATION.get().asItem().getDefaultInstance(), BREWING_TYPE);
-        registration.addRecipeCatalyst(ObjectRegistry.COPPER_BREWINGSTATION.get().asItem().getDefaultInstance(), BREWING_TYPE);
-        registration.addRecipeCatalyst(ObjectRegistry.NETHERITE_BREWINGSTATION.get().asItem().getDefaultInstance(), BREWING_TYPE);
+        registration.addRecipeCatalyst(ObjectRegistry.WOODEN_BREWINGSTATION.get().asItem().getDefaultInstance(), BrewingStationCategory.TYPE);
+        registration.addRecipeCatalyst(ObjectRegistry.COPPER_BREWINGSTATION.get().asItem().getDefaultInstance(), BrewingStationCategory.TYPE);
+        registration.addRecipeCatalyst(ObjectRegistry.NETHERITE_BREWINGSTATION.get().asItem().getDefaultInstance(), BrewingStationCategory.TYPE);
     }
 }
