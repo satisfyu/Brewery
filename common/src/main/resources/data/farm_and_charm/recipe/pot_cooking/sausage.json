@@ -11,11 +11,10 @@
       "tag": "farm_and_charm:cabbage"
     }
   ],
+  "requireContainer": true,
   "container": {
-    "required": true,
-    "item": {
-      "item": "minecraft:bowl"
-    }
+    "id": "minecraft:bowl",
+    "count": 1
   },
   "result": {
     "id": "brewery:sausage",

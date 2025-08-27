@@ -7,8 +7,9 @@
   "authors": [
     "satisfy"
   ],
-  "credits": [
-    "MissLilitu, CR-055"
+  "contributors": [
+    "MissLilitu",
+    "CR-055"
   ],
   "contact": {
     "issues": "https://github.com/satisfyu/Let-s-Do-Hub",
@@ -38,6 +39,6 @@
     "fabric": "*",
     "minecraft": ">=1.21.1",
     "architectury": ">=6.5.82",
-    "farm_and_charm": ">=1.0.6"
+    "farm_and_charm": ">=1.1.0"
   }
 }

@@ -17,12 +17,22 @@
               "function": "minecraft:set_count"
             },
             {
+              "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 1.0,
                 "min": 0.0
               },
-              "function": "minecraft:looting_enchant"
+              "add": true,
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "looting_multiplier": 1.0
+                  },
+                  "entity": "this"
+                }
+              ]
             }
           ],
           "name": "brewery:half_chicken"
@@ -37,12 +47,22 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
                 "max": 1.0,
                 "min": 0.0
               },
-              "function": "minecraft:looting_enchant"
+              "add": true,
+              "conditions": [
+                {
+                  "condition": "minecraft:entity_properties",
+                  "predicate": {
+                    "looting_multiplier": 1.0
+                  },
+                  "entity": "this"
+                }
+              ]
             }
           ],
           "name": "brewery:fried_chicken",
@@ -76,9 +96,15 @@
           "condition": "minecraft:killed_by_player"
         },
         {
-          "chance": 0.025,
-          "condition": "minecraft:random_chance_with_looting",
-          "looting_multiplier": 0.01
+          "condition": "minecraft:random_chance",
+          "chance": 0.025
+        },
+        {
+          "condition": "minecraft:entity_properties",
+          "predicate": {
+            "looting_multiplier": 0.01
+          },
+          "entity": "this"
         }
       ],
       "entries": [
