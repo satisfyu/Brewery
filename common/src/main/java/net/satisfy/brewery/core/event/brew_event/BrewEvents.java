@@ -1,7 +1,7 @@
 package net.satisfy.brewery.core.event.brew_event;
 
 import net.minecraft.resources.ResourceLocation;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.Brewery;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class BrewEvents {
     }
 
     public static ResourceLocation registerBrewEvent(String id, Supplier<BrewEvent> brewEventSupplier) {
-        ResourceLocation resourceLocation = BreweryIdentifier.identifier(id);
+        ResourceLocation resourceLocation = Brewery.identifier(id);
         BREW_EVENTS.put(resourceLocation, brewEventSupplier);
         return resourceLocation;
     }

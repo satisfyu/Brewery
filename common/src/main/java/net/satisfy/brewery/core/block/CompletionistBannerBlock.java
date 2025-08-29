@@ -25,10 +25,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.entity.CompletionistBannerEntity;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -121,7 +121,7 @@ public class CompletionistBannerBlock extends BaseEntityBlock {
     }
 
     public ResourceLocation getRenderTexture() {
-        return BreweryIdentifier.identifier("textures/banner/brewery_banner.png");
+        return Brewery.identifier("textures/banner/brewery_banner.png");
     }
 
     @Override

@@ -23,6 +23,12 @@
     },
     "age=3,supported=true": {
       "model": "brewery:block/hops_bottom_stage3_supported"
+    },
+    "age=4,supported=false": {
+      "model": "brewery:block/hops_bottom_stage4"
+    },
+    "age=4,supported=true": {
+      "model": "brewery:block/hops_bottom_stage4_supported"
     }
   }
 }
