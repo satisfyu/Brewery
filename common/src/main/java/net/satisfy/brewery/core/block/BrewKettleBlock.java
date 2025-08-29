@@ -149,7 +149,9 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
                 return ItemInteractionResult.CONSUME;
             }
             if (blockState.getValue(LIQUID) != Liquid.BEER) {
-                ItemInteractionResult interactionResult = brewKettleEntity.addIngredient(itemStack);
+                ItemStack insertStack = player.isCreative() ? itemStack.copy() : itemStack;
+                if (player.isCreative()) insertStack.setCount(1);
+                ItemInteractionResult interactionResult = brewKettleEntity.addIngredient(insertStack);
                 if (interactionResult == ItemInteractionResult.SUCCESS) {
                     level.playSound(null, blockPos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.PLAYERS, 1.0F, 1.0F);
                     level.sendBlockUpdated(blockPos, blockState, blockState, UPDATE_CLIENTS);
@@ -160,23 +162,19 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, blockHitResult);
     }
 
-
     @Override
     public void animateTick(BlockState blockState, Level level, BlockPos blockPos, RandomSource randomSource) {
         if (blockState.getValue(LIQUID) == Liquid.OVERFLOWING) {
             double x = blockPos.getX() + 0.5;
             double y = blockPos.getY() + 0.95;
             double z = blockPos.getZ() + 0.5;
-
-            if (randomSource.nextDouble() < 0.3D) {
+            if (randomSource.nextDouble() < 0.02D) {
                 level.playLocalSound(x, y, z, SoundEventRegistry.BREWSTATION_KETTLE.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
             }
-
             double offset = 0.2;
             double offsetX = randomSource.nextDouble() * offset - offset / 2;
             double offsetY = randomSource.nextDouble() * 0.1D;
             double offsetZ = randomSource.nextDouble() * offset - offset / 2;
-
             level.addParticle(ParticleTypes.BUBBLE, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
             level.addParticle(ParticleTypes.BUBBLE_POP, x + offsetX, y + offsetY, z + offsetZ, 0.0, 0.0, 0.0);
         }
@@ -255,13 +253,12 @@ public class BrewKettleBlock extends BrewingstationBlock implements EntityBlock 
         return new BrewstationBlockEntity(blockPos, blockState);
     }
 
-    @SuppressWarnings("unchecked")
-    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return (world1, pos, state1, blockEntity) -> {
-            if (blockEntity instanceof BlockEntityTicker<?>) {
-                ((BlockEntityTicker<T>) blockEntity).tick(world, pos, state1, blockEntity);
+    @Nullable
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return (lvl, pos, st, be) -> {
+            if (be instanceof BrewstationBlockEntity kettle) {
+                kettle.tick(lvl, pos, st, kettle);
             }
         };
     }

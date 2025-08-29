@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
+
 public class BrewEvents {
     public static final Map<ResourceLocation, Supplier<BrewEvent>> BREW_EVENTS = new HashMap<>();
 

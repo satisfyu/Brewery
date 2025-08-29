@@ -99,14 +99,15 @@ public class BrewHelper {
         Iterator<BrewEvent> iterator = eventSet.iterator();
         while (iterator.hasNext()) {
             BrewEvent event = iterator.next();
-            if (event != null) {
-                event.tick(entity);
-                if (event.isFinish(entity.getComponents(), entity.getLevel())) {
-                    endEvent(entity, iterator, event);
-                    entity.growSolved();
-                } else if (event.getTimeLeft() <= 0) {
-                    endEvent(entity, iterator, event);
-                }
+            if (event == null) continue;
+            event.tick(entity);
+            if (event.isFinish(entity.getComponents(), entity.getLevel())) {
+                entity.onEventFinished(event, true);
+                endEvent(entity, iterator, event);
+                entity.growSolved();
+            } else if (event.getTimeLeft() <= 0) {
+                entity.onEventFinished(event, false);
+                endEvent(entity, iterator, event);
             }
         }
     }

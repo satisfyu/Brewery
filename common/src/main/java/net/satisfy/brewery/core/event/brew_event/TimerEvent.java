@@ -10,6 +10,7 @@ import net.satisfy.brewery.core.registry.ObjectRegistry;
 import java.util.Set;
 
 public class TimerEvent extends BrewEvent {
+    
     @Override
     public CompoundTag save(CompoundTag compoundTag) {
         return compoundTag;

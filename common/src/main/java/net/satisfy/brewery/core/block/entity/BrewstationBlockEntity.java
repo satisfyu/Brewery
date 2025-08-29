@@ -32,7 +32,11 @@ import net.satisfy.brewery.core.event.brew_event.BrewEvents;
 import net.satisfy.brewery.core.event.brew_event.BrewHelper;
 import net.satisfy.brewery.core.item.DrinkBlockItem;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
-import net.satisfy.brewery.core.registry.*;
+import net.satisfy.brewery.core.registry.BlockStateRegistry;
+import net.satisfy.brewery.core.registry.EntityTypeRegistry;
+import net.satisfy.brewery.core.registry.ObjectRegistry;
+import net.satisfy.brewery.core.registry.RecipeTypeRegistry;
+import net.satisfy.brewery.core.registry.SoundEventRegistry;
 import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import net.satisfy.farm_and_charm.core.world.ImplementedInventory;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +60,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     private final Set<BrewEvent> runningEvents = new HashSet<>();
     private int solved;
     private int totalEvents;
+    private int eventQuota = -1;
+    private int overflowStarted;
+    private int overflowSolved;
     private NonNullList<ItemStack> ingredients;
     private ItemStack beer = ItemStack.EMPTY;
     private final SoundEvent spawnEntitySound = SoundEventRegistry.BREWSTATION_PROCESS_FAILED.get();
@@ -112,46 +119,44 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         if (level.isClientSide) return;
         if (!this.beer.isEmpty()) return;
 
-        List<RecipeHolder<BrewingRecipe>> recipeHolders = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get());
+        RecipeHolder<BrewingRecipe> active = findActiveRecipe(level);
+        if (active == null) {
+            endBrewing();
+            return;
+        }
 
-        recipeHolders.forEach(recipe -> {
-            if (recipe != null) {
-                if (!canBrew(recipe.value())) {
-                    endBrewing();
-                    return;
+        if (eventQuota < 0) eventQuota = computeEventQuota();
+
+        if (soundTime >= SOUND_DURATION) {
+            level.playSound(null, blockPos, SoundEventRegistry.BREWSTATION_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+            soundTime = 0;
+        }
+        soundTime++;
+
+        if (timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
+
+        BrewHelper.checkRunningEvents(this);
+
+        int timeLeft = MAX_BREW_TIME - brewTime;
+
+        if (brewTime >= MAX_BREW_TIME) {
+            RegistryAccess access = level.registryAccess();
+            this.brew(active.value(), access);
+        } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && totalEvents < eventQuota && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
+            BrewEvent event = BrewHelper.getRdmEvent(this);
+            if (event != null) {
+                ResourceLocation eventId = BrewEvents.getId(event);
+                if (eventId != null) {
+                    if (eventId.equals(BrewEvents.KETTLE_EVENT)) overflowStarted++;
+                    event.start(this.components, level);
+                    runningEvents.add(event);
+                    totalEvents++;
                 }
-
-                if (soundTime >= SOUND_DURATION) {
-                    assert this.level != null;
-                    level.playSound(null, blockPos, SoundEventRegistry.BREWSTATION_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                    soundTime = 0;
-                }
-                soundTime++;
-                if(timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
-
-                BrewHelper.checkRunningEvents(this);
-
-                int timeLeft = MAX_BREW_TIME - brewTime;
-
-                if (brewTime >= MAX_BREW_TIME) {
-                    RegistryAccess access = level.registryAccess();
-                    this.brew(recipe.value(), access);
-                } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
-                    BrewEvent event = BrewHelper.getRdmEvent(this);
-                    if (event != null) {
-                        ResourceLocation eventId = BrewEvents.getId(event);
-                        if (eventId != null) {
-                            event.start(this.components, level);
-                            runningEvents.add(event);
-                            totalEvents++;
-                        }
-                    }
-                    setTimeToEvent();
-                }
-                brewTime++;
-                timeToNextEvent--;
             }
-        });
+            setTimeToEvent();
+        }
+        brewTime++;
+        timeToNextEvent--;
     }
 
     private void setTimeToEvent() {
@@ -166,8 +171,7 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     private boolean canBrew(@Nullable Recipe<?> recipe) {
-        if (recipe == null || this.level == null)
-            return false;
+        if (recipe == null || this.level == null) return false;
         BlockState blockState = this.level.getBlockState(this.getBlockPos());
         return recipe instanceof BrewingRecipe brewingRecipe &&
                 blockState.getValue(BlockStateRegistry.MATERIAL).getLevel() >= brewingRecipe.getMaterial().getLevel() &&
@@ -187,15 +191,12 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         this.beer = resultStack;
         spawnElementals();
         endBrewing();
-
         if (this.level != null) {
             BlockState blockState = this.level.getBlockState(this.getBlockPos());
             this.level.setBlockAndUpdate(this.getBlockPos(), blockState.setValue(BlockStateRegistry.LIQUID, Liquid.BEER));
-
             BlockPos ovenPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, level);
             BlockState ovenState = this.level.getBlockState(ovenPos);
             this.level.setBlockAndUpdate(ovenPos, ovenState.setValue(BlockStateRegistry.HEAT, Heat.OFF));
-
             BlockPos timerPos = BrewHelper.getBlock(ObjectRegistry.BREW_TIMER.get(), this.components, level);
             BlockState timerState = this.level.getBlockState(timerPos);
             this.level.setBlockAndUpdate(timerPos, timerState.setValue(BlockStateRegistry.TIME, false));
@@ -212,18 +213,58 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     }
 
     private void spawnElementals() {
-        assert this.level != null;
-        BlockState blockState = this.level.getBlockState(this.getBlockPos());
-        if (this.solved == 0 && this.level != null && this.level.random.nextDouble() >= 0.1D && blockState.getValue(BlockStateRegistry.MATERIAL) == BrewMaterial.WOOD) {
-            BlockPos spawnPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, level);
-            if (spawnPos != null) {
-                BeerElementalEntity beerElemental = new BeerElementalEntity(EntityTypeRegistry.BEER_ELEMENTAL.get(), this.level);
-                beerElemental.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-                this.level.addFreshEntity(beerElemental);
+        if (this.level == null) return;
+        BlockState state = this.level.getBlockState(this.getBlockPos());
+        BrewMaterial material = state.getValue(BlockStateRegistry.MATERIAL);
+        boolean overflowUnresolved = overflowStarted > overflowSolved;
+        int failed = Math.max(0, this.totalEvents - this.solved);
+        boolean highFailRate = this.totalEvents > 0 && (failed * 2) > this.totalEvents;
 
-                this.level.playSound(null, spawnPos, spawnEntitySound, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
+        int count;
+        if (highFailRate) {
+            count = this.level.getRandom().nextInt(2, 4);
+        } else if (overflowUnresolved) {
+            count = material == BrewMaterial.COPPER ? 1 : 2;
+        } else {
+            count = 0;
         }
+
+        if (count <= 0) return;
+
+        BlockPos base = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, level);
+        if (base == null) return;
+
+        for (int n = 0; n < count; n++) {
+            BeerElementalEntity e = new BeerElementalEntity(EntityTypeRegistry.BEER_ELEMENTAL.get(), this.level);
+            double ox = this.level.getRandom().nextInt(-1, 2) + 0.5;
+            double oz = this.level.getRandom().nextInt(-1, 2) + 0.5;
+            e.setPos(base.getX() + ox, base.getY() + 1, base.getZ() + oz);
+            e.setHealth(20.0F);
+            this.level.addFreshEntity(e);
+            this.level.playSound(null, e.blockPosition(), spawnEntitySound, SoundSource.BLOCKS, 1.0F, 1.0F);
+        }
+
+        overflowStarted = 0;
+        overflowSolved = 0;
+    }
+
+    public void onEventFinished(BrewEvent event, boolean success) {
+        ResourceLocation id = BrewEvents.getId(event);
+        if (id == null) return;
+        if (id.equals(BrewEvents.KETTLE_EVENT)) {
+            if (success) overflowSolved++;
+        }
+    }
+
+    private int computeEventQuota() {
+        BrewMaterial material = this.getBlockState().getValue(BlockStateRegistry.MATERIAL);
+        assert this.level != null;
+        RandomSource rnd = this.level.getRandom();
+        return switch (material) {
+            case WOOD -> rnd.nextInt(8, 13);
+            case COPPER -> rnd.nextInt(4, 7);
+            case NETHERITE -> rnd.nextInt(1, 3);
+        };
     }
 
     public void endBrewing() {
@@ -232,6 +273,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         this.totalEvents = 0;
         this.soundTime = SOUND_DURATION;
         this.timeToNextEvent = Integer.MIN_VALUE;
+        this.eventQuota = -1;
+        this.overflowStarted = 0;
+        this.overflowSolved = 0;
     }
 
     public boolean isPartOf(BlockPos blockPos) {
@@ -251,6 +295,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         compoundTag.putInt("brewTime", this.brewTime);
         compoundTag.putInt("totalEvents", this.totalEvents);
         compoundTag.putInt("timeToNextEvent", this.timeToNextEvent);
+        compoundTag.putInt("eventQuota", this.eventQuota);
+        compoundTag.putInt("overflowStarted", this.overflowStarted);
+        compoundTag.putInt("overflowSolved", this.overflowSolved);
         BrewHelper.saveAdditional(this, compoundTag);
     }
 
@@ -266,6 +313,9 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         this.brewTime = compoundTag.getInt("brewTime");
         this.totalEvents = compoundTag.getInt("totalEvents");
         this.timeToNextEvent = compoundTag.getInt("timeToNextEvent");
+        this.eventQuota = compoundTag.getInt("eventQuota");
+        this.overflowStarted = compoundTag.getInt("overflowStarted");
+        this.overflowSolved = compoundTag.getInt("overflowSolved");
         BrewHelper.load(this, compoundTag);
     }
 
@@ -305,11 +355,40 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
 
     @Override
     public boolean stillValid(Player player) {
-        assert this.level != null;
         if (this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
         } else {
             return player.distanceToSqr((double) this.worldPosition.getX() + 0.5, (double) this.worldPosition.getY() + 0.5, (double) this.worldPosition.getZ() + 0.5) <= 64.0;
         }
+    }
+
+    private @Nullable RecipeHolder<BrewingRecipe> findActiveRecipe(Level level) {
+        List<RecipeHolder<BrewingRecipe>> recipeHolders = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.BREWING_RECIPE_TYPE.get());
+        for (RecipeHolder<BrewingRecipe> holder : recipeHolders) {
+            BrewingRecipe r = holder.value();
+            if (canBrew(r) && ingredientsMatch(r)) {
+                return holder;
+            }
+        }
+        return null;
+    }
+
+    private boolean ingredientsMatch(BrewingRecipe recipe) {
+        List<Ingredient> req = recipe.getIngredients();
+        boolean[] used = new boolean[this.ingredients.size()];
+        int matched = 0;
+        for (Ingredient ing : req) {
+            boolean found = false;
+            for (int i = 0; i < this.ingredients.size(); i++) {
+                if (!used[i] && ing.test(this.ingredients.get(i))) {
+                    used[i] = true;
+                    found = true;
+                    matched++;
+                    break;
+                }
+            }
+            if (!found) return false;
+        }
+        return matched == req.size();
     }
 }
