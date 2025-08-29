@@ -14,7 +14,6 @@ import net.satisfy.brewery.core.block.entity.*;
 import net.satisfy.brewery.core.entity.BeerElementalAttackEntity;
 import net.satisfy.brewery.core.entity.BeerElementalEntity;
 import net.satisfy.brewery.core.entity.DarkBrewEntity;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,9 +23,9 @@ public class EntityTypeRegistry {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Brewery.MOD_ID, Registries.BLOCK_ENTITY_TYPE);
     private static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Brewery.MOD_ID, Registries.ENTITY_TYPE);
 
-    public static final RegistrySupplier<EntityType<DarkBrewEntity>> DARK_BREW = registerEntityType("dark_brew", () -> EntityType.Builder.<DarkBrewEntity>of(DarkBrewEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(BreweryIdentifier.identifier("dark_brew").toString()));
-    public static final RegistrySupplier<EntityType<BeerElementalEntity>> BEER_ELEMENTAL = registerEntityType("beer_elemental", () -> EntityType.Builder.of(BeerElementalEntity::new, MobCategory.MONSTER).sized(1.0F, 1.6F).clientTrackingRange(80).updateInterval(3).build(BreweryIdentifier.identifier("beer_elemental").toString()));
-    public static final RegistrySupplier<EntityType<BeerElementalAttackEntity>> BEER_ELEMENTAL_ATTACK = registerEntityType("beer_elemental_attack", () -> EntityType.Builder.<BeerElementalAttackEntity>of(BeerElementalAttackEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build(BreweryIdentifier.identifier("beer_elemental_attack").toString()));
+    public static final RegistrySupplier<EntityType<DarkBrewEntity>> DARK_BREW = registerEntityType("dark_brew", () -> EntityType.Builder.<DarkBrewEntity>of(DarkBrewEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(Brewery.identifier("dark_brew").toString()));
+    public static final RegistrySupplier<EntityType<BeerElementalEntity>> BEER_ELEMENTAL = registerEntityType("beer_elemental", () -> EntityType.Builder.of(BeerElementalEntity::new, MobCategory.MONSTER).sized(1.0F, 1.6F).clientTrackingRange(80).updateInterval(3).build(Brewery.identifier("beer_elemental").toString()));
+    public static final RegistrySupplier<EntityType<BeerElementalAttackEntity>> BEER_ELEMENTAL_ATTACK = registerEntityType("beer_elemental_attack", () -> EntityType.Builder.<BeerElementalAttackEntity>of(BeerElementalAttackEntity::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build(Brewery.identifier("beer_elemental_attack").toString()));
 
     public static final RegistrySupplier<BlockEntityType<BrewstationBlockEntity>> BREWINGSTATION_BLOCK_ENTITY = registerBlockEntity("brewingstation", () -> BlockEntityType.Builder.of(BrewstationBlockEntity::new, ObjectRegistry.WOODEN_BREWINGSTATION.get(), ObjectRegistry.COPPER_BREWINGSTATION.get(), ObjectRegistry.NETHERITE_BREWINGSTATION.get()).build(null));
     public static final RegistrySupplier<BlockEntityType<BeerMugBlockEntity>> BEER_MUG_BLOCK_ENTITY = registerBlockEntity("beer_mug", () -> BlockEntityType.Builder.of(BeerMugBlockEntity::new, ObjectRegistry.BEER_MUG.get()).build(null));
@@ -47,11 +46,11 @@ public class EntityTypeRegistry {
     }
 
     private static <T extends BlockEntityType<?>> RegistrySupplier<T> registerBlockEntity(final String path, final Supplier<T> type) {
-        return BLOCK_ENTITY_TYPES.register(BreweryIdentifier.identifier(path), type);
+        return BLOCK_ENTITY_TYPES.register(Brewery.identifier(path), type);
     }
 
     private static <T extends EntityType<?>> RegistrySupplier<T> registerEntityType(final String path, final Supplier<T> type) {
-        return ENTITY_TYPES.register(BreweryIdentifier.identifier(path), type);
+        return ENTITY_TYPES.register(Brewery.identifier(path), type);
     }
 
     public static void init() {

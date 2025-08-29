@@ -13,15 +13,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.recipe.BrewingRecipe;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewingStationCategory implements IRecipeCategory<BrewingRecipe> {
-    public static final ResourceLocation UID = BreweryIdentifier.identifier("brewing");
+    public static final ResourceLocation UID = Brewery.identifier("brewing");
+    public static final ResourceLocation TEXTURE = Brewery.identifier("textures/gui/brewingstation.png");
     public static final RecipeType<BrewingRecipe> TYPE = new RecipeType<>(UID, BrewingRecipe.class);
-    public static final ResourceLocation TEXTURE = BreweryIdentifier.identifier("textures/gui/brewingstation.png");
 
     private final IDrawable background;
     private final IDrawable icon;

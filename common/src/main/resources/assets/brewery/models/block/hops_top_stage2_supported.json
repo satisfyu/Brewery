@@ -1,5 +1,6 @@
+
 {
-  "parent": "farm_and_charm:block/template_cross_crop",
+  "parent": "farm_and_charm:block/template_cross_crop_supported",
   "textures": {
     "4": "brewery:block/hops_top_stage2",
     "particle": "brewery:block/hops_top_stage2"

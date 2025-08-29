@@ -80,6 +80,7 @@ public class StorageBlockEntity extends BlockEntity {
         return this.saveWithoutMetadata(provider);
     }
 
+    @SuppressWarnings("unused")
     public void setInventory(NonNullList<ItemStack> inventory) {
         for (int i = 0; i < inventory.size(); i++) {
             this.inventory.set(i, inventory.get(i));

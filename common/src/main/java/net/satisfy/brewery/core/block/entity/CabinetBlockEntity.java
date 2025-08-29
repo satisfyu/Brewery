@@ -114,6 +114,7 @@ public class CabinetBlockEntity extends RandomizableContainerBlockEntity {
         }
     }
 
+    @SuppressWarnings("unused")
     public void tick() {
         if (!this.remove) {
             this.stateManager.recheckOpeners(this.getLevel(), this.getBlockPos(), this.getBlockState());

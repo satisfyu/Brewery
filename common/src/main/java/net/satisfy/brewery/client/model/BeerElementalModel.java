@@ -9,14 +9,14 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.monster.Monster;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.Brewery;
 
 import java.util.Arrays;
 
 @SuppressWarnings("unused")
 public class BeerElementalModel<T extends Monster> extends EntityModel<T> {
 
-    public static final ModelLayerLocation BEER_ELEMENTAL_MODEL_LAYER = new ModelLayerLocation(BreweryIdentifier.identifier("beer_elemental"), "main");
+    public static final ModelLayerLocation BEER_ELEMENTAL_MODEL_LAYER = new ModelLayerLocation(Brewery.identifier("beer_elemental"), "main");
     private final ModelPart[] upperBodyParts;
 
     private final ModelPart upperBodyParts0;

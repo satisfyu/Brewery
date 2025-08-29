@@ -14,7 +14,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.satisfy.brewery.core.item.BrewfestChestItem;
 import net.satisfy.brewery.core.registry.ArmorRegistry;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

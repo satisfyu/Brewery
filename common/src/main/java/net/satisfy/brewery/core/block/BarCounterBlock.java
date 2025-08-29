@@ -29,7 +29,6 @@ import static net.satisfy.farm_and_charm.core.util.GeneralUtil.LINE_CONNECTING_T
 
 
 public class BarCounterBlock extends Block {
-
     public static final DirectionProperty FACING;
     public static final EnumProperty<GeneralUtil.LineConnectingType> TYPE;
     private static final Supplier<VoxelShape> voxelShapeSupplier = () -> {

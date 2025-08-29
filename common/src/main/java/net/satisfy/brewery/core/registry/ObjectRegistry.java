@@ -20,7 +20,6 @@ import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.*;
 import net.satisfy.brewery.core.block.property.BrewMaterial;
 import net.satisfy.brewery.core.item.*;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 import net.satisfy.farm_and_charm.core.block.BenchBlock;
 import net.satisfy.farm_and_charm.core.block.FacingBlock;
 import net.satisfy.farm_and_charm.core.block.FoodBlock;
@@ -31,7 +30,8 @@ import net.satisfy.farm_and_charm.core.util.GeneralUtil;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.*;
+import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SATIATION;
+import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SUSTENANCE;
 
 public class ObjectRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Brewery.MOD_ID, Registries.BLOCK);
@@ -45,14 +45,14 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new EffectItem(getFoodItemSettings(6, 0.5f, SUSTENANCE.get(), 6000), 6000, true));
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new EffectItem(getFoodItemSettings(3, 0.4f, SUSTENANCE.get(), 2000), 2000, false));
     public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityTypeRegistry.BEER_ELEMENTAL, -1, -1, getSettings()));
-    public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), BreweryIdentifier.identifier("textures/models/armor/brewfest_hat.png")));
-    public static final RegistrySupplier<Item> BREWFEST_HAT_RED = registerItem("brewfest_hat_red", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), BreweryIdentifier.identifier("textures/models/armor/brewfest_hat_red.png")));
-    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestChestItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), BreweryIdentifier.identifier("textures/models/armor/lederhosen.png")));
-    public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestLegsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), BreweryIdentifier.identifier("textures/models/armor/lederhosen.png")));
-    public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new BrewfestBootsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), BreweryIdentifier.identifier("textures/models/armor/lederhosen.png")));
-    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestLegsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.LEGGINGS, getSettings().rarity(Rarity.RARE), BreweryIdentifier.identifier("textures/models/armor/dirndl.png")));
-    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new BrewfestChestItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), BreweryIdentifier.identifier("textures/models/armor/dirndl.png")));
-    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestBootsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), BreweryIdentifier.identifier("textures/models/armor/dirndl.png")));
+    public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), Brewery.identifier("textures/models/armor/brewfest_hat.png")));
+    public static final RegistrySupplier<Item> BREWFEST_HAT_RED = registerItem("brewfest_hat_red", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), Brewery.identifier("textures/models/armor/brewfest_hat_red.png")));
+    public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestChestItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), Brewery.identifier("textures/models/armor/lederhosen.png")));
+    public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestLegsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), Brewery.identifier("textures/models/armor/lederhosen.png")));
+    public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new BrewfestBootsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), Brewery.identifier("textures/models/armor/lederhosen.png")));
+    public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestLegsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.LEGGINGS, getSettings().rarity(Rarity.RARE), Brewery.identifier("textures/models/armor/dirndl.png")));
+    public static final RegistrySupplier<Item> BREWFEST_BLOUSE = registerItem("brewfest_blouse", () -> new BrewfestChestItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), Brewery.identifier("textures/models/armor/dirndl.png")));
+    public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestBootsItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), Brewery.identifier("textures/models/armor/dirndl.png")));
     public static final RegistrySupplier<Block> WILD_HOPS = registerWithoutItem("wild_hops", () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH)));
     public static final RegistrySupplier<Block> HOPS_CROP = registerWithoutItem("hops_crop", () -> new HopsCropHeadBlock(getBushSettings().randomTicks()));
     public static final RegistrySupplier<Item> HOPS_SEEDS = registerItem("hops_seeds", () -> new ItemNameBlockItem(HOPS_CROP.get(), getSettings()));
@@ -184,14 +184,14 @@ public class ObjectRegistry {
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithItem(String name, Supplier<T> block) {
-        return GeneralUtil.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, BreweryIdentifier.identifier(name), block);
+        return GeneralUtil.registerWithItem(BLOCKS, BLOCK_REGISTRAR, ITEMS, ITEM_REGISTRAR, Brewery.identifier(name), block);
     }
 
     public static <T extends Block> RegistrySupplier<T> registerWithoutItem(String path, Supplier<T> block) {
-        return GeneralUtil.registerWithoutItem(BLOCKS, BLOCK_REGISTRAR, BreweryIdentifier.identifier(path), block);
+        return GeneralUtil.registerWithoutItem(BLOCKS, BLOCK_REGISTRAR, Brewery.identifier(path), block);
     }
 
     public static <T extends Item> RegistrySupplier<T> registerItem(String path, Supplier<T> itemSupplier) {
-        return GeneralUtil.registerItem(ITEMS, ITEM_REGISTRAR, BreweryIdentifier.identifier(path), itemSupplier);
+        return GeneralUtil.registerItem(ITEMS, ITEM_REGISTRAR, Brewery.identifier(path), itemSupplier);
     }
 }

@@ -10,26 +10,50 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
+import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.entity.BeerElementalAttackEntity;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class BeerElementalAttackRenderer extends EntityRenderer<BeerElementalAttackEntity> {
-
-    private static final ResourceLocation TEXTURE_LOCATION = BreweryIdentifier.identifier("textures/particle/beer_elemental_attack.png");
+    private static final ResourceLocation TEXTURE_LOCATION = Brewery.identifier("textures/particle/beer_elemental_attack.png");
 
     private static final float SCALE = 0.4F;
-    private static final Vec2[] UVS = new Vec2[]{new Vec2(1F, 1F), new Vec2(0F, 1F), new Vec2(0F, 0F), new Vec2(1F, 0F)};
-    private static final Vector3f[] VERTS = new Vector3f[]{new Vector3f(0.5F, -0.5F, 0.0F), new Vector3f(-0.5F, -0.5F, 0.0F), new Vector3f(-0.5F, 0.5F, 0.0F), new Vector3f(0.5F, 0.5F, 0.0F)};
+    private static final Vec2[] UVS = new Vec2[]{
+            new Vec2(1F, 1F), new Vec2(0F, 1F), new Vec2(0F, 0F), new Vec2(1F, 0F)
+    };
+    private static final Vector3f[] VERTS = new Vector3f[]{
+            new Vector3f(0.5F, -0.5F, 0.0F),
+            new Vector3f(-0.5F, -0.5F, 0.0F),
+            new Vector3f(-0.5F, 0.5F, 0.0F),
+            new Vector3f(0.5F, 0.5F, 0.0F)
+    };
 
     public BeerElementalAttackRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
-    public static void render(PoseStack.Pose pose, VertexConsumer vertexBuilder, int combinedLight) {
+    @Override
+    public void render(BeerElementalAttackEntity entity, float f, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int combinedLight) {
+        if (entity.tickCount < 2 && entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)
+            return;
+
+        poseStack.pushPose();
+
+        poseStack.scale(SCALE, SCALE, SCALE);
+        poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
+
+        VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.entityTranslucentCull(TEXTURE_LOCATION));
+        renderQuad(poseStack.last(), vertexConsumer, combinedLight);
+
+        poseStack.popPose();
+
+        super.render(entity, f, partialTick, poseStack, buffer, combinedLight);
+    }
+
+    private static void renderQuad(PoseStack.Pose pose, VertexConsumer vertexBuilder, int combinedLight) {
         Matrix4f poseMatrix = pose.pose();
         for (int i = 0; i < 4; i++) {
             Vector3f localPos = VERTS[i];
@@ -43,31 +67,14 @@ public class BeerElementalAttackRenderer extends EntityRenderer<BeerElementalAtt
                     quadUvs.x, quadUvs.y,
                     OverlayTexture.NO_OVERLAY,
                     combinedLight,
-                    0F, 1F, 0F
+                    1F, 1F, 1F
             );
         }
     }
 
     @Override
-    protected int getBlockLightLevel(BeerElementalAttackEntity entity, BlockPos blockPos) {
-        return super.getBlockLightLevel(entity, blockPos);
-    }
-
-    @Override
-    public void render(BeerElementalAttackEntity entity, float f, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int combinedLight) {
-        if (entity.tickCount < 2 && entityRenderDispatcher.camera.getEntity().distanceToSqr(entity) < 12.25D)
-            return;
-
-        poseStack.pushPose();
-
-        poseStack.scale(SCALE, SCALE, SCALE);
-
-        poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-        render(poseStack.last(), buffer.getBuffer((RenderType.entityTranslucentCull(TEXTURE_LOCATION))), combinedLight);
-
-        poseStack.popPose();
-
-        super.render(entity, f, partialTick, poseStack, buffer, combinedLight);
+    protected int getBlockLightLevel(BeerElementalAttackEntity entity, BlockPos pos) {
+        return 15;
     }
 
     @Override

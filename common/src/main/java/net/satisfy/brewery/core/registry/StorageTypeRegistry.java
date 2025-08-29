@@ -2,13 +2,13 @@ package net.satisfy.brewery.core.registry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.Brewery;
 
 import java.util.List;
 import java.util.Set;
 
 public class StorageTypeRegistry {
-    public static final ResourceLocation BEVERAGE = BreweryIdentifier.identifier("beverage");
+    public static final ResourceLocation BEVERAGE = Brewery.identifier("beverage");
 
     public static Set<Block> registerBlocks(Set<Block> blocks) {
         blocks.add(ObjectRegistry.BEER_MUG.get());

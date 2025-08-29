@@ -22,18 +22,9 @@ public class BeerElementalAttackEntity extends AbstractHurtingProjectile {
         playCreationSound();
     }
 
-    public BeerElementalAttackEntity(Level level, double d, double e, double f, Vec3 vec3) {
-        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), d, e, f, vec3, level);
-
-        double velocityModifier = 0.4;
-        this.setDeltaMovement(this.getDeltaMovement().multiply(velocityModifier, velocityModifier, velocityModifier));
-
-    }
-
-    public BeerElementalAttackEntity(Level level, BeerElementalEntity elemental, double triangle, double dY, double triangle1) {
-        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), triangle, dY, triangle1, new Vec3(elemental.getX(), elemental.getY(), elemental.getZ()), level);
-        double velocityModifier = 0.4;
-        this.setDeltaMovement(this.getDeltaMovement().multiply(velocityModifier, velocityModifier, velocityModifier));
+    public BeerElementalAttackEntity(Level level, double x, double y, double z, Vec3 velocity) {
+        super(EntityTypeRegistry.BEER_ELEMENTAL_ATTACK.get(), x, y, z, velocity, level);
+        this.setDeltaMovement(this.getDeltaMovement().multiply(0.4, 0.4, 0.4));
     }
 
     private void playCreationSound() {

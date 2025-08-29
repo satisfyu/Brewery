@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.satisfy.brewery.Brewery;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 public class SoundEventRegistry {
     public static final Registrar<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Brewery.MOD_ID, Registries.SOUND_EVENT).getRegistrar();
@@ -29,7 +28,7 @@ public class SoundEventRegistry {
     public static final RegistrySupplier<SoundEvent> DRAWER_CLOSE = create("drawer_close");
 
     private static RegistrySupplier<SoundEvent> create(String name) {
-        final ResourceLocation id = BreweryIdentifier.identifier(name);
+        final ResourceLocation id = Brewery.identifier(name);
         return SOUND_EVENTS.register(id, () -> SoundEvent.createVariableRangeEvent(id));
     }
 

@@ -7,7 +7,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.Brewery;
 
 public class LoottableInjector {
     public static void InjectLoot(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context) {
@@ -32,7 +32,7 @@ public class LoottableInjector {
 
     @SuppressWarnings("rawtypes")
     private static LootPoolEntryContainer.Builder getPoolEntry(String name) {
-        ResourceKey table = ResourceKey.create(Registries.LOOT_TABLE, BreweryIdentifier.identifier("chests/" + name));
+        ResourceKey table = ResourceKey.create(Registries.LOOT_TABLE, Brewery.identifier("chests/" + name));
         return NestedLootTable.lootTableReference(table);
     }
 }

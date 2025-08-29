@@ -6,10 +6,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.network.packet.SetWallDecorationTextPacket;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class WallDecorationEditGui extends Screen {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(graphics, mouseX, mouseY, partialTick);
 
-        ResourceLocation texture = BreweryIdentifier.identifier("textures/block/gingerbread_heart.png");
+        ResourceLocation texture = Brewery.identifier("textures/block/gingerbread_heart.png");
         int w = 16 * 8;
         int h = 16 * 8;
         int x = (int)(this.width / 2.0 - 65);

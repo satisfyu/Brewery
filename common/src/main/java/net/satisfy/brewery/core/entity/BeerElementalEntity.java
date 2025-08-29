@@ -30,9 +30,9 @@ public class BeerElementalEntity extends Monster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-
                 .add(Attributes.MAX_HEALTH, 80.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.4D)
+                .add(Attributes.FOLLOW_RANGE, 32)
                 .add(Attributes.ATTACK_DAMAGE, 8.0D);
     }
 
@@ -144,60 +144,70 @@ public class BeerElementalEntity extends Monster {
             attackTime--;
 
             LivingEntity target = elemental.getTarget();
-            if (target == null)
-                return;
+            if (target == null) return;
 
             boolean canSee = elemental.getSensing().hasLineOfSight(target);
             lastSeen = canSee ? 0 : lastSeen + 1;
 
             double dist = elemental.distanceToSqr(target);
             double range = getFollowDistance() * getFollowDistance();
+
             if (dist < 4.0D) {
-                if (!canSee)
-                    return;
+                if (!canSee) return;
 
                 if (attackTime <= 0.0D) {
                     attackTime = 20;
                     elemental.doHurtTarget(target);
                 }
+
                 elemental.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
 
             } else if (dist < range && canSee) {
                 if (attackTime <= 0) {
                     attackStep++;
 
-                    if (attackStep == 1)
+                    if (attackStep == 1) {
                         attackTime = 60;
-                    else if (attackStep <= 4)
+                    } else if (attackStep <= 4) {
                         attackTime = 6;
-                    else {
+                    } else {
                         attackTime = 100;
                         attackStep = 0;
                     }
 
                     if (attackStep > 1) {
-                        if (!elemental.isSilent())
+                        if (!elemental.isSilent()) {
                             elemental.playSound(SoundEventRegistry.BEER_ELEMENTAL_ATTACK.get(), 1.0F, 1.0F);
-
+                        }
 
                         double dX = target.getX() - elemental.getX();
                         double dY = target.getY(0.5D) - elemental.getY(0.5D);
                         double dZ = target.getZ() - elemental.getZ();
 
                         double f = Math.sqrt(Math.sqrt(dist)) * 0.5D;
+                        Vec3 velocity = new Vec3(
+                                elemental.getRandom().triangle(dX, 2.297D * f),
+                                dY,
+                                elemental.getRandom().triangle(dZ, 2.297D * f)
+                        );
 
-                        for (int i = 0; i < 1; ++i) {
-                            BeerElementalAttackEntity attack = new BeerElementalAttackEntity(this.elemental.level(), elemental, elemental.getRandom().triangle(dX, 2.297D * f), dY, elemental.getRandom().triangle(dZ, 2.297D * f));
-                            attack.setPos(attack.getX(), elemental.getY(0.5D) + 0.5D, attack.getZ());
+                        BeerElementalAttackEntity attack = new BeerElementalAttackEntity(
+                                elemental.level(),
+                                elemental.getX(),
+                                elemental.getY(0.5D) + 0.5D,
+                                elemental.getZ(),
+                                velocity
+                        );
 
-                            this.elemental.level().addFreshEntity(attack);
-
-                        }
+                        elemental.level().addFreshEntity(attack);
                     }
                 }
+
                 elemental.getLookControl().setLookAt(target, 10.0F, 10.0F);
-            } else if (lastSeen < 5)
+
+            } else if (lastSeen < 5) {
                 elemental.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 1.0D);
+            }
 
             super.tick();
         }

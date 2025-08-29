@@ -6,7 +6,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.ComposterBlock;
 
 public class CompostablesRegistry {
-
     public static void init() {
         registerCompostableItem(ObjectRegistry.DRIED_WHEAT, 0.6F);
         registerCompostableItem(ObjectRegistry.DRIED_OAT, 0.6F);

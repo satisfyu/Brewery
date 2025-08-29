@@ -1,13 +1,22 @@
 package net.satisfy.brewery;
 
 import dev.architectury.event.events.common.PlayerEvent;
-import net.satisfy.brewery.core.event.*;
+import net.minecraft.resources.ResourceLocation;
+import net.satisfy.brewery.core.event.CommonEvents;
+import net.satisfy.brewery.core.event.PartyStarterEvent;
+import net.satisfy.brewery.core.event.PlayerCloneEvent;
+import net.satisfy.brewery.core.event.PlayerRespawnEvent;
 import net.satisfy.brewery.core.event.brew_event.BrewEvents;
 import net.satisfy.brewery.core.network.BreweryNetworking;
 import net.satisfy.brewery.core.registry.*;
 
 public class Brewery {
     public static final String MOD_ID = "brewery";
+
+    public static ResourceLocation identifier(String name) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+    }
+
     public static void init() {
         ObjectRegistry.init();
         EntityTypeRegistry.init();

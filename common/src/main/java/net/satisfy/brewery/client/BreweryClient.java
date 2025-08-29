@@ -41,7 +41,6 @@ public class BreweryClient {
                 WHISKEY_JAMESONS_MALT.get(), WHISKEY_SMOKEY_REVERIE.get(), BREWERY_BANNER.get(), BREWERY_WALL_BANNER.get()
         );
 
-
         ColorHandlerRegistry.registerBlockColors((state, world, pos, tintIndex) -> {
             if (world == null || pos == null) {
                 return -1;

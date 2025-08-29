@@ -9,7 +9,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.effect.*;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 import java.util.function.Supplier;
 
@@ -57,7 +56,7 @@ public class MobEffectRegistry {
         if (Platform.isNeoForge()) {
             return MOB_EFFECTS.register(name, effect);
         }
-        return MOB_EFFECTS_REGISTRAR.register(BreweryIdentifier.identifier(name), effect);
+        return MOB_EFFECTS_REGISTRAR.register(Brewery.identifier(name), effect);
     }
 
     public static void init() {

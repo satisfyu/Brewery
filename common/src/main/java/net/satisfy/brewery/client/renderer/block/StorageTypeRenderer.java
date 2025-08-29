@@ -7,5 +7,5 @@ import net.minecraft.world.item.ItemStack;
 import net.satisfy.brewery.core.block.entity.StorageBlockEntity;
 
 public interface StorageTypeRenderer {
-    void render(StorageBlockEntity var1, PoseStack var2, MultiBufferSource var3, NonNullList<ItemStack> var4);
+    void render(StorageBlockEntity storageBlockEntity, PoseStack poseStack, MultiBufferSource multiBufferSource, NonNullList<ItemStack> nonNullList);
 }

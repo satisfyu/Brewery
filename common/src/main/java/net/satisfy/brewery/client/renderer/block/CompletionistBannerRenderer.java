@@ -16,13 +16,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
+import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.CompletionistBannerBlock;
 import net.satisfy.brewery.core.block.CompletionistWallBannerBlock;
 import net.satisfy.brewery.core.block.entity.CompletionistBannerEntity;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
 
 public class CompletionistBannerRenderer implements BlockEntityRenderer<CompletionistBannerEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BreweryIdentifier.identifier("banner"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Brewery.identifier("banner"), "main");
 
     public static final String FLAG = "flag";
     private static final String POLE = "pole";

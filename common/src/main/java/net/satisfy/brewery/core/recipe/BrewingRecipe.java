@@ -48,7 +48,7 @@ public class BrewingRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
+    public @NotNull ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -64,7 +64,7 @@ public class BrewingRecipe implements Recipe<RecipeInput> {
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
         return this.output.copy();
     }
 
@@ -90,22 +90,16 @@ public class BrewingRecipe implements Recipe<RecipeInput> {
     public static class Serializer implements RecipeSerializer<BrewingRecipe> {
 
         public static final StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> STREAM_CODEC = StreamCodec.of(BrewingRecipe.Serializer::toNetwork, BrewingRecipe.Serializer::fromNetwork);
-        private static final MapCodec<BrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> {
-            return instance.group(Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap((list) -> {
-                Ingredient[] ingredients = list.stream().filter((ingredient) -> !ingredient.isEmpty()).toArray(Ingredient[]::new);
-                if (ingredients.length == 0) {
-                    return DataResult.error(() -> {
-                        return "No ingredients for Brewing recipe";
-                    });
-                } else {
-                    return ingredients.length > 3 ? DataResult.error(() -> {
-                        return "Too many ingredients for Brewing recipe";
-                    }) : DataResult.success(NonNullList.of(Ingredient.EMPTY, ingredients));
-                }
-            }, DataResult::success).forGetter(bakingStationRecipe -> bakingStationRecipe.ingredients),
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(bakingStationRecipe -> bakingStationRecipe.output),
-                    Codec.STRING.fieldOf("material").forGetter(brewingRecipe -> brewingRecipe.material.toString())).apply(instance, (ingredients1, stack, string) -> new BrewingRecipe(ingredients1, stack, BrewMaterial.valueOf(string)));
-        });
+        private static final MapCodec<BrewingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap((list) -> {
+            Ingredient[] ingredients = list.stream().filter((ingredient) -> !ingredient.isEmpty()).toArray(Ingredient[]::new);
+            if (ingredients.length == 0) {
+                return DataResult.error(() -> "No ingredients for Brewing recipe");
+            } else {
+                return ingredients.length > 3 ? DataResult.error(() -> "Too many ingredients for Brewing recipe") : DataResult.success(NonNullList.of(Ingredient.EMPTY, ingredients));
+            }
+        }, DataResult::success).forGetter(bakingStationRecipe -> bakingStationRecipe.ingredients),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(bakingStationRecipe -> bakingStationRecipe.output),
+                Codec.STRING.fieldOf("material").forGetter(brewingRecipe -> brewingRecipe.material.toString())).apply(instance, (ingredients1, stack, string) -> new BrewingRecipe(ingredients1, stack, BrewMaterial.valueOf(string))));
 
         public static @NotNull BrewingRecipe fromNetwork(RegistryFriendlyByteBuf buf) {
             int i = buf.readVarInt();
@@ -127,12 +121,12 @@ public class BrewingRecipe implements Recipe<RecipeInput> {
         }
 
         @Override
-        public MapCodec<BrewingRecipe> codec() {
+        public @NotNull MapCodec<BrewingRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> streamCodec() {
+        public @NotNull StreamCodec<RegistryFriendlyByteBuf, BrewingRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

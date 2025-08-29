@@ -8,11 +8,11 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.Entity;
-import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.Brewery;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewfestChestplateModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(BreweryIdentifier.identifier("brewfest_chest"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Brewery.identifier("brewfest_chest"), "main");
     private final ModelPart body;
     private final ModelPart left_arm;
     private final ModelPart right_arm;
