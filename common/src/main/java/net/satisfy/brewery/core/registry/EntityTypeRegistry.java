@@ -37,6 +37,7 @@ public class EntityTypeRegistry {
     public static Set<Block> addCabinet(Set<Block> blocks) {
         blocks.add(ObjectRegistry.CABINET.get());
         blocks.add(ObjectRegistry.DRAWER.get());
+        blocks.add(ObjectRegistry.SIDEBOARD.get());
         blocks.add(ObjectRegistry.WALL_CABINET.get());
         return blocks;
     }
