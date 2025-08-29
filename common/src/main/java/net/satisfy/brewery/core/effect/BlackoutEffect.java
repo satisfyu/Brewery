@@ -1,17 +1,19 @@
 package net.satisfy.brewery.core.effect;
 
-
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
+import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 
 public class BlackoutEffect extends MobEffect {
@@ -22,7 +24,7 @@ public class BlackoutEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         MobEffectInstance effect = livingEntity.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()));
-        assert effect != null;
+        if (effect == null) return true;
         int duration = effect.getDuration();
         switch (duration) {
             case AlcoholManager.FALL_DOWN -> {
@@ -34,23 +36,29 @@ public class BlackoutEffect extends MobEffect {
             }
             case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
         }
-        return super.applyEffectTick(livingEntity, amplifier);
+        return true;
+    }
+
+    @Override
+    public void addAttributeModifiers(AttributeMap attributeMap, int i) {
+        super.addAttributeModifiers(attributeMap, i);
     }
 
     @Override
     public void removeAttributeModifiers(AttributeMap attributeMap) {
-        // TODO fixme
-        /*
+        super.removeAttributeModifiers(attributeMap);
+    }
+
+    @Override
+    public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason removalReason) {
         if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
             alcoholPlayer.brewery$getAlcohol().soberUp();
-            if (livingEntity.hasEffect(MobEffectRegistry.DRUNK.get())) {
-                livingEntity.removeEffect(MobEffectRegistry.DRUNK.get());
+            if (livingEntity instanceof Player player) {
+                if (player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()))) {
+                    player.removeEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()));
+                }
             }
-            if (livingEntity instanceof ServerPlayer serverPlayer) {
-                AlcoholManager.syncAlcohol(serverPlayer, alcoholPlayer.brewery$getAlcohol());
-            }
-        }*/
-        super.removeAttributeModifiers(attributeMap);
+        }
     }
 
     @Override

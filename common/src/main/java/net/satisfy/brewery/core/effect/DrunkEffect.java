@@ -1,14 +1,13 @@
 package net.satisfy.brewery.core.effect;
 
-
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholLevel;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
 import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
@@ -18,6 +17,26 @@ import net.satisfy.brewery.core.registry.MobEffectRegistry;
 public class DrunkEffect extends MobEffect {
     public DrunkEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xE0DD2F);
+    }
+
+    @Override
+    public void onEffectAdded(LivingEntity livingEntity, int amplifier) {
+        if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
+            AlcoholLevel alcoholLevel = alcoholPlayer.brewery$getAlcohol();
+            if (amplifier >= alcoholLevel.getImmunity() - 1) {
+                setDrunkEffect(livingEntity, true);
+            }
+        }
+    }
+
+    @Override
+    public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason removalReason) {
+        if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
+            AlcoholLevel alcoholLevel = alcoholPlayer.brewery$getAlcohol();
+            if (!alcoholLevel.isDrunk()) {
+                setDrunkEffect(livingEntity, false);
+            }
+        }
     }
 
     @Override
@@ -35,39 +54,7 @@ public class DrunkEffect extends MobEffect {
                 AlcoholManager.syncAlcohol(serverPlayer, alcoholLevel);
             }
         }
-        return super.applyEffectTick(livingEntity, amplifier);
-    }
-
-    @Override
-    public void addAttributeModifiers(AttributeMap attributeMap, int i) {
-        // TODO fixme
-        /*
-        if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
-            int amplifier = getDrunkAmplifier(livingEntity);
-            AlcoholLevel alcoholLevel = alcoholPlayer.brewery$getAlcohol();
-            if (amplifier >= alcoholLevel.getImmunity() - 1) {
-                setDrunkEffect(livingEntity, true);
-            }
-        }*/
-        super.addAttributeModifiers(attributeMap, i);
-    }
-
-    @Override
-    public void removeAttributeModifiers(AttributeMap attributeMap) {
-        // TODO fixme
-        /*
-        if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
-            AlcoholLevel alcoholLevel = alcoholPlayer.brewery$getAlcohol();
-            if (!alcoholLevel.isDrunk()) {
-                setDrunkEffect(livingEntity, false);
-            }
-        }*/
-        super.removeAttributeModifiers(attributeMap);
-    }
-
-    private int getDrunkAmplifier(LivingEntity livingEntity) {
-        MobEffectInstance effect = livingEntity.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()));
-        return effect != null ? effect.getAmplifier() : 0;
+        return true;
     }
 
     private void setDrunkEffect(LivingEntity livingEntity, boolean activate) {
@@ -80,5 +67,4 @@ public class DrunkEffect extends MobEffect {
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return duration == 1;
     }
-
 }

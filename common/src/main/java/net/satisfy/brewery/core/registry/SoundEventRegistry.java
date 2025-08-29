@@ -33,5 +33,4 @@ public class SoundEventRegistry {
     }
 
     public static void init() {}
-
 }

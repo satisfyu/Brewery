@@ -1,10 +1,9 @@
 package net.satisfy.brewery.core.effect;
 
-
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 
 public class HaleyEffect extends MobEffect {
@@ -13,33 +12,31 @@ public class HaleyEffect extends MobEffect {
     }
 
     @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return true;
+    }
+
+    @Override
     public boolean applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
-            if (!player.getCommandSenderWorld().isClientSide) {
+            if (!player.level().isClientSide) {
                 player.getAbilities().mayfly = true;
                 player.getAbilities().flying = true;
                 player.onUpdateAbilities();
             }
         }
-        return super.applyEffectTick(entity, amplifier);
+        return true;
     }
 
     @Override
-    public void removeAttributeModifiers(AttributeMap attributeMap) {
-        // TODO fixme
-        /*
+    public void onMobRemoved(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
         if (entity instanceof Player player) {
-            if (!player.getCommandSenderWorld().isClientSide) {
-                player.getAbilities().mayfly = player.isCreative();
-                player.getAbilities().flying = player.isCreative();
+            if (!player.level().isClientSide) {
+                boolean keep = player.isCreative() || player.isSpectator();
+                player.getAbilities().mayfly = keep;
+                player.getAbilities().flying = keep && player.getAbilities().flying;
                 player.onUpdateAbilities();
             }
-        }*/
-        super.removeAttributeModifiers(attributeMap);
-    }
-
-    @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return true;
+        }
     }
 }

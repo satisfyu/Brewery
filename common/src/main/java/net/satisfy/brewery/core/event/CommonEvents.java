@@ -3,6 +3,7 @@ package net.satisfy.brewery.core.event;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.LootEvent;
 import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,6 +27,7 @@ public class CommonEvents {
     public static void init() {
         LootEvent.MODIFY_LOOT_TABLE.register(CommonEvents::onModifyLootTable);
         PlayerEvent.ATTACK_ENTITY.register(CommonEvents::onPlayerAttack);
+        TickEvent.PLAYER_PRE.register(CommonEvents::tickHaley);
     }
 
     public static void onModifyLootTable(ResourceKey<LootTable> key, LootEvent.LootTableModificationContext context, boolean builtin) {
@@ -57,8 +59,26 @@ public class CommonEvents {
             handleExplosiveTouch(level, target, player);
             return EventResult.pass();
         }
-
         return EventResult.pass();
+    }
+
+    private static void tickHaley(Player player) {
+        if (player.level().isClientSide) return;
+        if (player.isCreative() || player.isSpectator()) return;
+        boolean has = player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.HALEY.get()));
+        if (has) {
+            if (!player.getAbilities().mayfly || !player.getAbilities().flying) {
+                player.getAbilities().mayfly = true;
+                player.getAbilities().flying = true;
+                player.onUpdateAbilities();
+            }
+        } else {
+            if (player.getAbilities().mayfly || player.getAbilities().flying) {
+                player.getAbilities().mayfly = false;
+                player.getAbilities().flying = false;
+                player.onUpdateAbilities();
+            }
+        }
     }
 
     private static void handleRenewingTouch(Level level, Entity target) {
@@ -102,7 +122,7 @@ public class CommonEvents {
         if (level.random.nextFloat() < 0.1) {
             Fireball fireball = EntityType.FIREBALL.create(level);
             double dx = target.getX() - player.getX();
-            double dy = target.getY() + target.getBbHeight() / 2 - (player.getY() + player.getBbHeight() / 2); // Differenz in Y Richtung
+            double dy = target.getY() + target.getBbHeight() / 2 - (player.getY() + player.getBbHeight() / 2);
             double dz = target.getZ() - player.getZ();
             assert fireball != null;
             fireball.setPos(player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ());
@@ -111,13 +131,11 @@ public class CommonEvents {
         }
     }
 
-
     private static void spawnParticles(Level level, Entity target, ParticleOptions particleType) {
         double height = target.getBbHeight();
         double x = target.getX();
         double y = target.getY();
         double z = target.getZ();
-
         for (double i = 2.5; i >= 1.5; i -= 0.5) {
             level.addParticle(particleType, x, y + height / i, z, 0, 0, 0);
         }

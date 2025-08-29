@@ -1,45 +1,31 @@
 package net.satisfy.brewery.core.effect;
 
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.Holder;
+import org.jetbrains.annotations.NotNull;
 
 public class PacifyEffect extends MobEffect {
-    public PacifyEffect(MobEffectCategory statusEffectCategory, int color) {
-        super(statusEffectCategory, color);
+    public PacifyEffect(MobEffectCategory category, int color) {
+        super(category, color);
     }
 
     @Override
-    public MobEffect addAttributeModifier(Holder<Attribute> holder, ResourceLocation resourceLocation, double d, AttributeModifier.Operation operation) {
-        // TODO fixme
-        /*
-        if (entity instanceof Player) {
-            AttributeInstance attribute = entity.getAttribute(Attributes.FOLLOW_RANGE);
-            if (attribute != null) {
-                attribute.setBaseValue(attribute.getValue() * 0.75);
-            }
-        }*/
-        return super.addAttributeModifier(holder, resourceLocation, d, operation);
+    public @NotNull MobEffect addAttributeModifier(Holder<Attribute> holder, ResourceLocation id, double amount, AttributeModifier.Operation op) {
+        return super.addAttributeModifier(holder, id, amount, op);
     }
 
     @Override
-    public void removeAttributeModifiers(AttributeMap attributeMap) {
-        // TODO fixme
-        /*
-        if (entity instanceof Player) {
-            AttributeInstance attribute = entity.getAttribute(Attributes.FOLLOW_RANGE);
-            if (attribute != null) {
-                attribute.setBaseValue(attribute.getValue() / 0.75);
-            }
-        }*/
-        super.removeAttributeModifiers(attributeMap);
+    public void removeAttributeModifiers(AttributeMap map) {
+        super.removeAttributeModifiers(map);
     }
 
     @Override
@@ -49,10 +35,13 @@ public class PacifyEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity entity, int amplifier) {
-        if (entity instanceof Player) {
-            entity.level().getEntitiesOfClass(EnderMan.class, entity.getBoundingBox().inflate(32.0D))
-                    .forEach(enderman -> enderman.setTarget(null));
+        if (entity instanceof Player player) {
+            player.level().getEntitiesOfClass(EnderMan.class, player.getBoundingBox().inflate(32.0D)).forEach(e -> e.setTarget(null));
         }
-        return super.applyEffectTick(entity, amplifier);
+        return true;
+    }
+
+    @Override
+    public void onMobRemoved(LivingEntity entity, int amplifier, Entity.RemovalReason reason) {
     }
 }

@@ -7,7 +7,6 @@ import net.satisfy.brewery.core.network.BreweryNetworking;
 import org.jetbrains.annotations.NotNull;
 
 public record SyncRequestC2SPacket() implements CustomPacketPayload {
-
     public static final Type<SyncRequestC2SPacket> TYPE = new Type<>(BreweryNetworking.ALCOHOL_SYNC_REQUEST_C2S_ID);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SyncRequestC2SPacket> STREAM_CODEC =
