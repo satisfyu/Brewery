@@ -22,10 +22,10 @@ public class DarkBrewItem extends Item {
         ItemStack itemStack = user.getItemInHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.EGG_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClientSide) {
-            DarkBrewEntity coconutEntity = new DarkBrewEntity(world, user);
-            coconutEntity.setItem(itemStack);
-            coconutEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.5F, 1.0F);
-            world.addFreshEntity(coconutEntity);
+            DarkBrewEntity darkBrewEntity = new DarkBrewEntity(world, user);
+            darkBrewEntity.setItem(itemStack);
+            darkBrewEntity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, 1.5F, 1.0F);
+            world.addFreshEntity(darkBrewEntity);
         }
 
         user.awardStat(Stats.ITEM_USED.get(this));

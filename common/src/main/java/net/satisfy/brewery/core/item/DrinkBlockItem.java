@@ -11,7 +11,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -116,8 +115,13 @@ public class DrinkBlockItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        int beerQuality = stack.has(DataComponents.CUSTOM_DATA) && Objects.requireNonNull(stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY)).contains("brewery.beer_quality") ? stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality") : 1;
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        int beerQuality = stack.has(DataComponents.CUSTOM_DATA)
+                && Objects.requireNonNull(stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY))
+                .contains("brewery.beer_quality")
+                ? stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality")
+                : 1;
+
         int durationMultiplier = 1;
         int effectLevel = switch (beerQuality) {
             case 2 -> {
@@ -136,8 +140,10 @@ public class DrinkBlockItem extends BlockItem {
             if (effectLevel > 1) {
                 effectName.append(" ").append(Component.translatable("potion.potency." + (effectLevel - 1)));
             }
-            String durationText = MobEffectUtil.formatDuration(new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(this.effect), this.baseDuration * durationMultiplier), 1, 20).getString();
-            MutableComponent effectDuration = Component.translatable(" (").append(Component.translatable(durationText)).append(Component.translatable(")"));
+
+            int seconds = (this.baseDuration * durationMultiplier) / 20;
+            MutableComponent effectDuration = Component.literal(" (" + seconds + "s)");
+
             tooltip.add(effectName.append(effectDuration).withStyle(this.effect.getCategory().getTooltipFormatting()));
         } else {
             tooltip.add(Component.translatable("effect.none").withStyle(ChatFormatting.GRAY));

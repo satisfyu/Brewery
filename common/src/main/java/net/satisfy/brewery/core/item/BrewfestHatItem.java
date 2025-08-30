@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class BrewfestHatItem extends ArmorItem {
+
     private final ResourceLocation hatTexture;
 
     public BrewfestHatItem(Holder<ArmorMaterial> armorMaterial, Type type, Properties properties, ResourceLocation hatTexture) {
@@ -30,11 +31,8 @@ public class BrewfestHatItem extends ArmorItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        Level world = Minecraft.getInstance().level;
-        if(world != null && world.isClientSide()){
-            ArmorRegistry.appendToolTip(tooltip);
-        }
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        ArmorRegistry.appendToolTip(tooltip);
     }
 
     @Override

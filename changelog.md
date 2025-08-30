@@ -1,3 +1,11 @@
+[2.1.1]
+
+**Fixed**
+* Server crashing upon startup
+* Crash caused by unregistered custom MobEffects not being saved correctly
+
+***
+
 [2.1.0]
 
 ** Ported to 1.21.1 ** 

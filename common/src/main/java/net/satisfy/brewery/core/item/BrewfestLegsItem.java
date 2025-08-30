@@ -33,10 +33,7 @@ public class BrewfestLegsItem extends ArmorItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        Level world = Minecraft.getInstance().level;
-        if (world != null && world.isClientSide()) {
-            ArmorRegistry.appendToolTip(tooltip);
-        }
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        ArmorRegistry.appendToolTip(tooltip);
     }
 }
