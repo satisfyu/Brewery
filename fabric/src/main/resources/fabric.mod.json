@@ -38,7 +38,6 @@
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.21.1",
-    "architectury": ">=6.5.82",
-    "farm_and_charm": ">=1.1.0"
+    "architectury": ">=6.5.82"
   }
 }

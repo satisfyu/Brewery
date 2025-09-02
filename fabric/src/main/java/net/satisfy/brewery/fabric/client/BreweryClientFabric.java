@@ -15,9 +15,9 @@ public class BreweryClientFabric implements ClientModInitializer {
         BreweryClient.preInitClient();
         BreweryClient.onInitializeClient();
 
+        ArmorRenderer.register(new BrewfestBootsRenderer(), ObjectRegistry.BREWFEST_BOOTS.get(), ObjectRegistry.BREWFEST_SHOES.get());
         ArmorRenderer.register(new BrewfestHatRenderer(), ObjectRegistry.BREWFEST_HAT.get(), ObjectRegistry.BREWFEST_HAT_RED.get());
         ArmorRenderer.register(new BrewfestChestplateRenderer(), ObjectRegistry.BREWFEST_REGALIA.get(), ObjectRegistry.BREWFEST_BLOUSE.get());
         ArmorRenderer.register(new BrewfestLeggingsRenderer(), ObjectRegistry.BREWFEST_TROUSERS.get(), ObjectRegistry.BREWFEST_DRESS.get());
-        ArmorRenderer.register(new BrewfestBootsRenderer(), ObjectRegistry.BREWFEST_BOOTS.get(), ObjectRegistry.BREWFEST_SHOES.get());
     }
 }

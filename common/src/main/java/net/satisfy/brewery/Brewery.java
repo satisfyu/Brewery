@@ -18,9 +18,9 @@ public class Brewery {
     }
 
     public static void init() {
+        MobEffectRegistry.init();
         ObjectRegistry.init();
         EntityTypeRegistry.init();
-        MobEffectRegistry.init();
         SoundEventRegistry.init();
         BrewEvents.loadClass();
         CommonEvents.init();

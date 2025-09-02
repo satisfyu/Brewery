@@ -1,34 +1,90 @@
 package net.satisfy.brewery.core.registry;
 
+import dev.architectury.platform.Platform;
 import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
+import java.util.function.Supplier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.satisfy.brewery.Brewery;
-import net.satisfy.brewery.core.effect.*;
+import net.satisfy.brewery.core.effect.BlackoutEffect;
+import net.satisfy.brewery.core.effect.CombustionEffect;
+import net.satisfy.brewery.core.effect.DrunkEffect;
+import net.satisfy.brewery.core.effect.ExplosionEffect;
+import net.satisfy.brewery.core.effect.HaleyEffect;
+import net.satisfy.brewery.core.effect.HealingTouchEffect;
+import net.satisfy.brewery.core.effect.LightningStrikeEffect;
+import net.satisfy.brewery.core.effect.MiningEffect;
+import net.satisfy.brewery.core.effect.PacifyEffect;
+import net.satisfy.brewery.core.effect.PartystarterEffect;
+import net.satisfy.brewery.core.effect.PintCharismaEffect;
+import net.satisfy.brewery.core.effect.ProtectiveTouchEffect;
+import net.satisfy.brewery.core.effect.RenewingTouchEffect;
+import net.satisfy.brewery.core.effect.RepulsionEffect;
+import net.satisfy.brewery.core.effect.SnowWhiteEffect;
+import net.satisfy.brewery.core.effect.ToxicTouchEffect;
 
 public class MobEffectRegistry {
     private static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Brewery.MOD_ID, Registries.MOB_EFFECT);
+    private static final Registrar<MobEffect> MOB_EFFECTS_REGISTRAR = MOB_EFFECTS.getRegistrar();
 
-    public static final RegistrySupplier<MobEffect> DRUNK = MOB_EFFECTS.register("drunk", DrunkEffect::new);
-    public static final RegistrySupplier<MobEffect> BLACKOUT = MOB_EFFECTS.register("blackout", () -> new BlackoutEffect().setBlendDuration(22));
-    public static final RegistrySupplier<MobEffect> MINING = MOB_EFFECTS.register("mining", () -> new MiningEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> PACIFY = MOB_EFFECTS.register("pacify", () -> new PacifyEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> REPULSION = MOB_EFFECTS.register("repulsion", () -> new RepulsionEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> LIGHTNING_STRIKE = MOB_EFFECTS.register("lightning_strike", () -> new LightningStrikeEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> EXPLOSION = MOB_EFFECTS.register("explosion", () -> new ExplosionEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> COMBUSTION = MOB_EFFECTS.register("combustion", () -> new CombustionEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> TOXICTOUCH = MOB_EFFECTS.register("toxictouch", () -> new ToxicTouchEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> RENEWINGTOUCH = MOB_EFFECTS.register("renewingtouch", () -> new RenewingTouchEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> HEALINGTOUCH = MOB_EFFECTS.register("healingtouch", () -> new HealingTouchEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> PROTECTIVETOUCH = MOB_EFFECTS.register("protectivetouch", () -> new ProtectiveTouchEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> PARTYSTARTER = MOB_EFFECTS.register("partystarter", () -> new PartystarterEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> SNOWWHITE = MOB_EFFECTS.register("snowwhite", () -> new SnowWhiteEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> PINTCHARISMA = MOB_EFFECTS.register("pintcharisma", () -> new PintCharismaEffect(MobEffectCategory.BENEFICIAL, 0));
-    public static final RegistrySupplier<MobEffect> HALEY = MOB_EFFECTS.register("haley", () -> new HaleyEffect(MobEffectCategory.BENEFICIAL, 0));
+    public static final RegistrySupplier<MobEffect> DRUNK;
+    public static final RegistrySupplier<MobEffect> BLACKOUT;
+    public static final RegistrySupplier<MobEffect> MINING;
+    public static final RegistrySupplier<MobEffect> PACIFY;
+    public static final RegistrySupplier<MobEffect> REPULSION;
+    public static final RegistrySupplier<MobEffect> LIGHTNING_STRIKE;
+    public static final RegistrySupplier<MobEffect> EXPLOSION;
+    public static final RegistrySupplier<MobEffect> COMBUSTION;
+    public static final RegistrySupplier<MobEffect> TOXICTOUCH;
+    public static final RegistrySupplier<MobEffect> RENEWINGTOUCH;
+    public static final RegistrySupplier<MobEffect> HEALINGTOUCH;
+    public static final RegistrySupplier<MobEffect> PROTECTIVETOUCH;
+    public static final RegistrySupplier<MobEffect> PARTYSTARTER;
+    public static final RegistrySupplier<MobEffect> SNOWWHITE;
+    public static final RegistrySupplier<MobEffect> PINTCHARISMA;
+    public static final RegistrySupplier<MobEffect> HALEY;
+
+    private static RegistrySupplier<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {
+        if (Platform.isNeoForge()) {
+            return MOB_EFFECTS.register(name, effect);
+        }
+        return MOB_EFFECTS_REGISTRAR.register(Brewery.identifier(name), effect);
+    }
 
     public static void init() {
         MOB_EFFECTS.register();
+    }
+
+    public static Holder<MobEffect> holder(RegistrySupplier<MobEffect> supplier) {
+        return BuiltInRegistries.MOB_EFFECT.getResourceKey(supplier.get()).flatMap(BuiltInRegistries.MOB_EFFECT::getHolder).orElseThrow();
+    }
+
+    public static MobEffectInstance inst(RegistrySupplier<MobEffect> supplier, int duration) {
+        return new MobEffectInstance(holder(supplier), duration);
+    }
+
+    static {
+        DRUNK = registerEffect("drunk", DrunkEffect::new);
+        BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setBlendDuration(22));
+        MINING = registerEffect("mining", () -> new MiningEffect(MobEffectCategory.BENEFICIAL, 0x6B4F2A));
+        PACIFY = registerEffect("pacify", () -> new PacifyEffect(MobEffectCategory.BENEFICIAL, 0x88DDEE));
+        REPULSION = registerEffect("repulsion", () -> new RepulsionEffect(MobEffectCategory.BENEFICIAL, 0xFF4444));
+        LIGHTNING_STRIKE = registerEffect("lightning_strike", () -> new LightningStrikeEffect(MobEffectCategory.BENEFICIAL, 0xE6E600));
+        EXPLOSION = registerEffect("explosion", () -> new ExplosionEffect(MobEffectCategory.BENEFICIAL, 0xFF7700));
+        COMBUSTION = registerEffect("combustion", () -> new CombustionEffect(MobEffectCategory.BENEFICIAL, 0xCC2200));
+        TOXICTOUCH = registerEffect("toxictouch", () -> new ToxicTouchEffect(MobEffectCategory.HARMFUL, 0x00AA44));
+        RENEWINGTOUCH = registerEffect("renewingtouch", () -> new RenewingTouchEffect(MobEffectCategory.BENEFICIAL, 0x66FF99));
+        HEALINGTOUCH = registerEffect("healingtouch", () -> new HealingTouchEffect(MobEffectCategory.BENEFICIAL, 0xFF66CC));
+        PROTECTIVETOUCH = registerEffect("protectivetouch", () -> new ProtectiveTouchEffect(MobEffectCategory.BENEFICIAL, 0x3399FF));
+        PARTYSTARTER = registerEffect("partystarter", () -> new PartystarterEffect(MobEffectCategory.BENEFICIAL, 0xFF33AA));
+        SNOWWHITE = registerEffect("snowwhite", () -> new SnowWhiteEffect(MobEffectCategory.BENEFICIAL, 0xE0FFFF));
+        PINTCHARISMA = registerEffect("pintcharisma", () -> new PintCharismaEffect(MobEffectCategory.BENEFICIAL, 0xFFD700));
+        HALEY = registerEffect("haley", () -> new HaleyEffect(MobEffectCategory.BENEFICIAL, 0xFF99FF));
     }
 }

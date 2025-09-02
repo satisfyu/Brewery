@@ -1,3 +1,11 @@
+[2.1.2]
+
+**Fixed**
+* ArmorItems not being rendered properly on NeoForge
+* Startup crash
+
+***
+
 [2.1.1]
 
 **Fixed**

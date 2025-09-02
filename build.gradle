@@ -40,17 +40,21 @@ allprojects {
             filter {
                 includeGroup "maven.modrinth"
             }
-			maven {
-				name = "tsuyumaven"
-				url = "https://maven.tsuyumori.dev/snapshots"
-			}
-			maven {
-				name = "Jared's maven"
-				url = "https://maven.blamejared.com/"
-			}
-			maven { url = 'https://maven.neoforged.net/releases' }
-		}
+        }
+        maven {
+            name = "tsuyumaven"
+            url = "https://maven.tsuyumori.dev/snapshots"
+        }
+        maven {
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            url = "https://maven.neoforged.net/releases"
+        }
+        mavenCentral()
     }
+
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
