@@ -33,11 +33,11 @@ public class BrewfestBootsModel<T extends Entity> extends EntityModel<T> {
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
         poseStack.scale(1.075F, 1.075F, 1.075F);
-        right_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
-        left_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
+        right_leg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        left_leg.render(poseStack, buffer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 

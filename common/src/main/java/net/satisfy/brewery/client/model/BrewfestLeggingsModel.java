@@ -42,11 +42,11 @@ public class BrewfestLeggingsModel<T extends Entity> extends EntityModel<T> {
 
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int alpha) {
+    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
         poseStack.pushPose();
-        body.render(poseStack, buffer, packedLight, packedOverlay, alpha);
-        right_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
-        left_leg.render(poseStack, buffer, packedLight, packedOverlay, alpha);
+        body.render(poseStack, buffer, packedLight, packedOverlay, color);
+        right_leg.render(poseStack, buffer, packedLight, packedOverlay, color);
+        left_leg.render(poseStack, buffer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
 
