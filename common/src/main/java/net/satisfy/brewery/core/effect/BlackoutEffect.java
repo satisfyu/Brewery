@@ -1,68 +1,113 @@
 package net.satisfy.brewery.core.effect;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholPlayer;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.satisfy.brewery.core.registry.MobEffectRegistry;
 
 public class BlackoutEffect extends MobEffect {
+    private static final int BLACK_PHASE_TICKS = 140;
+    private static final int TELEPORT_AT_REMAINING = 40;
+    private static final int UNLOCK_AT_REMAINING = 20;
+    private static final Map<UUID, Float> LOCK_YAW = new HashMap<>();
+
     public BlackoutEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0x111111);
+        super(MobEffectCategory.HARMFUL, 0x111111);
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        MobEffectInstance effect = livingEntity.getEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get()));
-        if (effect == null) return true;
-        int duration = effect.getDuration();
-        switch (duration) {
-            case AlcoholManager.FALL_DOWN -> {
-                Level level = livingEntity.level();
-                BlockState blockState = livingEntity.getBlockStateOn();
-                SoundEvent soundEvent = blockState.getBlock().getSoundType(blockState).getFallSound();
-                livingEntity.playSound(soundEvent, 1.0f, 1.0f);
-                level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), soundEvent, SoundSource.PLAYERS, 1.0f, 1.0f);
-            }
-            case AlcoholManager.WANDER_AROUND -> AlcoholManager.movePlayer(livingEntity, livingEntity.level());
-        }
-        return true;
-    }
-
-    @Override
-    public void addAttributeModifiers(AttributeMap attributeMap, int i) {
-        super.addAttributeModifiers(attributeMap, i);
-    }
-
-    @Override
-    public void removeAttributeModifiers(AttributeMap attributeMap) {
-        super.removeAttributeModifiers(attributeMap);
-    }
-
-    @Override
-    public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason removalReason) {
-        if (livingEntity instanceof AlcoholPlayer alcoholPlayer) {
-            alcoholPlayer.brewery$getAlcohol().soberUp();
-            if (livingEntity instanceof Player player) {
-                if (player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()))) {
-                    player.removeEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get()));
-                }
-            }
-        }
+    public void onEffectAdded(LivingEntity livingEntity, int amplifier) {
+        Level level = livingEntity.level();
+        BlockState state = livingEntity.getBlockStateOn();
+        var sound = state.getBlock().getSoundType(state).getFallSound();
+        livingEntity.playSound(sound, 1.0F, 1.0F);
+        level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), sound, SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return duration == AlcoholManager.FALL_DOWN || duration == AlcoholManager.WANDER_AROUND;
+        return true;
+    }
+
+    @Override
+    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+        Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.BLACKOUT.get());
+        MobEffectInstance self = livingEntity.getEffect(holder);
+        if (self != null) {
+            int remaining = self.getDuration();
+            if (remaining == BLACK_PHASE_TICKS) {
+                LOCK_YAW.put(livingEntity.getUUID(), livingEntity.getYRot());
+                livingEntity.setXRot(-75F);
+                livingEntity.xRotO = livingEntity.getXRot();
+            }
+            if (remaining <= BLACK_PHASE_TICKS && remaining > UNLOCK_AT_REMAINING) {
+                Float yaw = LOCK_YAW.get(livingEntity.getUUID());
+                if (yaw != null) {
+                    livingEntity.setYRot(yaw);
+                    livingEntity.yRotO = livingEntity.getYRot();
+                    livingEntity.setYHeadRot(yaw);
+                    livingEntity.yHeadRotO = livingEntity.getYHeadRot();
+                    livingEntity.setYBodyRot(yaw);
+                    livingEntity.yBodyRotO = livingEntity.yBodyRot;
+                }
+                livingEntity.setXRot(-75F);
+                livingEntity.xRotO = livingEntity.getXRot();
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, remaining, 0, false, false, false));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.DARKNESS, remaining, 1, false, false, false));
+                if (livingEntity.getPose() != Pose.SLEEPING) {
+                    livingEntity.setPose(Pose.SLEEPING);
+                }
+            }
+            if (remaining == TELEPORT_AT_REMAINING && livingEntity.level() instanceof ServerLevel serverLevel) {
+                double x = livingEntity.getX() + Mth.nextInt(livingEntity.getRandom(), -30, 30);
+                double z = livingEntity.getZ() + Mth.nextInt(livingEntity.getRandom(), -30, 30);
+                int gx = Mth.floor(x);
+                int gz = Mth.floor(z);
+                int gy = serverLevel.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, gx, gz);
+                BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(gx, gy, gz);
+                while (gy < serverLevel.getMaxBuildHeight() - 2 && (!serverLevel.getBlockState(pos).isAir() || !serverLevel.getBlockState(pos.above()).isAir())) {
+                    gy++;
+                    pos.setY(gy);
+                }
+                livingEntity.teleportTo(gx + 0.5D, gy, gz + 0.5D);
+            }
+            if (remaining == UNLOCK_AT_REMAINING) {
+                livingEntity.removeEffect(MobEffects.BLINDNESS);
+                livingEntity.removeEffect(MobEffects.DARKNESS);
+                livingEntity.setPose(Pose.STANDING);
+                LOCK_YAW.remove(livingEntity.getUUID());
+            }
+            if (remaining == 1) {
+                if (!livingEntity.level().isClientSide()) {
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 600, 0));
+                }
+                livingEntity.setPose(Pose.STANDING);
+                LOCK_YAW.remove(livingEntity.getUUID());
+            }
+        }
+        if (!livingEntity.level().isClientSide()) {
+            if (livingEntity.tickCount % 10 == 0) {
+                double s = 0.05D;
+                double dx = (livingEntity.getRandom().nextDouble() - 0.5D) * s;
+                double dz = (livingEntity.getRandom().nextDouble() - 0.5D) * s;
+                livingEntity.push(dx, 0.0D, dz);
+            }
+        }
+        return true;
     }
 }

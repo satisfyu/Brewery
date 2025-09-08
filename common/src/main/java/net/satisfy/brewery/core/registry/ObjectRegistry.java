@@ -27,7 +27,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.*;
 import net.satisfy.brewery.core.block.property.BrewMaterial;
-import net.satisfy.brewery.core.item.Breathalyzer;
+import net.satisfy.brewery.core.item.BreathalyzerItem;
 import net.satisfy.brewery.core.item.BrewfestBootsItem;
 import net.satisfy.brewery.core.item.BrewfestChestItem;
 import net.satisfy.brewery.core.item.BrewfestHatItem;
@@ -52,7 +52,7 @@ public class ObjectRegistry {
     public static final Registrar<Item> ITEM_REGISTRAR = ITEMS.getRegistrar();
 
     public static final RegistrySupplier<Item> HOPS = registerItem("hops", () -> new Item(getSettings().food(Foods.APPLE)));
-    public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
+    public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new BreathalyzerItem(getSettings()));
     public static final RegistrySupplier<Item> DARK_BREW = registerItem("dark_brew", () -> new DarkBrewItem(getSettings()));
     public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new EffectItem(getFoodItemSettings(6, 0.5f, SUSTENANCE, 6000), 6000, true));
     public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new EffectItem(getFoodItemSettings(3, 0.4f, SUSTENANCE, 2000), 2000, false));
@@ -60,6 +60,7 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/brewfest_hat")), ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), Brewery.identifier("models/armor/brewfest_hat")));
     public static final RegistrySupplier<Item> BREWFEST_HAT_RED = registerItem("brewfest_hat_red", () -> new BrewfestHatItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/brewfest_hat_red")), ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), Brewery.identifier("models/armor/brewfest_hat_red")));
     public static final RegistrySupplier<Item> BREWFEST_REGALIA = registerItem("brewfest_regalia", () -> new BrewfestChestItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/lederhosen")), ArmorItem.Type.CHESTPLATE, getSettings().rarity(Rarity.EPIC), Brewery.identifier("models/armor/lederhosen")));
+
     public static final RegistrySupplier<Item> BREWFEST_TROUSERS = registerItem("brewfest_trousers", () -> new BrewfestLegsItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/lederhosen")), ArmorItem.Type.LEGGINGS, getSettings().rarity(Rarity.EPIC), Brewery.identifier("models/armor/lederhosen")));
     public static final RegistrySupplier<Item> BREWFEST_BOOTS = registerItem("brewfest_boots", () -> new BrewfestBootsItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/lederhosen")), ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), Brewery.identifier("models/armor/lederhosen")));
     public static final RegistrySupplier<Item> BREWFEST_DRESS = registerItem("brewfest_dress", () -> new BrewfestLegsItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/dirndl")), ArmorItem.Type.LEGGINGS, getSettings().rarity(Rarity.RARE), Brewery.identifier("models/armor/dirndl")));

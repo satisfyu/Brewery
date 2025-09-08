@@ -12,22 +12,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.satisfy.brewery.Brewery;
-import net.satisfy.brewery.core.effect.BlackoutEffect;
-import net.satisfy.brewery.core.effect.CombustionEffect;
-import net.satisfy.brewery.core.effect.DrunkEffect;
-import net.satisfy.brewery.core.effect.ExplosionEffect;
-import net.satisfy.brewery.core.effect.HaleyEffect;
-import net.satisfy.brewery.core.effect.HealingTouchEffect;
-import net.satisfy.brewery.core.effect.LightningStrikeEffect;
-import net.satisfy.brewery.core.effect.MiningEffect;
-import net.satisfy.brewery.core.effect.PacifyEffect;
-import net.satisfy.brewery.core.effect.PartystarterEffect;
-import net.satisfy.brewery.core.effect.PintCharismaEffect;
-import net.satisfy.brewery.core.effect.ProtectiveTouchEffect;
-import net.satisfy.brewery.core.effect.RenewingTouchEffect;
-import net.satisfy.brewery.core.effect.RepulsionEffect;
-import net.satisfy.brewery.core.effect.SnowWhiteEffect;
-import net.satisfy.brewery.core.effect.ToxicTouchEffect;
+import net.satisfy.brewery.core.effect.*;
 
 public class MobEffectRegistry {
     private static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Brewery.MOD_ID, Registries.MOB_EFFECT);
@@ -70,7 +55,7 @@ public class MobEffectRegistry {
     }
 
     static {
-        DRUNK = registerEffect("drunk", DrunkEffect::new);
+        DRUNK = registerEffect("drunk", IntoxicationEffect::new);
         BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setBlendDuration(22));
         MINING = registerEffect("mining", () -> new MiningEffect(MobEffectCategory.BENEFICIAL, 0x6B4F2A));
         PACIFY = registerEffect("pacify", () -> new PacifyEffect(MobEffectCategory.BENEFICIAL, 0x88DDEE));

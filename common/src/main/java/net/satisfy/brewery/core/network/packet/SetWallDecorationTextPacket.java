@@ -2,9 +2,14 @@ package net.satisfy.brewery.core.network.packet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.satisfy.brewery.core.network.BreweryNetworking;
+import net.satisfy.farm_and_charm.core.block.entity.TextEditableBlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -32,6 +37,19 @@ public record SetWallDecorationTextPacket(BlockPos pos, List<String> texts) impl
             texts.add(buf.readUtf(50));
         }
         return new SetWallDecorationTextPacket(pos, texts);
+    }
+
+    public static void handle(SetWallDecorationTextPacket msg, ServerPlayer player) {
+        Level level = player.level();
+        if (level.isLoaded(msg.pos)) {
+            BlockEntity entity = level.getBlockEntity(msg.pos);
+            if (entity instanceof TextEditableBlockEntity editable) {
+                int maxLines = editable.getTextLineCount();
+                for (int i = 0; i < Math.min(msg.texts.size(), maxLines); i++) {
+                    editable.setText(i, Component.literal(msg.texts.get(i)));
+                }
+            }
+        }
     }
 
     @Override

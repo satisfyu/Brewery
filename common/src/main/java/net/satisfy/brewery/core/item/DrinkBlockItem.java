@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.satisfy.brewery.core.block.entity.StorageBlockEntity;
-import net.satisfy.brewery.core.effect.alcohol.AlcoholManager;
+import net.satisfy.brewery.core.registry.MobEffectRegistry;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,11 +41,6 @@ public class DrinkBlockItem extends BlockItem {
 
     public static void addQuality(ItemStack itemStack, int quality) {
         itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().putInt("brewery.beer_quality", Math.min(Math.max(quality, 1), 3));
-    }
-
-    @Override
-    public @NotNull UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.DRINK;
     }
 
     @Override
@@ -77,20 +73,38 @@ public class DrinkBlockItem extends BlockItem {
             player.addItem(new ItemStack(ObjectRegistry.BEER_MUG.get()));
         }
         if (livingEntity instanceof ServerPlayer serverPlayer) {
-            AlcoholManager.drinkAlcohol(serverPlayer);
+            int quality = itemStack.has(DataComponents.CUSTOM_DATA) && Objects.requireNonNull(itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY)).contains("brewery.beer_quality")
+                    ? itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality")
+                    : 1;
 
-            if (itemStack.has(DataComponents.CUSTOM_DATA) && Objects.requireNonNull(itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY)).contains("brewery.beer_quality")) {
-                int quality = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality");
-                MobEffectInstance effectInstance = calculateEffectForQuality(quality);
-                serverPlayer.addEffect(effectInstance);
+            int durationMultiplier = quality == 2 ? 3 : quality == 3 ? 5 : 1;
+            var holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect);
+            var current = serverPlayer.getEffect(holder);
+            int currentAmp = current != null ? current.getAmplifier() : -1;
+            int newAmp = Mth.clamp(currentAmp + 1, 0, 5);
+            serverPlayer.addEffect(new MobEffectInstance(holder, baseDuration * durationMultiplier, newAmp));
+
+            var drunkHolder = MobEffectRegistry.holder(MobEffectRegistry.DRUNK);
+            var drunkCurrent = serverPlayer.getEffect(drunkHolder);
+            int drunkAmp = drunkCurrent != null ? drunkCurrent.getAmplifier() : -1;
+            int newDrunkAmp = Mth.clamp(drunkAmp + 1, 0, 5);
+
+            int min = 1800;
+            int max;
+            if (quality == 1) {
+                max = 9600;
+            } else if (quality == 2) {
+                max = 6000;
             } else {
-                MobEffectInstance effectInstance = new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect), baseDuration, 0);
-                serverPlayer.addEffect(effectInstance);
+                max = 3600;
             }
-        }
 
+            int drunkDuration = Mth.nextInt(level.getRandom(), min, max);
+            serverPlayer.addEffect(new MobEffectInstance(drunkHolder, drunkDuration, newDrunkAmp));
+        }
         return returnStack;
     }
+
 
     @NotNull
     private MobEffectInstance calculateEffectForQuality(int quality) {
@@ -112,6 +126,16 @@ public class DrinkBlockItem extends BlockItem {
 
     public void addCount(ItemStack resultSack, int solved) {
         resultSack.setCount(solved);
+    }
+
+    @Override
+    public @NotNull UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.DRINK;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return 32;
     }
 
     @Override

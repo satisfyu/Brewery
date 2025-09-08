@@ -1,6 +1,5 @@
 package net.satisfy.brewery.client;
 
-import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.registry.client.level.entity.EntityModelLayerRegistry;
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import dev.architectury.registry.client.rendering.BlockEntityRendererRegistry;
@@ -9,7 +8,6 @@ import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -19,9 +17,7 @@ import net.satisfy.brewery.client.renderer.block.*;
 import net.satisfy.brewery.client.renderer.entity.BeerElementalAttackRenderer;
 import net.satisfy.brewery.client.renderer.entity.BeerElementalRenderer;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
-import net.satisfy.brewery.core.event.PlayerJoinEvent;
-import net.satisfy.brewery.core.item.ItemPredicate;
-import net.satisfy.brewery.core.network.BreweryNetworking;
+import net.satisfy.brewery.core.item.BreathalyzerItem;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.StorageTypeRegistry;
 
@@ -31,8 +27,7 @@ import static net.satisfy.brewery.core.registry.ObjectRegistry.*;
 public class BreweryClient {
 
     public static void onInitializeClient() {
-        BreweryNetworking.registerS2CPackets();
-        ItemPredicate.register();
+        BreathalyzerItem.init();
 
         RenderTypeRegistry.register(RenderType.cutout(),
                 WILD_HOPS.get(), BEER_MUG.get(), BEER_WHEAT.get(), BEER_HOPS.get(), BEER_BARLEY.get(), BEER_HALEY.get(), BEER_OAT.get(), BEER_NETTLE.get(),
@@ -53,9 +48,8 @@ public class BreweryClient {
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BEER_MUG_BLOCK_ENTITY.get(), BeerMugRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.BREWINGSTATION_BLOCK_ENTITY.get(), BrewingstationRenderer::new);
         BlockEntityRendererRegistry.register(EntityTypeRegistry.WALL_DECORATION.get(), context -> new WallDecorationBlockRenderer());
-        StorageBlockEntityRenderer.registerStorageType(StorageTypeRegistry.BEVERAGE, new BeverageRenderer());
 
-        ClientPlayerEvent.CLIENT_PLAYER_JOIN.register(new PlayerJoinEvent());
+        StorageBlockEntityRenderer.registerStorageType(StorageTypeRegistry.BEVERAGE, new BeverageRenderer());
     }
 
     public static void openStreetSignScreen(WallDecorationBlockEntity entity) {
@@ -81,9 +75,4 @@ public class BreweryClient {
         EntityModelLayerRegistry.register(BeerElementalModel.BEER_ELEMENTAL_MODEL_LAYER, BeerElementalModel::createBodyLayer);
         EntityModelLayerRegistry.register(CompletionistBannerRenderer.LAYER_LOCATION, CompletionistBannerRenderer::createBodyLayer);
     }
-
-    public static LocalPlayer getPlayer() {
-        return Minecraft.getInstance().player;
-    }
-
 }

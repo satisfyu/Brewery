@@ -4,14 +4,9 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
-    "FogRendererMixin",
-    "GameRendererMixin",
-    "WindowMixin"
   ],
   "mixins": [
-    "AlcoholPlayerMixin",
     "MobFollowPlayerMixin",
-    "PlayerMixin",
     "VillagerDiscountMixin",
     "ZombieMixin"
   ],
