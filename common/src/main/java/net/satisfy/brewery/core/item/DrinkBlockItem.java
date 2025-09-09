@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class DrinkBlockItem extends BlockItem {
+
     private final MobEffect effect;
     private final int baseDuration;
 

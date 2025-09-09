@@ -8,6 +8,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.satisfy.brewery.core.block.entity.BeerMugBlockEntity;
+import net.satisfy.brewery.core.registry.ObjectRegistry;
 import net.satisfy.farm_and_charm.core.block.FacingBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,37 +55,49 @@ public class BeerMugFlowerPotBlock extends FacingBlock implements EntityBlock {
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        if (context.getPlayer() == null || !context.getPlayer().isCrouching()) return null;
+        return super.getStateForPlacement(context);
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (hand == InteractionHand.OFF_HAND) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        BeerMugBlockEntity be = (BeerMugBlockEntity) world.getBlockEntity(pos);
+        BeerMugBlockEntity be = (BeerMugBlockEntity) level.getBlockEntity(pos);
         if (be == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         ItemStack handStack = player.getItemInHand(hand);
         Item flower = be.getFlower();
 
-        if (player.isShiftKeyDown() && flower != null) {
-            if (!world.isClientSide) {
+        if (flower == null && handStack.isEmpty() && !player.isShiftKeyDown()) {
+            if (!level.isClientSide) {
+                player.addItem(new ItemStack(ObjectRegistry.BEER_MUG.get()));
+                level.removeBlock(pos, false);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        } else if (player.isShiftKeyDown() && flower != null) {
+            if (!level.isClientSide) {
                 player.addItem(new ItemStack(flower));
                 be.setFlower(null);
-                world.sendBlockUpdated(pos, state, state, 3);
+                level.sendBlockUpdated(pos, state, state, 3);
             }
-            return ItemInteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         } else if (!player.isShiftKeyDown() && handStack.isEmpty() && flower != null) {
-            if (!world.isClientSide) {
+            if (!level.isClientSide) {
                 player.addItem(flower.getDefaultInstance());
                 be.setFlower(null);
             }
-            return ItemInteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         } else if (!player.isShiftKeyDown() && fitInPot(handStack) && flower == null) {
-            if (!world.isClientSide) {
+            if (!level.isClientSide) {
                 be.setFlower(handStack.getItem());
                 if (!player.isCreative()) {
                     handStack.shrink(1);
                 }
             }
-            return ItemInteractionResult.sidedSuccess(world.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return super.useItemOn(itemStack, state, world, pos, player, hand, hit);
+        return super.useItemOn(itemStack, state, level, pos, player, hand, hit);
     }
 
     public boolean fitInPot(ItemStack item) {

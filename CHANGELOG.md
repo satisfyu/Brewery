@@ -1,7 +1,18 @@
+[2.1.4]
+
+**Changed**
+- Intoxication effect with progressive camera sway and slight random drift.
+  - Movement speed penalty scaling with amplifier.
+  - Periodic Nausea at severe intoxication levels.
+  - High intoxication can trigger a Blackout; duration increased to **12s**.
+* Empty Beer Mugs can now simply be picked up with a right-click.
+
+***
+
 [2.1.3]
 
 **Fixed**
-- Brewfest armor pieces no longer render as black/red when dyed leather is equipped. Fixed by updating custom armor models to use the correct `renderToBuffer(int color)` signature introduced in 1.21.1, restoring proper leather tinting.
+* Brewfest armor pieces no longer render as black/red when dyed leather is equipped. Fixed by updating custom armor models to use the correct `renderToBuffer(int color)` signature introduced in 1.21.1, restoring proper leather tinting.
 
 ***
 

@@ -10,7 +10,8 @@ import net.satisfy.brewery.core.registry.CompostablesRegistry;
 
 @Mod(Brewery.MOD_ID)
 public class BreweryNeoForge {
-    public BreweryNeoForge(final IEventBus modEventBus, final ModContainer modContainer) {
+
+    public BreweryNeoForge(final IEventBus modEventBus) {
         EventBusesHooks.whenAvailable(Brewery.MOD_ID, IEventBus::start);
         Brewery.init();
         modEventBus.addListener(this::commonSetup);

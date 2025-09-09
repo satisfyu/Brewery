@@ -1,5 +1,6 @@
 package net.satisfy.brewery.forge.client;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -13,7 +14,7 @@ import net.satisfy.brewery.forge.client.extensions.BrewfestChestplateExtensions;
 import net.satisfy.brewery.forge.client.extensions.BrewfestHatExtensions;
 import net.satisfy.brewery.forge.client.extensions.BrewfestLeggingsExtensions;
 
-@EventBusSubscriber(modid = Brewery.MOD_ID)
+@EventBusSubscriber(modid = Brewery.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class BreweryClientNeoForge {
 
     @SubscribeEvent
