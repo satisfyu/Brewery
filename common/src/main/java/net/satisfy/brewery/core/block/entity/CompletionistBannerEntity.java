@@ -23,7 +23,7 @@ public class CompletionistBannerEntity extends BlockEntity {
             AABB effectRadius = new AABB(pos).inflate(8);
             List<Player> players = level.getEntitiesOfClass(Player.class, effectRadius);
             for (Player player : players) {
-                player.addEffect(new MobEffectInstance(MobEffects.LUCK, 40, 1, true, false));
+                player.addEffect(new MobEffectInstance(MobEffects.DIG_SPEED, 40, 1, true, false));
             }
         }
     }
