@@ -24,6 +24,9 @@ import net.satisfy.brewery.core.registry.MobEffectRegistry;
 import org.jetbrains.annotations.Nullable;
 
 public class CommonEvents {
+    private static final String HALEY_ACTIVE = "brewery:haley_active";
+    private static final String HALEY_SET_MAYFLY = "brewery:haley_set_mayfly";
+
     public static void init() {
         LootEvent.MODIFY_LOOT_TABLE.register(CommonEvents::onModifyLootTable);
         PlayerEvent.ATTACK_ENTITY.register(CommonEvents::onPlayerAttack);
@@ -67,16 +70,25 @@ public class CommonEvents {
         if (player.isCreative() || player.isSpectator()) return;
         boolean has = player.hasEffect(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.HALEY.get()));
         if (has) {
-            if (!player.getAbilities().mayfly || !player.getAbilities().flying) {
-                player.getAbilities().mayfly = true;
-                player.getAbilities().flying = true;
-                player.onUpdateAbilities();
+            if (!player.getTags().contains(HALEY_ACTIVE)) {
+                player.addTag(HALEY_ACTIVE);
+                if (!player.getAbilities().mayfly) {
+                    player.addTag(HALEY_SET_MAYFLY);
+                    player.getAbilities().mayfly = true;
+                    player.onUpdateAbilities();
+                }
             }
         } else {
-            if (player.getAbilities().mayfly || player.getAbilities().flying) {
-                player.getAbilities().mayfly = false;
-                player.getAbilities().flying = false;
-                player.onUpdateAbilities();
+            if (player.getTags().contains(HALEY_ACTIVE)) {
+                player.removeTag(HALEY_ACTIVE);
+                if (player.getTags().contains(HALEY_SET_MAYFLY)) {
+                    player.removeTag(HALEY_SET_MAYFLY);
+                    if (player.getAbilities().mayfly || player.getAbilities().flying) {
+                        player.getAbilities().mayfly = false;
+                        player.getAbilities().flying = false;
+                        player.onUpdateAbilities();
+                    }
+                }
             }
         }
     }

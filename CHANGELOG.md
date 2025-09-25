@@ -1,3 +1,11 @@
+[2.1.5]
+
+**Fixed**
+- CompletionistBanner applying the wrong effect to nearby Players 
+- Haley effect no longer overrides other flight sources; mayfly is granted once on start and revoked only when the effect ends
+
+***
+
 [2.1.4]
 
 **Changed**
