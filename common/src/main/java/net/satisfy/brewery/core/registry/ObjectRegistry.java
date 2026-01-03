@@ -1,39 +1,22 @@
 package net.satisfy.brewery.core.registry;
 
 import dev.architectury.core.item.ArchitecturySpawnEggItem;
-import dev.architectury.registry.fuel.FuelRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CarpetBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TallFlowerBlock;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.PushReaction;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.block.*;
 import net.satisfy.brewery.core.block.property.BrewMaterial;
-import net.satisfy.brewery.core.item.BreathalyzerItem;
-import net.satisfy.brewery.core.item.BrewfestBootsItem;
-import net.satisfy.brewery.core.item.BrewfestChestItem;
-import net.satisfy.brewery.core.item.BrewfestHatItem;
-import net.satisfy.brewery.core.item.BrewfestLegsItem;
-import net.satisfy.brewery.core.item.DarkBrewItem;
-import net.satisfy.brewery.core.item.DrinkBlockItem;
+import net.satisfy.brewery.core.item.*;
 import net.satisfy.farm_and_charm.core.block.BenchBlock;
 import net.satisfy.farm_and_charm.core.block.FacingBlock;
 import net.satisfy.farm_and_charm.core.block.FoodBlock;
@@ -41,6 +24,9 @@ import net.satisfy.farm_and_charm.core.item.food.EffectBlockItem;
 import net.satisfy.farm_and_charm.core.item.food.EffectItem;
 import net.satisfy.farm_and_charm.core.registry.ArmorMaterialRegistry;
 import net.satisfy.farm_and_charm.core.util.GeneralUtil;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SATIATION;
 import static net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.SUSTENANCE;
@@ -51,7 +37,6 @@ public class ObjectRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Brewery.MOD_ID, Registries.ITEM);
     public static final Registrar<Item> ITEM_REGISTRAR = ITEMS.getRegistrar();
 
-    public static final RegistrySupplier<Item> HOPS = registerItem("hops", () -> new Item(getSettings().food(Foods.APPLE)));
     public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new BreathalyzerItem(getSettings()));
     public static final RegistrySupplier<Item> DARK_BREW = registerItem("dark_brew", () -> new DarkBrewItem(getSettings()));
     public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new EffectItem(getFoodItemSettings(6, 0.5f, SUSTENANCE, 6000), 6000, true));
@@ -68,8 +53,9 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREWFEST_SHOES = registerItem("brewfest_shoes", () -> new BrewfestBootsItem(ArmorMaterialRegistry.withTextureNoOverlay(ArmorMaterialRegistry.CLOTH, Brewery.identifier("models/armor/dirndl")), ArmorItem.Type.BOOTS, getSettings().rarity(Rarity.RARE), Brewery.identifier("models/armor/dirndl")));
     public static final RegistrySupplier<Block> WILD_HOPS = registerWithoutItem("wild_hops", () -> new TallFlowerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ROSE_BUSH)));
     public static final RegistrySupplier<Block> HOPS_CROP = registerWithoutItem("hops_crop", () -> new HopsCropHeadBlock(getBushSettings().randomTicks()));
-    public static final RegistrySupplier<Item> HOPS_SEEDS = registerItem("hops_seeds", () -> new ItemNameBlockItem(HOPS_CROP.get(), getSettings()));
     public static final RegistrySupplier<Block> HOPS_CROP_BODY = registerWithoutItem("hops_crop_body", () -> new HopsCropBodyBlock(getBushSettings().randomTicks()));
+    public static final RegistrySupplier<Item> HOPS = registerItem("hops", () -> new ItemNameBlockItem(HOPS_CROP.get(), getSettings()));
+
     public static final RegistrySupplier<Block> DRIED_WHEAT = registerWithItem("dried_wheat", () -> new FacingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL)));
     public static final RegistrySupplier<Block> DRIED_BARLEY = registerWithItem("dried_barley", () -> new FacingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL)));
     public static final RegistrySupplier<Block> DRIED_CORN = registerWithItem("dried_corn", () -> new FacingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.RED_WOOL)));
@@ -131,13 +117,6 @@ public class ObjectRegistry {
         BLOCKS.register();
     }
 
-    public static void commonInit() {
-        FuelRegistry.register(300, BEER_MUG.get(), BENCH.get(), TABLE.get(), BAR_COUNTER.get(), WOODEN_BREWINGSTATION.get());
-        FuelRegistry.register(100, HOPS.get());
-        FuelRegistry.register(75, PATTERNED_WOOL.get(), PATTERNED_CARPET.get());
-        FuelRegistry.register(50, BREWFEST_BOOTS.get(), BREWFEST_HAT.get(), BREWFEST_DRESS.get(), BREWFEST_REGALIA.get(), BREWFEST_TROUSERS.get());
-    }
-
     public static BlockBehaviour.Properties properties(float strength) {
         return properties(strength, strength);
     }
@@ -156,15 +135,17 @@ public class ObjectRegistry {
         return getSettings(s -> {});
     }
 
-    private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, RegistrySupplier<MobEffect> effect, int duration) {
-        return getSettings().food(createFood(nutrition, saturationMod, effect, duration, true, false));
+    private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, ResourceLocation effectId, int duration) {
+        return getSettings().food(createFood(nutrition, saturationMod, effectId, duration, true, false));
     }
 
-    private static FoodProperties createFood(int nutrition, float saturationMod, RegistrySupplier<MobEffect> effect, int duration, boolean alwaysEat, boolean fast) {
+    private static FoodProperties createFood(int nutrition, float saturationMod, ResourceLocation effectId, int duration, boolean alwaysEat, boolean fast) {
         FoodProperties.Builder food = new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturationMod);
         if (alwaysEat) food.alwaysEdible();
         if (fast) food.fast();
-        if (effect != null) food.effect(MobEffectRegistry.inst(effect, duration), 1.0f);
+        if (effectId != null) {
+            food.effect(net.satisfy.farm_and_charm.core.registry.MobEffectRegistry.inst(effectId, duration), 1.0F);
+        }
         return food.build();
     }
 

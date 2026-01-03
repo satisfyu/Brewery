@@ -1,11 +1,11 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made by Satisfy",
 	"textures": {
 		"3": "brewery:block/sideboard_top",
-		"4": "brewery:block/wall_cabinet_side",
 		"5": "brewery:block/wall_cabinet_front",
 		"6": "brewery:block/bar_side",
-		"particle": "brewery:block/wall_cabinet_side"
+		"particle": "brewery:block/wall_cabinet_front"
 	},
 	"elements": [
 		{
@@ -13,9 +13,9 @@
 			"to": [16, 16, 16],
 			"faces": {
 				"north": {"uv": [16, 0, 0, 16], "texture": "#5"},
-				"east": {"uv": [2, 0, 14, 16], "texture": "#4"},
+				"east": {"uv": [14, 0, 2, 16], "texture": "#3"},
 				"south": {"uv": [0, 0, 16, 16], "texture": "#6"},
-				"west": {"uv": [2, 0, 14, 16], "texture": "#4"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#3"},
 				"up": {"uv": [2, 16, 14, 0], "rotation": 90, "texture": "#3"},
 				"down": {"uv": [14, 0, 2, 16], "rotation": 90, "texture": "#3"}
 			}
@@ -38,7 +38,7 @@
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, 225, 0],
+			"rotation": [0, -135, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"ground": {
@@ -46,11 +46,11 @@
 			"scale": [0.25, 0.25, 0.25]
 		},
 		"gui": {
-			"rotation": [30, 225, 0],
+			"rotation": [30, -135, 0],
 			"scale": [0.625, 0.625, 0.625]
 		},
 		"head": {
-			"rotation": [0, 180, 0],
+			"rotation": [0, -180, 0],
 			"translation": [0, 13, 7]
 		},
 		"fixed": {

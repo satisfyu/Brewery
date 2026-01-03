@@ -16,13 +16,13 @@
     "hidden": false
   },
   "criteria": {
-    "hops_seeds": {
+    "hops": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "brewery:hops_seeds"
+              "brewery:hops"
             ]
           }
         ]
@@ -70,7 +70,7 @@
       "barley_seeds"
     ],
     [
-      "hops_seeds"
+      "hops"
     ],
     [
       "hops"

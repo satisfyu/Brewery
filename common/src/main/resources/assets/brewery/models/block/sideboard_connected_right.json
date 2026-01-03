@@ -1,4 +1,5 @@
 {
+	"format_version": "1.21.11",
 	"credit": "Made by Satisfy",
 	"textures": {
 		"0": "brewery:block/sideboard_back",
@@ -6,7 +7,7 @@
 		"4": "brewery:block/bar_top_connected",
 		"5": "brewery:block/sideboard_front",
 		"6": "brewery:block/sideboard_side",
-		"particle": "brewery:block/sideboard_back"
+		"particle": "brewery:block/sideboard_frontside"
 	},
 	"elements": [
 		{

@@ -27,7 +27,7 @@
             },
             {
               "type": "minecraft:item",
-              "name": "brewery:hops_seeds"
+              "name": "brewery:hops"
             }
           ]
         }
@@ -59,7 +59,7 @@
               }
             }
           ],
-          "name": "brewery:hops_seeds"
+          "name": "brewery:hops"
         }
       ],
       "rolls": 1.0

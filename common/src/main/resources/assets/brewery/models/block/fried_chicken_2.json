@@ -1,348 +1,84 @@
 {
-  "credit": "Made by ManningDesign",
-  "textures": {
-    "1": "brewery:block/plate_bottom",
-    "3": "brewery:block/plate_top",
-    "7": "brewery:block/fried_chicken",
-    "particle": "brewery:block/fried_chicken"
-  },
-  "elements": [
-    {
-      "from": [
-        1,
-        0,
-        1
-      ],
-      "to": [
-        15,
-        1,
-        15
-      ],
-      "rotation": {
-        "angle": 0,
-        "axis": "y",
-        "origin": [
-          -8,
-          0,
-          16
-        ]
-      },
-      "faces": {
-        "north": {
-          "uv": [
-            1,
-            14,
-            15,
-            15
-          ],
-          "texture": "#3"
-        },
-        "east": {
-          "uv": [
-            1,
-            14,
-            15,
-            15
-          ],
-          "texture": "#3"
-        },
-        "south": {
-          "uv": [
-            1,
-            14,
-            15,
-            15
-          ],
-          "texture": "#3"
-        },
-        "west": {
-          "uv": [
-            1,
-            14,
-            15,
-            15
-          ],
-          "texture": "#3"
-        },
-        "up": {
-          "uv": [
-            1,
-            1,
-            15,
-            15
-          ],
-          "texture": "#3"
-        },
-        "down": {
-          "uv": [
-            1,
-            1,
-            15,
-            15
-          ],
-          "texture": "#1"
-        }
-      }
-    },
-    {
-      "from": [
-        6,
-        1,
-        6
-      ],
-      "to": [
-        10,
-        5,
-        12
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            4,
-            6,
-            8,
-            10
-          ],
-          "rotation": 180,
-          "texture": "#7"
-        },
-        "east": {
-          "uv": [
-            0,
-            0,
-            4,
-            6
-          ],
-          "rotation": 90,
-          "texture": "#7"
-        },
-        "south": {
-          "uv": [
-            0,
-            6,
-            4,
-            10
-          ],
-          "texture": "#7"
-        },
-        "west": {
-          "uv": [
-            0,
-            0,
-            4,
-            6
-          ],
-          "rotation": 270,
-          "texture": "#7"
-        },
-        "up": {
-          "uv": [
-            4,
-            0,
-            8,
-            6
-          ],
-          "texture": "#7"
-        },
-        "down": {
-          "uv": [
-            4,
-            0,
-            8,
-            6
-          ],
-          "rotation": 180,
-          "texture": "#7"
-        }
-      }
-    },
-    {
-      "from": [
-        7,
-        2,
-        2
-      ],
-      "to": [
-        9,
-        4,
-        6
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            4,
-            10,
-            6,
-            12
-          ],
-          "rotation": 180,
-          "texture": "#7"
-        },
-        "east": {
-          "uv": [
-            0,
-            10,
-            4,
-            12
-          ],
-          "rotation": 180,
-          "texture": "#7"
-        },
-        "south": {
-          "uv": [
-            4,
-            10,
-            6,
-            12
-          ],
-          "texture": "#7"
-        },
-        "west": {
-          "uv": [
-            0,
-            10,
-            4,
-            12
-          ],
-          "texture": "#7"
-        },
-        "up": {
-          "uv": [
-            0,
-            10,
-            4,
-            12
-          ],
-          "rotation": 90,
-          "texture": "#7"
-        },
-        "down": {
-          "uv": [
-            0,
-            10,
-            4,
-            12
-          ],
-          "rotation": 270,
-          "texture": "#7"
-        }
-      }
-    }
-  ],
-  "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        67,
-        0,
-        0
-      ],
-      "translation": [
-        1,
-        6.25,
-        4.5
-      ],
-      "scale": [
-        0.77,
-        0.77,
-        0.77
-      ]
-    },
-    "thirdperson_lefthand": {
-      "rotation": [
-        67,
-        0,
-        0
-      ],
-      "translation": [
-        1,
-        6.25,
-        4.5
-      ],
-      "scale": [
-        0.77,
-        0.77,
-        0.77
-      ]
-    },
-    "firstperson_righthand": {
-      "rotation": [
-        0,
-        103,
-        0
-      ],
-      "translation": [
-        0.25,
-        6,
-        0
-      ],
-      "scale": [
-        0.52,
-        0.52,
-        0.52
-      ]
-    },
-    "firstperson_lefthand": {
-      "rotation": [
-        0,
-        103,
-        0
-      ],
-      "translation": [
-        0.25,
-        6,
-        0
-      ],
-      "scale": [
-        0.52,
-        0.52,
-        0.52
-      ]
-    },
-    "ground": {
-      "translation": [
-        0,
-        5.5,
-        0
-      ],
-      "scale": [
-        0.68,
-        0.68,
-        0.68
-      ]
-    },
-    "gui": {
-      "rotation": [
-        35,
-        135,
-        0
-      ],
-      "translation": [
-        0,
-        3.5,
-        0
-      ],
-      "scale": [
-        0.72,
-        0.72,
-        0.72
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        -90,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        -16
-      ],
-      "scale": [
-        2,
-        2,
-        2
-      ]
-    }
-  }
+	"format_version": "1.21.11",
+	"credit": "Made by ManningDesign",
+	"textures": {
+		"3": "brewery:block/plate_top",
+		"7": "brewery:block/fried_chicken",
+		"particle": "brewery:block/fried_chicken"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 1, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-8, 0, 16]},
+			"faces": {
+				"north": {"uv": [1, 14, 15, 15], "texture": "#3"},
+				"east": {"uv": [1, 14, 15, 15], "texture": "#3"},
+				"south": {"uv": [1, 14, 15, 15], "texture": "#3"},
+				"west": {"uv": [1, 14, 15, 15], "texture": "#3"},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#3"},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#3"}
+			}
+		},
+		{
+			"from": [6, 1, 6],
+			"to": [10, 5, 12],
+			"faces": {
+				"north": {"uv": [4, 6, 8, 10], "rotation": 180, "texture": "#7"},
+				"east": {"uv": [0, 0, 4, 6], "rotation": 90, "texture": "#7"},
+				"south": {"uv": [0, 6, 4, 10], "texture": "#7"},
+				"west": {"uv": [0, 0, 4, 6], "rotation": 270, "texture": "#7"},
+				"up": {"uv": [4, 0, 8, 6], "texture": "#7"},
+				"down": {"uv": [4, 0, 8, 6], "rotation": 180, "texture": "#7"}
+			}
+		},
+		{
+			"from": [7, 2, 2],
+			"to": [9, 4, 6],
+			"faces": {
+				"north": {"uv": [4, 10, 6, 12], "rotation": 180, "texture": "#7"},
+				"east": {"uv": [0, 10, 4, 12], "rotation": 180, "texture": "#7"},
+				"south": {"uv": [4, 10, 6, 12], "texture": "#7"},
+				"west": {"uv": [0, 10, 4, 12], "texture": "#7"},
+				"up": {"uv": [0, 10, 4, 12], "rotation": 90, "texture": "#7"},
+				"down": {"uv": [0, 10, 4, 12], "rotation": 270, "texture": "#7"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [67, 0, 0],
+			"translation": [1, 6.25, 4.5],
+			"scale": [0.77, 0.77, 0.77]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [67, 0, 0],
+			"translation": [1, 6.25, 4.5],
+			"scale": [0.77, 0.77, 0.77]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 103, 0],
+			"translation": [0.25, 6, 0],
+			"scale": [0.52, 0.52, 0.52]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 103, 0],
+			"translation": [0.25, 6, 0],
+			"scale": [0.52, 0.52, 0.52]
+		},
+		"ground": {
+			"translation": [0, 5.5, 0],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"gui": {
+			"rotation": [35, 135, 0],
+			"translation": [0, 3.5, 0],
+			"scale": [0.72, 0.72, 0.72]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -16],
+			"scale": [2, 2, 2]
+		}
+	}
 }

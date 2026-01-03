@@ -13,11 +13,9 @@ loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
-
-def jarFileName = 'letsdo-brewery-fabric'
+def jarFileName = "letsdo-brewery-fabric"
 def changelogText = rootProject.file("CHANGELOG.md").text
 archivesBaseName = jarFileName
-
 
 repositories {
     maven {
@@ -35,10 +33,10 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modImplementation "maven.modrinth:lets-do-farm-charm:${project.farm_and_charm_version}-fabric"
-    modApi("net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}") { exclude group: 'net.fabricmc', module: 'fabric-loader' }
-    modApi("dev.architectury:architectury-fabric:${rootProject.architectury_version}") { exclude group: 'net.fabricmc', module: 'fabric-loader' }
-    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version") { exclude group: 'net.fabricmc', module: 'fabric-loader' }
+    modImplementation(files(rootProject.file("local-mods/letsdo-farm_and_charm-fabric-${rootProject.farm_and_charm_version}.jar")))
+    modApi("net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
+    modApi("dev.architectury:architectury-fabric:${rootProject.architectury_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
+    modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:$rei_version") { exclude group: "net.fabricmc", module: "fabric-loader" }
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-fabric-api:${jei_version}")
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
@@ -216,5 +214,3 @@ tasks.register("releaseChangelog") {
 tasks.named("modrinth").configure {
     finalizedBy(tasks.named("releaseChangelog"))
 }
-
-

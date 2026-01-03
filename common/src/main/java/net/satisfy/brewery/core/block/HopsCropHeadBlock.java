@@ -139,6 +139,16 @@ public class HopsCropHeadBlock extends ClimbingCropBlock implements Bonemealable
     }
 
     @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockState belowState = level.getBlockState(pos.below());
+        if (belowState.is(this)) {
+            return false;
+        }
+        return super.canSurvive(state, level, pos);
+    }
+
+
+    @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return true;
     }

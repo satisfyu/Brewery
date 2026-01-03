@@ -65,10 +65,13 @@ public class HopsCropBodyBlock extends ClimbingCropBlock implements Bonemealable
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
-        boolean base = super.canBeReplaced(state, ctx);
-        return (!base || !ctx.getItemInHand().is(ObjectRegistry.HOPS_CROP.get().asItem())) && base;
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext blockPlaceContext) {
+        if (blockPlaceContext.getPlayer() != null) {
+            return false;
+        }
+        return super.canBeReplaced(state, blockPlaceContext);
     }
+
 
     @Override
     public @NotNull BlockState updateShape(BlockState state, Direction dir, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {

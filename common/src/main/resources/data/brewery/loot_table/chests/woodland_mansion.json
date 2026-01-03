@@ -35,7 +35,7 @@
               }
             }
           ],
-          "name": "brewery:hops_seeds"
+          "name": "brewery:hops"
         },
         {
           "type": "minecraft:empty",
@@ -54,7 +54,7 @@
               }
             }
           ],
-          "name": "brewery:hops_seeds"
+          "name": "brewery:hops"
         },
         {
           "type": "minecraft:empty",

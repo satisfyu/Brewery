@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -41,8 +43,12 @@ public class DrinkBlockItem extends BlockItem {
     }
 
     public static void addQuality(ItemStack itemStack, int quality) {
-        itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().putInt("brewery.beer_quality", Math.min(Math.max(quality, 1), 3));
+        CustomData customData = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        CompoundTag tag = customData.copyTag();
+        tag.putInt("brewery.beer_quality", Mth.clamp(quality, 1, 3));
+        itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
+
 
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
@@ -141,35 +147,30 @@ public class DrinkBlockItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        int beerQuality = stack.has(DataComponents.CUSTOM_DATA)
-                && Objects.requireNonNull(stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY))
-                .contains("brewery.beer_quality")
-                ? stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality")
-                : 1;
+        int beerQuality = 1;
+        if (stack.has(DataComponents.CUSTOM_DATA)) {
+            CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            if (customData.contains("brewery.beer_quality")) {
+                beerQuality = customData.copyTag().getInt("brewery.beer_quality");
+            }
+        }
 
-        int durationMultiplier = 1;
-        int effectLevel = switch (beerQuality) {
-            case 2 -> {
-                durationMultiplier = 3;
-                yield 2;
-            }
-            case 3 -> {
-                durationMultiplier = 5;
-                yield 3;
-            }
-            default -> 1;
-        };
+        int durationMultiplier = beerQuality == 2 ? 3 : beerQuality == 3 ? 5 : 1;
+        int amplifier = beerQuality == 2 ? 1 : beerQuality == 3 ? 2 : 0;
 
         if (this.effect != null) {
             MutableComponent effectName = Component.translatable(this.effect.getDescriptionId());
-            if (effectLevel > 1) {
-                effectName.append(" ").append(Component.translatable("potion.potency." + (effectLevel - 1)));
+            if (amplifier > 0) {
+                effectName.append(" ").append(Component.translatable("potion.potency." + amplifier));
             }
 
-            int seconds = (this.baseDuration * durationMultiplier) / 20;
-            MutableComponent effectDuration = Component.literal(" (" + seconds + "s)");
+            MobEffectInstance instance = new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(this.effect), this.baseDuration * durationMultiplier, amplifier);
 
-            tooltip.add(effectName.append(effectDuration).withStyle(this.effect.getCategory().getTooltipFormatting()));
+            MutableComponent line = instance.getDuration() > 20
+                    ? Component.translatable("potion.withDuration", effectName, MobEffectUtil.formatDuration(instance, 1.0F, context.tickRate()))
+                    : effectName;
+
+            tooltip.add(line.withStyle(this.effect.getCategory().getTooltipFormatting()));
         } else {
             tooltip.add(Component.translatable("effect.none").withStyle(ChatFormatting.GRAY));
         }
