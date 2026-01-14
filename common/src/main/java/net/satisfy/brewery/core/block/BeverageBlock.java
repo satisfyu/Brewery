@@ -1,10 +1,12 @@
 package net.satisfy.brewery.core.block;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,6 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -31,6 +34,8 @@ import net.satisfy.brewery.core.block.entity.StorageBlockEntity;
 import net.satisfy.brewery.core.item.DrinkBlockItem;
 import net.satisfy.brewery.core.registry.StorageTypeRegistry;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class BeverageBlock extends StorageBlock {
     private static final VoxelShape SHAPE = Shapes.box(0.125, 0, 0.125, 0.875, 0.875, 0.875);
@@ -177,5 +182,10 @@ public class BeverageBlock extends StorageBlock {
     @Override
     public Direction[] unAllowedDirections() {
         return new Direction[0];
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+        list.add(Component.translatable("tooltip.farm_and_charm.canbeplaced").withStyle(ChatFormatting.GRAY));
     }
 }

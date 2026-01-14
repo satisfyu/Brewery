@@ -145,6 +145,7 @@
   "item.brewery.hops_crop": "Hopfen",
   "item.brewery.pretzel": "Brezel",
   "item.brewery.rope": "Seil",
+  "effect.brewery.stoutheart": "Standhaft",
   "item.brewery.sausage": "Weisswürschtl",
   "itemGroup.brewery.creative_tab": "[Let's Do] Brewery",
   "tooltip.brewery.armor.brewfest_set": "Braufest-Gewand",

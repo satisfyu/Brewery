@@ -117,6 +117,6 @@ public class WallDecorationBlock extends FacingBlock implements EntityBlock {
 
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
-        list.add(Component.translatable("tooltip.farm_and_charm.canbeplacedwall").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+        list.add(Component.translatable("tooltip.farm_and_charm.canbeplacedwall").withStyle(ChatFormatting.GRAY));
     }
 }

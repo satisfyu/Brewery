@@ -10,7 +10,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.core.effect.*;
 
@@ -34,6 +33,7 @@ public class MobEffectRegistry {
     public static final RegistrySupplier<MobEffect> SNOWWHITE;
     public static final RegistrySupplier<MobEffect> PINTCHARISMA;
     public static final RegistrySupplier<MobEffect> HALEY;
+    public static final RegistrySupplier<MobEffect> STOUTHEART;
 
     private static RegistrySupplier<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {
         if (Platform.isNeoForge()) {
@@ -50,12 +50,9 @@ public class MobEffectRegistry {
         return BuiltInRegistries.MOB_EFFECT.getResourceKey(supplier.get()).flatMap(BuiltInRegistries.MOB_EFFECT::getHolder).orElseThrow();
     }
 
-    public static MobEffectInstance inst(RegistrySupplier<MobEffect> supplier, int duration) {
-        return new MobEffectInstance(holder(supplier), duration);
-    }
-
     static {
         DRUNK = registerEffect("drunk", IntoxicationEffect::new);
+        STOUTHEART = registerEffect("stoutheart", StoutHeartEffect::new);
         BLACKOUT = registerEffect("blackout", () -> new BlackoutEffect().setBlendDuration(22));
         MINING = registerEffect("mining", () -> new MiningEffect(MobEffectCategory.BENEFICIAL, 0x6B4F2A));
         PACIFY = registerEffect("pacify", () -> new PacifyEffect(MobEffectCategory.BENEFICIAL, 0x88DDEE));

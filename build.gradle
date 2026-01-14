@@ -46,10 +46,6 @@ allprojects {
             }
         }
         maven {
-            name = "tsuyumaven"
-            url = "https://maven.tsuyumori.dev/snapshots"
-        }
-        maven {
             name = "Jared's maven"
             url = "https://maven.blamejared.com/"
         }
