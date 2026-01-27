@@ -8,10 +8,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
 import net.satisfy.brewery.core.network.BreweryNetworking;
-import net.satisfy.farm_and_charm.core.block.entity.TextEditableBlockEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record SetWallDecorationTextPacket(BlockPos pos, List<String> texts) implements CustomPacketPayload {
@@ -32,7 +33,7 @@ public record SetWallDecorationTextPacket(BlockPos pos, List<String> texts) impl
     public static SetWallDecorationTextPacket fromNetwork(RegistryFriendlyByteBuf buf) {
         BlockPos pos = buf.readBlockPos();
         int size = buf.readInt();
-        List<String> texts = new java.util.ArrayList<>();
+        List<String> texts = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             texts.add(buf.readUtf(50));
         }
@@ -41,14 +42,17 @@ public record SetWallDecorationTextPacket(BlockPos pos, List<String> texts) impl
 
     public static void handle(SetWallDecorationTextPacket msg, ServerPlayer player) {
         Level level = player.level();
-        if (level.isLoaded(msg.pos)) {
-            BlockEntity entity = level.getBlockEntity(msg.pos);
-            if (entity instanceof TextEditableBlockEntity editable) {
-                int maxLines = editable.getTextLineCount();
-                for (int i = 0; i < Math.min(msg.texts.size(), maxLines); i++) {
-                    editable.setText(i, Component.literal(msg.texts.get(i)));
-                }
-            }
+        if (!level.isLoaded(msg.pos)) {
+            return;
+        }
+
+        BlockEntity entity = level.getBlockEntity(msg.pos);
+        if (!(entity instanceof WallDecorationBlockEntity wallDecorationBlockEntity)) {
+            return;
+        }
+
+        for (int i = 0; i < msg.texts.size() && i < 3; i++) {
+            wallDecorationBlockEntity.setText(i, Component.literal(msg.texts.get(i)));
         }
     }
 

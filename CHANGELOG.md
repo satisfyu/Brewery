@@ -1,14 +1,14 @@
 [2.1.6]
 
-**Fixed**
+Fixed
 - Effect duration was displayed in an incorrect format
 - Beer and Whiskey effect levels were not applied correctly
+- Text written on Gingerbread was not displayed properly
 
-**Changed**
+Changed
 - Reduced overly saturated textures (work in progress)
 - Based on frequent feedback: hops do not use seeds in real-life cultivation. Seeds have been removed. Hops can now be replanted using hops themselves
 - Slight adjustments to armor sizing
-
 
 ***
 
