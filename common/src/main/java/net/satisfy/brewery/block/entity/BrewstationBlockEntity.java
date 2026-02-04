@@ -37,10 +37,7 @@ import net.satisfy.brewery.util.BreweryMath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BrewstationBlockEntity extends BlockEntity implements ImplementedInventory, BlockEntityTicker<BrewstationBlockEntity> {
     @NotNull
@@ -123,7 +120,7 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
             soundTime = 0;
         }
         soundTime++;
-        if(timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
+        if (timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
 
         BrewHelper.checkRunningEvents(this);
 
@@ -158,10 +155,27 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         if (recipe == null || this.level == null)
             return false;
         BlockState blockState = this.level.getBlockState(this.getBlockPos());
+
+        BlockPos ovenPos = BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, this.level);
+        if (ovenPos == null) {
+            return false;
+        }
+
+        BlockState ovenState = this.level.getBlockState(ovenPos);
+
+        boolean hasRequiredProps =
+                blockState.hasProperty(BlockStateRegistry.MATERIAL) &&
+                        blockState.hasProperty(BlockStateRegistry.LIQUID) &&
+                        ovenState.hasProperty(BlockStateRegistry.HEAT);
+
+        if (!hasRequiredProps) {
+            return false;
+        }
+
         return recipe instanceof BrewingRecipe brewingRecipe &&
                 blockState.getValue(BlockStateRegistry.MATERIAL).getLevel() >= brewingRecipe.getMaterial().getLevel() &&
                 blockState.getValue(BlockStateRegistry.LIQUID) != Liquid.EMPTY &&
-                this.level.getBlockState(BrewHelper.getBlock(ObjectRegistry.BREW_OVEN.get(), this.components, this.level)).getValue(BlockStateRegistry.HEAT) != Heat.OFF;
+                ovenState.getValue(BlockStateRegistry.HEAT) != Heat.OFF;
     }
 
     private void brew(Recipe<?> recipe, RegistryAccess access) {
