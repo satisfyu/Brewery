@@ -11,12 +11,9 @@ import net.satisfy.brewery.core.registry.ArmorRegistry;
 import org.jetbrains.annotations.NotNull;
 
 public class BrewfestChestplateExtensions implements IClientItemExtensions {
-    
     @Override
     public @NotNull Model getGenericArmorModel(@NotNull LivingEntity entity, @NotNull ItemStack stack, @NotNull EquipmentSlot slot, @NotNull HumanoidModel<?> original) {
-        if (slot == EquipmentSlot.CHEST && stack.getItem() instanceof BrewfestChestItem chest) {
-            return ArmorRegistry.getChestplateModel(chest, original.body, original.leftArm, original.rightArm, original.leftLeg, original.rightLeg);
-        }
-        return original;
+        if (slot != EquipmentSlot.CHEST || !(stack.getItem() instanceof BrewfestChestItem chest)) return original;
+        return ArmorRegistry.getChestplateModel(chest, original.body, original.leftArm, original.rightArm, original.leftLeg, original.rightLeg, original);
     }
 }

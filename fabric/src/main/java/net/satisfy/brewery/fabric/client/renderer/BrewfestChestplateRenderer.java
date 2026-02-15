@@ -18,12 +18,15 @@ public class BrewfestChestplateRenderer implements ArmorRenderer {
     public void render(PoseStack matrices, MultiBufferSource vertexConsumers, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, HumanoidModel<LivingEntity> contextModel) {
         if (slot != EquipmentSlot.CHEST) return;
         if (!(stack.getItem() instanceof BrewfestChestItem brewfestChestItem)) return;
-        Model model = ArmorRegistry.getChestplateModel(brewfestChestItem, contextModel.body, contextModel.leftArm, contextModel.rightArm, contextModel.leftLeg, contextModel.rightLeg);
-        ResourceLocation base = brewfestChestItem.getChestplateTexture();
-        String path = base.getPath();
-        if (!path.startsWith("textures/")) path = "textures/" + path;
-        if (!path.endsWith(".png")) path = path + ".png";
-        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(base.getNamespace(), path);
-        model.renderToBuffer(matrices, vertexConsumers.getBuffer(model.renderType(texture)), light, OverlayTexture.NO_OVERLAY);
+
+        Model model = ArmorRegistry.getChestplateModel(brewfestChestItem, contextModel.body, contextModel.leftArm, contextModel.rightArm, contextModel.leftLeg, contextModel.rightLeg, contextModel);
+
+        ResourceLocation baseTexture = brewfestChestItem.getChestplateTexture();
+        String texturePath = baseTexture.getPath();
+        if (!texturePath.startsWith("textures/")) texturePath = "textures/" + texturePath;
+        if (!texturePath.endsWith(".png")) texturePath = texturePath + ".png";
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(baseTexture.getNamespace(), texturePath);
+
+        model.renderToBuffer(matrices, vertexConsumers.getBuffer(model.renderType(texture)), light, OverlayTexture.NO_OVERLAY, -1);
     }
 }

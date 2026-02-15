@@ -1,34 +1,42 @@
 [2.1.6]
 
+**Fixed**
+* BrewfestArmor being HUGE when placed inside AlpineWhispers / Meadows wardrobe
+
+
+***
+
+[2.1.6]
+
 **Requires Farm & Charm 1.1.15+**
 
 **Fixed**
-- Effect duration was displayed in an incorrect format
-- Beer and Whiskey effect levels were not applied correctly
-- Text written on Gingerbread was not displayed properly
+* Effect duration was displayed in an incorrect format
+* Beer and Whiskey effect levels were not applied correctly
+* Text written on Gingerbread was not displayed properly
 
 **Changed**
-- Reduced overly saturated textures (work in progress)
-- Based on frequent feedback: hops do not use seeds in real-life cultivation. Seeds have been removed. Hops can now be replanted using hops themselves
-- Slight adjustments to armor sizing
+* Reduced overly saturated textures (work in progress)
+* Based on frequent feedback: hops do not use seeds in real-life cultivation. Seeds have been removed. Hops can now be replanted using hops themselves
+* Slight adjustments to armor sizing
 
 ***
 
 [2.1.5]
 
 **Fixed**
-- CompletionistBanner applying the wrong effect to nearby Players 
-- Haley effect no longer overrides other flight sources; mayfly is granted once on start and revoked only when the effect ends
+* CompletionistBanner applying the wrong effect to nearby Players 
+* Haley effect no longer overrides other flight sources; mayfly is granted once on start and revoked only when the effect ends
 
 ***
 
 [2.1.4]
 
 **Changed**
-- Intoxication effect with progressive camera sway and slight random drift.
-  - Movement speed penalty scaling with amplifier.
-  - Periodic Nausea at severe intoxication levels.
-  - High intoxication can trigger a Blackout; duration increased to **12s**.
+* Intoxication effect with progressive camera sway and slight random drift.
+  * Movement speed penalty scaling with amplifier.
+  * Periodic Nausea at severe intoxication levels.
+  * High intoxication can trigger a Blackout; duration increased to **12s**.
 * Empty Beer Mugs can now simply be picked up with a right-click.
 
 ***
@@ -74,7 +82,7 @@
 
 ***
 
-[2.0.5] - 2025.02.15
+[2.0.5] 
 
 **Added**
 * Zombies have a really low Chance to spawn wearing a Brewfest Outfit and Holding a Bottle of Whiskey

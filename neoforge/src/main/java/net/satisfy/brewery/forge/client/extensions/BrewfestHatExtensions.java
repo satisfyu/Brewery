@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class BrewfestHatExtensions implements IClientItemExtensions {
     @Override
     public @NotNull Model getGenericArmorModel(@NotNull LivingEntity entity, @NotNull ItemStack stack, @NotNull EquipmentSlot slot, @NotNull HumanoidModel<?> original) {
-        if (slot == EquipmentSlot.HEAD && stack.getItem() instanceof BrewfestHatItem hat) {
-            return ArmorRegistry.getHatModel(hat, original.head);
-        }
-        return original;
+        if (slot != EquipmentSlot.HEAD || !(stack.getItem() instanceof BrewfestHatItem hat)) return original;
+        return ArmorRegistry.getHatModel(hat, original.head, original);
     }
 }

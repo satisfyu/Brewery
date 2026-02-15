@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class BrewfestLeggingsExtensions implements IClientItemExtensions {
     @Override
     public @NotNull Model getGenericArmorModel(@NotNull LivingEntity entity, @NotNull ItemStack stack, @NotNull EquipmentSlot slot, @NotNull HumanoidModel<?> original) {
-        if (slot == EquipmentSlot.LEGS && stack.getItem() instanceof BrewfestLegsItem legs) {
-            return ArmorRegistry.getLeggingsModel(legs, original.rightLeg, original.leftLeg);
-        }
-        return original;
+        if (slot != EquipmentSlot.LEGS || !(stack.getItem() instanceof BrewfestLegsItem legs)) return original;
+        return ArmorRegistry.getLeggingsModel(legs, original.rightLeg, original.leftLeg, original);
     }
 }
