@@ -1,4 +1,4 @@
-![Brewery](https://lets-do.ch/assets/mod-logos/brewery.png)
+![Brewery](https://lets-do.ch/assets/mod-logos/brewery.webp)
 
 <br>
 
