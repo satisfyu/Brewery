@@ -11,6 +11,7 @@ public class CompostablesRegistry {
         registerCompostableItem(ObjectRegistry.DRIED_OAT, 0.6F);
         registerCompostableItem(ObjectRegistry.DRIED_CORN, 0.6F);
         registerCompostableItem(ObjectRegistry.DRIED_BARLEY, 0.6F);
+        registerCompostableItem(ObjectRegistry.WILD_HOPS, 0.5F);
         registerCompostableItem(ObjectRegistry.HOPS, 0.4F);
         registerCompostableItem(ObjectRegistry.DUMPLINGS, 0.6F);
         registerCompostableItem(ObjectRegistry.FRIED_CHICKEN, 0.3F);

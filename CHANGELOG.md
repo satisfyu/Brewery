@@ -2,7 +2,10 @@
 
 **Fixed**
 * BrewfestArmor being HUGE when placed inside AlpineWhispers / Meadows wardrobe
+* Brewery Items not being compostable on Neoforge
 
+**Changed**
+* Drying recipes for Corn now use c:crops/corn tags instead of direct item IDs for better mod compatibility
 
 ***
 
