@@ -1,27 +1,122 @@
-<p align="center"><img src="https://i.imgur.com/XvN4bmx.png" width="1200"></p>
+![Brewery](https://lets-do.ch/assets/mod-logos/brewery.png)
 
-<h1 align="center">Welcome to Brewery!</h1>
-
-<div style="text-align: center;">
-  <p>Ozapft is! Brau Bier, beiss in a Bretzn – willkomme zum Braufescht!</p>
-</div>
-
-<div style="text-align: center;">
-  <p>Brew Beer and Whiskey, build your own Brewery</p>
-</div>
-<h1 align="center">Available for</h1>
-<p align="center"><img src="https://imgur.com/gREqi3m.png" width="240" height="120"></p>
-
-<h1 align="center">Be Part of Our Journey</h1>
+<br>
 
 <p align="center">
-    <a title="discord" href="https://discord.gg/Vqu6wYZwdZ">
-        <img style="display: block; margin-left: auto; margin-right: auto;" src="https://1000logos.net/wp-content/uploads/2021/06/Discord-logo-2015.png" alt="" width="" height="140" />
-    </a>
-    <a title="patreon" href="https://www.patreon.com/user?u=78595058">
-    <picture>
-      <source style="display: block; margin-left: auto; margin-right: auto;" width="" height="140" media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/4R738W0/patreon-logo-icon-170869-dark.png">
-      <img style="display: block; margin-left: auto; margin-right: auto;" width="" height="140" alt="" src="https://cdn.icon-icons.com/icons2/2699/PNG/512/patreon_logo_icon_170869.png">
-    </picture>
-    </a>
+  <strong>Festive Brews & Rustic Revelry</strong>
+</p>
+
+<p align="center">
+  <em>The spirited extension to Farm & Charm</em>
+</p>
+
+<br>
+
+<p align="center">
+  <em>"Crafted by cask and time"</em>
+</p>
+
+<br>
+
+Brewery brings the spirit of celebration into your world. Dry your ingredients, tend the barrels, refine your recipes and pour drinks worthy of a true brew festival.
+
+<br>
+
+Ozapft is. Brew beer, craft whiskey and turn your village into a lively festival ground.
+
+<br>
+
+This version offers improved compatibility with [Let's Do] Farm & Charm, adding more items, refined recipes and expanded brewing features.
+
+<br>
+
+## From Grain to Glass
+
+<br>
+
+- Drying, brewing and drinking  
+- Brew your own Beer  
+- Brew your own Whiskey  
+- Refine ingredients and age your creations  
+
+<br>
+
+Patience makes the perfect pour.
+
+<br>
+
+## Dress for the Festival
+
+<br>
+
+- Visit the Brew Festival and get yourself some beautiful attire  
+- Lederhosen, traditional shirts and Dirndl  
+- Embrace Bavarian-inspired festive fashion  
+
+<br>
+
+Dress for the celebration. Brew like a master.
+
+<br>
+
+## Build Your Tavern
+
+<br>
+
+- New Building Blocks and Food Blocks in Oktoberfest style  
+- Decorative elements inspired by traditional brew halls  
+- Create your own rustic tavern or festival grounds  
+
+<br>
+
+Design your own tavern. Tap fresh from the barrel.
+
+<br>
+
+<p align="center">
+  Have fun brewing!
+</p>
+
+<br>
+
+<p align="center">
+  <em>Requires [Let's Do] Farm & Charm</em>
+</p>
+
+<br>
+
+<p align="center">
+  <em>Dedicated to MissLilitu</em>
+</p>
+
+<br>
+
+<div align="center">
+
+# The Let’s Do Collection
+
+<br>
+
+<a href="https://lets-do.ch/mods/">
+  <img src="https://github.com/Let-s-Do-Collection/Let-s-Do-Collection/raw/main/LOGO.png?raw=true" width="350" alt="The Let’s Do Collection">
+</a>
+
+<br>
+
+# Support & Community
+
+</div>
+
+<br>
+
+<p align="center">
+  Let’s Do grows through its community.
+</p>
+
+<br>
+
+<p align="center">
+  <a href="https://github.com/Let-s-Do-Collection/Let-s-Do-Collection">GitHub</a> •
+  <a href="https://discord.gg/Jb2bgpYr">Discord</a> •
+  <a href="https://www.patreon.com/c/u78595058">Patreon</a>
 </p>
