@@ -1,4 +1,4 @@
-[2.1.6]
+[2.1.7]
 
 **Fixed**
 * BrewfestArmor being HUGE when placed inside AlpineWhispers / Meadows wardrobe
@@ -6,6 +6,9 @@
 
 **Changed**
 * Drying recipes for Corn now use c:crops/corn tags instead of direct item IDs for better mod compatibility
+
+**Added**
+* Wild Hops are now obtainable
 
 ***
 

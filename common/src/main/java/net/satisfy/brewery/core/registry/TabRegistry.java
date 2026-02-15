@@ -25,6 +25,7 @@ public class TabRegistry {
                 out.accept(ObjectRegistry.BENCH.get());
                 out.accept(ObjectRegistry.PATTERNED_WOOL.get());
                 out.accept(ObjectRegistry.PATTERNED_CARPET.get());
+                out.accept(ObjectRegistry.WILD_HOPS.get());
                 out.accept(ObjectRegistry.HOPS.get());
                 out.accept(ObjectRegistry.DRIED_WHEAT.get());
                 out.accept(ObjectRegistry.DRIED_BARLEY.get());
