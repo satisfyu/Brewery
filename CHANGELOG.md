@@ -11,6 +11,8 @@
   * 2 for solving 2–4 events
   * 3 only when all events are solved
 
+*** 
+
 [2.1.7]
 
 **Fixed**
