@@ -125,7 +125,20 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
             return;
         }
 
-        if (eventQuota < 0) eventQuota = computeEventQuota();
+        BrewMaterial material = this.getBlockState().getValue(BlockStateRegistry.MATERIAL);
+        boolean isNetherite = material == BrewMaterial.NETHERITE;
+
+        if (isNetherite) {
+            if (!this.runningEvents.isEmpty()) {
+                BrewHelper.finishEvents(this);
+                this.runningEvents.clear();
+            }
+            this.totalEvents = 0;
+            this.timeToNextEvent = Integer.MIN_VALUE;
+            this.eventQuota = 0;
+        } else {
+            if (eventQuota < 0) eventQuota = computeEventQuota();
+        }
 
         if (soundTime >= SOUND_DURATION) {
             level.playSound(null, blockPos, SoundEventRegistry.BREWSTATION_AMBIENT.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -133,30 +146,42 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         }
         soundTime++;
 
-        if (timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
+        if (!isNetherite) {
+            if (timeToNextEvent == Integer.MIN_VALUE) setTimeToEvent();
 
-        BrewHelper.checkRunningEvents(this);
+            BrewHelper.checkRunningEvents(this);
 
-        int timeLeft = MAX_BREW_TIME - brewTime;
+            int timeLeft = MAX_BREW_TIME - brewTime;
+
+            if (brewTime >= MAX_BREW_TIME) {
+                RegistryAccess access = level.registryAccess();
+                this.brew(active.value(), access);
+            } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && totalEvents < eventQuota && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
+                BrewEvent event = BrewHelper.getRdmEvent(this);
+                if (event != null) {
+                    ResourceLocation eventId = BrewEvents.getId(event);
+                    if (eventId != null) {
+                        if (eventId.equals(BrewEvents.KETTLE_EVENT)) overflowStarted++;
+                        event.start(this.components, level);
+                        runningEvents.add(event);
+                        totalEvents++;
+                    }
+                }
+                setTimeToEvent();
+            }
+
+            brewTime++;
+            timeToNextEvent--;
+            return;
+        }
 
         if (brewTime >= MAX_BREW_TIME) {
             RegistryAccess access = level.registryAccess();
             this.brew(active.value(), access);
-        } else if (timeLeft >= MIN_TIME_FOR_EVENT && timeToNextEvent <= 0 && totalEvents < eventQuota && runningEvents.size() < BrewEvents.BREW_EVENTS.size()) {
-            BrewEvent event = BrewHelper.getRdmEvent(this);
-            if (event != null) {
-                ResourceLocation eventId = BrewEvents.getId(event);
-                if (eventId != null) {
-                    if (eventId.equals(BrewEvents.KETTLE_EVENT)) overflowStarted++;
-                    event.start(this.components, level);
-                    runningEvents.add(event);
-                    totalEvents++;
-                }
-            }
-            setTimeToEvent();
+            return;
         }
+
         brewTime++;
-        timeToNextEvent--;
     }
 
     private void setTimeToEvent() {
@@ -183,10 +208,26 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
         ItemStack resultStack = recipe.getResultItem(access);
         if (resultStack.getItem() instanceof DrinkBlockItem drinkItem) {
             assert this.level != null;
-            int quality = this.level.getBlockState(this.getBlockPos()).getValue(BlockStateRegistry.MATERIAL) == BrewMaterial.NETHERITE ? 3 : (this.solved + 1);
+
+            BrewMaterial material = this.level.getBlockState(this.getBlockPos()).getValue(BlockStateRegistry.MATERIAL);
+            int solvedEvents = this.solved;
+            int totalBrewEvents = this.totalEvents;
+
+            int quality;
+            if (material == BrewMaterial.NETHERITE) {
+                quality = 3;
+            } else if (solvedEvents <= 0) {
+                quality = 0;
+            } else if (totalBrewEvents > 0 && solvedEvents >= totalBrewEvents) {
+                quality = 3;
+            } else if (solvedEvents >= 2 && solvedEvents <= 4) {
+                quality = 2;
+            } else {
+                quality = 1;
+            }
+
             DrinkBlockItem.addQuality(resultStack, quality);
-            drinkItem.addCount(resultStack, this.solved == 0 ? 1 : this.solved + 1);
-            this.solved = quality;
+            drinkItem.addCount(resultStack, solvedEvents == 0 ? 1 : solvedEvents + 1);
         }
         this.beer = resultStack;
         spawnElementals();
@@ -270,6 +311,7 @@ public class BrewstationBlockEntity extends BlockEntity implements ImplementedIn
     public void endBrewing() {
         BrewHelper.finishEvents(this);
         this.brewTime = 0;
+        this.solved = 0;
         this.totalEvents = 0;
         this.soundTime = SOUND_DURATION;
         this.timeToNextEvent = Integer.MIN_VALUE;

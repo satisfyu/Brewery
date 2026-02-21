@@ -1,3 +1,16 @@
+[2.1.8]
+
+**Fixed**
+* Brewing output no longer increases with each subsequent brew in the same kettle
+* Crash when interacting with the Brew Oven while Decorative Blocks: Reborn is installed
+
+**Changed**
+* Netherite Brewing Stations now work in comfort mode and no longer require the brewing minigame
+* Brewing quality rebalanced:
+  * 0 when no events are solved
+  * 2 for solving 2–4 events
+  * 3 only when all events are solved
+
 [2.1.7]
 
 **Fixed**

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BrewingstationBlock extends HorizontalDirectionalBlock {
+
     public static final EnumProperty<BrewMaterial> MATERIAL = BlockStateRegistry.MATERIAL;
 
     public BrewingstationBlock(Properties properties) {

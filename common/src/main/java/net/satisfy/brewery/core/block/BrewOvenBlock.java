@@ -67,7 +67,7 @@ public class BrewOvenBlock extends BrewingstationBlock {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.getFuel().containsKey(itemStack.getItem())) {
+        if (blockState.getValue(HEAT) != Heat.LIT && AbstractFurnaceBlockEntity.isFuel(itemStack)) {
             level.setBlock(blockPos, blockState.setValue(HEAT, Heat.LIT), 3);
             level.playSound(null, blockPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
             if (!player.isCreative()) {

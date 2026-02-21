@@ -45,10 +45,9 @@ public class DrinkBlockItem extends BlockItem {
     public static void addQuality(ItemStack itemStack, int quality) {
         CustomData customData = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
         CompoundTag tag = customData.copyTag();
-        tag.putInt("brewery.beer_quality", Mth.clamp(quality, 1, 3));
+        tag.putInt("brewery.beer_quality", Mth.clamp(quality, 0, 3));
         itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
-
 
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
@@ -84,12 +83,12 @@ public class DrinkBlockItem extends BlockItem {
                     ? itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getInt("brewery.beer_quality")
                     : 1;
 
-            int durationMultiplier = quality == 2 ? 3 : quality == 3 ? 5 : 1;
+            MobEffectInstance mainEffect = calculateEffectForQuality(quality);
             var holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect);
             var current = serverPlayer.getEffect(holder);
             int currentAmp = current != null ? current.getAmplifier() : -1;
             int newAmp = Mth.clamp(currentAmp + 1, 0, 5);
-            serverPlayer.addEffect(new MobEffectInstance(holder, baseDuration * durationMultiplier, newAmp));
+            serverPlayer.addEffect(new MobEffectInstance(holder, mainEffect.getDuration(), newAmp));
 
             var drunkHolder = MobEffectRegistry.holder(MobEffectRegistry.DRUNK);
             var drunkCurrent = serverPlayer.getEffect(drunkHolder);
@@ -98,7 +97,7 @@ public class DrinkBlockItem extends BlockItem {
 
             int min = 1800;
             int max;
-            if (quality == 1) {
+            if (quality <= 1) {
                 max = 9600;
             } else if (quality == 2) {
                 max = 6000;
@@ -115,20 +114,35 @@ public class DrinkBlockItem extends BlockItem {
 
     @NotNull
     private MobEffectInstance calculateEffectForQuality(int quality) {
-        int durationMultiplier = 1;
-        int effectLevel = switch (quality) {
+        int durationMultiplier;
+        int amplifier;
+
+        switch (quality) {
+            case 0 -> {
+                durationMultiplier = 0;
+                amplifier = 0;
+            }
             case 2 -> {
                 durationMultiplier = 3;
-                yield 2;
+                amplifier = 1;
             }
             case 3 -> {
                 durationMultiplier = 5;
-                yield 3;
+                amplifier = 2;
             }
-            default -> 1;
-        };
+            default -> {
+                durationMultiplier = 1;
+                amplifier = 0;
+            }
+        }
 
-        return new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect), baseDuration * durationMultiplier, effectLevel - 1);
+        int duration = quality == 0 ? baseDuration / 3 : baseDuration * durationMultiplier;
+
+        return new MobEffectInstance(
+                BuiltInRegistries.MOB_EFFECT.wrapAsHolder(effect),
+                duration,
+                amplifier
+        );
     }
 
     public void addCount(ItemStack resultSack, int solved) {
@@ -155,16 +169,13 @@ public class DrinkBlockItem extends BlockItem {
             }
         }
 
-        int durationMultiplier = beerQuality == 2 ? 3 : beerQuality == 3 ? 5 : 1;
-        int amplifier = beerQuality == 2 ? 1 : beerQuality == 3 ? 2 : 0;
+        MobEffectInstance instance = calculateEffectForQuality(beerQuality);
 
         if (this.effect != null) {
             MutableComponent effectName = Component.translatable(this.effect.getDescriptionId());
-            if (amplifier > 0) {
-                effectName.append(" ").append(Component.translatable("potion.potency." + amplifier));
+            if (instance.getAmplifier() > 0) {
+                effectName.append(" ").append(Component.translatable("potion.potency." + instance.getAmplifier()));
             }
-
-            MobEffectInstance instance = new MobEffectInstance(BuiltInRegistries.MOB_EFFECT.wrapAsHolder(this.effect), this.baseDuration * durationMultiplier, amplifier);
 
             MutableComponent line = instance.getDuration() > 20
                     ? Component.translatable("potion.withDuration", effectName, MobEffectUtil.formatDuration(instance, 1.0F, context.tickRate()))
@@ -175,7 +186,7 @@ public class DrinkBlockItem extends BlockItem {
             tooltip.add(Component.translatable("effect.none").withStyle(ChatFormatting.GRAY));
         }
 
-        if (beerQuality > 1) {
+        if (beerQuality != 1) {
             tooltip.add(Component.translatable("tooltip.brewery.beer_quality", beerQuality).withStyle(ChatFormatting.GOLD));
         }
     }
