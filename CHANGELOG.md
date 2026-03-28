@@ -1,3 +1,11 @@
+[2.1.9]
+
+**Fixed**
+* Crash on NeoForge caused by concurrent item property registration for the Breathalyzer during client setup
+
+*** 
+
+
 [2.1.8]
 
 **Fixed**

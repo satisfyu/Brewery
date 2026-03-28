@@ -29,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class BreathalyzerItem extends Item {
+    private static boolean initialized = false;
+
     public BreathalyzerItem(Properties properties) {
         super(properties);
     }
@@ -46,10 +48,10 @@ public class BreathalyzerItem extends Item {
         ItemStack itemStack = livingEntity.getItemInHand(livingEntity.getUsedItemHand());
         Holder<MobEffect> holder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(MobEffectRegistry.DRUNK.get());
         var inst = livingEntity.getEffect(holder);
-        int amp = inst != null ? inst.getAmplifier() : -1;
-        String val = amp <= 1 ? "EASY" : amp <= 3 ? "WARNING" : "DANGER";
+        int amplifier = inst != null ? inst.getAmplifier() : -1;
+        String drunkennessValue = amplifier <= 1 ? "EASY" : amplifier <= 3 ? "WARNING" : "DANGER";
         CompoundTag nbtData = new CompoundTag();
-        nbtData.putString("brewery.drunkenness", val);
+        nbtData.putString("brewery.drunkenness", drunkennessValue);
         itemStack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbtData));
     }
 
@@ -72,11 +74,17 @@ public class BreathalyzerItem extends Item {
     }
 
     public static void init() {
-        ItemPropertiesRegistry.register(ObjectRegistry.BREATHALYZER.get(), Brewery.identifier("breathing"), (itemStack, clientLevel, livingEntity, i) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F);
-        ItemPropertiesRegistry.register(ObjectRegistry.BREATHALYZER.get(), Brewery.identifier("drunkenness"), (itemStack, clientLevel, livingEntity, i) -> {
+        if (initialized) {
+            return;
+        }
+
+        initialized = true;
+
+        ItemPropertiesRegistry.register(ObjectRegistry.BREATHALYZER.get(), Brewery.identifier("breathing"), (itemStack, clientLevel, livingEntity, seed) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == itemStack ? 1.0F : 0.0F);
+        ItemPropertiesRegistry.register(ObjectRegistry.BREATHALYZER.get(), Brewery.identifier("drunkenness"), (itemStack, clientLevel, livingEntity, seed) -> {
             if (itemStack.has(DataComponents.CUSTOM_DATA)) {
-                String drunkenness = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getString("brewery.drunkenness");
-                return switch (drunkenness) {
+                String drunkennessValue = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getString("brewery.drunkenness");
+                return switch (drunkennessValue) {
                     case "DANGER" -> 0.9F;
                     case "WARNING" -> 0.6F;
                     case "EASY" -> 0.3F;
@@ -90,12 +98,12 @@ public class BreathalyzerItem extends Item {
     @Override
     public void appendHoverText(ItemStack itemStack, TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         if (itemStack.has(DataComponents.CUSTOM_DATA)) {
-            String drunkenness = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getString("brewery.drunkenness");
-            Component tooltip = switch (drunkenness) {
-                case "DANGER" -> Component.translatable(drunkenness).withStyle(ChatFormatting.RED);
-                case "WARNING" -> Component.translatable(drunkenness).withStyle(ChatFormatting.GOLD);
-                case "EASY" -> Component.translatable(drunkenness).withStyle(ChatFormatting.GREEN);
-                default -> Component.translatable(drunkenness);
+            String drunkennessValue = itemStack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getString("brewery.drunkenness");
+            Component tooltip = switch (drunkennessValue) {
+                case "DANGER" -> Component.translatable(drunkennessValue).withStyle(ChatFormatting.RED);
+                case "WARNING" -> Component.translatable(drunkennessValue).withStyle(ChatFormatting.GOLD);
+                case "EASY" -> Component.translatable(drunkennessValue).withStyle(ChatFormatting.GREEN);
+                default -> Component.translatable(drunkennessValue);
             };
             list.add(tooltip);
         }

@@ -8,6 +8,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.satisfy.brewery.Brewery;
 import net.satisfy.brewery.client.BreweryClient;
+import net.satisfy.brewery.core.item.BreathalyzerItem;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
 import net.satisfy.brewery.forge.client.extensions.BrewfestBootsExtensions;
 import net.satisfy.brewery.forge.client.extensions.BrewfestChestplateExtensions;
@@ -24,8 +25,10 @@ public class BreweryClientNeoForge {
 
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
-        BreweryClient.preInitClient();
-        BreweryClient.onInitializeClient();
+        event.enqueueWork(() -> {
+            BreathalyzerItem.init();
+            BreweryClient.onInitializeClient();
+        });
     }
 
     @SubscribeEvent

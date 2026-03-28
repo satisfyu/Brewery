@@ -12,12 +12,20 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.satisfy.brewery.client.gui.WallDecorationEditGui;
-import net.satisfy.brewery.client.model.*;
-import net.satisfy.brewery.client.renderer.block.*;
+import net.satisfy.brewery.client.model.BeerElementalModel;
+import net.satisfy.brewery.client.model.BrewfestBootsModel;
+import net.satisfy.brewery.client.model.BrewfestChestplateModel;
+import net.satisfy.brewery.client.model.BrewfestHatModel;
+import net.satisfy.brewery.client.model.BrewfestLeggingsModel;
+import net.satisfy.brewery.client.renderer.block.BeerMugRenderer;
+import net.satisfy.brewery.client.renderer.block.BeverageRenderer;
+import net.satisfy.brewery.client.renderer.block.BrewingstationRenderer;
+import net.satisfy.brewery.client.renderer.block.CompletionistBannerRenderer;
+import net.satisfy.brewery.client.renderer.block.StorageBlockEntityRenderer;
+import net.satisfy.brewery.client.renderer.block.WallDecorationBlockRenderer;
 import net.satisfy.brewery.client.renderer.entity.BeerElementalAttackRenderer;
 import net.satisfy.brewery.client.renderer.entity.BeerElementalRenderer;
 import net.satisfy.brewery.core.block.entity.WallDecorationBlockEntity;
-import net.satisfy.brewery.core.item.BreathalyzerItem;
 import net.satisfy.brewery.core.registry.EntityTypeRegistry;
 import net.satisfy.brewery.core.registry.StorageTypeRegistry;
 
@@ -27,8 +35,6 @@ import static net.satisfy.brewery.core.registry.ObjectRegistry.*;
 public class BreweryClient {
 
     public static void onInitializeClient() {
-        BreathalyzerItem.init();
-
         RenderTypeRegistry.register(RenderType.cutout(),
                 WILD_HOPS.get(), BEER_MUG.get(), BEER_WHEAT.get(), BEER_HOPS.get(), BEER_BARLEY.get(), BEER_HALEY.get(), BEER_OAT.get(), BEER_NETTLE.get(),
                 HOPS_CROP_BODY.get(), HOPS_CROP.get(), WHISKEY_MAGGOALLAN.get(), WHISKEY_CARRASCONLABEL.get(), WHISKEY_LILITUSINGLEMALT.get(),
