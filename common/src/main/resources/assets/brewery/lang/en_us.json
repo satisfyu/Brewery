@@ -177,5 +177,27 @@
   "sound.brewery.cabinet_open": "Cabinet Opens",
   "sound.brewery.cabinet_close": "Cabinet Closes",
   "gui.brewery.wall_decoration.edit": "Edit Gingerbread Lettering",
-  "gui.brewery.wall_decoration.done" : "Done"
+  "gui.brewery.wall_decoration.done" : "Done",
+
+  "text.autoconfig.brewery.title": "Brewery",
+  "text.autoconfig.brewery.option.entities": "Entities",
+  "text.autoconfig.brewery.option.entities.enableZombieEquipment": "Enable Zombie Equipment",
+  "text.autoconfig.brewery.option.items": "Items",
+  "text.autoconfig.brewery.option.items.nutrition": "Nutrition & Saturation Settings",
+  "text.autoconfig.brewery.option.items.nutrition.sausageNutrition": "Sausage Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.sausageSaturationMod": "Sausage Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.pretzelNutrition": "Pretzel Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.pretzelSaturationMod": "Pretzel Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.porkKnuckleNutrition": "Pork Knuckle Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.porkKnuckleSaturationMod": "Pork Knuckle Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.friedChickenNutrition": "Fried Chicken Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.friedChickenSaturationMod": "Fried Chicken Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.halfChickenNutrition": "Half Chicken Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.halfChickenSaturationMod": "Half Chicken Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.mashedPotatoesNutrition": "Mashed Potatoes Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.mashedPotatoesSaturationMod": "Mashed Potatoes Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.potatoSaladNutrition": "Potato Salad Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.potatoSaladSaturationMod": "Potato Salad Saturation",
+  "text.autoconfig.brewery.option.items.nutrition.dumplingsNutrition": "Dumplings Nutrition",
+  "text.autoconfig.brewery.option.items.nutrition.dumplingsSaturationMod": "Dumplings Saturation"
 }

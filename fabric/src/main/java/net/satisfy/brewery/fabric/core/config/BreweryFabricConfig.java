@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
 @Config(name = "brewery")
-@Config.Gui.Background("farm_and_charm:textures/items/brewfest_hat.png")
+@Config.Gui.Background("brewery:textures/block/plate_top.png")
 public class BreweryFabricConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public EntitySettings entities = new EntitySettings();
