@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.MobSpawnType;
 import net.satisfy.brewery.core.registry.ObjectRegistry;
+import net.satisfy.brewery.platform.PlatformHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -18,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ZombieMixin {
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
     private void addBreweryOutfit(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnData, CompoundTag compound, CallbackInfoReturnable<SpawnGroupData> cir) {
+        if (!PlatformHelper.isZombieEquipmentEnabled()) return;
+
         Zombie zombie = (Zombie)(Object)this;
         if (!zombie.isBaby() && Math.random() < 0.03) {
             zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ObjectRegistry.BREWFEST_HAT_RED.get()));

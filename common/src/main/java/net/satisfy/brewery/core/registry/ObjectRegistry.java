@@ -20,6 +20,7 @@ import net.satisfy.brewery.core.block.*;
 import net.satisfy.brewery.core.block.property.BrewMaterial;
 import net.satisfy.brewery.core.item.*;
 import net.satisfy.brewery.core.util.BreweryIdentifier;
+import net.satisfy.brewery.platform.PlatformHelper;
 import net.satisfy.farm_and_charm.core.block.BenchBlock;
 import net.satisfy.farm_and_charm.core.block.FacingBlock;
 import net.satisfy.farm_and_charm.core.block.FoodBlock;
@@ -45,8 +46,8 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Item> BREATHALYZER = registerItem("breathalyzer", () -> new Breathalyzer(getSettings()));
     public static final RegistrySupplier<Item> ROPE = registerItem("rope", () -> new RopeItem(getSettings()));
     public static final RegistrySupplier<Item> DARK_BREW = registerItem("dark_brew", () -> new DarkBrewItem(getSettings()));
-    public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new EffectItem(getFoodItemSettings(6, 0.5f, SUSTENANCE.get(), 6000), 6000, true));
-    public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new EffectItem(getFoodItemSettings(3, 0.4f, SUSTENANCE.get(), 2000), 2000, false));
+    public static final RegistrySupplier<Item> SAUSAGE = registerItem("sausage", () -> new EffectItem(getFoodItemSettings(PlatformHelper.getNutrition("sausage"), PlatformHelper.getSaturationMod("sausage"), SUSTENANCE.get(), 6000), 6000, true));
+    public static final RegistrySupplier<Item> PRETZEL = registerItem("pretzel", () -> new EffectItem(getFoodItemSettings(PlatformHelper.getNutrition("pretzel"), PlatformHelper.getSaturationMod("pretzel"), SUSTENANCE.get(), 2000), 2000, false));
     public static final RegistrySupplier<Item> BEER_ELEMENTAL_SPAWN_EGG = registerItem("beer_elemental_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityTypeRegistry.BEER_ELEMENTAL, -1, -1, getSettings()));
     public static final RegistrySupplier<Item> BREWFEST_HAT = registerItem("brewfest_hat", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), new BreweryIdentifier("textures/models/armor/brewfest_hat.png")));
     public static final RegistrySupplier<Item> BREWFEST_HAT_RED = registerItem("brewfest_hat_red", () -> new BrewfestHatItem(ArmorMaterialRegistry.BREWFEST, ArmorItem.Type.HELMET, getSettings().rarity(Rarity.EPIC), new BreweryIdentifier("textures/models/armor/brewfest_hat_red.png")));
@@ -101,18 +102,18 @@ public class ObjectRegistry {
     public static final RegistrySupplier<Block> WHISKEY_HIGHLAND_HEARTH = registerWithItemeverage("whiskey_highland_hearth", () -> new BeverageBlock(getBeverageSettings(), 1), MobEffectRegistry.REPULSION);
     public static final RegistrySupplier<Block> WHISKEY_JAMESONS_MALT = registerWithItemeverage("whiskey_jamesons_malt", () -> new BeverageBlock(getBeverageSettings(), 1), MobEffectRegistry.EXPLOSION);
     public static final RegistrySupplier<Block> WHISKEY_SMOKEY_REVERIE = registerWithItemeverage("whiskey_smokey_reverie", () -> new BeverageBlock(getBeverageSettings(), 2), MobEffectRegistry.COMBUSTION);
-    public static final RegistrySupplier<Block> PORK_KNUCKLE_BLOCK = registerWithoutItem("pork_knuckle", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(9).saturationMod(0.9F).build()));
-    public static final RegistrySupplier<Item> PORK_KNUCKLE = registerItem("pork_knuckle", () -> new EffectBlockItem(PORK_KNUCKLE_BLOCK.get(), getFoodItemSettings(6, 0.6f, SUSTENANCE.get(), 4000)));
-    public static final RegistrySupplier<Block> FRIED_CHICKEN_BLOCK = registerWithoutItem("fried_chicken", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(7).saturationMod(0.7F).build()));
-    public static final RegistrySupplier<Item> FRIED_CHICKEN = registerItem("fried_chicken", () -> new EffectBlockItem(FRIED_CHICKEN_BLOCK.get(), getFoodItemSettings(6, 0.6f, SUSTENANCE.get(), 4000)));
-    public static final RegistrySupplier<Block> HALF_CHICKEN_BLOCK = registerWithoutItem("half_chicken", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(3).saturationMod(0.4F).build()));
-    public static final RegistrySupplier<Item> HALF_CHICKEN = registerItem("half_chicken", () -> new EffectBlockItem(HALF_CHICKEN_BLOCK.get(), getFoodItemSettings(6, 0.6f, SUSTENANCE.get(), 4000)));
-    public static final RegistrySupplier<Block> MASHED_POTATOES_BLOCK = registerWithoutItem("mashed_potatoes", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(4).saturationMod(0.5F).build()));
-    public static final RegistrySupplier<Item> MASHED_POTATOES = registerItem("mashed_potatoes", () -> new EffectBlockItem(MASHED_POTATOES_BLOCK.get(), getFoodItemSettings(3, 0.5f, SATIATION.get(), 4000)));
-    public static final RegistrySupplier<Block> POTATO_SALAD_BLOCK = registerWithoutItem("potato_salad", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(8).saturationMod(0.8F).build()));
-    public static final RegistrySupplier<Item> POTATO_SALAD = registerItem("potato_salad", () -> new EffectBlockItem(POTATO_SALAD_BLOCK.get(), getFoodItemSettings(6, 0.7f, SATIATION.get(), 6000)));
-    public static final RegistrySupplier<Block> DUMPLINGS_BLOCK = registerWithoutItem("dumplings", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(7).saturationMod(0.8F).build()));
-    public static final RegistrySupplier<Item> DUMPLINGS = registerItem("dumplings", () -> new EffectBlockItem(DUMPLINGS_BLOCK.get(), getFoodItemSettings(6, 0.5f, SATIATION.get(), 6000)));
+    public static final RegistrySupplier<Block> PORK_KNUCKLE_BLOCK = registerWithoutItem("pork_knuckle", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("pork_knuckle")).saturationMod(PlatformHelper.getSaturationMod("pork_knuckle")).build()));
+    public static final RegistrySupplier<Item> PORK_KNUCKLE = registerItem("pork_knuckle", () -> new EffectBlockItem(PORK_KNUCKLE_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("pork_knuckle"), PlatformHelper.getSaturationMod("pork_knuckle"), SUSTENANCE.get(), 4000)));
+    public static final RegistrySupplier<Block> FRIED_CHICKEN_BLOCK = registerWithoutItem("fried_chicken", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("fried_chicken")).saturationMod(PlatformHelper.getSaturationMod("fried_chicken")).build()));
+    public static final RegistrySupplier<Item> FRIED_CHICKEN = registerItem("fried_chicken", () -> new EffectBlockItem(FRIED_CHICKEN_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("fried_chicken"), PlatformHelper.getSaturationMod("fried_chicken"), SUSTENANCE.get(), 4000)));
+    public static final RegistrySupplier<Block> HALF_CHICKEN_BLOCK = registerWithoutItem("half_chicken", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("half_chicken")).saturationMod(PlatformHelper.getSaturationMod("half_chicken")).build()));
+    public static final RegistrySupplier<Item> HALF_CHICKEN = registerItem("half_chicken", () -> new EffectBlockItem(HALF_CHICKEN_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("half_chicken"), PlatformHelper.getSaturationMod("half_chicken"), SUSTENANCE.get(), 4000)));
+    public static final RegistrySupplier<Block> MASHED_POTATOES_BLOCK = registerWithoutItem("mashed_potatoes", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("mashed_potatoes")).saturationMod(PlatformHelper.getSaturationMod("mashed_potatoes")).build()));
+    public static final RegistrySupplier<Item> MASHED_POTATOES = registerItem("mashed_potatoes", () -> new EffectBlockItem(MASHED_POTATOES_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("mashed_potatoes"), PlatformHelper.getSaturationMod("mashed_potatoes"), SATIATION.get(), 4000)));
+    public static final RegistrySupplier<Block> POTATO_SALAD_BLOCK = registerWithoutItem("potato_salad", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("potato_salad")).saturationMod(PlatformHelper.getSaturationMod("potato_salad")).build()));
+    public static final RegistrySupplier<Item> POTATO_SALAD = registerItem("potato_salad", () -> new EffectBlockItem(POTATO_SALAD_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("potato_salad"), PlatformHelper.getSaturationMod("potato_salad"), SATIATION.get(), 6000)));
+    public static final RegistrySupplier<Block> DUMPLINGS_BLOCK = registerWithoutItem("dumplings", () -> new FoodBlock(BlockBehaviour.Properties.copy(Blocks.CAKE), 4, new FoodProperties.Builder().nutrition(PlatformHelper.getNutrition("dumplings")).saturationMod(PlatformHelper.getSaturationMod("dumplings")).build()));
+    public static final RegistrySupplier<Item> DUMPLINGS = registerItem("dumplings", () -> new EffectBlockItem(DUMPLINGS_BLOCK.get(), getFoodItemSettings(PlatformHelper.getNutrition("dumplings"), PlatformHelper.getSaturationMod("dumplings"), SATIATION.get(), 6000)));
     public static final RegistrySupplier<Block> GINGERBREAD = registerWithItem("gingerbread", () -> new WallDecorationBlock(BlockBehaviour.Properties.copy(Blocks.FLOWER_POT)));
 
     public static final RegistrySupplier<Block> BREWERY_BANNER = registerWithItem("brewery_banner", () -> new CompletionistBannerBlock(BlockBehaviour.Properties.of().strength(1F).instrument(NoteBlockInstrument.BASS).noCollission().sound(SoundType.WOOD)));
@@ -156,7 +157,7 @@ public class ObjectRegistry {
     }
 
     private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, MobEffect effect, int duration) {
-        return getFoodItemSettings(nutrition, saturationMod, effect, duration, true, false);
+        return new Item.Properties().food(new FoodProperties.Builder().nutrition(nutrition).saturationMod(saturationMod).effect(new MobEffectInstance(effect, duration), 1.0f).build());
     }
 
     private static Item.Properties getFoodItemSettings(int nutrition, float saturationMod, MobEffect effect, int duration, boolean alwaysEat, boolean fast) {

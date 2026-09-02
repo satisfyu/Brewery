@@ -29,6 +29,9 @@
     ],
     "jei_mod_plugin": [
       "net.satisfy.brewery.core.compat.jei.BreweryJEIClientPlugin"
+    ],
+    "modmenu": [
+      "net.satisfy.brewery.fabric.core.config.ModMenu"
     ]
   },
   "mixins": [
